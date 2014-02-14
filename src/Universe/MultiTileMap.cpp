@@ -10,7 +10,7 @@ using namespace std;
 1. Make count of how many of each texture type there is.
 2. Take the total count and resize m_arrays.
 3. Go through m_arrays and resize each VertexArray, and set their pTexture;
-4. Go through the gfxBase list, find their texturedVertex element,
+4. Go through the gfxBase list, find each gfxBase  element in m_TexVertSPList,
 set their vertex pointer using nextAccessed and update nextAccessed;
 **/
 ///work through and verify all this code
@@ -53,7 +53,7 @@ void MultiTileMap::add(vector<GraphicsBase*> gfxBaseList)
         {
             if( (*it_texVert)->textureName == (*it_gfxBase)->getTexName() )
             {
-                (*it_gfxBase)->setVertex( &(*it_texVert)->vertices[ (*it_texVert)->nextAccessed ] );//GraphicsBase::setVertex should handle all this
+                (*it_gfxBase)->setVertex( &(*it_texVert)->vertices[ (*it_texVert)->nextAccessed ] );//GraphicsBase::setVertex should handle all this???
                 (*it_texVert)->nextAccessed += 4;
             }
         }

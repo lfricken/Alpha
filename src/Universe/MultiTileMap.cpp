@@ -31,7 +31,7 @@ void MultiTileMap::add(std::vector<std::tr1::shared_ptr<DGModule> >& rDGModuleSP
 
     /**3**////STILL HAVE TO SET THE pTexture!!!!!
     sf::Texture* genericTex = new sf::Texture;///TEMPORARY, REMOVE ME ASAP
-    genericTex->loadFromFile("tileset.png");///TEMPORARY, REMOVE ME ASAP
+    genericTex->loadFromFile("textures/tileset.png");///TEMPORARY, REMOVE ME ASAP
 
     vec_spTexVert_it it_texVert = m_TexVertSPList.begin();
     for(std::map<std::string, int>::const_iterator it_map = texTally.begin(); it_map != texTally.end(); ++it_map, ++it_texVert)

@@ -1,0 +1,55 @@
+#include "Universe/DChunk.h"
+#include <globals.h>
+
+using namespace std;
+b2World& DChunk::m_rPhysWorld = game.getGameUniverse().getWorld();
+sf::RenderWindow& DChunk::m_rWindow = game.getGameWindow();
+
+DChunk::DChunk()
+{
+    m_bodyDef.type = b2_dynamicBody;
+    m_bodyDef.position = b2Vec2(0.0f, 0.0f);
+    m_pBody = m_rPhysWorld.CreateBody(&m_bodyDef);
+    m_pBody->SetUserData(this);
+}
+DChunk::DChunk(b2Vec2 coordinate)
+{
+    m_bodyDef.type = b2_dynamicBody;
+    m_bodyDef.position = coordinate;
+    m_pBody = m_rPhysWorld.CreateBody(&m_bodyDef);
+
+    m_pBody->SetUserData(this);
+}
+DChunk::~DChunk()
+{
+    //  cout << "\nChunk Dtor Called ...";
+    // cout << " done.";
+}
+/**
+1. Create DGModules in our dgModuleList
+2. Pass them to tilemap to be drawn later.
+**/
+void DChunk::add(vector<DGModuleData>& rDataList)
+{
+    for(vector<DGModuleData>::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
+    {
+         it_data->physicsData.pBody = m_pBody;
+        m_DGModuleSPList.push_back(tr1::shared_ptr<DGModule>(new DGModule(*it_data)));
+    }
+    m_tiles.add(m_DGModuleSPList);
+
+    if(!rDataList.empty())
+        m_tiles.setOrigin(rDataList[0].physicsData.halfSize.x * scale , rDataList[0].physicsData.halfSize.y * scale);
+    else
+        cout << "\nWARNING: DChunk::add()";//debug
+}
+void DChunk::draw()
+{
+    m_tiles.setPosition(scale*m_pBody->GetPosition().x, scale*m_pBody->GetPosition().y);
+    m_tiles.setRotation(180.0*m_pBody->GetAngle()/PI);
+    m_rWindow.draw(m_tiles);
+}
+b2Body* DChunk::getBody()
+{
+    return m_pBody;
+}

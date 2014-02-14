@@ -31,14 +31,24 @@ DChunk::~DChunk()
 **/
 void DChunk::add(vector<DGModuleData>& rDataList)
 {
+    /**Take our list of module data and make real modules with it!**/
     for(vector<DGModuleData>::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
-         it_data->physicsData.pBody = m_pBody;
+        it_data->physicsData.pBody = m_pBody;
         m_DGModuleSPList.push_back(tr1::shared_ptr<DGModule>(new DGModule(*it_data)));
     }
-    m_tiles.add(m_DGModuleSPList);
 
-    if(!rDataList.empty())
+
+    /**Create a Base Pointer List to pass to our tileMap**/
+    vector<GraphicsBase*> gfxBasePList;
+    for(std::vector<std::tr1::shared_ptr<DGModule> >::const_iterator it_derived = m_DGModuleSPList.begin(); it_derived != m_DGModuleSPList.end(); ++it_derived)
+    {
+        gfxBasePList.push_back(&(*(*it_derived)));
+    }
+    m_tiles.add(gfxBasePList);
+
+
+    if(!rDataList.empty())///wtf is this doing? accessing the first element of something with 0 elements?????
         m_tiles.setOrigin(rDataList[0].physicsData.halfSize.x * scale , rDataList[0].physicsData.halfSize.y * scale);
     else
         cout << "\nWARNING: DChunk::add()";//debug

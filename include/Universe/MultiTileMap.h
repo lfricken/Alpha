@@ -18,7 +18,7 @@ public:
     MultiTileMap() {m_tileSize = sf::Vector2i(64,64);}
     MultiTileMap(const sf::Vector2i& tileSize) {m_tileSize = tileSize;}
 
-    void add(std::vector<std::tr1::shared_ptr<DGModule> >& rDGModuleSPList);
+    void add(std::vector<GraphicsBase*> gBaseList);
 
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

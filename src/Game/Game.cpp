@@ -70,9 +70,10 @@ void Game::run()
     //whereas the fixture is created on the body at its center.
 
     /**Boxs**/
-    DChunk chunk(b2Vec2(-5, -5));///help is chunk and module destructor set up?
+    DChunk* chunk = new DChunk(b2Vec2(-5, -5));
+    //DChunk chunk(b2Vec2(-5, -5));///help is chunk and module destructor set up?
     b2Body* pBox;
-    pBox = chunk.getBody();
+    pBox = chunk->getBody();
 
     DGModuleData data;
 
@@ -106,7 +107,7 @@ void Game::run()
             moduleList1.push_back(data);
         }
     }
-    chunk.add(moduleList1);
+    chunk->add(moduleList1);
 
 
     vector<DChunk> chunks;
@@ -127,7 +128,7 @@ void Game::run()
         chunks.push_back(DChunk(b2Vec2(x,y)));
         chunks.back().add(dataList);
     }
-
+/**
     for (int i=0, x=3, y=3, numBoxs = 200; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
         chunks.push_back(DChunk(b2Vec2(x,y)));
@@ -140,7 +141,7 @@ void Game::run()
     }
 
     //pBox = chunks.back().getBody();
-
+**/
 
 
     /**Sim and runtime**/
@@ -207,6 +208,8 @@ void Game::run()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
             view1.move(0.0, cameraMove);
+            delete chunk;
+            chunk = NULL;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         {
@@ -218,6 +221,7 @@ void Game::run()
         }
 
 //CONTROL ALL chunks list
+/***
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
         {
             for(vector<DChunk>::iterator it = chunks.begin(); it != chunks.end(); ++it)
@@ -253,6 +257,7 @@ void Game::run()
                 it->getBody()->ApplyForce(b2Vec2(-accel,-accel),it->getBody()->GetWorldCenter(), true);
             }
         }
+        **/
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
         {
             cout << "\nFPS: " << fps;
@@ -320,12 +325,13 @@ void Game::run()
         m_gameWindow.setView(view1);
         m_gameWindow.draw(rect);
 
-        chunk.draw();
+        if(chunk != NULL)
+            chunk->draw();
+
         for(vector<DChunk>::iterator it = chunks.begin(); it != chunks.end(); ++it)
         {
             it->draw();
         }
-
 
         m_gameWindow.setView(m_gameWindow.getDefaultView());//stuff that isnt resized by zoom gets put here
         convex.setPosition(m_gameWindow.mapPixelToCoords(sf::Vector2i(40,40)));

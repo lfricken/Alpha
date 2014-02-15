@@ -1,8 +1,29 @@
 
 
 #include <Universe/MultiTileMap.h>
-
 using namespace std;
+
+
+MultiTileMap::MultiTileMap(const MultiTileMap& old)
+{
+    cout << "\nTileMap Copy Called...";
+    m_tileSize = old.getTileSize();
+    m_TexVertSPList = old.getTexVertList();
+    setOrigin(old.getOrigin());
+    cout << "Completed.";
+}
+MultiTileMap& MultiTileMap::operator= (const MultiTileMap& other)
+{
+    if (this != &other)// protect against invalid self-assignment
+    {
+        setOrigin(other.getOrigin());
+        m_tileSize = other.getTileSize();
+        m_TexVertSPList = other.getTexVertList();
+    }
+    return *this;
+}
+MultiTileMap::~MultiTileMap() {};
+
 ///We need to take into account the display priority of an entity.
 ///Then we add that item to the list last, so it gets displayed last(on top)
 ///Look at graphicsBase.
@@ -14,7 +35,6 @@ using namespace std;
 set their vertex pointer using nextAccessed and update nextAccessed;
 **/
 ///work through and verify all this code
-///CAN WE PASS A GENERIC GRAPHICS BASE VECTOR, CAUSE THAT WOULD BE NICE!
 void MultiTileMap::add(vector<GraphicsBase*> gfxBaseList)
 {
     /**1**/
@@ -67,4 +87,13 @@ void MultiTileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
         states.texture = (*it_texVert)->pTexture;
         target.draw((*it_texVert)->vertices, states);
     }
+}
+
+const sf::Vector2i& MultiTileMap::getTileSize() const
+{
+    return m_tileSize;
+}
+const vector<tr1::shared_ptr<texturedVertices> >& MultiTileMap::getTexVertList() const
+{
+    return m_TexVertSPList;
 }

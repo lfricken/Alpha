@@ -47,7 +47,7 @@ protected:
     sf::Color m_color;//color modifier for the vertices
 
     int m_dispPri;//display priority
-    sf::Vertex* m_pVertex;/**never go above 3rd index**/
+    sf::Vertex* m_pVertex;/**never go above 3rd index,because we only have our own set of 4 vertices**/
     std::string m_texName;
 private:
 };

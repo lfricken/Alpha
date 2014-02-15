@@ -25,6 +25,7 @@ COMMENTING:
 If you are creating, dereferencing, or otherwise interacting with pointers, put //pointer; right after it, plus anything else that needs to be described
 If there is something that needs to be created in the future, put ///code here
 If you are writing something for the purpose of debugging, put //debug after it!
+The term smart* means smart pointer.
 
 GENERAL STUFF:
 Only make functions virtual if you actually plan to override them.
@@ -44,8 +45,9 @@ POINTERS:
 Things that cause pointers to go wrong are:
 Objects getting destroyed when you think they aren't going to be.
 Vectors
-Any STL containers
+Any STL containers for that matter.
 If you're writing code that dereferences any pointer, test it frequently and rigorously.
+Put a comment of //pointer next to any pointer dereference.
 
 
 SFML:
@@ -62,7 +64,7 @@ Function names follow the rules of instances.
 Make the first letter Capital for lists
 Vectors of a TYPE should be named BlahBlahList, so vector<CottonCandy> m_CottonCandyList;
 If its a vector of pointers or smart pointers, do m_CottonCandySPList or m_CottonCandyPList where appropriate
-notice the capital letter!!
+notice the capital letters!!
 
 Prefixes of variables and or functions are as follows, and
 append the Prefix in the order of top to bottom:
@@ -70,10 +72,11 @@ append the Prefix in the order of top to bottom:
 
 ABREVIATIONS:
 position    pos
-texture     tex
+texture(d)(s)     tex
 coordinates coords
 pixels      pix
 conversion  conv
+vertices    vert
 
 
 PREFIX: SITUATION:              EXAMPLE:
@@ -81,7 +84,7 @@ m_  private member variable     m_yourMom;
 r   variable is a reference     rYourMom;
 p   variable is a pointer       pBadBear;
 sp  variable is a smart ptr     spBadBear;
-it_ variable is an iterator     it_data;
+it_ variable is an iterator     it_data; //if its the only iterator in the loop, just use it
 
 multiple: m_pVar, m_rVar
 

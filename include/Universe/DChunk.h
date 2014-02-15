@@ -11,7 +11,10 @@ class DChunk : public IOBase
 public:
     DChunk();
     DChunk(b2Vec2 coordinate);
+
+    DChunk(const DChunk& old);
     virtual ~DChunk();
+
 
     virtual void add(std::vector<DGModuleData>& data);
     ///virtual void remove();//how to remove a module
@@ -19,6 +22,11 @@ public:
 
     virtual void draw();
 
+    virtual b2Body* getBody() const;
+    virtual const b2BodyDef& getBodyDef() const;
+    virtual const std::vector<std::tr1::shared_ptr<DGModule> >& getDGModuleSPList() const;
+    virtual const std::vector<std::tr1::shared_ptr<DModule> >& getDModuleSPList() const;
+    virtual const MultiTileMap& getTiles() const;
 
 protected:
     static b2World& m_rPhysWorld;

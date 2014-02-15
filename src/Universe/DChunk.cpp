@@ -20,10 +20,26 @@ DChunk::DChunk(b2Vec2 coordinate)
 
     m_pBody->SetUserData(this);
 }
+DChunk::DChunk(const DChunk& old)
+{
+    cout << "\nDChunk Copy Called...";
+    m_pBody = old.getBody();
+    m_bodyDef = old.getBodyDef();
+    m_tiles = old.getTiles();
+    m_DGModuleSPList = old.getDGModuleSPList();
+    m_DModuleSPList = old.getDModuleSPList();
+    cout << "Completed.";
+}
 DChunk::~DChunk()
 {
-    //  cout << "\nChunk Dtor Called ...";
-    // cout << " done.";
+    cout << "\nDChunk Dtor Called...";
+    /**Destroy all our modules in both vectors**/
+    //happens automatically
+    /**Destroy our MultiTileMap**/
+    //This happens automatically.
+    /**Finally, destroy our body, and all the fixtures on it**/
+   /// m_rPhysWorld.DestroyBody(m_pBody);//we only want to call this sometimes
+    cout << "Completed.";
 }
 /**
 1. Create DGModules in our dgModuleList
@@ -62,4 +78,24 @@ void DChunk::draw()
 b2Body* DChunk::getBody()
 {
     return m_pBody;
+}
+b2Body* DChunk::getBody() const
+{
+    return m_pBody;
+}
+const b2BodyDef& DChunk::getBodyDef() const
+{
+    return m_bodyDef;
+}
+const vector<tr1::shared_ptr<DGModule> >& DChunk::getDGModuleSPList() const
+{
+    return m_DGModuleSPList;
+}
+const vector<tr1::shared_ptr<DModule> >& DChunk::getDModuleSPList() const
+{
+    return m_DModuleSPList;
+}
+const MultiTileMap& DChunk::getTiles() const
+{
+    return m_tiles;
 }

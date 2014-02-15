@@ -32,15 +32,27 @@ DChunk::DChunk(const DChunk& old)
 }
 DChunk::~DChunk()
 {
-    cout << "\nDChunk Dtor Called...";
-    /**Destroy all our modules in both vectors**/
+    cout << "\nDChunk Default Dtor Called...";
+    /**Destroy all our module list, because the modules are preserved via SP **/
     //happens automatically
-    /**Destroy our MultiTileMap**/
+    /**Destroy our MultiTileMap, cause the textured verts should have been preserved via SP**/
     //This happens automatically.
-    /**Finally, destroy our body, and all the fixtures on it**/
-   /// m_rPhysWorld.DestroyBody(m_pBody);//we only want to call this sometimes
+    /**we made a copy, so our body is preserved**/
     cout << "Completed.";
 }
+DChunk::~DChunk()
+{
+    cout << "\nDChunk Default Dtor Called...";
+    /**Destroy all our module list, because the modules are preserved via SP **/
+    //happens automatically
+    /**Destroy our MultiTileMap, cause the textured verts should have been preserved via SP**/
+    //This happens automatically.
+    /**we made a copy, so our body is preserved**/
+    cout << "Completed.";
+}
+
+
+
 /**
 1. Create DGModules in our dgModuleList
 2. Pass them to tilemap to be drawn later.

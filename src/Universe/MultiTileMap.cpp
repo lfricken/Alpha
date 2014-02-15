@@ -16,9 +16,9 @@ MultiTileMap& MultiTileMap::operator= (const MultiTileMap& other)
 {
     if (this != &other)// protect against invalid self-assignment
     {
-        setOrigin(other.getOrigin());
         m_tileSize = other.getTileSize();
         m_TexVertSPList = other.getTexVertList();
+        setOrigin(other.getOrigin());
     }
     return *this;
 }

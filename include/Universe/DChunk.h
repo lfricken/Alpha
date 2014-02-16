@@ -15,9 +15,8 @@ public:
     DChunk(const DChunk& old);
     virtual ~DChunk();
 
-
     virtual void add(std::vector<DGModuleData>& data);
-    ///virtual void remove();//how to remove a module
+    ///virtual void remove();//how to remove a module, if possible
     virtual b2Body* getBody();
 
     virtual void draw();

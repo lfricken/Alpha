@@ -37,17 +37,8 @@ DChunk::~DChunk()
     //happens automatically
     /**Destroy our MultiTileMap, cause the textured verts should have been preserved via SP**/
     //This happens automatically.
-    /**we made a copy, so our body is preserved**/
-    cout << "Completed.";
-}
-DChunk::~DChunk()
-{
-    cout << "\nDChunk Default Dtor Called...";
-    /**Destroy all our module list, because the modules are preserved via SP **/
-    //happens automatically
-    /**Destroy our MultiTileMap, cause the textured verts should have been preserved via SP**/
-    //This happens automatically.
-    /**we made a copy, so our body is preserved**/
+    /**how do we delete our body??**////how do we delete our body
+    m_rPhysWorld.DestroyBody(m_pBody);
     cout << "Completed.";
 }
 
@@ -69,7 +60,7 @@ void DChunk::add(vector<DGModuleData>& rDataList)
 
     /**Create a Base Pointer List to pass to our tileMap**/
     vector<GraphicsBase*> gfxBasePList;
-    for(std::vector<std::tr1::shared_ptr<DGModule> >::const_iterator it_derived = m_DGModuleSPList.begin(); it_derived != m_DGModuleSPList.end(); ++it_derived)
+    for(vector<tr1::shared_ptr<DGModule> >::const_iterator it_derived = m_DGModuleSPList.begin(); it_derived != m_DGModuleSPList.end(); ++it_derived)
     {
         gfxBasePList.push_back(&(*(*it_derived)));
     }

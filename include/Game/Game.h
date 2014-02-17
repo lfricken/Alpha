@@ -21,7 +21,7 @@ public:
 
 protected:
 private:
-    std::tr1::shared_ptr<IOManager> m_spGameIOManager;//the games IOManager
+    IOManager* m_pGameIOManager;//the games IOManager
     Universe m_gameUniverse;
     OverlayManager m_gameOverlayManager;
     sf::RenderWindow m_gameWindow;//the display window

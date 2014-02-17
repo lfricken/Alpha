@@ -7,18 +7,20 @@ Universe::Universe() : m_physWorld(b2Vec2(0,0))
 
 }
 
-Universe::~Universe()//unfinished
+Universe::~Universe()///unfinished
 {
     //dtor
 }
 
-void Universe::draw()//unfinished
+void Universe::draw()///unfinished
 {
 
 }
 
-IOBase* Universe::getTarget(string target)//finished
+IOBase* Universe::getTarget(string target)///unfinished
 {
+    /**Loop through everything and find the target**/
+    /*
     for(vector<IOBase*>::iterator it = m_namedObjects.begin(); it != m_namedObjects.end(); ++it)
     {
         if((*it)->getTargetName() == target)
@@ -26,12 +28,13 @@ IOBase* Universe::getTarget(string target)//finished
     }
 
     return NULL;
+    */
 }
 b2World& Universe::getWorld()
 {
     return m_physWorld;
 }
-void Universe::load(string filename)//unfinished
+void Universe::load(string filename)///unfinished
 {
 
 }

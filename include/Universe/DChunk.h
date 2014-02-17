@@ -21,6 +21,7 @@ public:
 
     virtual void draw();
 
+    /**CONST OVERLOADS**/
     virtual b2Body* getBody() const;
     virtual const b2BodyDef& getBodyDef() const;
     virtual const std::vector<std::tr1::shared_ptr<DGModule> >& getDGModuleSPList() const;
@@ -32,7 +33,7 @@ protected:
     static sf::RenderWindow& m_rWindow;
 
     b2Body* m_pBody;//pointer;
-    b2BodyDef m_bodyDef;
+    b2BodyDef m_bodyDef;///do we need to hold onto this?
     MultiTileMap m_tiles;
 
     std::vector<std::tr1::shared_ptr<DGModule> > m_DGModuleSPList;

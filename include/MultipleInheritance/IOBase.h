@@ -30,7 +30,7 @@ struct Condition//used to determine if the package should be sent
 
 struct Package//the thing that is sent to IO manager and ultimately tells some entity what to do
 {
-    std::tr1::shared_ptr<IOBase> spTargetAddress;///a pointer that points to the target, so that IOmanager can immediately do it
+    std::tr1::shared_ptr<IOBase> spTargetAddress;///a pointer that points to the target, so that IOmanager can immediately do it instead of having to find it
     std::string targetName;//the name of the target
     std::string command;//the action the target should take
     std::string parameter;//addition information used to do the action, such as set health to the parameter

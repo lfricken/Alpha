@@ -25,10 +25,9 @@ public:
 
     void add(std::vector<GraphicsBase*> gBaseList);
 
-
+    /**CONST OVERLOADS**/
     const sf::Vector2i& getTileSize() const;
     const std::vector<std::tr1::shared_ptr<texturedVertices> >& getTexVertList() const;
-
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

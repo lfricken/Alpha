@@ -21,10 +21,9 @@ class Universe : public IOBase//everything that would be considered to be "real"
     protected:
     private:
         b2World m_physWorld;
-        //std::vector<UBase> m_physList;//all the objects that have physics but no graphics
-        ///vector<(visual stuff that is a child of UBase)> m_realList;//all the objects that have graphics and physics
-        ///vector<(visual stuff that is its own thing)> m_visualList;//all the objects that have graphics but no physics
-        std::vector<IOBase*> m_namedObjects;//we need smart pointers
+        ///std::vector<(visual stuff that is some sort of chunk)> m_physList;//all the objects that have graphics and physics
+        ///we might need a second one to hold SChunk's depending on how we set up inheritance
+        ///std::vector<(visual stuff that is its own thing)> m_gfxList;//all the objects that have graphics but no physics
 };
 
 #endif // UNIVERSE_H

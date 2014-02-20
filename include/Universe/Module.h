@@ -4,13 +4,13 @@
 #include <MultipleInheritance/IOBase.h>
 #include <MultipleInheritance/PhysicsBase.h>
 
-class DModule : public IOBase, public PhysicsBase
+class Module : public IOBase, public PhysicsBase
 {
     public:
         /** Default constructor */
-        DModule();
+        Module();
         /** Default destructor */
-        virtual ~DModule();
+        virtual ~Module();
     protected:
     private:
 };

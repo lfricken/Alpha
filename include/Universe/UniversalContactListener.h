@@ -6,8 +6,6 @@
 class UniversalContactListener : public b2ContactListener
 {
     public:
-        UniversalContactListener();
-        virtual ~UniversalContactListener();
 
         void BeginContact(b2Contact* contact);
         void EndContact(b2Contact* contact);

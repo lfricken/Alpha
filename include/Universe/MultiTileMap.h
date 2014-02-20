@@ -2,7 +2,7 @@
 #define MULTITILEMAP_H
 
 #include <stdafx.h>
-#include <Universe/DGModule.h>
+#include <Universe/GModule.h>
 
 struct texturedVertices
 {

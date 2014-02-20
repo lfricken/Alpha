@@ -3,8 +3,8 @@
 #include <globals.h>
 
 #include <Universe/UniversalContactListener.h>
-#include <Universe/DChunk.h>
-#include <Universe/DGModule.h>
+#include <Universe/Chunk.h>
+#include <Universe/GModule.h>
 
 using namespace std;
 
@@ -70,12 +70,12 @@ void Game::run()
     //whereas the fixture is created on the body at its center.
 
     /**Boxs**/
-    DChunk* chunk = new DChunk(b2Vec2(-5, -5));
-    //DChunk chunk(b2Vec2(-5, -5));///help is chunk and module destructor set up?
+    Chunk* chunk = new Chunk(b2Vec2(-5, -5));
+    //Chunk chunk(b2Vec2(-5, -5));///help is chunk and module destructor set up?
     b2Body* pBox;
     pBox = chunk->getBody();
 
-    DGModuleData data;
+    GModuleData data;
 
     data.physicsData.density = 1.0f;
     data.physicsData.friction = 0.4f;
@@ -92,7 +92,7 @@ void Game::run()
     data.graphicsData.color = sf::Color::White;
 
 
-    vector<DGModuleData> moduleList1;
+    vector<GModuleData> moduleList1;
     short int texTile = 0;
     float offsetDelta = 2*data.physicsData.halfSize.x;
     for (float i=0, x=-2, numBoxsX = 9; i<numBoxsX; ++i, x+=offsetDelta)//creates boxes in a line
@@ -110,9 +110,9 @@ void Game::run()
     chunk->add(moduleList1);
 
 
-    vector<tr1::shared_ptr<DChunk> > chunks;
+    vector<tr1::shared_ptr<Chunk> > chunks;
 
-    vector<DGModuleData> dataList;
+    vector<GModuleData> dataList;
     dataList.push_back(data);
     dataList.back().physicsData.offset.x = 0;
     dataList.back().physicsData.offset.y = 0;
@@ -125,18 +125,18 @@ void Game::run()
 
     for (int i=0, x=1, y=3, numBoxs = 200; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
-        chunks.push_back( tr1::shared_ptr<DChunk>(new DChunk(b2Vec2(x,y))) );
+        chunks.push_back( tr1::shared_ptr<Chunk>(new Chunk(b2Vec2(x,y), b2_staticBody)) );
         chunks.back()->add(dataList);
     }
 
     for (int i=0, x=3, y=3, numBoxs = 200; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
-        chunks.push_back( tr1::shared_ptr<DChunk>(new DChunk(b2Vec2(x,y))) );
+        chunks.push_back( tr1::shared_ptr<Chunk>(new Chunk(b2Vec2(x,y))) );
         chunks.back()->add(dataList);
     }
     for (int i=0, x=5, y=3, numBoxs = 200; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
-        chunks.push_back( tr1::shared_ptr<DChunk>(new DChunk(b2Vec2(x,y))) );
+        chunks.push_back( tr1::shared_ptr<Chunk>(new Chunk(b2Vec2(x,y))) );
         chunks.back()->add(dataList);
     }
 
@@ -222,35 +222,35 @@ void Game::run()
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
         {
-            for(vector<tr1::shared_ptr<DChunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
+            for(vector<tr1::shared_ptr<Chunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
             {
                 (*it)->getBody()->ApplyForce(b2Vec2(0,-accel),(*it)->getBody()->GetWorldCenter(), false);
             }
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
         {
-            for(vector<tr1::shared_ptr<DChunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
+            for(vector<tr1::shared_ptr<Chunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
             {
                 (*it)->getBody()->ApplyForce(b2Vec2(-accel,0),(*it)->getBody()->GetWorldCenter(), true);
             }
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
         {
-            for(vector<tr1::shared_ptr<DChunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
+            for(vector<tr1::shared_ptr<Chunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
             {
                 (*it)->getBody()->ApplyForce(b2Vec2(0,accel),(*it)->getBody()->GetWorldCenter(), true);
             }
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
         {
-            for(vector<tr1::shared_ptr<DChunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
+            for(vector<tr1::shared_ptr<Chunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
             {
                 (*it)->getBody()->ApplyForce(b2Vec2(accel,0),(*it)->getBody()->GetWorldCenter(), true);
             }
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
         {
-            for(vector<tr1::shared_ptr<DChunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
+            for(vector<tr1::shared_ptr<Chunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
             {
                 (*it)->getBody()->ApplyForce(b2Vec2(-accel,-accel),(*it)->getBody()->GetWorldCenter(), true);
             }
@@ -326,7 +326,7 @@ void Game::run()
         if(chunk != NULL)
             chunk->draw();
 
-        for(vector<tr1::shared_ptr<DChunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
+        for(vector<tr1::shared_ptr<Chunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
         {
             (*it)->draw();
         }

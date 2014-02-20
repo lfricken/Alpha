@@ -1,14 +1,5 @@
 #include "UniversalContactListener.h"
 
-UniversalContactListener::UniversalContactListener()
-{
-    //ctor
-}
-
-UniversalContactListener::~UniversalContactListener()
-{
-    //dtor
-}
 void UniversalContactListener::BeginContact(b2Contact* contact)
 {
     bool both = false;

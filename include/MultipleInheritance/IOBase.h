@@ -52,9 +52,11 @@ class IOBase//base class inherited by literally everything, that way objects can
         virtual IOManager& getIOManager();
 
         virtual void input(Package package);//called by IO manager when this entity is being sent a message
+        ///virtual void activate(unknown);
+
 
         virtual void setTargetName(std::string name);//sets the name of this entity
-        virtual std::string getTargetName();//gets the name of this entity
+        virtual const std::string& getTargetName() const;//gets the name of this entity
     protected:
         std::string m_targetName;//used by IO manager to locate specific named objects
         static IOManager& m_rIOManager;

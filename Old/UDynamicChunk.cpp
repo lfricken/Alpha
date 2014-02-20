@@ -12,7 +12,7 @@ UDynamicChunk::~UDynamicChunk()
 {
 
 }
-void UDynamicChunk::add(DGModule& tempCopy)
+void UDynamicChunk::add(GModule& tempCopy)
 {
     b2PolygonShape boxShape;
     boxShape.SetAsBox(tempCopy.getHalfWidth(), tempCopy.getHalfHeight(), tempCopy.getOffset(), tempCopy.getRotation());
@@ -23,11 +23,11 @@ void UDynamicChunk::add(DGModule& tempCopy)
     fixtureDef.friction = tempCopy.getFriction();
     fixtureDef.restitution = tempCopy.getRestitution();
 
-    m_DGModuleList.push_back(tempCopy);
+    m_GModuleList.push_back(tempCopy);
 
-    m_DGModuleList.back().setFixture(m_pBody->CreateFixture(&fixtureDef));
+    m_GModuleList.back().setFixture(m_pBody->CreateFixture(&fixtureDef));
 }
-void UDynamicChunk::add(DModule& tempCopy)
+void UDynamicChunk::add(Module& tempCopy)
 {
 }
 void UDynamicChunk::draw()

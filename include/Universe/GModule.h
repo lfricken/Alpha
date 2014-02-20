@@ -5,18 +5,18 @@
 #include <MultipleInheritance/GraphicsBase.h>
 #include <MultipleInheritance/IOBase.h>
 
-struct DGModuleData
+struct GModuleData
 {
     PhysicsBaseData physicsData;
     GraphicsBaseData graphicsData;
 };
 
-class DGModule : public IOBase, public PhysicsBase, public GraphicsBase
+class GModule : public IOBase, public PhysicsBase, public GraphicsBase
 {
 public:
-    DGModule(DGModuleData& data);
-    DGModule(const DGModule& old);
-    virtual ~DGModule();
+    GModule(GModuleData& data);
+    GModule(const GModule& old);
+    virtual ~GModule();
 
 protected:
 

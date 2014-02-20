@@ -25,7 +25,7 @@ void IOBase::setTargetName(string name)//finished
 {
     m_targetName = name;
 }
-string IOBase::getTargetName()//finished
+const string& IOBase::getTargetName() const//finished
 {
     return m_targetName;
 }

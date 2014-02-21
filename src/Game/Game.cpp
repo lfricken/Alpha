@@ -13,7 +13,7 @@ Game::Game() :  m_gameWindow(sf::VideoMode(1300, 700), "SFML Box2D Test Environm
 {
     m_pGameIOManager = new IOManager(*this);
     m_gameWindow.setFramerateLimit(60);
-    ///This code won't work!
+    ///This code won't work! WTF?
     if(!icon.loadFromFile("textures/white.png"))
         cout << "\nIcon Load Error";///texture allocator
     m_gameWindow.setIcon(1, 1, icon.getPixelsPtr());
@@ -80,7 +80,6 @@ void Game::run()
     pBox = chunk->getBody();
 
     GModuleData data;
-
     data.type = "GModule";
     data.physicsData.density = 1.0f;
     data.physicsData.friction = 0.4f;
@@ -90,14 +89,25 @@ void Game::run()
     /**data.pTexture = NULL;**////WTF do we do here? Is this needed, check how tilemap works
     data.physicsData.restitution = 0.2f;
     data.physicsData.rotation = 0.0f;
-
     data.graphicsData.texName = "white.png";
     data.graphicsData.texTile = sf::Vector2f(0, 0);
     data.graphicsData.texTileSize = sf::Vector2f(64, 64);
     data.graphicsData.color = sf::Color::White;
 
+    ModuleData mdata;
+    mdata.type = "Module";
+    mdata.physicsData.density = 1.0f;
+    mdata.physicsData.friction = 0.4f;
+    mdata.physicsData.halfSize = b2Vec2(0.25, 0.25);
+    mdata.physicsData.offset = b2Vec2(0, -5);
+    mdata.physicsData.pBody = NULL;//we dont know it yet
+    /**data.pTexture = NULL;**////WTF do we do here? Is this needed, check how tilemap works
+    mdata.physicsData.restitution = 0.2f;
+    mdata.physicsData.rotation = 0.0f;
+
 
     vector<GModuleData> moduleList1;
+    vector<ModuleData> moduleList2;
     short int texTile = 0;
     float offsetDelta = 2*data.physicsData.halfSize.x;
     for (float i=0, x=-2, numBoxsX = 9; i<numBoxsX; ++i, x+=offsetDelta)//creates boxes in a line
@@ -112,6 +122,8 @@ void Game::run()
             moduleList1.push_back(data);
         }
     }
+    moduleList2.push_back(mdata);
+    chunk->add(moduleList2);
     chunk->add(moduleList1);
 
 
@@ -130,7 +142,7 @@ void Game::run()
 
     for (int i=0, x=1, y=3, numBoxs = 200; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
-        chunks.push_back( tr1::shared_ptr<Chunk>(new Chunk(b2Vec2(x,y), b2_staticBody)) );
+        chunks.push_back( tr1::shared_ptr<Chunk>(new Chunk(b2Vec2(x,y), b2_dynamicBody)) );
         chunks.back()->add(dataList);
     }
 

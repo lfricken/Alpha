@@ -8,8 +8,17 @@ using namespace std;
 b2World& PhysicsBase::m_rPhysWorld = game.getGameUniverse().getWorld();
 
 
-PhysicsBase::PhysicsBase()// : m_rPhysWorld(rPhysWorld)
+PhysicsBase::PhysicsBase(PhysicsBaseData& data)// : m_rPhysWorld(rPhysWorld)
 {
+    m_shape.SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//set our shape
+
+    m_fixtureDef.shape = &m_shape;//give our shape to our fixture definition
+    m_fixtureDef.density = data.density;
+    m_fixtureDef.friction = data.friction;
+    m_fixtureDef.restitution = data.restitution;//setting our fixture data
+    m_pBody = data.pBody;
+
+    m_pFixture = m_pBody->CreateFixture(&m_fixtureDef);
 }
 PhysicsBase::~PhysicsBase()
 {

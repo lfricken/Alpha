@@ -15,11 +15,17 @@ public:
     Chunk(const Chunk& old);
     virtual ~Chunk();/**Don't destroy us in the middle of a physics step!**/
 
-    virtual void add(std::vector<GModuleData>& data);
-    ///virtual void remove();//how to remove a module, if possible
     virtual b2Body* getBody();
 
+    virtual void add(std::vector<GModuleData>& data);/**we only call this once!**/
+    virtual void add(std::vector<ModuleData>& data);/**we only call this once!**/
+
     virtual void draw();
+
+    ///virtual void remove();//how to remove a module, if possible?
+
+
+
 
     /**CONST OVERLOADS**/
     virtual b2Body* getBody() const;

@@ -18,7 +18,7 @@ struct PhysicsBaseData
 class PhysicsBase
 {
 public:
-    PhysicsBase();
+    PhysicsBase(PhysicsBaseData& data);
     virtual ~PhysicsBase();
 
     virtual b2World& getWorld();

@@ -45,12 +45,12 @@ Chunk::~Chunk()/**Don't destroy us in the middle of a physics step!**/
 
 
 /**
-1. Create GModules in our dgModuleList
-2. Pass them to tilemap to be drawn later.
+1. OUR LIST: Create GModules in our GModuleList
+2. TILEMAP: Pass them to our MultiTileMap to be drawn later.
 **/
 void Chunk::add(vector<GModuleData>& rDataList)
 {
-    /**Take our list of module data and make real modules with it!**/
+    /**OUR LIST: Take our list of module data and make real modules with it!**/
     for(vector<GModuleData>::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
         GModule* ptr;
@@ -60,14 +60,14 @@ void Chunk::add(vector<GModuleData>& rDataList)
             ptr = static_cast<GModule*>(new GModule(*it_data));
         else
         {
-            cout << "\nModule of no type. Defaulted.";
+            cout << "\nModule of type " << it_data->type << " was not found.";
             ptr = new GModule(*it_data);
         }
         m_GModuleSPList.push_back(tr1::shared_ptr<GModule>(ptr));
     }
 
 
-    /**Create a Base Pointer List to pass to our tileMap**/
+    /**TILEMAP: Create a Base Pointer List to pass to our tileMap**/
     vector<GraphicsBase*> gfxBasePList;
     for(vector<tr1::shared_ptr<GModule> >::const_iterator it_derived = m_GModuleSPList.begin(); it_derived != m_GModuleSPList.end(); ++it_derived)
     {
@@ -76,10 +76,27 @@ void Chunk::add(vector<GModuleData>& rDataList)
     m_tiles.add(gfxBasePList);
 
 
-    if(!rDataList.empty())///wtf is this doing? accessing the first element of something with no elements?????
+    if(!rDataList.empty())/**Now, offset our origin by the appropriate amount indicated by the physData**/
         m_tiles.setOrigin(rDataList[0].physicsData.halfSize.x * scale , rDataList[0].physicsData.halfSize.y * scale);
     else
-        cout << "\nWARNING: Chunk::add()";//debug
+        cout << "\nWARNING: Chunk::add()";
+}
+void Chunk::add(vector<ModuleData>& rDataList)
+{
+    for(vector<ModuleData>::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
+    {
+        Module* ptr;
+        it_data->physicsData.pBody = m_pBody;
+
+        if(it_data->type == "Module")
+            ptr = static_cast<Module*>(new Module(*it_data));
+        else
+        {
+            cout << "\nModule of type " << it_data->type << " was not found.";
+            ptr = new Module(*it_data);
+        }
+        m_ModuleSPList.push_back(tr1::shared_ptr<Module>(ptr));
+    }
 }
 void Chunk::draw()
 {

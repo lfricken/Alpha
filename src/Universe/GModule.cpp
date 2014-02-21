@@ -3,19 +3,8 @@
 
 using namespace sf;
 
-GModule::GModule(GModuleData& data) : GraphicsBase(data.graphicsData, data.physicsData.halfSize, data.physicsData.offset)
+GModule::GModule(GModuleData& data) : PhysicsBase(data.physicsData), GraphicsBase(data.graphicsData, data.physicsData.halfSize, data.physicsData.offset)
 {
-    ///WE MAY WANT TO PUT THIS INSIDE OF THE PHYSICS BASE CLASS
-
-    m_shape.SetAsBox(data.physicsData.halfSize.x, data.physicsData.halfSize.y, data.physicsData.offset, data.physicsData.rotation);//set our shape
-
-    m_fixtureDef.shape = &m_shape;//give our shape to our fixture definition
-    m_fixtureDef.density = data.physicsData.density;
-    m_fixtureDef.friction = data.physicsData.friction;
-    m_fixtureDef.restitution = data.physicsData.restitution;//setting our fixture data
-    m_pBody = data.physicsData.pBody;
-
-    m_pFixture = m_pBody->CreateFixture(&m_fixtureDef);
     m_pFixture->SetUserData(static_cast<IOBase*>(this));
 
     type = data.type;

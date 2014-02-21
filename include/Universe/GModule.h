@@ -16,7 +16,7 @@ class GModule : public IOBase, public PhysicsBase, public GraphicsBase
 {
 public:
     GModule(GModuleData& data);
-    GModule(const GModule& old);
+    GModule(const GModule& old);///may be obsolete, and bad
     virtual ~GModule();
 
 protected:

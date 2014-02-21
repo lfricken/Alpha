@@ -4,13 +4,19 @@
 #include <MultipleInheritance/IOBase.h>
 #include <MultipleInheritance/PhysicsBase.h>
 
+struct ModuleData
+{
+    std::string type;
+    PhysicsBaseData physicsData;
+};
+
+
 class Module : public IOBase, public PhysicsBase
 {
     public:
-        /** Default constructor */
-        Module();
-        /** Default destructor */
+        Module(ModuleData& data);
         virtual ~Module();
+
     protected:
     private:
 };

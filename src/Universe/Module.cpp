@@ -1,6 +1,6 @@
 #include "Universe/Module.h"
 
-Module::Module()
+Module::Module(ModuleData& data)
 {//ctor
 }
 

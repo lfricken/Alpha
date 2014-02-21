@@ -53,8 +53,17 @@ void Chunk::add(vector<GModuleData>& rDataList)
     /**Take our list of module data and make real modules with it!**/
     for(vector<GModuleData>::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
+        GModule* ptr;
         it_data->physicsData.pBody = m_pBody;
-        m_GModuleSPList.push_back(tr1::shared_ptr<GModule>(new GModule(*it_data)));
+
+        if(it_data->type == "GModule")
+            ptr = static_cast<GModule*>(new GModule(*it_data));
+        else
+        {
+            cout << "\nModule of no type. Defaulted.";
+            ptr = new GModule(*it_data);
+        }
+        m_GModuleSPList.push_back(tr1::shared_ptr<GModule>(ptr));
     }
 
 

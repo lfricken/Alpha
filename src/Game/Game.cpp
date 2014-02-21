@@ -13,6 +13,10 @@ Game::Game() :  m_gameWindow(sf::VideoMode(1300, 700), "SFML Box2D Test Environm
 {
     m_pGameIOManager = new IOManager(*this);
     m_gameWindow.setFramerateLimit(60);
+    ///This code won't work!
+    if(!icon.loadFromFile("textures/white.png"))
+        cout << "\nIcon Load Error";///texture allocator
+    m_gameWindow.setIcon(1, 1, icon.getPixelsPtr());
 }
 Game::~Game()//unfinished
 {
@@ -77,12 +81,13 @@ void Game::run()
 
     GModuleData data;
 
+    data.type = "GModule";
     data.physicsData.density = 1.0f;
     data.physicsData.friction = 0.4f;
     data.physicsData.halfSize = b2Vec2(0.25, 0.25);
     data.physicsData.offset = b2Vec2(0, 0);
     data.physicsData.pBody = NULL;//we dont know it yet
-    /**data.pTexture = NULL;**/
+    /**data.pTexture = NULL;**////WTF do we do here? Is this needed, check how tilemap works
     data.physicsData.restitution = 0.2f;
     data.physicsData.rotation = 0.0f;
 

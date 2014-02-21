@@ -58,6 +58,7 @@ class IOBase//base class inherited by literally everything, that way objects can
         virtual void setTargetName(std::string name);//sets the name of this entity
         virtual const std::string& getTargetName() const;//gets the name of this entity
     protected:
+        std::string type;
         std::string m_targetName;//used by IO manager to locate specific named objects
         static IOManager& m_rIOManager;
     private:

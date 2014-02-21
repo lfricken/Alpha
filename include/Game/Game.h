@@ -27,6 +27,7 @@ private:
     sf::RenderWindow m_gameWindow;//the display window
 
     sf::ContextSettings settings;///how can we edit the settings of the window?
+    sf::Image icon;
 
     std::vector<Courier*> m_allCouriers;///this problem is so old we almost forgot about it
     ///IN order to avoid IOManager having to search for objects during runtime, it will find them

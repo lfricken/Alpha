@@ -17,6 +17,8 @@ GModule::GModule(GModuleData& data) : GraphicsBase(data.graphicsData, data.physi
 
     m_pFixture = m_pBody->CreateFixture(&m_fixtureDef);
     m_pFixture->SetUserData(static_cast<IOBase*>(this));
+
+    type = data.type;
 }
 /*
 GModule::GModule(const GModule& old) : GraphicsBase(data.graphicsData, data.physicsData.halfSize, data.physicsData.offset)      ///this should never be called?

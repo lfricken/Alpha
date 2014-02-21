@@ -7,6 +7,7 @@
 
 struct GModuleData
 {
+    std::string type;
     PhysicsBaseData physicsData;
     GraphicsBaseData graphicsData;
 };

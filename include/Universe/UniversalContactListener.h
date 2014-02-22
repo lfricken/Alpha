@@ -2,7 +2,6 @@
 #define UNIVERSALCONTACTLISTENER_H
 #include <stdafx.h>
 
-
 class UniversalContactListener : public b2ContactListener
 {
     public:

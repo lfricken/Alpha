@@ -17,6 +17,10 @@ public:
 
     virtual b2Body* getBody();
 
+    virtual GModule* getGModule(std::string targetName);
+    virtual Module* getModule(std::string targetName);
+    virtual IOBase* getIOBase(std::string targetName);
+
     virtual void add(std::vector<GModuleData>& data);/**we only call this once!**/
     virtual void add(std::vector<ModuleData>& data);/**we only call this once!**/
 

@@ -7,19 +7,22 @@ IOManager& IOBase::m_rIOManager = game.getGameIOManager();
 
 IOBase::IOBase()//unfinished
 {
-    //ctor
 }
 IOBase::~IOBase()//unfinished
 {
-    //dtor
 }
 IOManager& IOBase::getIOManager()
 {
     return m_rIOManager;
 }
-void IOBase::input(Package package)//unfinished
+bool IOBase::input(Package& rPackage)//unfinished
 {
-    cout << "\nInput Called on " << m_targetName;
+    if(rPackage.commandType == CORE)
+        return coreInput(rPackage);
+    else if(rPackage.commandType == SPECIAL)
+        return specialInput(rPackage);
+    else
+        return false;
 }
 void IOBase::setTargetName(string name)//finished
 {
@@ -28,4 +31,26 @@ void IOBase::setTargetName(string name)//finished
 const string& IOBase::getTargetName() const//finished
 {
     return m_targetName;
+}
+void IOBase::damage(int damage)
+{
+}
+bool IOBase::coreInput(Package& rPackage)
+{
+    if(rPackage.command == "Damage")
+    {
+        damage(atof(rPackage.parameter.c_str()));
+        return true;
+    }
+    else if(rPackage.command == "Activate1")
+    {
+        return false;
+        ///not done with that stuff yet
+    }
+    else
+        return false;
+}
+bool IOBase::specialInput(Package& rPackage)
+{
+    return false;
 }

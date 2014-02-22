@@ -5,9 +5,10 @@ using namespace sf;
 
 GModule::GModule(GModuleData& data) : PhysicsBase(data.physicsData), GraphicsBase(data.graphicsData, data.physicsData.halfSize, data.physicsData.offset)
 {
-    m_pFixture->SetUserData(static_cast<IOBase*>(this));
+    m_pFixture->SetUserData(this);
 
-    type = data.type;
+    m_targetName = data.targetName;
+    m_type = data.type;
 }
 /*
 GModule::GModule(const GModule& old) : GraphicsBase(data.graphicsData, data.physicsData.halfSize, data.physicsData.offset)      ///this should never be called?
@@ -25,4 +26,17 @@ GModule::GModule(const GModule& old) : GraphicsBase(data.graphicsData, data.phys
 GModule::~GModule()
 {
   //  std::cout << "\nDGM Dtor Called.";
+}
+bool GModule::input(Package& rPackage)
+{
+    if(rPackage.commandType == CORE)
+        return coreInput(rPackage);
+    else if(rPackage.commandType == PHYSICS)
+        return physicsInput(rPackage);
+    else if(rPackage.commandType == GRAPHICS)
+        return graphicsInput(rPackage);
+    else if(rPackage.commandType == SPECIAL)
+        return specialInput(rPackage);
+    else
+        return false;
 }

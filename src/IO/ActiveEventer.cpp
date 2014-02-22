@@ -1,8 +1,11 @@
 #include "IO/ActiveEventer.h"
+#include <globals.h>
 
 using namespace std;
 
-ActiveEventer::ActiveEventer(IOManager& rIOManager) : m_rIOManager(rIOManager)//unfinished
+IOManager& ActiveEventer::m_rIOManager = game.getGameIOManager();
+
+ActiveEventer::ActiveEventer()//unfinished
 {
     m_isActive = true;
     //more stuff?
@@ -45,7 +48,10 @@ bool ActiveEventer::f_check(string variable, Condition& rCondition)//finished
         return false;
     }
     else
+    {
         cout <<"\nMessage Failed: [" << rCondition.comparison << "] [" << rCondition.value << "]";
+        return false;
+    }
 }
 void ActiveEventer::add(const Courier& rCourier)//finished
 {

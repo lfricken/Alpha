@@ -26,15 +26,15 @@ IOBase* Universe::getTarget(string target)///unfinished
         if((*it)->getTargetName() == target)
             return (*it);
     }
-
-    return NULL;
     */
+    return NULL;
+
 }
 b2World& Universe::getWorld()
 {
     return m_physWorld;
 }
-void Universe::load(string filename)///unfinished
+void Universe::add(Chunk* pChunk)///unfinished
 {
-
+    m_physList.push_back(tr1::shared_ptr<Chunk>(pChunk));
 }

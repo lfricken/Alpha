@@ -9,7 +9,7 @@
 using namespace std;
 
 
-Game::Game() :  m_gameWindow(sf::VideoMode(1300, 700), "SFML Box2D Test Environment", sf::Style::Default, settings)
+Game::Game() :  m_gameWindow(sf::VideoMode(1200, 600), "SFML Box2D Test Environment", sf::Style::Default, settings)
 {
     m_pGameIOManager = new IOManager(*this);
     m_gameWindow.setFramerateLimit(60);
@@ -122,10 +122,14 @@ void Game::run()
             moduleList1.push_back(data);
         }
     }
+    data.targetName = "GM01";
+    data.physicsData.offset.y = 5;
+    moduleList1.push_back(data);
     moduleList2.push_back(mdata);
     chunk->add(moduleList2);
     chunk->add(moduleList1);
 
+    GModule* pGModule = chunk->getGModule("GM01");
 
     vector<tr1::shared_ptr<Chunk> > chunks;
 
@@ -177,6 +181,7 @@ void Game::run()
     float fps = 0;
     float firstTime = 0, secondTime = 0, keyPressTime = 0;
 
+    sf::Vector2f texTileVec(0,0);
 
     while (m_gameWindow.isOpen())
     {
@@ -278,6 +283,8 @@ void Game::run()
             cout << "\nFPS: " << fps;
             cout << "\nMouse: (" << mouseCoord.x << "," << mouseCoord.y << ")";
             cout << "\nZoom: " << zoomFactor;
+
+            pGModule->incTexTile();
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
         {

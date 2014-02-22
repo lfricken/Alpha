@@ -43,7 +43,34 @@ Chunk::~Chunk()/**Don't destroy us in the middle of a physics step!**/
 }
 
 
+GModule* Chunk::getGModule(std::string targetName)
+{
+    for(vector<tr1::shared_ptr<GModule> >::const_iterator it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
+    {
+        if((*it)->getTargetName() == targetName)
+            return &(**it);
+    }
+    cout << "\nTarget " << targetName << " not found in chunk " << m_targetName;
+    return NULL;
+}
+Module* Chunk::getModule(std::string targetName)
+{
+    for(vector<tr1::shared_ptr<Module> >::const_iterator it = m_ModuleSPList.begin(); it != m_ModuleSPList.end(); ++it)
+    {
+        if((*it)->getTargetName() == targetName)
+            return &(**it);
+    }
+    cout << "\nTarget " << targetName << " not found in chunk " << m_targetName;
+    return NULL;
+}
+IOBase* Chunk::getIOBase(std::string targetName)
+{
+    IOBase* ptr = getGModule(targetName);
+    if(ptr != NULL)
+        return ptr;
 
+    return getModule(targetName);
+}
 /**
 1. OUR LIST: Create GModules in our GModuleList
 2. TILEMAP: Pass them to our MultiTileMap to be drawn later.

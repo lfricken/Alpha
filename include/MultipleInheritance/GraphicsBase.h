@@ -2,6 +2,7 @@
 #define GRAPHICSBASE_H
 
 #include <stdafx.h>
+#include <MultipleInheritance/IOBase.h>
 
 struct GraphicsBaseData
 {
@@ -19,6 +20,8 @@ public:
     GraphicsBase(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset);
     virtual ~GraphicsBase();
 
+    virtual bool graphicsInput(Package& rPackage);/**returns true if it got called**/
+
     virtual void setTexName(const std::string& rTexName);
     virtual const std::string getTexName() const;
 
@@ -27,6 +30,8 @@ public:
 
     virtual void setTilePos(const sf::Vector2f& rTilePos);
     virtual const sf::Vector2f& getTilePosition() const;
+
+    virtual void incTexTile();
 
     virtual void setTexTile(const sf::Vector2f& rTexTile);
     virtual const sf::Vector2f& getTexTile() const;
@@ -42,11 +47,11 @@ public:
 protected:
     sf::Vector2f m_tileSize;//size of pos coords
     sf::Vector2f m_texTileSize;//size of tex coords
-    sf::Vector2f m_texTile;//0,0 would be first, 1,0 would be the one to the right of that, ect.
+    sf::Vector2f m_texTile;//tile of the texture that is being displayed
     sf::Vector2f m_tilePos;//position of the tile
     sf::Color m_color;//color modifier for the vertices
 
-    int m_dispPri;//display priority
+    int m_dispPri;///display priority, has it been implemented?
     sf::Vertex* m_pVertex;/**never go above 3rd index,because we only have our own set of 4 vertices**/
     std::string m_texName;
 private:

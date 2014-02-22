@@ -2,6 +2,7 @@
 #define PHYSICSBASE_H
 
 #include <stdafx.h>
+#include <MultipleInheritance/IOBase.h>
 
 struct PhysicsBaseData
 {
@@ -15,11 +16,14 @@ struct PhysicsBaseData
 };
 
 
-class PhysicsBase
+class PhysicsBase : public IOBase
 {
 public:
     PhysicsBase(PhysicsBaseData& data);
     virtual ~PhysicsBase();
+
+    virtual bool physicsInput(Package& rPackage);
+    virtual bool collide(void* other);
 
     virtual b2World& getWorld();
 

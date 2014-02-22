@@ -24,6 +24,18 @@ PhysicsBase::~PhysicsBase()
 {
 
 }
+bool PhysicsBase::physicsInput(Package& rPackage)
+{
+    return false;
+}
+bool PhysicsBase::collide(void* other)
+{
+    Package message;
+    message.commandType = GRAPHICS;
+    message.command = "IncTexTile";
+    static_cast<IOBase*>(other)->input(message);
+    return true;///why do we return true? should we be returning anything at all?
+}
 b2World& PhysicsBase::getWorld()
 {
     return m_rPhysWorld;

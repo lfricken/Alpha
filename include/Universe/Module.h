@@ -4,14 +4,13 @@
 #include <MultipleInheritance/IOBase.h>
 #include <MultipleInheritance/PhysicsBase.h>
 
-struct ModuleData
+struct ModuleData : public Data
 {
-    std::string type;
     PhysicsBaseData physicsData;
 };
 
 
-class Module : public IOBase, public PhysicsBase
+class Module : public PhysicsBase
 {
     public:
         Module(ModuleData& data);

@@ -7,7 +7,7 @@
 class ActiveEventer : public PassiveEventer
 {
     public:
-        ActiveEventer(IOManager& rIOManager);//when we create an Active eventer, we need to pass it an io manager
+        ActiveEventer();//when we create an Active eventer, we need to pass it an io manager
         virtual ~ActiveEventer();
 
         virtual int amount() const;
@@ -18,7 +18,7 @@ class ActiveEventer : public PassiveEventer
     protected:
         std::vector<Courier> m_courierList;//the list of Couriers held by this eventer (each eventer is specific to a small group, or 1, variables in an entity
         virtual bool f_check(std::string variable, Condition& condition);///TEMPLATE ME! //checks the condition and returns true if it was satisfied (you may want to just do all of this in the event(); func
-        IOManager& m_rIOManager;//a reference to the world io manager
+        static IOManager& m_rIOManager;//a reference to the world io manager
     private:
 };
 

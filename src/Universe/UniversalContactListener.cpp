@@ -1,18 +1,14 @@
-#include "UniversalContactListener.h"
+#include <UniversalContactListener.h>
+#include <MultipleInheritance/PhysicsBase.h>
+#include <GModule.h>
 
 void UniversalContactListener::BeginContact(b2Contact* contact)
 {
-    bool both = false;
+    PhysicsBase* fixA = static_cast<PhysicsBase*>(contact->GetFixtureA()->GetUserData());
+    PhysicsBase* fixB = static_cast<PhysicsBase*>(contact->GetFixtureB()->GetUserData());
 
-
-    void* bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
-    if (bodyUserData)
-        both = true;
-
-    bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
-    if (bodyUserData && both)
-        true;
-        ///std::cout << "\nStart Contact!";
+    fixA->collide(fixB);
+    fixB->collide(fixA);
 }
 void UniversalContactListener::EndContact(b2Contact* contact)
 {
@@ -27,5 +23,5 @@ void UniversalContactListener::EndContact(b2Contact* contact)
     bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
     if (bodyUserData && both)
         true;
-        ///std::cout << "\nEnd Contact!";
+    ///std::cout << "\nEnd Contact!";
 }

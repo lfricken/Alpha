@@ -4,6 +4,7 @@ Module::Module(ModuleData& data) : PhysicsBase(data.physicsData)
 {
     m_pFixture->SetUserData(static_cast<IOBase*>(this));
 
-    type = data.type;
+    m_targetName = data.targetName;
+    m_type = data.type;
 }
 Module::~Module(){}

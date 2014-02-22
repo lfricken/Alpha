@@ -11,6 +11,8 @@ class PassiveEventer//look at ActiveEventer for details.
         virtual ~PassiveEventer();
 
         virtual void event(const std::string variable);
+
+
         virtual bool isActive() const;
     protected:
         bool m_isActive;

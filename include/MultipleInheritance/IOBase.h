@@ -17,6 +17,14 @@ In addition, Universe and OverlayManager need to have the input function so butt
 
 /*DONT USE NAMESPACES IN HEADERS???
 */
+enum CommandType
+{
+	CORE = 0,
+	GRAPHICS,
+	PHYSICS,
+	SPECIAL
+};
+
 class IOManager;
 class IOBase;
 
@@ -27,10 +35,10 @@ struct Condition//used to determine if the package should be sent
     char comparison;//character type used to compare, so it could be >, <, or =
     bool repeatable;//used by the Eventer to decide whether to keep this Courier after it got activated once
 };
-
 struct Package//the thing that is sent to IO manager and ultimately tells some entity what to do
 {
     std::tr1::shared_ptr<IOBase> spTargetAddress;///a pointer that points to the target, so that IOmanager can immediately do it instead of having to find it
+    CommandType commandType;
     std::string targetName;//the name of the target
     std::string command;//the action the target should take
     std::string parameter;//addition information used to do the action, such as set health to the parameter
@@ -41,7 +49,11 @@ struct Courier//just used to couple a Condition to its Package
     Condition condition;
     Package package;
 };
-
+struct Data
+{
+    std::string type;
+    std::string targetName;
+};
 
 class IOBase//base class inherited by literally everything, that way objects can always communicate
 {
@@ -51,14 +63,18 @@ class IOBase//base class inherited by literally everything, that way objects can
 
         virtual IOManager& getIOManager();
 
-        virtual void input(Package package);//called by IO manager when this entity is being sent a message
-        ///virtual void activate(unknown);
 
+        virtual bool input(Package& rPackage);//called by IO manager when this entity is being sent a message
+
+        virtual bool specialInput(Package& rPackage);
+        virtual bool coreInput(Package& rPackage);/**returns true if caught**/
+        virtual void damage(int damage);
+        ///virtual void activate1(unknown);
 
         virtual void setTargetName(std::string name);//sets the name of this entity
         virtual const std::string& getTargetName() const;//gets the name of this entity
     protected:
-        std::string type;
+        std::string m_type;
         std::string m_targetName;//used by IO manager to locate specific named objects
         static IOManager& m_rIOManager;
     private:

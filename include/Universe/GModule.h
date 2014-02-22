@@ -5,19 +5,20 @@
 #include <MultipleInheritance/GraphicsBase.h>
 #include <MultipleInheritance/IOBase.h>
 
-struct GModuleData
+struct GModuleData : public Data
 {
-    std::string type;
     PhysicsBaseData physicsData;
     GraphicsBaseData graphicsData;
 };
 
-class GModule : public IOBase, public PhysicsBase, public GraphicsBase
+class GModule : public PhysicsBase, public GraphicsBase
 {
 public:
     GModule(GModuleData& data);
     GModule(const GModule& old);///may be obsolete, and bad
     virtual ~GModule();
+
+    virtual bool input(Package& rPackage);
 
 protected:
 

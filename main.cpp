@@ -7,7 +7,8 @@ using namespace std;
 Game game;
 int scale = 128;
 
-
+///MOVE THIS TO AN EXAMPLE FILE
+/**
 class Bob
 {
 public:
@@ -17,12 +18,12 @@ void deleter(Bob* p)
 {
     cout << "\nWorks";
 }
-
-//std::shared_ptr<SDL_Surface>(SDL_LoadBMP(....), DeleteSurface);
+tr1::shared_ptr<Bob> john(new Bob, deleter );
+**/
 
 int main()
 {
     game.run();
-    tr1::shared_ptr<Bob> john(new Bob, deleter );
+
     return 0;
 }

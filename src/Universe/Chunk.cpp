@@ -32,14 +32,12 @@ Chunk::Chunk(const Chunk& old)
 }
 Chunk::~Chunk()/**Don't destroy us in the middle of a physics step!**/
 {
-    cout << "\nChunk Default Dtor Called...";
     /**Destroy all our module list, because the modules are preserved via SP **/
     //happens automatically
     /**Destroy our MultiTileMap, cause the textured verts should have been preserved via SP**/
     //This happens automatically.
     /**how do we delete our body??**////how do we delete our body
     m_rPhysWorld.DestroyBody(m_pBody);
-    cout << "Completed.";
 }
 
 

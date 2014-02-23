@@ -25,7 +25,6 @@ GModule::GModule(const GModule& old) : GraphicsBase(data.graphicsData, data.phys
 */
 GModule::~GModule()
 {
-  //  std::cout << "\nDGM Dtor Called.";
 }
 bool GModule::input(Package& rPackage)
 {

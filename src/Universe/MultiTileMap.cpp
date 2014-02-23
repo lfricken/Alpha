@@ -1,6 +1,8 @@
 
 
 #include <Universe/MultiTileMap.h>
+#include <globals.h>
+
 using namespace std;
 
 
@@ -49,16 +51,12 @@ void MultiTileMap::add(vector<GraphicsBase*> gfxBaseList)
     m_TexVertSPList.resize(texTally.size());
 
 
-    /**3**////STILL HAVE TO SET THE pTexture!!!!!
-    sf::Texture* genericTex = new sf::Texture;///TEMPORARY, REMOVE ME ASAP
-    genericTex->loadFromFile("textures/tileset.png");///TEMPORARY, REMOVE ME ASAP
-
-
+    /**3**/
     vector<tr1::shared_ptr<texturedVertices> >::iterator it_texVert = m_TexVertSPList.begin();
     for(map<string, int>::const_iterator it_map = texTally.begin(); it_map != texTally.end(); ++it_map, ++it_texVert)
     {
         (*it_texVert) = tr1::shared_ptr<texturedVertices>(new texturedVertices);
-        (*it_texVert)->pTexture = genericTex;///request "textureName" from texManager
+        (*it_texVert)->pTexture = game.getTextureAllocator().request(it_map->first);
         (*it_texVert)->textureName = it_map->first;//go through our map of textures to find the correct one to associate with this
         (*it_texVert)->vertices.setPrimitiveType(sf::Quads);//these are squares that we want to hold
         (*it_texVert)->vertices.resize(it_map->second*4);//*4 because each one has 4 vertices/(quad)

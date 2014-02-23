@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <IO/IOManager.h>
+#include <TextureAllocator.h>
 
 class Game : public IOBase//holds a universe, OverlayManager, and IOManager, and other stuff
 {
@@ -18,6 +19,7 @@ public:
 
     Universe& getGameUniverse();
     OverlayManager& getGameOverlayManager();
+    TextureAllocator& getTextureAllocator();
 
 protected:
 private:
@@ -25,6 +27,7 @@ private:
     Universe m_gameUniverse;
     OverlayManager m_gameOverlayManager;
     sf::RenderWindow m_gameWindow;//the display window
+    TextureAllocator m_texAlloc;
 
     sf::ContextSettings settings;///how can we edit the settings of the window?
     sf::Image icon;

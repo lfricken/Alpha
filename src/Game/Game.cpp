@@ -5,6 +5,7 @@
 #include <Universe/UniversalContactListener.h>
 #include <Universe/Chunk.h>
 #include <Universe/GModule.h>
+#include <DebugDraw.h>
 
 using namespace std;
 
@@ -40,8 +41,18 @@ void Game::run()
 {
     b2World& rWorld = m_gameUniverse.getWorld();
     sf::View view1(sf::Vector2f(0, 0), sf::Vector2f(1200, 600));
+
     UniversalContactListener contactListener;
     rWorld.SetContactListener(&contactListener);
+
+
+    DebugDraw debugDrawInstance;
+    rWorld.SetDebugDraw( &debugDrawInstance );
+    debugDrawInstance.SetFlags( b2Draw::e_shapeBit );
+
+
+
+
 
 
     /**HUD**/
@@ -362,15 +373,14 @@ void Game::run()
         {
             view1.setCenter(sf::Vector2f(scale*pBox->GetPosition().x, scale*pBox->GetPosition().y));
             view1.setRotation(180.0*pBox->GetAngle()/PI);
+            m_gameWindow.setView(view1);//draw everything normally
+            for(vector<tr1::shared_ptr<Chunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
+            {
+                (*it)->draw();
+            }
         }
-
-
-        //m_gameWindow.setView(view1);//draw everything normally
-        for(vector<tr1::shared_ptr<Chunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
-        {
-            (*it)->draw();
-        }
-
+        else
+            rWorld.DrawDebugData();
 
         m_gameWindow.setView(m_gameWindow.getDefaultView());//draw stuff that is abnormal
         convex.setPosition(m_gameWindow.mapPixelToCoords(sf::Vector2i(40,40)));

@@ -12,6 +12,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <SFML/Network.hpp>
 #include <Box2D/Box2D.h>
 
 #define PI 3.1415926

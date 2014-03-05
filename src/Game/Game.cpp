@@ -51,9 +51,14 @@ void Game::run()
     debugDrawInstance.SetFlags( b2Draw::e_shapeBit );
 
 
+    sf::Packet pack;
 
-
-
+    pack << 5;
+    pack << 3;
+    int x, y;
+    pack >> x;
+    pack >> y;
+    cout << x << y;
 
     /**HUD**/
     sf::ConvexShape convex;
@@ -197,6 +202,8 @@ void Game::run()
     int mult = 40;
     bool mouseCoordZooming = true;//if true, it zooms in and out dependent on the cursor position
     bool camTrack = false;
+    bool debugDraw = false;
+    bool paused = false;
 
     sf::Clock clock;
     float fps = 0;
@@ -232,12 +239,6 @@ void Game::run()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
             pBox->ApplyTorque(accel*mult/5, true);
-        }
-        /**EXIT**/
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-        {
-            cout << "\n\n\nExiting...\n\n";
-            return;
         }
         /**CAMERA MOVE**/
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
@@ -293,7 +294,18 @@ void Game::run()
                 (*it)->getBody()->ApplyForce(b2Vec2(-accel,-accel),(*it)->getBody()->GetWorldCenter(), true);
             }
         }
+        /**SPECIAL**/
 
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::P) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
+        {
+            keyPressTime = clock.getElapsedTime().asSeconds();
+            paused = !paused;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::O) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
+        {
+            keyPressTime = clock.getElapsedTime().asSeconds();
+            debugDraw = !debugDraw;
+        }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
         {
             cout << "\nFPS: " << fps;
@@ -306,7 +318,11 @@ void Game::run()
             view1.setRotation(0.0f);
             camTrack = !camTrack;
         }
-
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        {
+            cout << "\n\n\nExiting...\n\n";
+            return;
+        }
         /**DELETE STUFF**/
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
         {
@@ -335,7 +351,6 @@ void Game::run()
         {
             if (event.type == sf::Event::Closed)
                 m_gameWindow.close();
-
             if (event.type == sf::Event::MouseMoved)
             {
                 mouseCoord = sf::Vector2f(event.mouseMove.x, event.mouseMove.y);
@@ -363,7 +378,8 @@ void Game::run()
         }
 
         /**PHYSICS STEP**/
-        rWorld.Step(timeStep, velocityIterations, positionIterations);///this needs to be linked to frame rate
+        if(!paused)
+            rWorld.Step(timeStep, velocityIterations, positionIterations);///this needs to be linked to frame rate
 
 
 
@@ -374,6 +390,10 @@ void Game::run()
             view1.setCenter(sf::Vector2f(scale*pBox->GetPosition().x, scale*pBox->GetPosition().y));
             view1.setRotation(180.0*pBox->GetAngle()/PI);
             m_gameWindow.setView(view1);//draw everything normally
+
+        }
+        if(!debugDraw)
+        {
             for(vector<tr1::shared_ptr<Chunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
             {
                 (*it)->draw();

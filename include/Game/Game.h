@@ -27,7 +27,6 @@ public:
 
     IOManager& getGameIOManager();
     sf::RenderWindow& getGameWindow();
-
     Universe& getGameUniverse();
     OverlayManager& getGameOverlayManager();
     TextureAllocator& getTextureAllocator();
@@ -35,7 +34,7 @@ public:
 
 protected:
 private:
-    IOManager* m_pGameIOManager;//the games IOManager
+    std::tr1::shared_ptr<IOManager> m_spGameIOManager;//the games IOManager
     Universe m_gameUniverse;
     OverlayManager m_gameOverlayManager;
     sf::RenderWindow m_gameWindow;//the display window
@@ -44,7 +43,7 @@ private:
     sf::ContextSettings settings;///how can we edit the settings of the window?
     sf::Image icon;
 
-    void load(std::string stuff);
+    void f_load(std::string stuff);
     std::vector<Courier*> m_allCouriers;///this problem is so old we almost forgot about it
     ///IN order to avoid IOManager having to search for objects during runtime, it will find them
     ///at load time, and give them pointers to the IOBase part of the target, so later, it can just

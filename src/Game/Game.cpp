@@ -12,7 +12,7 @@ using namespace std;
 
 Game::Game() :  m_gameWindow(sf::VideoMode(1200, 600), "SFML Box2D Test Environment", sf::Style::Default, settings)
 {
-    m_pGameIOManager = new IOManager(*this);
+    m_spGameIOManager = std::tr1::shared_ptr<IOManager>(new IOManager(*this));
     m_gameWindow.setFramerateLimit(60);
     ///This code won't work! WTF?
     if(!icon.loadFromFile("textures/tileset.png"))
@@ -21,11 +21,11 @@ Game::Game() :  m_gameWindow(sf::VideoMode(1200, 600), "SFML Box2D Test Environm
 }
 Game::~Game()//unfinished
 {
-    //dtor
+
 }
 IOManager& Game::getGameIOManager()
 {
-    return *m_pGameIOManager;
+    return (*m_spGameIOManager);
 }
 sf::RenderWindow& Game::getGameWindow()
 {
@@ -37,15 +37,15 @@ TextureAllocator& Game::getTextureAllocator()
 }
 Game::Status Game::client()
 {
-    run();
+    return run();
 }
 Game::Status Game::server()
 {
-    run();
+    return run();
 }
 Game::Status Game::local()
 {
-    run();
+    return run();
 }
 Game::Status Game::run()
 {
@@ -74,22 +74,21 @@ Game::Status Game::run()
     convex.setPoint(4, sf::Vector2f(0, 50));
 
 
-    load("stuff");
+    f_load("stuff");
 
     b2Body* pBox = m_gameUniverse.getPhysTarget("ship_0")->getBody();
 
 
     /**SIMULATION & RUNTIME**/
-    sf::Vector2f mouseCoord;
-    sf::Event event;
-    float zoomFactor = 1;
     float cameraMove = 10;
     float accel = 10;
     int mult = 40;
+
+    sf::Vector2f mouseCoord;
+    sf::Event event;
+    float zoomFactor = 1;
     bool mouseCoordZooming = true;//if true, it zooms in and out dependent on the cursor position
     bool camTrack = false;
-    bool debugDraw = false;
-    bool paused = false;
     bool flip;
 
     Game::Status newState = Game::Local;
@@ -99,7 +98,7 @@ Game::Status Game::run()
 
     sf::Vector2f texTileVec(0,0);
 
-    while (m_gameWindow.isOpen() && newState != Game::Quit)
+    while (m_gameWindow.isOpen())// && newState != Game::Quit)
     {
         secondTime = clock.getElapsedTime().asSeconds();
         fps = 1.0f / (secondTime - firstTime);
@@ -171,13 +170,13 @@ Game::Status Game::run()
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::P) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
         {
-            keyPressTime = clock.getElapsedTime().asSeconds();
-            paused = !paused;
+            keyPressTime = clock.getElapsedTime().asSeconds();///ETHIS SHOULD BE EVENT
+            m_gameUniverse.togglePause();
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::O) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
         {
-            keyPressTime = clock.getElapsedTime().asSeconds();
-            debugDraw = !debugDraw;
+            keyPressTime = clock.getElapsedTime().asSeconds();///ETHIS SHOULD BE EVENT
+            m_gameUniverse.toggleDebugDraw();
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
         {
@@ -187,7 +186,7 @@ Game::Status Game::run()
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
         {
-            keyPressTime = clock.getElapsedTime().asSeconds();
+            keyPressTime = clock.getElapsedTime().asSeconds();///ETHIS SHOULD BE EVENT
             view1.setRotation(0.0f);
             camTrack = !camTrack;
         }
@@ -290,12 +289,11 @@ Game::Status Game::run()
 
 
 
-void Game::load(std::string stuff)
+void Game::f_load(std::string stuff)
 {
     /**STATIC CHUNKS**/
 
     float solidPos = -20.0;
-    float solidHalfSize = 5;
 
     Chunk* temp = new Chunk(b2Vec2(solidPos,solidPos), b2_staticBody);
 

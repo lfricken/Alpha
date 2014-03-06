@@ -15,9 +15,9 @@ Game::Game() :  m_gameWindow(sf::VideoMode(1200, 600), "SFML Box2D Test Environm
     m_pGameIOManager = new IOManager(*this);
     m_gameWindow.setFramerateLimit(60);
     ///This code won't work! WTF?
-    if(!icon.loadFromFile("textures/white.png"))
+    if(!icon.loadFromFile("textures/tileset.png"))
         cout << "\nIcon Load Error";///texture allocator
-    m_gameWindow.setIcon(1, 1, icon.getPixelsPtr());
+    m_gameWindow.setIcon(32, 32, icon.getPixelsPtr());
 }
 Game::~Game()//unfinished
 {
@@ -35,30 +35,32 @@ TextureAllocator& Game::getTextureAllocator()
 {
     return m_texAlloc;
 }
-
-
-void Game::run()
+Game::Status Game::client()
 {
+    run();
+}
+Game::Status Game::server()
+{
+    run();
+}
+Game::Status Game::local()
+{
+    run();
+}
+Game::Status Game::run()
+{
+    /**initialize**/
     b2World& rWorld = m_gameUniverse.getWorld();
     sf::View view1(sf::Vector2f(0, 0), sf::Vector2f(1200, 600));
 
     UniversalContactListener contactListener;
     rWorld.SetContactListener(&contactListener);
 
-
     DebugDraw debugDrawInstance;
     rWorld.SetDebugDraw( &debugDrawInstance );
     debugDrawInstance.SetFlags( b2Draw::e_shapeBit );
 
 
-    sf::Packet pack;
-
-    pack << 5;
-    pack << 3;
-    int x, y;
-    pack >> x;
-    pack >> y;
-    cout << x << y;
 
     /**HUD**/
     sf::ConvexShape convex;
@@ -72,17 +74,235 @@ void Game::run()
     convex.setPoint(4, sf::Vector2f(0, 50));
 
 
+    load("stuff");
 
-    vector<tr1::shared_ptr<Chunk> > chunks;
+    b2Body* pBox = m_gameUniverse.getPhysTarget("ship_0")->getBody();
 
+
+    /**SIMULATION & RUNTIME**/
+    sf::Vector2f mouseCoord;
+    sf::Event event;
+    float zoomFactor = 1;
+    float cameraMove = 10;
+    float accel = 10;
+    int mult = 40;
+    bool mouseCoordZooming = true;//if true, it zooms in and out dependent on the cursor position
+    bool camTrack = false;
+    bool debugDraw = false;
+    bool paused = false;
+    bool flip;
+
+    Game::Status newState = Game::Local;
+    sf::Clock clock;
+    float fps = 0;
+    float firstTime = 0, secondTime = 0, keyPressTime = 0;
+
+    sf::Vector2f texTileVec(0,0);
+
+    while (m_gameWindow.isOpen() && newState != Game::Quit)
+    {
+        secondTime = clock.getElapsedTime().asSeconds();
+        fps = 1.0f / (secondTime - firstTime);
+        firstTime = clock.getElapsedTime().asSeconds();
+
+
+/**INPUT===============================================================================**/
+        /**CONTROL A BOX**/
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        {
+            float fX = accel*mult*sin(pBox->GetAngle());
+            float fY = accel*mult*cos(pBox->GetAngle());
+            pBox->ApplyForce(b2Vec2(fX,-fY),pBox->GetWorldCenter(), true);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        {
+            pBox->ApplyTorque(-accel*mult/5, true);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        {
+            float fX = accel*mult*sin(pBox->GetAngle());
+            float fY = accel*mult*cos(pBox->GetAngle());
+            pBox->ApplyForce(b2Vec2(-fX,fY),pBox->GetWorldCenter(), true);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        {
+            pBox->ApplyTorque(accel*mult/5, true);
+        }
+        /**CAMERA MOVE**/
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        {
+            view1.move(0.0, -cameraMove);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        {
+            view1.move(0.0, cameraMove);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        {
+            view1.move(-cameraMove, 0.0);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        {
+            view1.move(cameraMove, 0.0);
+        }
+        /**CONTROL ALL STUFF**/
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
+        {
+
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+        {
+
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
+        {
+
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+        {
+
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+        {
+
+        }
+        /**SPECIAL**/
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::P) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
+        {
+            keyPressTime = clock.getElapsedTime().asSeconds();
+            paused = !paused;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::O) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
+        {
+            keyPressTime = clock.getElapsedTime().asSeconds();
+            debugDraw = !debugDraw;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+        {
+            cout << "\nFPS: " << fps;
+            cout << "\nMouse: (" << mouseCoord.x << "," << mouseCoord.y << ")";
+            cout << "\nZoom: " << zoomFactor;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
+        {
+            keyPressTime = clock.getElapsedTime().asSeconds();
+            view1.setRotation(0.0f);
+            camTrack = !camTrack;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        {
+            cout << "\n\n\nExiting...";
+            newState = Game::Quit;
+        }
+        /**DELETE STUFF**/
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
+        {
+
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
+        {
+            keyPressTime = clock.getElapsedTime().asSeconds();
+
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad8) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
+        {
+            keyPressTime = clock.getElapsedTime().asSeconds();
+            cout << "\nOwnership Switch";
+            flip = !flip;
+            if(flip)
+                pBox = m_gameUniverse.getPhysTarget("ship_0")->getBody();
+            else
+                pBox = m_gameUniverse.getPhysTarget("ship_1")->getBody();
+        }
+
+        /**MOUSE**/
+        while (m_gameWindow.pollEvent(event))//zoom stuff
+        {
+            if (event.type == sf::Event::Closed)
+                m_gameWindow.close();
+            if (event.type == sf::Event::MouseMoved)
+            {
+                mouseCoord = sf::Vector2f(event.mouseMove.x, event.mouseMove.y);
+                mouseCoord = m_gameWindow.mapPixelToCoords((sf::Vector2i)mouseCoord);
+            }
+            if (event.type == sf::Event::MouseWheelMoved)
+            {
+                float zoomChange = event.mouseWheel.delta;
+                if (zoomChange > 0)
+                    zoomChange = 0.5;
+                else if (zoomChange < 0)
+                    zoomChange = 2.0;
+
+                cameraMove *= zoomChange;
+                zoomFactor *= zoomChange;
+                view1.zoom(zoomChange);
+                cout << "\nZoom Level: " << zoomFactor;
+
+                if(mouseCoordZooming)
+                {
+                    sf::Vector2f smooth = view1.getCenter();//we do this so zooming to a spot is smoother
+                    view1.setCenter(sf::Vector2f( (mouseCoord.x+smooth.x)/2, (mouseCoord.y+smooth.y)/2 ));
+                }
+            }
+        }
+/**INPUT============================================================================END**/
+
+
+
+
+        /**PHYSICS STEP**/
+        m_gameUniverse.physStep();
+
+
+
+        /**DRAW**/
+        m_gameWindow.clear();
+        if (camTrack)//update our camera on our target
+        {
+            view1.setCenter(sf::Vector2f(scale*pBox->GetPosition().x, scale*pBox->GetPosition().y));
+            view1.setRotation(180.0*pBox->GetAngle()/PI);
+            m_gameWindow.setView(view1);//draw everything normally
+        }
+
+
+
+        m_gameUniverse.draw();
+
+
+
+        m_gameWindow.setView(m_gameWindow.getDefaultView());//draw stuff that is abnormal
+        m_gameOverlayManager.draw();
+        convex.setPosition(m_gameWindow.mapPixelToCoords(sf::Vector2i(40,40)));
+        m_gameWindow.draw(convex);
+
+
+        m_gameWindow.display();
+        m_gameWindow.setView(view1);
+    }
+    if(!m_gameWindow.isOpen())
+        newState = Game::Quit;
+
+    return newState;
+}
+
+
+
+
+void Game::load(std::string stuff)
+{
     /**STATIC CHUNKS**/
+
     float solidPos = -20.0;
     float solidHalfSize = 5;
 
-    chunks.push_back( tr1::shared_ptr<Chunk>(new Chunk(b2Vec2(solidPos,solidPos), b2_staticBody)) );
+    Chunk* temp = new Chunk(b2Vec2(solidPos,solidPos), b2_staticBody);
+
+
+
     vector<GModuleData> gModuleList3;
     GModuleData solidFixture;
-
     solidFixture.type = "GModule";
     solidFixture.physicsData.density = 1.0f;
     solidFixture.physicsData.friction = 0.4f;
@@ -95,16 +315,19 @@ void Game::run()
     solidFixture.graphicsData.texTile = sf::Vector2f(0, 0);
     solidFixture.graphicsData.texTileSize = sf::Vector2f(64, 64);
     solidFixture.graphicsData.color = sf::Color::Red;
-    gModuleList3.push_back(solidFixture);
-    chunks.back()->add(gModuleList3);
 
+    gModuleList3.push_back(solidFixture);
+    temp->add(gModuleList3);
+    m_gameUniverse.add(tr1::shared_ptr<Chunk>(temp));
 
 
     /**DYNAMIC CHUNKS**/
     Chunk* chunk = new Chunk(b2Vec2(-5, -5));
+    Chunk* chunk1 = new Chunk(b2Vec2(20, -20));
     //Chunk chunk(b2Vec2(-5, -5));///help is chunk and module destructor set up?
-    b2Body* pBox;
-    pBox = chunk->getBody();
+
+    chunk->setTargetName("ship_0");
+    chunk1->setTargetName("ship_1");
 
     GModuleData data;
     data.type = "GModule";
@@ -151,9 +374,9 @@ void Game::run()
     data.physicsData.offset.y = 5;
     moduleList1.push_back(data);
     moduleList2.push_back(mdata);
-    chunk->add(moduleList2);
+    //chunk->add(moduleList2);
     chunk->add(moduleList1);
-
+    chunk1->add(moduleList1);
 
 
     vector<GModuleData> dataList;
@@ -169,246 +392,25 @@ void Game::run()
 
     for (int i=0, x=1, y=3, numBoxs = 200; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
-        chunks.push_back( tr1::shared_ptr<Chunk>(new Chunk(b2Vec2(x,y), b2_dynamicBody)) );
-        chunks.back()->add(dataList);
+        temp = new Chunk(b2Vec2(x,y), b2_dynamicBody);
+        temp->add(dataList);
+        m_gameUniverse.add(tr1::shared_ptr<Chunk>(temp));
     }
 
     for (int i=0, x=3, y=3, numBoxs = 200; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
-        chunks.push_back( tr1::shared_ptr<Chunk>(new Chunk(b2Vec2(x,y))) );
-        chunks.back()->add(dataList);
+        temp = new Chunk(b2Vec2(x,y), b2_dynamicBody);
+        temp->add(dataList);
+        m_gameUniverse.add(tr1::shared_ptr<Chunk>(temp));
     }
     for (int i=0, x=5, y=3, numBoxs = 200; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
-        chunks.push_back( tr1::shared_ptr<Chunk>(new Chunk(b2Vec2(x,y))) );
-        chunks.back()->add(dataList);
+        temp = new Chunk(b2Vec2(x,y), b2_dynamicBody);
+        temp->add(dataList);
+        m_gameUniverse.add(tr1::shared_ptr<Chunk>(temp));
     }
-
-    chunks.push_back(tr1::shared_ptr<Chunk>(chunk));
-
-
+    m_gameUniverse.add(tr1::shared_ptr<Chunk>(chunk1));
+    m_gameUniverse.add(tr1::shared_ptr<Chunk>(chunk));
 
 
-    /**SIMULATION & RUNTIME**/
-    float timeStep = 1.0f / 60.0f;///this needs to be linked to frame rate
-    int velocityIterations = 4;
-    int positionIterations = 2;
-
-    sf::Vector2f mouseCoord;
-    sf::Event event;
-    float zoomFactor = 1;
-    float cameraMove = 10;
-    float accel = 10;
-    int mult = 40;
-    bool mouseCoordZooming = true;//if true, it zooms in and out dependent on the cursor position
-    bool camTrack = false;
-    bool debugDraw = false;
-    bool paused = false;
-
-    sf::Clock clock;
-    float fps = 0;
-    float firstTime = 0, secondTime = 0, keyPressTime = 0;
-
-    sf::Vector2f texTileVec(0,0);
-
-    while (m_gameWindow.isOpen())
-    {
-        secondTime = clock.getElapsedTime().asSeconds();
-        fps = 1.0f / (secondTime - firstTime);
-        firstTime = clock.getElapsedTime().asSeconds();
-
-
-
-        /**CONTROL A BOX**/
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        {
-            float fX = accel*mult*sin(pBox->GetAngle());
-            float fY = accel*mult*cos(pBox->GetAngle());
-            pBox->ApplyForce(b2Vec2(fX,-fY),pBox->GetWorldCenter(), true);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        {
-            pBox->ApplyTorque(-accel*mult/5, true);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        {
-            float fX = accel*mult*sin(pBox->GetAngle());
-            float fY = accel*mult*cos(pBox->GetAngle());
-            pBox->ApplyForce(b2Vec2(-fX,fY),pBox->GetWorldCenter(), true);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        {
-            pBox->ApplyTorque(accel*mult/5, true);
-        }
-        /**CAMERA MOVE**/
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        {
-            view1.move(0.0, -cameraMove);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        {
-            view1.move(0.0, cameraMove);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        {
-            view1.move(-cameraMove, 0.0);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        {
-            view1.move(cameraMove, 0.0);
-        }
-//CONTROL ALL chunks list
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
-        {
-            for(vector<tr1::shared_ptr<Chunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
-            {
-                (*it)->getBody()->ApplyForce(b2Vec2(0,-accel),(*it)->getBody()->GetWorldCenter(), false);
-            }
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
-        {
-            for(vector<tr1::shared_ptr<Chunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
-            {
-                (*it)->getBody()->ApplyForce(b2Vec2(-accel,0),(*it)->getBody()->GetWorldCenter(), true);
-            }
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
-        {
-            for(vector<tr1::shared_ptr<Chunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
-            {
-                (*it)->getBody()->ApplyForce(b2Vec2(0,accel),(*it)->getBody()->GetWorldCenter(), true);
-            }
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
-        {
-            for(vector<tr1::shared_ptr<Chunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
-            {
-                (*it)->getBody()->ApplyForce(b2Vec2(accel,0),(*it)->getBody()->GetWorldCenter(), true);
-            }
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-        {
-            for(vector<tr1::shared_ptr<Chunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
-            {
-                (*it)->getBody()->ApplyForce(b2Vec2(-accel,-accel),(*it)->getBody()->GetWorldCenter(), true);
-            }
-        }
-        /**SPECIAL**/
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::P) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
-        {
-            keyPressTime = clock.getElapsedTime().asSeconds();
-            paused = !paused;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::O) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
-        {
-            keyPressTime = clock.getElapsedTime().asSeconds();
-            debugDraw = !debugDraw;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
-        {
-            cout << "\nFPS: " << fps;
-            cout << "\nMouse: (" << mouseCoord.x << "," << mouseCoord.y << ")";
-            cout << "\nZoom: " << zoomFactor;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
-        {
-            keyPressTime = clock.getElapsedTime().asSeconds();
-            view1.setRotation(0.0f);
-            camTrack = !camTrack;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-        {
-            cout << "\n\n\nExiting...\n\n";
-            return;
-        }
-        /**DELETE STUFF**/
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
-        {
-            if(!chunks.empty())
-                chunks.pop_back();
-            if(!chunks.empty())
-                pBox = chunks.back()->getBody();
-            else
-                pBox = NULL;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
-        {
-            keyPressTime = clock.getElapsedTime().asSeconds();
-
-            if(!chunks.empty())
-                chunks.pop_back();
-            if(!chunks.empty())
-                pBox = chunks.back()->getBody();
-            else
-                pBox = NULL;
-        }
-
-
-        /**MOUSE**/
-        while (m_gameWindow.pollEvent(event))//zoom stuff
-        {
-            if (event.type == sf::Event::Closed)
-                m_gameWindow.close();
-            if (event.type == sf::Event::MouseMoved)
-            {
-                mouseCoord = sf::Vector2f(event.mouseMove.x, event.mouseMove.y);
-                mouseCoord = m_gameWindow.mapPixelToCoords((sf::Vector2i)mouseCoord);
-            }
-            if (event.type == sf::Event::MouseWheelMoved)
-            {
-                float zoomChange = event.mouseWheel.delta;
-                if (zoomChange > 0)
-                    zoomChange = 0.5;
-                else if (zoomChange < 0)
-                    zoomChange = 2.0;
-
-                cameraMove *= zoomChange;
-                zoomFactor *= zoomChange;
-                view1.zoom(zoomChange);
-                cout << "\nZoom Level: " << zoomFactor;
-
-                if(mouseCoordZooming)
-                {
-                    sf::Vector2f smooth = view1.getCenter();//we do this so zooming to a spot is smoother
-                    view1.setCenter(sf::Vector2f( (mouseCoord.x+smooth.x)/2, (mouseCoord.y+smooth.y)/2 ));
-                }
-            }
-        }
-
-        /**PHYSICS STEP**/
-        if(!paused)
-            rWorld.Step(timeStep, velocityIterations, positionIterations);///this needs to be linked to frame rate
-
-
-
-        /**DRAW**/
-        m_gameWindow.clear();
-        if (camTrack)//update our camera on our target
-        {
-            view1.setCenter(sf::Vector2f(scale*pBox->GetPosition().x, scale*pBox->GetPosition().y));
-            view1.setRotation(180.0*pBox->GetAngle()/PI);
-            m_gameWindow.setView(view1);//draw everything normally
-
-        }
-        if(!debugDraw)
-        {
-            for(vector<tr1::shared_ptr<Chunk> >::iterator it = chunks.begin(); it != chunks.end(); ++it)
-            {
-                (*it)->draw();
-            }
-        }
-        else
-            rWorld.DrawDebugData();
-
-        m_gameWindow.setView(m_gameWindow.getDefaultView());//draw stuff that is abnormal
-        convex.setPosition(m_gameWindow.mapPixelToCoords(sf::Vector2i(40,40)));
-        m_gameWindow.draw(convex);
-
-
-        m_gameWindow.display();
-        m_gameWindow.setView(view1);
-    }
 }
-

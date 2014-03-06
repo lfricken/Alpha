@@ -1,8 +1,6 @@
 #include <stdafx.h>
 #include <Game/Game.h>
 
-using namespace std;
-
 //sf::ContextSettings settings = {4};
 Game game;
 int scale = 128;
@@ -23,7 +21,16 @@ tr1::shared_ptr<Bob> john(new Bob, deleter );
 
 int main()
 {
-    game.run();
-
+    Game::Status state = Game::Local;
+    while(state != Game::Quit)
+    {
+        if(state == Game::Local)
+            state = game.local();
+        else if(state == Game::Client)
+            state = game.client();
+        else if(state == Game::Server)
+            state = game.server();
+    }
+    std::cout << "Done\n\n";
     return 0;
 }

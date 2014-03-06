@@ -10,9 +10,20 @@ public:
     Game();
     virtual ~Game();
 
-    void run();//loop over our contents and do do stuff
+    enum Status
+    {
+        Client,
+        Server,
+        Local,
+        Quit
+    };
+    //loop over our contents and do stuff
     //void load(stuff);//loads stuff from files, and puts it in the right places, how should we go about this???
     //void setAddresses();//go through our Couriers, find their targets, and set their addresses, so they don't have to search later
+    Status run();
+    Status local();
+    Status client();
+    Status server();
 
     IOManager& getGameIOManager();
     sf::RenderWindow& getGameWindow();
@@ -20,6 +31,7 @@ public:
     Universe& getGameUniverse();
     OverlayManager& getGameOverlayManager();
     TextureAllocator& getTextureAllocator();
+
 
 protected:
 private:
@@ -32,6 +44,7 @@ private:
     sf::ContextSettings settings;///how can we edit the settings of the window?
     sf::Image icon;
 
+    void load(std::string stuff);
     std::vector<Courier*> m_allCouriers;///this problem is so old we almost forgot about it
     ///IN order to avoid IOManager having to search for objects during runtime, it will find them
     ///at load time, and give them pointers to the IOBase part of the target, so later, it can just

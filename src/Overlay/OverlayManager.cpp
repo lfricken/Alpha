@@ -35,3 +35,7 @@ IOBase* OverlayManager::getTarget(string target)//finished
     }
     return NULL;
 }
+void OverlayManager::draw()
+{
+
+}

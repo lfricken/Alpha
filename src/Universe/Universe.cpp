@@ -16,7 +16,10 @@ Universe::~Universe()///unfinished
 {
     //dtor
 }
-
+void Universe::removeBack()
+{
+    m_physList.pop_back();
+}
 void Universe::draw()///unfinished
 {
     if(m_normalDraw)
@@ -49,6 +52,7 @@ Chunk* Universe::getPhysTarget(std::string target)
         if((*it)->getTargetName() == target)
             return &(**it);
     }
+    return &(*m_physList.back());
 }
 b2World& Universe::getWorld()
 {

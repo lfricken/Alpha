@@ -19,6 +19,8 @@ public:
 
     void add(Chunk* pChunk);
     void add(std::tr1::shared_ptr<Chunk> spChunk);
+    void removeBack();
+    bool removeTarget(std::string target);
     ///void add(stuff);//overloaded so we can add things that are different
 
     void physStep();
@@ -30,7 +32,7 @@ protected:
 private:
     b2World m_physWorld;
 
-    std::vector<std::tr1::shared_ptr<Chunk> > m_physList;//all the objects that have physics, and maybe graphics
+
     bool m_notPaused;
     bool m_normalDraw;
 
@@ -38,6 +40,8 @@ private:
     int m_velocityIterations;
     int m_positionIterations;
     ///std::vector<tr1::shared_ptr<Whatever We Call This> > m_gfxList; //all the objects that have graphics but no physics
+
+    std::vector<std::tr1::shared_ptr<Chunk> > m_physList;//all the objects that have physics, and maybe graphics
 };
 
 #endif // UNIVERSE_H

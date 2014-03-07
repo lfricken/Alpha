@@ -18,7 +18,6 @@ void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2C
 }
 void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
-    m_convex;
     m_convex.setPointCount(vertexCount);
     m_convex.setFillColor(sf::Color(0,48,0,255));
     m_convex.setOutlineColor(sf::Color(0,100,0,255));

@@ -45,11 +45,12 @@ public:
     virtual void setDispPri(const int dispPri);
     virtual const int getDispPri() const;
 protected:
+    sf::Color m_color;//color modifier for the vertices
     sf::Vector2f m_tileSize;//size of pos coords
     sf::Vector2f m_texTileSize;//size of tex coords
     sf::Vector2f m_texTile;//tile of the texture that is being displayed
     sf::Vector2f m_tilePos;//position of the tile
-    sf::Color m_color;//color modifier for the vertices
+
 
     int m_dispPri;///display priority, has it been implemented?
     sf::Vertex* m_pVertex;/**never go above 3rd index,because we only have our own set of 4 vertices**/

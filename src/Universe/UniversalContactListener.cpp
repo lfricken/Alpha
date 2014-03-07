@@ -12,16 +12,15 @@ void UniversalContactListener::BeginContact(b2Contact* contact)
 }
 void UniversalContactListener::EndContact(b2Contact* contact)
 {
-    bool both = false;
+    ///I haven't gotten to this part yet
+    bool first = false;
 
 
     void* bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
     if (bodyUserData)
-        both = true;
-
+        first = true;
 
     bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
-    if (bodyUserData && both)
+    if (bodyUserData && first)
         true;
-    ///std::cout << "\nEnd Contact!";
 }

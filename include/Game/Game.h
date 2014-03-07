@@ -35,7 +35,6 @@ public:
 protected:
 private:
     std::tr1::shared_ptr<IOManager> m_spGameIOManager;//the games IOManager
-    Universe m_gameUniverse;
     OverlayManager m_gameOverlayManager;
     sf::RenderWindow m_gameWindow;//the display window
     TextureAllocator m_texAlloc;
@@ -53,6 +52,7 @@ private:
     ///by giving the courier a shared_ptr, even though the object was told to be deleted, it wont delete until
     ///all shared_ptr's have tried to delete it
     ///so a deleted object will actually sit in memory, then it will get the message, and destroy itself
+    Universe m_gameUniverse;
 };
 
 #endif // GAME_H

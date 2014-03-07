@@ -89,7 +89,7 @@ Game::Status Game::run()
     float zoomFactor = 1;
     bool mouseCoordZooming = true;//if true, it zooms in and out dependent on the cursor position
     bool camTrack = false;
-    bool flip;
+    bool flip = false;
 
     Game::Status newState = Game::Local;
     sf::Clock clock;
@@ -98,7 +98,7 @@ Game::Status Game::run()
 
     sf::Vector2f texTileVec(0,0);
 
-    while (m_gameWindow.isOpen())// && newState != Game::Quit)
+    while (m_gameWindow.isOpen() && newState != Game::Quit)
     {
         secondTime = clock.getElapsedTime().asSeconds();
         fps = 1.0f / (secondTime - firstTime);
@@ -198,12 +198,12 @@ Game::Status Game::run()
         /**DELETE STUFF**/
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
         {
-
+            m_gameUniverse.removeBack();
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
         {
             keyPressTime = clock.getElapsedTime().asSeconds();
-
+            m_gameUniverse.removeBack();
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad8) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
         {
@@ -220,7 +220,10 @@ Game::Status Game::run()
         while (m_gameWindow.pollEvent(event))//zoom stuff
         {
             if (event.type == sf::Event::Closed)
+            {
                 m_gameWindow.close();
+                newState = Game::Quit;
+            }
             if (event.type == sf::Event::MouseMoved)
             {
                 mouseCoord = sf::Vector2f(event.mouseMove.x, event.mouseMove.y);
@@ -280,8 +283,6 @@ Game::Status Game::run()
         m_gameWindow.display();
         m_gameWindow.setView(view1);
     }
-    if(!m_gameWindow.isOpen())
-        newState = Game::Quit;
 
     return newState;
 }

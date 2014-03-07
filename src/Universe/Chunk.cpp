@@ -37,7 +37,9 @@ Chunk::~Chunk()/**Don't destroy us in the middle of a physics step!**/
     /**Destroy our MultiTileMap, cause the textured verts should have been preserved via SP**/
     //This happens automatically.
     /**how do we delete our body??**////how do we delete our body
-    m_rPhysWorld.DestroyBody(m_pBody);
+    cout << "\nDeleting body... ";
+    m_rPhysWorld.DestroyBody(m_pBody);///THIS IS CAUSING CRASH IF TWO OBJECTS ARE TOUCHING when the game ends
+    cout << "done.";
 }
 
 

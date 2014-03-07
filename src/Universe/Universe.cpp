@@ -10,11 +10,13 @@ Universe::Universe() : m_physWorld(b2Vec2(0,0))
     m_timeStep = 1.0f / 60.0f;///this needs to be linked to frame rate
     m_velocityIterations = 4;
     m_positionIterations = 2;
+
+    m_physWorld.SetContactListener(&m_contactListener);
 }
 
 Universe::~Universe()///unfinished
 {
-    //dtor
+
 }
 void Universe::removeBack()
 {

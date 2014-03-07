@@ -2,7 +2,6 @@
 
 #include <globals.h>
 
-#include <Universe/UniversalContactListener.h>
 #include <Universe/Chunk.h>
 #include <Universe/GModule.h>
 #include <DebugDraw.h>
@@ -53,8 +52,6 @@ Game::Status Game::run()
     b2World& rWorld = m_gameUniverse.getWorld();
     sf::View view1(sf::Vector2f(0, 0), sf::Vector2f(1200, 600));
 
-    UniversalContactListener contactListener;
-    rWorld.SetContactListener(&contactListener);
 
     DebugDraw debugDrawInstance;
     rWorld.SetDebugDraw( &debugDrawInstance );

@@ -16,7 +16,7 @@ public:
     void DrawTransform(const b2Transform& xf);
 
 protected:
-    static sf::RenderWindow& m_rWindow;
+    sf::RenderWindow& m_rWindow;
     sf::ConvexShape m_convex;
 private:
 };

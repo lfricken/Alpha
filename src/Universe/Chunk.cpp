@@ -3,16 +3,16 @@
 
 using namespace std;
 b2World& Chunk::m_rPhysWorld = game.getGameUniverse().getWorld();
-sf::RenderWindow& Chunk::m_rWindow = game.getGameWindow();
+///std::tr1::shared_ptr<sf::RenderWindow> Chunk::m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(&game.getGameWindow());
 
-Chunk::Chunk()
+Chunk::Chunk() : m_rWindow(game.getGameWindow())
 {
     m_bodyDef.type = b2_dynamicBody;
     m_bodyDef.position = b2Vec2(0.0f, 0.0f);
     m_pBody = m_rPhysWorld.CreateBody(&m_bodyDef);
     m_pBody->SetUserData(this);
 }
-Chunk::Chunk(b2Vec2 coordinate, b2BodyType bodyType)
+Chunk::Chunk(b2Vec2 coordinate, b2BodyType bodyType) : m_rWindow(game.getGameWindow())
 {
     m_bodyDef.type = bodyType;
     m_bodyDef.position = coordinate;
@@ -20,7 +20,7 @@ Chunk::Chunk(b2Vec2 coordinate, b2BodyType bodyType)
 
     m_pBody->SetUserData(this);
 }
-Chunk::Chunk(const Chunk& old)
+Chunk::Chunk(const Chunk& old) : m_rWindow(game.getGameWindow())
 {
     cout << "\nChunk Copy Called...";
     m_pBody = old.getBody();

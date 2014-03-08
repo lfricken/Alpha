@@ -40,7 +40,7 @@ public:
 
 protected:
     static b2World& m_rPhysWorld;
-    static sf::RenderWindow& m_rWindow;
+    sf::RenderWindow& m_rWindow;
 
     b2Body* m_pBody;
     b2BodyDef m_bodyDef;

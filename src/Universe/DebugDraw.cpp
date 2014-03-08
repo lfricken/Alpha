@@ -1,9 +1,8 @@
 #include "DebugDraw.h"
 
 #include <globals.h>
-sf::RenderWindow& DebugDraw::m_rWindow = game.getGameWindow();
 
-DebugDraw::DebugDraw()
+DebugDraw::DebugDraw() : m_rWindow(game.getGameWindow())
 {
     //ctor
 }

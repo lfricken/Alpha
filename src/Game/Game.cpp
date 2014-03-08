@@ -9,14 +9,19 @@
 using namespace std;
 
 
-Game::Game() :  m_gameWindow(sf::VideoMode(1200, 600), "SFML Box2D Test Environment", sf::Style::Default, settings)
+Game::Game()
 {
     m_spGameIOManager = std::tr1::shared_ptr<IOManager>(new IOManager(*this));
-    m_gameWindow.setFramerateLimit(60);
+    m_settings.antialiasingLevel = 4;
+    ///load data into settings, and launch window with the settings
+
+    m_spGameWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(1200, 600), "SFML Box2D Test Environment", sf::Style::Default, m_settings));
+    m_spGameWindow->setFramerateLimit(60);
+
     ///This code won't work! WTF?
-    if(!icon.loadFromFile("textures/tileset.png"))
-        cout << "\nIcon Load Error";///texture allocator
-    m_gameWindow.setIcon(32, 32, icon.getPixelsPtr());
+    ///if(!icon.loadFromFile("textures/tileset.png"))
+       /// cout << "\nIcon Load Error";///texture allocator
+    ///m_gameWindow.setIcon(32, 32, icon.getPixelsPtr());
 }
 Game::~Game()//unfinished
 {
@@ -28,7 +33,7 @@ IOManager& Game::getGameIOManager()
 }
 sf::RenderWindow& Game::getGameWindow()
 {
-    return m_gameWindow;
+    return *m_spGameWindow;
 }
 TextureAllocator& Game::getTextureAllocator()
 {
@@ -54,10 +59,10 @@ Game::Status Game::run()
 
 
     DebugDraw debugDrawInstance;
-    rWorld.SetDebugDraw( &debugDrawInstance );
-    debugDrawInstance.SetFlags( b2Draw::e_shapeBit );
-
-
+    rWorld.SetDebugDraw(&debugDrawInstance);
+    debugDrawInstance.SetFlags(b2Draw::e_shapeBit);
+    f_load("stuff");
+    m_gameControlManager.getPlayer("player_1").target = m_gameUniverse.getPhysTarget("ship_1");
 
     /**HUD**/
     sf::ConvexShape convex;
@@ -71,10 +76,9 @@ Game::Status Game::run()
     convex.setPoint(4, sf::Vector2f(0, 50));
 
 
-    f_load("stuff");
 
-    b2Body* pBox = m_gameUniverse.getPhysTarget("ship_0")->getBody();
 
+    b2Body* pBox = m_gameUniverse.getPhysTarget("ship_1")->getBody();
 
     /**SIMULATION & RUNTIME**/
     float cameraMove = 10;
@@ -95,21 +99,17 @@ Game::Status Game::run()
 
     sf::Vector2f texTileVec(0,0);
 
-    while (m_gameWindow.isOpen() && newState != Game::Quit)
+    while (m_spGameWindow->isOpen() && newState != Game::Quit)
     {
         secondTime = clock.getElapsedTime().asSeconds();
         fps = 1.0f / (secondTime - firstTime);
         firstTime = clock.getElapsedTime().asSeconds();
 
-
+        m_gameControlManager.choiceUpdate();
+    //    m_gameControlManager.drawUpdate();
 /**INPUT===============================================================================**/
         /**CONTROL A BOX**/
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        {
-            float fX = accel*mult*sin(pBox->GetAngle());
-            float fY = accel*mult*cos(pBox->GetAngle());
-            pBox->ApplyForce(b2Vec2(fX,-fY),pBox->GetWorldCenter(), true);
-        }
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
             pBox->ApplyTorque(-accel*mult/5, true);
@@ -208,23 +208,23 @@ Game::Status Game::run()
             cout << "\nOwnership Switch";
             flip = !flip;
             if(flip)
-                pBox = m_gameUniverse.getPhysTarget("ship_0")->getBody();
-            else
                 pBox = m_gameUniverse.getPhysTarget("ship_1")->getBody();
+            else
+                pBox = m_gameUniverse.getPhysTarget("ship_2")->getBody();
         }
 
         /**MOUSE**/
-        while (m_gameWindow.pollEvent(event))//zoom stuff
+        while (m_spGameWindow->pollEvent(event))//zoom stuff
         {
             if (event.type == sf::Event::Closed)
             {
-                m_gameWindow.close();
+               m_spGameWindow->close();
                 newState = Game::Quit;
             }
             if (event.type == sf::Event::MouseMoved)
             {
                 mouseCoord = sf::Vector2f(event.mouseMove.x, event.mouseMove.y);
-                mouseCoord = m_gameWindow.mapPixelToCoords((sf::Vector2i)mouseCoord);
+                mouseCoord = m_spGameWindow->mapPixelToCoords((sf::Vector2i)mouseCoord);
             }
             if (event.type == sf::Event::MouseWheelMoved)
             {
@@ -257,12 +257,12 @@ Game::Status Game::run()
 
 
         /**DRAW**/
-        m_gameWindow.clear();
+        m_spGameWindow->clear();
         if (camTrack)//update our camera on our target
         {
             view1.setCenter(sf::Vector2f(scale*pBox->GetPosition().x, scale*pBox->GetPosition().y));
             view1.setRotation(180.0*pBox->GetAngle()/PI);
-            m_gameWindow.setView(view1);//draw everything normally
+         //   m_gameWindow.setView(view1);//draw everything normally
         }
 
 
@@ -271,14 +271,14 @@ Game::Status Game::run()
 
 
 
-        m_gameWindow.setView(m_gameWindow.getDefaultView());//draw stuff that is abnormal
+        m_spGameWindow->setView(m_spGameWindow->getDefaultView());//draw stuff that is abnormal
         m_gameOverlayManager.draw();
-        convex.setPosition(m_gameWindow.mapPixelToCoords(sf::Vector2i(40,40)));
-        m_gameWindow.draw(convex);
+        convex.setPosition(m_spGameWindow->mapPixelToCoords(sf::Vector2i(40,40)));
+        m_spGameWindow->draw(convex);
 
 
-        m_gameWindow.display();
-        m_gameWindow.setView(view1);
+        m_spGameWindow->display();
+        m_spGameWindow->setView(view1);
     }
 
     return newState;
@@ -287,7 +287,7 @@ Game::Status Game::run()
 
 
 
-void Game::f_load(std::string stuff)
+void Game::f_load(std::string stuff)///ITS NOT CLEAR WHAT WE ARE LOADING EXACTLY
 {
     /**STATIC CHUNKS**/
 
@@ -322,8 +322,8 @@ void Game::f_load(std::string stuff)
     Chunk* chunk1 = new Chunk(b2Vec2(20, -20));
     //Chunk chunk(b2Vec2(-5, -5));///help is chunk and module destructor set up?
 
-    chunk->setTargetName("ship_0");
-    chunk1->setTargetName("ship_1");
+    chunk->setTargetName("ship_1");
+    chunk1->setTargetName("ship_2");
 
     GModuleData data;
     data.type = "GModule";

@@ -3,10 +3,10 @@
 
 
 using namespace std;
-sf::RenderWindow& ButtonBase::m_rWindow = game.getGameWindow();
 
 
-ButtonBase::ButtonBase()
+
+ButtonBase::ButtonBase() : m_rWindow(game.getGameWindow())
 {
 
 }

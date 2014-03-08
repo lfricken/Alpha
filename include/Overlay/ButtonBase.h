@@ -28,7 +28,7 @@ protected:
     virtual void setTexRectIndex(unsigned int index);
 
     sf::Vector2i m_pixCoords;
-    static sf::RenderWindow& m_rWindow;
+    sf::RenderWindow& m_rWindow;
     ///static TextureAllocator& m_rTexAlloc;
 
     sf::Sprite m_sprite;

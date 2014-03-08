@@ -3,6 +3,7 @@
 
 #include <IO/IOManager.h>
 #include <TextureAllocator.h>
+#include <ControlManager.h>
 
 class Game : public IOBase//holds a universe, OverlayManager, and IOManager, and other stuff
 {
@@ -36,11 +37,13 @@ protected:
 private:
     std::tr1::shared_ptr<IOManager> m_spGameIOManager;//the games IOManager
     OverlayManager m_gameOverlayManager;
-    sf::RenderWindow m_gameWindow;//the display window
+    std::tr1::shared_ptr<sf::RenderWindow> m_spGameWindow;//the display window
     TextureAllocator m_texAlloc;
+    Universe m_gameUniverse;
+    ControlManager m_gameControlManager;
 
-    sf::ContextSettings settings;///how can we edit the settings of the window?
-    sf::Image icon;
+    sf::ContextSettings m_settings;///how can we edit the settings of the window?
+    sf::Image m_icon;
 
     void f_load(std::string stuff);
     std::vector<Courier*> m_allCouriers;///this problem is so old we almost forgot about it
@@ -52,7 +55,6 @@ private:
     ///by giving the courier a shared_ptr, even though the object was told to be deleted, it wont delete until
     ///all shared_ptr's have tried to delete it
     ///so a deleted object will actually sit in memory, then it will get the message, and destroy itself
-    Universe m_gameUniverse;
 };
 
 #endif // GAME_H

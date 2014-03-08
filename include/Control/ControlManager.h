@@ -3,10 +3,13 @@
 #include <stdafx.h>
 #include <Chunk.h>
 #include <Universe.h>
+#include <Camera.h>
+
 
 struct Player
 {
     std::string playerName;
+    std::string playerMode;
 
     sf::Keyboard::Key up;
     sf::Keyboard::Key down;
@@ -23,7 +26,8 @@ struct Player
     sf::Mouse::Button secondary;
 
     Chunk* target;
-    sf::View view;
+    Camera camera;
+    sf::Vector2f mouseCoord;
 };
 
 class ControlManager
@@ -33,12 +37,15 @@ public:
     virtual ~ControlManager();
 
     Player& getPlayer(const std::string& target);
-    void choiceUpdate();
+    int choiceUpdate();
     void drawUpdate();
 protected:
 private:
+    void f_cheats(std::vector<Player>::iterator it);
+
     Universe& m_rUniverse;
     sf::RenderWindow& m_rWindow;
+    sf::Event m_event;
 
     std::vector<Player> m_localPlayerList;
     std::vector<Player> m_deactivatedPlayerList;//we dont do these

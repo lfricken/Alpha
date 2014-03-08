@@ -18,6 +18,8 @@ Game::Game()
     m_spGameWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(1200, 600), "SFML Box2D Test Environment", sf::Style::Default, m_settings));
     m_spGameWindow->setFramerateLimit(60);
 
+
+    m_spGameControlManager = std::tr1::shared_ptr<ControlManager>(new ControlManager);
     ///This code won't work! WTF?
     ///if(!icon.loadFromFile("textures/tileset.png"))
        /// cout << "\nIcon Load Error";///texture allocator
@@ -62,7 +64,7 @@ Game::Status Game::run()
     rWorld.SetDebugDraw(&debugDrawInstance);
     debugDrawInstance.SetFlags(b2Draw::e_shapeBit);
     f_load("stuff");
-    m_gameControlManager.getPlayer("player_1").target = m_gameUniverse.getPhysTarget("ship_1");
+    m_spGameControlManager->getPlayer("player_1").target = m_gameUniverse.getPhysTarget("ship_1");
 
     /**HUD**/
     sf::ConvexShape convex;
@@ -105,25 +107,13 @@ Game::Status Game::run()
         fps = 1.0f / (secondTime - firstTime);
         firstTime = clock.getElapsedTime().asSeconds();
 
-        m_gameControlManager.choiceUpdate();
-    //    m_gameControlManager.drawUpdate();
+        if(m_spGameControlManager->choiceUpdate())
+            newState = Game::Quit;
+
 /**INPUT===============================================================================**/
         /**CONTROL A BOX**/
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        {
-            pBox->ApplyTorque(-accel*mult/5, true);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        {
-            float fX = accel*mult*sin(pBox->GetAngle());
-            float fY = accel*mult*cos(pBox->GetAngle());
-            pBox->ApplyForce(b2Vec2(-fX,fY),pBox->GetWorldCenter(), true);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        {
-            pBox->ApplyTorque(accel*mult/5, true);
-        }
+
         /**CAMERA MOVE**/
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
@@ -141,67 +131,19 @@ Game::Status Game::run()
         {
             view1.move(cameraMove, 0.0);
         }
-        /**CONTROL ALL STUFF**/
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
-        {
 
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
-        {
-
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
-        {
-
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
-        {
-
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-        {
-
-        }
         /**SPECIAL**/
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::P) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
-        {
-            keyPressTime = clock.getElapsedTime().asSeconds();///ETHIS SHOULD BE EVENT
-            m_gameUniverse.togglePause();
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::O) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
-        {
-            keyPressTime = clock.getElapsedTime().asSeconds();///ETHIS SHOULD BE EVENT
-            m_gameUniverse.toggleDebugDraw();
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
         {
             cout << "\nFPS: " << fps;
-            cout << "\nMouse: (" << mouseCoord.x << "," << mouseCoord.y << ")";
-            cout << "\nZoom: " << zoomFactor;
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
-        {
-            keyPressTime = clock.getElapsedTime().asSeconds();///ETHIS SHOULD BE EVENT
-            view1.setRotation(0.0f);
-            camTrack = !camTrack;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-        {
-            cout << "\n\n\nExiting...";
-            newState = Game::Quit;
-        }
+
+
         /**DELETE STUFF**/
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
-        {
-            m_gameUniverse.removeBack();
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
-        {
-            keyPressTime = clock.getElapsedTime().asSeconds();
-            m_gameUniverse.removeBack();
-        }
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad8) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
         {
             keyPressTime = clock.getElapsedTime().asSeconds();
@@ -213,39 +155,6 @@ Game::Status Game::run()
                 pBox = m_gameUniverse.getPhysTarget("ship_2")->getBody();
         }
 
-        /**MOUSE**/
-        while (m_spGameWindow->pollEvent(event))//zoom stuff
-        {
-            if (event.type == sf::Event::Closed)
-            {
-               m_spGameWindow->close();
-                newState = Game::Quit;
-            }
-            if (event.type == sf::Event::MouseMoved)
-            {
-                mouseCoord = sf::Vector2f(event.mouseMove.x, event.mouseMove.y);
-                mouseCoord = m_spGameWindow->mapPixelToCoords((sf::Vector2i)mouseCoord);
-            }
-            if (event.type == sf::Event::MouseWheelMoved)
-            {
-                float zoomChange = event.mouseWheel.delta;
-                if (zoomChange > 0)
-                    zoomChange = 0.5;
-                else if (zoomChange < 0)
-                    zoomChange = 2.0;
-
-                cameraMove *= zoomChange;
-                zoomFactor *= zoomChange;
-                view1.zoom(zoomChange);
-                cout << "\nZoom Level: " << zoomFactor;
-
-                if(mouseCoordZooming)
-                {
-                    sf::Vector2f smooth = view1.getCenter();//we do this so zooming to a spot is smoother
-                    view1.setCenter(sf::Vector2f( (mouseCoord.x+smooth.x)/2, (mouseCoord.y+smooth.y)/2 ));
-                }
-            }
-        }
 /**INPUT============================================================================END**/
 
 
@@ -258,27 +167,16 @@ Game::Status Game::run()
 
         /**DRAW**/
         m_spGameWindow->clear();
-        if (camTrack)//update our camera on our target
-        {
-            view1.setCenter(sf::Vector2f(scale*pBox->GetPosition().x, scale*pBox->GetPosition().y));
-            view1.setRotation(180.0*pBox->GetAngle()/PI);
-         //   m_gameWindow.setView(view1);//draw everything normally
-        }
+        m_spGameControlManager->drawUpdate();
 
 
-
-        m_gameUniverse.draw();
-
-
-
+        /**HUD**/
         m_spGameWindow->setView(m_spGameWindow->getDefaultView());//draw stuff that is abnormal
-        m_gameOverlayManager.draw();
         convex.setPosition(m_spGameWindow->mapPixelToCoords(sf::Vector2i(40,40)));
         m_spGameWindow->draw(convex);
 
 
         m_spGameWindow->display();
-        m_spGameWindow->setView(view1);
     }
 
     return newState;

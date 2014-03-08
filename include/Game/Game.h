@@ -40,7 +40,7 @@ private:
     std::tr1::shared_ptr<sf::RenderWindow> m_spGameWindow;//the display window
     TextureAllocator m_texAlloc;
     Universe m_gameUniverse;
-    ControlManager m_gameControlManager;
+    std::tr1::shared_ptr<ControlManager> m_spGameControlManager;
 
     sf::ContextSettings m_settings;///how can we edit the settings of the window?
     sf::Image m_icon;

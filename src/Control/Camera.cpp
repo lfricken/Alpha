@@ -3,6 +3,7 @@
 Camera::Camera()
 {
     m_zoomLevel = 1;
+    m_isTracking = true;
 }
 Camera::~Camera()
 {
@@ -12,7 +13,7 @@ sf::View& Camera::getView()
 {
     return m_view;
 }
-const float& Camera::getZoomLevel()
+const float& Camera::getZoomLevel() const
 {
     return m_zoomLevel;
 }
@@ -24,7 +25,7 @@ void Camera::zoomFactor(float zoomChange)
 {
     m_zoomLevel *= zoomChange;
 }
-bool Camera::isTracking()
+bool Camera::isTracking() const
 {
     return m_isTracking;
 }

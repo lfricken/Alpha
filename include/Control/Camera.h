@@ -9,16 +9,20 @@ class Camera
         virtual ~Camera();
 
         sf::View& getView();
-        const float& getZoomLevel();
+        const sf::View& getView() const;
+
+        const float& getZoomLevel() const;
         void setZoomLevel(float newZoom);
         void zoomFactor(float zoomChange);
 
-        bool isTracking();
+        bool isTracking() const;
         bool toggleTracking();
     protected:
     private:
         bool m_isTracking;
         float m_zoomLevel;
+        ///enum mode (like 1,2,3, or 4 players)
+        ///and which one are we?
         sf::View m_view;
 };
 

@@ -9,9 +9,19 @@ Intelligence::~Intelligence()
 {
     //dtor
 }
-void Intelligence::setTarget()
+
+Chunk* Intelligence::getTarget()
 {
-    ///take control of target
+    return m_target;
+}
+const Chunk* Intelligence::getTarget() const
+{
+    return m_target;
+}
+
+void Intelligence::setTarget(Chunk* target)
+{
+    m_target = target;
     m_hasControl = true;
 }
 void Intelligence::removeControl()
@@ -22,6 +32,10 @@ void Intelligence::removeControl()
 bool Intelligence::getControlState() const
 {
     return m_hasControl;
+}
+void Intelligence::setAim(const sf::Vector2f& newAim)
+{
+    m_aim = newAim;
 }
 const sf::Vector2f& Intelligence::getAim() const
 {

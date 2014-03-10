@@ -11,6 +11,9 @@ Chunk::Chunk() : m_rWindow(game.getGameWindow())
     m_bodyDef.position = b2Vec2(0.0f, 0.0f);
     m_pBody = m_rPhysWorld.CreateBody(&m_bodyDef);
     m_pBody->SetUserData(this);
+
+    m_accel = 50;
+    m_torque = 50;
 }
 Chunk::Chunk(b2Vec2 coordinate, b2BodyType bodyType) : m_rWindow(game.getGameWindow())
 {
@@ -19,6 +22,9 @@ Chunk::Chunk(b2Vec2 coordinate, b2BodyType bodyType) : m_rWindow(game.getGameWin
     m_pBody = m_rPhysWorld.CreateBody(&m_bodyDef);
 
     m_pBody->SetUserData(this);
+
+    m_accel = 50;
+    m_torque = 50;
 }
 Chunk::Chunk(const Chunk& old) : m_rWindow(game.getGameWindow())
 {
@@ -152,4 +158,58 @@ const vector<tr1::shared_ptr<Module> >& Chunk::getModuleSPList() const
 const MultiTileMap& Chunk::getTiles() const
 {
     return m_tiles;
+}
+
+void Chunk::primary(sf::Vector2f coords)
+{
+
+}
+void Chunk::secondary(sf::Vector2f coords)
+{
+
+}
+void Chunk::aim(sf::Vector2f coords)
+{
+
+}
+void Chunk::up()
+{
+    m_pBody->ApplyForceToCenter(b2Vec2(m_accel*m_pBody->GetMass()*sin(m_pBody->GetAngle()),-m_accel*m_pBody->GetMass()*cos(m_pBody->GetAngle())), true);
+}
+
+void Chunk::down()
+{
+
+}
+void Chunk::left()
+{
+
+}
+void Chunk::right()
+{
+
+}
+void Chunk::rollLeft()
+{
+
+}
+void Chunk::rollRight()
+{
+
+}
+void Chunk::special_1()
+{
+
+}
+void Chunk::special_2()
+{
+
+}
+void Chunk::special_3()
+{
+
+}
+void Chunk::special_4()
+{
+
 }

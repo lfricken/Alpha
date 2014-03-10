@@ -13,7 +13,7 @@ public:
     Chunk(b2Vec2 coordinate, b2BodyType bodyType = b2_dynamicBody);
 
     Chunk(const Chunk& old);
-    virtual ~Chunk();/**Don't destroy us in the middle of a physics step!**/
+    virtual ~Chunk();//Don't destroy us in the middle of a physics step
 
     virtual b2Body* getBody();
 
@@ -21,13 +21,27 @@ public:
     virtual Module* getModule(std::string targetName);
     virtual IOBase* getIOBase(std::string targetName);
 
-    virtual void add(std::vector<GModuleData>& data);/**we only call this once!**/
-    virtual void add(std::vector<ModuleData>& data);/**we only call this once!**/
+    virtual void add(std::vector<GModuleData>& data);//we only call this once!
+    virtual void add(std::vector<ModuleData>& data);//we only call this once!
 
     virtual void draw();
 
     ///virtual void remove();//how to remove a module, if possible?
 
+    /**INPUT**/
+    virtual void primary(sf::Vector2f coords);
+    virtual void secondary(sf::Vector2f coords);
+    virtual void aim(sf::Vector2f coords);
+    virtual void up();
+    virtual void down();
+    virtual void left();
+    virtual void right();
+    virtual void rollLeft();
+    virtual void rollRight();
+    virtual void special_1();
+    virtual void special_2();
+    virtual void special_3();
+    virtual void special_4();
 
 
 
@@ -48,6 +62,9 @@ protected:
 
     std::vector<std::tr1::shared_ptr<GModule> > m_GModuleSPList;
     std::vector<std::tr1::shared_ptr<Module> > m_ModuleSPList;
+
+
+    float m_accel, m_torque;
 private:
 };
 

@@ -18,7 +18,7 @@ struct PhysicsBaseData
 
 class PhysicsBase : public IOBase
 {
-public:
+public:///MAYBE we shouldn't have this many functions!!!
     PhysicsBase(PhysicsBaseData& data);
     virtual ~PhysicsBase();
 

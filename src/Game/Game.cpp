@@ -64,7 +64,7 @@ Game::Status Game::run()
     rWorld.SetDebugDraw(&debugDrawInstance);
     debugDrawInstance.SetFlags(b2Draw::e_shapeBit);
     f_load("stuff");
-    m_spGameControlManager->getPlayer("player_1").target = m_gameUniverse.getPhysTarget("ship_1");
+    m_spGameControlManager->getPlayer("player_1").setTarget(m_gameUniverse.getPhysTarget("ship_1"));
 
     /**HUD**/
     sf::ConvexShape convex;
@@ -79,16 +79,8 @@ Game::Status Game::run()
 
 
 
-
-    b2Body* pBox = m_gameUniverse.getPhysTarget("ship_1")->getBody();
-
     /**SIMULATION & RUNTIME**/
-    float cameraMove = 10;
-    float accel = 10;
-    int mult = 40;
-
     sf::Vector2f mouseCoord;
-    sf::Event event;
     float zoomFactor = 1;
     bool mouseCoordZooming = true;//if true, it zooms in and out dependent on the cursor position
     bool camTrack = false;
@@ -101,39 +93,17 @@ Game::Status Game::run()
 
     sf::Vector2f texTileVec(0,0);
 
+
+
     while (m_spGameWindow->isOpen() && newState != Game::Quit)
     {
         secondTime = clock.getElapsedTime().asSeconds();
         fps = 1.0f / (secondTime - firstTime);
         firstTime = clock.getElapsedTime().asSeconds();
 
-        if(m_spGameControlManager->choiceUpdate())
-            newState = Game::Quit;
-
-/**INPUT===============================================================================**/
-        /**CONTROL A BOX**/
 
 
-        /**CAMERA MOVE**/
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        {
-            view1.move(0.0, -cameraMove);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        {
-            view1.move(0.0, cameraMove);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        {
-            view1.move(-cameraMove, 0.0);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        {
-            view1.move(cameraMove, 0.0);
-        }
 
-
-        /**SPECIAL**/
 
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
@@ -142,20 +112,8 @@ Game::Status Game::run()
         }
 
 
-        /**DELETE STUFF**/
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad8) && ((clock.getElapsedTime().asSeconds()-keyPressTime) > 0.25))
-        {
-            keyPressTime = clock.getElapsedTime().asSeconds();
-            cout << "\nOwnership Switch";
-            flip = !flip;
-            if(flip)
-                pBox = m_gameUniverse.getPhysTarget("ship_1")->getBody();
-            else
-                pBox = m_gameUniverse.getPhysTarget("ship_2")->getBody();
-        }
 
-/**INPUT============================================================================END**/
 
 
 
@@ -163,12 +121,13 @@ Game::Status Game::run()
         /**PHYSICS STEP**/
         m_gameUniverse.physStep();
 
-
+        /**INPUT**/
+        if(m_spGameControlManager->choiceUpdate())//if we put this before physstep, we the camera lags!
+            newState = Game::Quit;
 
         /**DRAW**/
         m_spGameWindow->clear();
         m_spGameControlManager->drawUpdate();
-
 
         /**HUD**/
         m_spGameWindow->setView(m_spGameWindow->getDefaultView());//draw stuff that is abnormal

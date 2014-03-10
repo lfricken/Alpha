@@ -15,7 +15,7 @@ class GModule : public PhysicsBase, public GraphicsBase
 {
 public:
     GModule(GModuleData& data);
-    GModule(const GModule& old);///may be obsolete, and bad
+    GModule(const GModule& old);///may be obsolete, and bad, should probably delete this
     virtual ~GModule();
 
     virtual bool input(Package& rPackage);

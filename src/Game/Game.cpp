@@ -57,72 +57,45 @@ Game::Status Game::run()
 {
     /**initialize**/
     b2World& rWorld = m_gameUniverse.getWorld();
-    sf::View view1(sf::Vector2f(0, 0), sf::Vector2f(1200, 600));
-
-
     DebugDraw debugDrawInstance;
     rWorld.SetDebugDraw(&debugDrawInstance);
     debugDrawInstance.SetFlags(b2Draw::e_shapeBit);
+
     f_load("stuff");
+
     m_spGameControlManager->getPlayer("player_1").setTarget(m_gameUniverse.getPhysTarget("ship_1"));
 
     /**HUD**/
     sf::ConvexShape convex;
-    // resize it to 5 points
-    convex.setPointCount(5);
-    // define the points
-    convex.setPoint(0, sf::Vector2f(0, 0));
+    convex.setPointCount(5);    // resize it to 5 points
+    convex.setPoint(0, sf::Vector2f(0, 0));    // define the points
     convex.setPoint(1, sf::Vector2f(150, 10));
     convex.setPoint(2, sf::Vector2f(60, 30));
     convex.setPoint(3, sf::Vector2f(30, 100));
     convex.setPoint(4, sf::Vector2f(0, 50));
 
 
-
     /**SIMULATION & RUNTIME**/
-    sf::Vector2f mouseCoord;
-    float zoomFactor = 1;
-    bool mouseCoordZooming = true;//if true, it zooms in and out dependent on the cursor position
-    bool camTrack = false;
-    bool flip = false;
-
     Game::Status newState = Game::Local;
     sf::Clock clock;
     float fps = 0;
-    float firstTime = 0, secondTime = 0, keyPressTime = 0;
-
-    sf::Vector2f texTileVec(0,0);
-
-
+    float firstTime = 0, secondTime = 0;
 
     while (m_spGameWindow->isOpen() && newState != Game::Quit)
     {
         secondTime = clock.getElapsedTime().asSeconds();
         fps = 1.0f / (secondTime - firstTime);
         firstTime = clock.getElapsedTime().asSeconds();
-
-
-
-
-
-
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
         {
             cout << "\nFPS: " << fps;
         }
 
-
-
-
-
-
-
-
         /**PHYSICS STEP**/
         m_gameUniverse.physStep();
 
         /**INPUT**/
-        if(m_spGameControlManager->choiceUpdate())//if we put this before physstep, we the camera lags!
+        if(m_spGameControlManager->choiceUpdate())//if we put this before physstep, the camera lags!
             newState = Game::Quit;
 
         /**DRAW**/
@@ -134,10 +107,8 @@ Game::Status Game::run()
         convex.setPosition(m_spGameWindow->mapPixelToCoords(sf::Vector2i(40,40)));
         m_spGameWindow->draw(convex);
 
-
         m_spGameWindow->display();
     }
-
     return newState;
 }
 
@@ -157,6 +128,7 @@ void Game::f_load(std::string stuff)///ITS NOT CLEAR WHAT WE ARE LOADING EXACTLY
     vector<GModuleData> gModuleList3;
     GModuleData solidFixture;
     solidFixture.type = "GModule";
+    solidFixture.physicsData.shape = PhysicsBaseData::Octagon;
     solidFixture.physicsData.density = 1.0f;
     solidFixture.physicsData.friction = 0.4f;
     solidFixture.physicsData.halfSize = b2Vec2(5, 5);
@@ -206,7 +178,7 @@ void Game::f_load(std::string stuff)///ITS NOT CLEAR WHAT WE ARE LOADING EXACTLY
     mdata.physicsData.restitution = 0.2f;
     mdata.physicsData.rotation = 0.0f;
 
-
+    ///WE NEED TO GET A STANDARD SIZE
     vector<GModuleData> moduleList1;
     vector<ModuleData> moduleList2;
     short int texTile = 0;

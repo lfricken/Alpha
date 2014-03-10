@@ -4,8 +4,17 @@
 #include <stdafx.h>
 #include <MultipleInheritance/IOBase.h>
 
+
+
 struct PhysicsBaseData
 {
+    enum Shape
+    {
+        Box = 0,
+        Octagon = 1,
+        Triangle = 2,
+    };
+    Shape shape;
     b2Vec2 offset;/**physics**///offset of the box from the center
     b2Vec2 halfSize;//half size of the box2dBox, also controls the tileSize in graphics
     float density;

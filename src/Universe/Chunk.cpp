@@ -12,6 +12,7 @@ Chunk::Chunk() : m_rWindow(game.getGameWindow())
     m_pBody = m_rPhysWorld.CreateBody(&m_bodyDef);
     m_pBody->SetUserData(this);
 
+    m_pController = NULL;
     m_accel = 50;
     m_torque = 50;
 }
@@ -22,7 +23,7 @@ Chunk::Chunk(b2Vec2 coordinate, b2BodyType bodyType) : m_rWindow(game.getGameWin
     m_pBody = m_rPhysWorld.CreateBody(&m_bodyDef);
 
     m_pBody->SetUserData(this);
-
+    m_pController = NULL;
     m_accel = 50;
     m_torque = 50;
 }
@@ -44,6 +45,8 @@ Chunk::~Chunk()/**Don't destroy us in the middle of a physics step!**/
     //This happens automatically.
     /**how do we delete our body??**/
     m_rPhysWorld.DestroyBody(m_pBody);
+    if(m_pController != NULL)
+        m_pController->removeControl();
 }
 
 
@@ -212,4 +215,16 @@ void Chunk::special_3()
 void Chunk::special_4()
 {
 
+}
+void Chunk::setController(Intelligence* controller)
+{
+    m_pController = controller;
+}
+Intelligence* Chunk::getController() const
+{
+    return m_pController;
+}
+void Chunk::forgetController()
+{
+    m_pController = NULL;
 }

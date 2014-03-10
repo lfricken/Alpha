@@ -31,6 +31,7 @@ ControlManager::ControlManager() : m_rUniverse(game.getGameUniverse()), m_rWindo
 
     m_localPlayerList.front().getCamera().getView().setSize(static_cast<sf::Vector2f>(m_rWindow.getSize()));
     m_localPlayerList.front().getCamera().getView().setCenter(sf::Vector2f(0, 0));
+
     ///m_localPlayerList.front().hasController(this);
 }
 
@@ -57,8 +58,43 @@ int ControlManager::choiceUpdate()
     b2Body* body;
     for(vector<Player>::iterator it = m_localPlayerList.begin(); it != m_localPlayerList.end(); ++it)
     {
+        while (m_rWindow.pollEvent(m_event))//zoom stuff
+        {
+            if (m_event.type == sf::Event::Closed)
+            {
+                m_rWindow.close();
+                return 1;///USE STATES
+            }
+            if (m_event.type == sf::Event::KeyPressed)
+            {
+                //toggle stuff
+            }
+            if (m_event.type == sf::Event::MouseMoved)
+            {
+                it->setAim(m_rWindow.mapPixelToCoords(sf::Vector2i(m_event.mouseMove.x, m_event.mouseMove.y), it->getCamera().getView()));
+            }
+            if (m_event.type == sf::Event::MouseWheelMoved)
+            {
+                float zoomChange = m_event.mouseWheel.delta;
+                if (zoomChange > 0)
+                    zoomChange = 0.5;
+                else if (zoomChange < 0)
+                    zoomChange = 2.0;
+
+                it->getCamera().getView().zoom(zoomChange);
+                it->getCamera().zoomFactor(zoomChange);
+
+                sf::Vector2f smooth = it->getCamera().getView().getCenter();//we do this so zooming to a spot is smoother
+                it->getCamera().getView().setCenter(sf::Vector2f( (it->getAim().x+smooth.x)/2, (it->getAim().y+smooth.y)/2 ));
+            }
+
+            if(it->getPlayerMode() == "god")
+                f_cheats(it);
+        }
+
         if(it->getControlState())
         {
+
             InputConfig& rInputConfig = it->getInputConfig();
             mass = it->getTarget()->getBody()->GetMass();
             body = it->getTarget()->getBody();
@@ -69,6 +105,7 @@ int ControlManager::choiceUpdate()
             }
             if (sf::Keyboard::isKeyPressed(rInputConfig.down))
             {
+                it->getTarget()->down();
                 fX = force*mass*sin(body->GetAngle());
                 fY = force*mass*cos(body->GetAngle());
                 body->ApplyForceToCenter(b2Vec2(-fX, fY), true);
@@ -104,49 +141,10 @@ int ControlManager::choiceUpdate()
                 it->getCamera().getView().setRotation(180.0*body->GetAngle()/PI);
             }
         }
+    }/**END OF PLAYER LOOP**/
 
 
-
-
-
-
-        while (m_rWindow.pollEvent(m_event))//zoom stuff
-        {
-            if (m_event.type == sf::Event::Closed)
-            {
-                m_rWindow.close();
-                return 1;///USE STATES
-            }
-            if (m_event.type == sf::Event::KeyPressed)
-            {
-
-            }
-            if (m_event.type == sf::Event::MouseMoved)
-            {
-                it->setAim(m_rWindow.mapPixelToCoords(sf::Vector2i(m_event.mouseMove.x, m_event.mouseMove.y), it->getCamera().getView()));
-            }
-            if (m_event.type == sf::Event::MouseWheelMoved)
-            {
-                float zoomChange = m_event.mouseWheel.delta;
-                if (zoomChange > 0)
-                    zoomChange = 0.5;
-                else if (zoomChange < 0)
-                    zoomChange = 2.0;
-
-                it->getCamera().getView().zoom(zoomChange);
-                it->getCamera().zoomFactor(zoomChange);
-
-                sf::Vector2f smooth = it->getCamera().getView().getCenter();//we do this so zooming to a spot is smoother
-                it->getCamera().getView().setCenter(sf::Vector2f( (it->getAim().x+smooth.x)/2, (it->getAim().y+smooth.y)/2 ));
-            }
-
-            if(it->getPlayerMode() == "god")
-                f_cheats(it);
-        }
-
-
-
-    }
+    ///LOOP OVER AI HERE
     return 0;
 }
 void ControlManager::drawUpdate()
@@ -159,8 +157,6 @@ void ControlManager::drawUpdate()
 }
 void ControlManager::f_cheats(vector<Player>::iterator it)
 {
-
-
     if (m_event.type == sf::Event::KeyPressed)
     {
         if (m_event.key.code == sf::Keyboard::T)

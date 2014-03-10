@@ -65,18 +65,19 @@ class IOBase//base class inherited by literally everything, that way objects can
 
 
         virtual bool input(Package& rPackage);//called by IO manager when this entity is being sent a message
-
         virtual bool specialInput(Package& rPackage);
         virtual bool coreInput(Package& rPackage);/**returns true if caught**/
-        virtual void damage(int damage);
-        ///virtual void activate1(unknown);
+
+
+        virtual void damage(int damage);///should this be here??
+        ///virtual void activate1(unknown);????
 
         virtual void setTargetName(std::string name);//sets the name of this entity
         virtual const std::string& getTargetName() const;//gets the name of this entity
     protected:
         std::string m_type;//type of object that we are
         std::string m_targetName;//used by IO manager to locate specific named objects
-        static IOManager& m_rIOManager;
+        static IOManager& m_rIOManager;///should we be using static?
     private:
 };
 

@@ -10,7 +10,64 @@ b2World& PhysicsBase::m_rPhysWorld = game.getGameUniverse().getWorld();
 
 PhysicsBase::PhysicsBase(PhysicsBaseData& data)// : m_rPhysWorld(rPhysWorld)
 {
-    m_shape.SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//set our shape
+    if (data.shape == PhysicsBaseData::Box)
+        m_shape.SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//set our shape
+    else if((data.shape == PhysicsBaseData::Octagon) && (data.halfSize.x < data.halfSize.y))
+    {
+        int32 num = 8;
+        float x = data.halfSize.x, y = data.halfSize.y;
+        b2Vec2 vertices[num];
+
+        vertices[0].Set(-x/2, y);//define CCW, starting with top left, get topmost first, then leftmost
+        vertices[1].Set(-x, y-x/2);
+        vertices[2].Set(-x, -y+x/2);
+        vertices[3].Set(-x/2, -y);
+        vertices[4].Set(x/2, -y);
+        vertices[5].Set(x, -y+x/2);
+        vertices[6].Set(x, y-x/2);
+        vertices[7].Set(x/2, y);
+
+        for(int i = 0; i < num; ++i)
+            vertices[i]+= data.offset;
+
+        m_shape.Set(vertices, num);
+    }
+    else if((data.shape == PhysicsBaseData::Octagon) && (data.halfSize.x >= data.halfSize.y))
+    {
+        int32 num = 8;
+        float x = data.halfSize.x, y = data.halfSize.y;
+        b2Vec2 vertices[num];
+
+        vertices[0].Set(-x/2, y);//define CCW, starting with top left, get topmost first, then leftmost
+        vertices[1].Set(-x, y/2);
+        vertices[2].Set(-x, -y/2);
+        vertices[3].Set(-x/2, -y);
+        vertices[4].Set(x/2, -y);
+        vertices[5].Set(x, -y/2);
+        vertices[6].Set(x, y/2);
+        vertices[7].Set(x/2, y);
+        for(int i = 0; i < num; ++i)
+            vertices[i]+= data.offset;
+
+        m_shape.Set(vertices, num);
+    }
+    else if(data.shape == PhysicsBaseData::Triangle)
+    {
+        int32 num = 3;
+        float x = data.halfSize.x, y = data.halfSize.y;
+        b2Vec2 vertices[num];
+
+        vertices[0].Set(0, 0);//define CCW, starting at right angle, then go left, then go up and left
+        vertices[1].Set(2*x, 0);// *2 because halfsize
+        vertices[2].Set(0, 2*y);// *2 because halfsize
+        for(int i = 0; i < num; ++i)
+            vertices[i]+= data.offset;
+
+        m_shape.Set(vertices, num);
+    }
+    else
+        m_shape.SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//default
+
 
     m_fixtureDef.shape = &m_shape;//give our shape to our fixture definition
     m_fixtureDef.density = data.density;

@@ -6,6 +6,8 @@
 #include <Universe/Module.h>
 #include <Universe/MultiTileMap.h>
 
+class Intelligence;
+
 class Chunk : public IOBase
 {
 public:
@@ -43,7 +45,10 @@ public:
     virtual void special_3();
     virtual void special_4();
 
-
+    virtual void setController(Intelligence* controller);
+    virtual Intelligence* getController() const;
+    virtual void forgetController();
+    ///virtual void breakControl();
 
     /**CONST OVERLOADS**/
     virtual b2Body* getBody() const;
@@ -63,8 +68,8 @@ protected:
     std::vector<std::tr1::shared_ptr<GModule> > m_GModuleSPList;
     std::vector<std::tr1::shared_ptr<Module> > m_ModuleSPList;
 
-
-    float m_accel, m_torque;
+    Intelligence* m_pController;//this is a pointer to our controller
+    float m_accel, m_torque;///move these to a derivative of chunk
 private:
 };
 

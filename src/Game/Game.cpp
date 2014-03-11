@@ -63,7 +63,7 @@ Game::Status Game::run()
 
     f_load("stuff");
 
-    m_spGameControlManager->getPlayer("player_1").setTarget(m_gameUniverse.getPhysTarget("ship_1"));
+    m_spGameControlManager->getPlayer("player_1").linkControl(m_gameUniverse.getPhysTarget("ship_1"));
 
     /**HUD**/
     sf::ConvexShape convex;

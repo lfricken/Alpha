@@ -14,6 +14,8 @@ public:
 
     IOBase* getTarget(std::string target);//returns a pointer to the target object
     Chunk* getPhysTarget(std::string target);
+    Chunk* getForward();///gets the next element
+    Chunk* getBackward();///gets the next backward element
     ///Whatever We Call This* getGfxTarget(std::string target);
 
     b2World& getWorld();
@@ -33,7 +35,6 @@ protected:
 private:
     UniversalContactListener m_contactListener;
     b2World m_physWorld;
-
 
     bool m_notPaused;
     bool m_normalDraw;

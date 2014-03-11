@@ -7,23 +7,27 @@ b2World& Chunk::m_rPhysWorld = game.getGameUniverse().getWorld();
 
 Chunk::Chunk() : m_rWindow(game.getGameWindow())
 {
+        ///make this into initialize func
     m_bodyDef.type = b2_dynamicBody;
     m_bodyDef.position = b2Vec2(0.0f, 0.0f);
     m_pBody = m_rPhysWorld.CreateBody(&m_bodyDef);
     m_pBody->SetUserData(this);
-
     m_pController = NULL;
+    m_hasController = false;
+
     m_accel = 50;
     m_torque = 50;
 }
 Chunk::Chunk(b2Vec2 coordinate, b2BodyType bodyType) : m_rWindow(game.getGameWindow())
 {
+    ///make this into initialize func
     m_bodyDef.type = bodyType;
     m_bodyDef.position = coordinate;
     m_pBody = m_rPhysWorld.CreateBody(&m_bodyDef);
-
     m_pBody->SetUserData(this);
     m_pController = NULL;
+    m_hasController = false;
+
     m_accel = 50;
     m_torque = 50;
 }
@@ -45,8 +49,7 @@ Chunk::~Chunk()/**Don't destroy us in the middle of a physics step!**/
     //This happens automatically.
     /**how do we delete our body??**/
     m_rPhysWorld.DestroyBody(m_pBody);
-    if(m_pController != NULL)
-        m_pController->removeControl();
+    breakControl();
 }
 
 
@@ -216,15 +219,37 @@ void Chunk::special_4()
 {
 
 }
-void Chunk::setController(Intelligence* controller)
-{
-    m_pController = controller;
-}
-Intelligence* Chunk::getController() const
+/**CONTROL**/
+Intelligence* Chunk::getController() const//done
 {
     return m_pController;
 }
-void Chunk::forgetController()
+
+bool Chunk::hasController() const//done
+{
+    return m_hasController;
+}
+void Chunk::linkControl(Intelligence* controller)
+{
+    f_setController(controller);
+    m_pController->f_setTarget(this);
+}
+void Chunk::breakControl()//done
+{
+    if(m_hasController)
+        m_pController->f_forgetTarget();
+
+    f_forgetController();
+}
+void Chunk::f_forgetController()//done
 {
     m_pController = NULL;
+    m_hasController = false;
 }
+void Chunk::f_setController(Intelligence* controller)//done
+{
+    breakControl();
+    m_pController = controller;
+    m_hasController = true;
+}
+/**END**/

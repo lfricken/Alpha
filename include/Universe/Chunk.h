@@ -45,10 +45,11 @@ public:
     virtual void special_3();
     virtual void special_4();
 
-    virtual void setController(Intelligence* controller);
-    virtual Intelligence* getController() const;
-    virtual void forgetController();
-    ///virtual void breakControl();
+    friend class Intelligence;
+    Intelligence* getController() const;
+    bool hasController() const;
+    void linkControl(Intelligence* controller);
+    void breakControl();
 
     /**CONST OVERLOADS**/
     virtual b2Body* getBody() const;
@@ -68,9 +69,13 @@ protected:
     std::vector<std::tr1::shared_ptr<GModule> > m_GModuleSPList;
     std::vector<std::tr1::shared_ptr<Module> > m_ModuleSPList;
 
-    Intelligence* m_pController;//this is a pointer to our controller
     float m_accel, m_torque;///move these to a derivative of chunk
+
 private:
+    void f_forgetController();//CONTROL
+    void f_setController(Intelligence* controller);
+    Intelligence* m_pController;//this is a pointer to our controller
+    bool m_hasController;
 };
 
 #endif // DCHUNK_H

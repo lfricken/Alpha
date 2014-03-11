@@ -9,22 +9,21 @@ class Intelligence : public IOBase
         Intelligence();
         virtual ~Intelligence();
 
-        Chunk* getTarget();
-        const Chunk* getTarget() const;
-        void setTarget(Chunk* target);
-
-        bool getControlState() const;
-        void removeControl();
-        ///void breakControl();
+        friend class Chunk;
+        Chunk* getTarget() const;
+        bool hasTarget() const;
+        void linkControl(Chunk* target);
+        void breakControl();//called to break the control links
 
         void setAim(const sf::Vector2f& newAim);
         const sf::Vector2f& getAim() const;
+
     protected:
     private:
-
-        bool m_hasControl;
-        Chunk* m_pTarget;///FIX THIS ASAP
-        ///Derived* m_target;
+        void f_forgetTarget();//CONTROL
+        void f_setTarget(Chunk* target);
+        bool m_hasTarget;
+        Chunk* m_pTarget;
 
         sf::Vector2f m_aim;
 };

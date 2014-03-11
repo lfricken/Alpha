@@ -3,42 +3,48 @@
 Intelligence::Intelligence()
 {
     m_pTarget = NULL;
-    m_hasControl = false;
+    m_hasTarget = false;
 }
 
 Intelligence::~Intelligence()
 {
-    if(m_hasControl)
-        m_pTarget->forgetController();
+    breakControl();
 }
 
-Chunk* Intelligence::getTarget()
+/**CONTROL**/
+Chunk* Intelligence::getTarget() const//done
 {
     return m_pTarget;
 }
-const Chunk* Intelligence::getTarget() const
+bool Intelligence::hasTarget() const//done
 {
-    return m_pTarget;
+    return m_hasTarget;
 }
-
-void Intelligence::setTarget(Chunk* target)
+void Intelligence::linkControl(Chunk* target)
 {
-    if(m_hasControl)
-        m_pTarget->forgetController();
-
-    m_pTarget = target;
-    m_hasControl = true;
-    m_pTarget->setController(this);
+    f_setTarget(target);
+    m_pTarget->f_setController(this);
 }
-void Intelligence::removeControl()
+void Intelligence::breakControl()//done
+{
+    if(m_hasTarget)
+        m_pTarget->f_forgetController();
+
+    f_forgetTarget();
+}
+void Intelligence::f_forgetTarget()//done
 {
     m_pTarget = NULL;
-    m_hasControl = false;
+    m_hasTarget = false;
 }
-bool Intelligence::getControlState() const
+void Intelligence::f_setTarget(Chunk* target)//done
 {
-    return m_hasControl;
+    breakControl();
+    m_pTarget = target;
+    m_hasTarget = true;
 }
+/**END**/
+
 void Intelligence::setAim(const sf::Vector2f& newAim)
 {
     m_aim = newAim;

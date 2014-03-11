@@ -92,7 +92,7 @@ int ControlManager::choiceUpdate()
                 f_cheats(it);
         }
 
-        if(it->getControlState())
+        if(it->hasTarget())
         {
 
             InputConfig& rInputConfig = it->getInputConfig();
@@ -184,7 +184,7 @@ void ControlManager::f_cheats(vector<Player>::iterator it)
         {
             string target = "ship_1";
             cout << "\nControlling \"" << target << "\"";
-            it->setTarget(m_rUniverse.getPhysTarget(target));
+            it->linkControl(m_rUniverse.getPhysTarget(target));
         }
     }
 }

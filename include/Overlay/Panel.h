@@ -1,10 +1,9 @@
 #ifndef PANEL_H
 #define PANEL_H
 
-#include <stdafx.h>
-#include <MultipleInheritance/IOBase.h>
-
-#include <Overlay/Button.h>
+#include "stdafx.h"
+#include "IOBase.h"
+#include "Button.h"
 
 class Panel : public ButtonBase
 {

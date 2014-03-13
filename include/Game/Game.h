@@ -1,9 +1,9 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <IO/IOManager.h>
-#include <TextureAllocator.h>
-#include <ControlManager.h>
+#include "IOManager.h"
+#include "TextureAllocator.h"
+#include "ControlManager.h"
 
 class Game : public IOBase//holds a universe, OverlayManager, and IOManager, and other stuff
 {

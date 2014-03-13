@@ -1,7 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-#include <Intelligence.h>
-#include <Camera.h>
+
+#include "Intelligence.h"
+#include "Camera.h"
 
 struct InputConfig
 {

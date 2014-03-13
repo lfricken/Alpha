@@ -1,6 +1,5 @@
-#include <MultipleInheritance/PhysicsBase.h>
-
-#include <globals.h>
+#include "PhysicsBase.h"
+#include "globals.h"
 
 using namespace std;
 

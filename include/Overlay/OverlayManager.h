@@ -1,9 +1,9 @@
 #ifndef OVERLAYMANAGER_H
 #define OVERLAYMANAGER_H
 
-#include <stdafx.h>
-#include <MultipleInheritance/IOBase.h>
-#include <Overlay/Overlay.h>
+#include "stdafx.h"
+#include "IOBase.h"
+#include "Overlay.h"
 
 ///Make an onChange() event output, so player would have OnHealthChange "healthMonitor" update(send its info in parameter)
 

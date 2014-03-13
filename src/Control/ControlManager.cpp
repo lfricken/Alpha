@@ -1,6 +1,5 @@
 #include "ControlManager.h"
-
-#include <globals.h>
+#include "globals.h"
 
 using namespace std;
 

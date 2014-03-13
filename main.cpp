@@ -1,7 +1,6 @@
-#include <stdafx.h>
-#include <Game/Game.h>
+#include "stdafx.h"
+#include "Game.h"
 
-//sf::ContextSettings settings = {4};
 Game game;
 int scale = 128;
 

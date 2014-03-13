@@ -1,10 +1,10 @@
 #ifndef DCHUNK_H
 #define DCHUNK_H
 
-#include <stdafx.h>
-#include <Universe/GModule.h>
-#include <Universe/Module.h>
-#include <Universe/MultiTileMap.h>
+#include "stdafx.h"
+#include "GModule.h"
+#include "Module.h"
+#include "MultiTileMap.h"
 
 class Intelligence;
 

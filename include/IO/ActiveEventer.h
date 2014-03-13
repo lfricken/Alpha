@@ -1,8 +1,8 @@
 #ifndef ActiveEventer_H
 #define ActiveEventer_H
 
-#include <IO/PassiveEventer.h>
-#include <IO/IOManager.h>
+#include "PassiveEventer.h"
+#include "IOManager.h"
 
 class ActiveEventer : public PassiveEventer
 {

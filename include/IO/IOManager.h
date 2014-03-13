@@ -1,11 +1,10 @@
 #ifndef IOMANAGER_H
 #define IOMANAGER_H
 
-#include <stdafx.h>
-
-#include <MultipleInheritance/IOBase.h>
-#include <Universe/Universe.h>
-#include <Overlay/OverlayManager.h>
+#include "stdafx.h"
+#include "IOBase.h"
+#include "Universe.h"
+#include "OverlayManager.h"
 
 class Game;
 

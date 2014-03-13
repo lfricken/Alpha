@@ -1,8 +1,8 @@
 #ifndef OVERLAY_H
 #define OVERLAY_H
 
-#include <MultipleInheritance/IOBase.h>
-#include <Overlay/Panel.h>
+#include "IOBase.h"
+#include "Panel.h"
 
 class Overlay : public IOBase//an overlay can have panels, which are just collections of buttons
 {

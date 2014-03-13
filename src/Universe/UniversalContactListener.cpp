@@ -1,6 +1,6 @@
-#include <UniversalContactListener.h>
-#include <MultipleInheritance/PhysicsBase.h>
-#include <GModule.h>
+#include "UniversalContactListener.h"
+#include "PhysicsBase.h"
+#include "GModule.h"
 
 void UniversalContactListener::BeginContact(b2Contact* contact)
 {

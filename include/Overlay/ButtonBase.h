@@ -1,7 +1,7 @@
 #ifndef BUTTONBASE_H
 #define BUTTONBASE_H
 
-#include <MultipleInheritance/IOBase.h>
+#include "IOBase.h"
 
 class ButtonBase : public IOBase
 {

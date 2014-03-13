@@ -1,9 +1,9 @@
 #ifndef DGMODULE_H
 #define DGMODULE_H
 
-#include <MultipleInheritance/PhysicsBase.h>
-#include <MultipleInheritance/GraphicsBase.h>
-#include <MultipleInheritance/IOBase.h>
+#include "PhysicsBase.h"
+#include "GraphicsBase.h"
+#include "IOBase.h"
 
 struct GModuleData : public Data
 {

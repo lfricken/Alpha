@@ -1,5 +1,5 @@
-#include <MultipleInheritance/IOBase.h>
-#include <globals.h>
+#include "IOBase.h"
+#include "globals.h"
 
 using namespace std;
 

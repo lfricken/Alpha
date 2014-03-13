@@ -1,8 +1,7 @@
 #ifndef IOBASE_H
 #define IOBASE_H
 
-#include <stdafx.h>
-
+#include "stdafx.h"
 
 /*HOW IO WORKS
 When some event happens, whether its a player presssing a button, or a condition being met, a signal needs to sent to the target to tell it what to do.

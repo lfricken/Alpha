@@ -1,8 +1,8 @@
 #ifndef DMODULE_H
 #define DMODULE_H
 
-#include <MultipleInheritance/IOBase.h>
-#include <MultipleInheritance/PhysicsBase.h>
+#include <IOBase.h>
+#include <PhysicsBase.h>
 
 struct ModuleData : public Data
 {

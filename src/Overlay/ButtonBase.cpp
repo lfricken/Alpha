@@ -1,10 +1,7 @@
 #include "ButtonBase.h"
-#include <globals.h>
-
+#include "globals.h"
 
 using namespace std;
-
-
 
 ButtonBase::ButtonBase() : m_rWindow(game.getGameWindow())
 {

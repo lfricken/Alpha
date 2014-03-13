@@ -1,8 +1,8 @@
 #ifndef GRAPHICSBASE_H
 #define GRAPHICSBASE_H
 
-#include <stdafx.h>
-#include <MultipleInheritance/IOBase.h>
+#include "stdafx.h"
+#include "IOBase.h"
 
 struct GraphicsBaseData
 {

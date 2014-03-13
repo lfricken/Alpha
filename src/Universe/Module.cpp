@@ -1,4 +1,4 @@
-#include "Universe/Module.h"
+#include "Module.h"
 
 Module::Module(ModuleData& data) : PhysicsBase(data.physicsData)
 {

@@ -1,6 +1,7 @@
 #ifndef DEBUGDRAW_H
 #define DEBUGDRAW_H
-#include <stdafx.h>
+
+#include "stdafx.h"
 
 class DebugDraw : public b2Draw
 {

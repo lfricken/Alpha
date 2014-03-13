@@ -1,9 +1,9 @@
 #ifndef CONTROLMANAGER_H
 #define CONTROLMANAGER_H
-#include <stdafx.h>
 
-#include <Universe.h>
-#include <Player.h>
+#include "stdafx.h"
+#include "Universe.h"
+#include "Player.h"
 
 class ControlManager
 {

@@ -1,8 +1,8 @@
 #ifndef PassiveEventer_H
 #define PassiveEventer_H
 
-#include <stdafx.h>
-#include <MultipleInheritance/IOBase.h>
+#include "stdafx.h"
+#include "IOBase.h"
 
 class PassiveEventer//look at ActiveEventer for details.
 {

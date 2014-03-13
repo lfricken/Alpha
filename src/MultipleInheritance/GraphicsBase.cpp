@@ -1,11 +1,10 @@
-#include <MultipleInheritance/GraphicsBase.h>
-
-#include <globals.h>
+#include "GraphicsBase.h"
+#include "globals.h"
 
 using namespace std;
 
 GraphicsBase::GraphicsBase(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset)
-    : m_tilePos(rOffset.x, rOffset.y), m_color(rData.color), m_tileSize(rHalfSize.x*2, rHalfSize.y*2)///IS M_TILEPOS CORRECTLY SET?
+    : m_color(rData.color), m_tileSize(rHalfSize.x*2, rHalfSize.y*2), m_tilePos(rOffset.x, rOffset.y)///IS M_TILEPOS CORRECTLY SET?
 {
     m_pVertex = NULL;
     m_texTileSize = rData.texTileSize;

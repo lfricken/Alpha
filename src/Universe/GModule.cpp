@@ -1,5 +1,5 @@
-#include "Universe/GModule.h"
-#include <globals.h>
+#include "GModule.h"
+#include "globals.h"
 
 using namespace sf;
 

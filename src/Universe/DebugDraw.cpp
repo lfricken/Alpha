@@ -1,6 +1,5 @@
 #include "DebugDraw.h"
-
-#include <globals.h>
+#include "globals.h"
 
 DebugDraw::DebugDraw() : m_rWindow(game.getGameWindow())
 {

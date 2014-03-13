@@ -1,4 +1,4 @@
-#include "Overlay/Panel.h"
+#include "Panel.h"
 
 using namespace std;
 

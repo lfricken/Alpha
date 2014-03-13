@@ -1,10 +1,8 @@
 #ifndef PHYSICSBASE_H
 #define PHYSICSBASE_H
 
-#include <stdafx.h>
-#include <MultipleInheritance/IOBase.h>
-
-
+#include "stdafx.h"
+#include "IOBase.h"
 
 struct PhysicsBaseData
 {

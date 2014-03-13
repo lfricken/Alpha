@@ -1,10 +1,8 @@
 #ifndef MULTITILEMAP_H
 #define MULTITILEMAP_H
 
-
-#include <stdafx.h>
-#include <Universe/GModule.h>
-
+#include "stdafx.h"
+#include "GModule.h"
 
 struct texturedVertices
 {

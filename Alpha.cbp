@@ -13,11 +13,6 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-					<Add directory="include/Universe" />
-					<Add directory="include/Overlay" />
-					<Add directory="include/Game" />
-					<Add directory="include" />
-					<Add directory="include/Control" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -27,12 +22,8 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-std=c++11" />
 					<Add option="-DSFML_STATIC" />
-					<Add directory="include/Universe" />
-					<Add directory="include/Overlay" />
-					<Add directory="include/Game" />
-					<Add directory="include" />
-					<Add directory="include/Control" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -51,6 +42,12 @@
 			<Add directory="../../../Engines/SFML-2_recompile/include" />
 			<Add directory="../../../Engines/Box2D" />
 			<Add directory="include" />
+			<Add directory="include/Control" />
+			<Add directory="include/Universe" />
+			<Add directory="include/IO" />
+			<Add directory="include/Game" />
+			<Add directory="include/Overlay" />
+			<Add directory="include/MultipleInheritance" />
 		</Compiler>
 		<Linker>
 			<Add directory="../../../Engines/SFML-2_recompile/lib" />

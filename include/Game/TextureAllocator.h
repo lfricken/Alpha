@@ -1,6 +1,7 @@
 #ifndef TEXTUREALLOCATOR_H
 #define TEXTUREALLOCATOR_H
-#include <stdafx.h>
+
+#include "stdafx.h"
 
 class TextureAllocator
 {

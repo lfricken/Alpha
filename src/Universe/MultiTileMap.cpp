@@ -1,10 +1,7 @@
-
-
-#include <Universe/MultiTileMap.h>
-#include <globals.h>
+#include "MultiTileMap.h"
+#include "globals.h"
 
 using namespace std;
-
 
 MultiTileMap::MultiTileMap(const MultiTileMap& old)
 {

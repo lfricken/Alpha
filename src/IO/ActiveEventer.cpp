@@ -1,5 +1,5 @@
-#include "IO/ActiveEventer.h"
-#include <globals.h>
+#include "ActiveEventer.h"
+#include "globals.h"
 
 using namespace std;
 

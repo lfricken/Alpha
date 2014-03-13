@@ -1,6 +1,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
-#include <Overlay/ButtonBase.h>
+
+#include "ButtonBase.h"
 
 class Button : public ButtonBase
 {

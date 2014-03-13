@@ -1,7 +1,8 @@
 #ifndef INTELLIGENCE_H
 #define INTELLIGENCE_H
-#include <MultipleInheritance/IOBase.h>
-#include <Chunk.h>
+
+#include "IOBase.h"
+#include "Chunk.h"
 
 class Intelligence : public IOBase
 {

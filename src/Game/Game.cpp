@@ -1,10 +1,8 @@
-#include "Game/Game.h"
-
-#include <globals.h>
-
-#include <Universe/Chunk.h>
-#include <Universe/GModule.h>
-#include <DebugDraw.h>
+#include "Game.h"
+#include "globals.h"
+#include "Chunk.h"
+#include "GModule.h"
+#include "DebugDraw.h"
 
 using namespace std;
 

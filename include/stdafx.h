@@ -7,12 +7,15 @@
 #include <vector>
 #include <string>
 #include <sstream>
-#include <tr1/memory>
 #include <cmath>
+#include <tr1/memory>
 
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
+
 #include <Box2D/Box2D.h>
 
 #define PI 3.1415926

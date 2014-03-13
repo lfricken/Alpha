@@ -94,7 +94,7 @@ Game::Status Game::run()
         /**PHYSICS STEP**/
         m_gameUniverse.physStep();
 
-        /**INPUT**/
+        /**INPUT**////WE need to somehow also factor in tgui!!!
         if(m_spGameControlManager->choiceUpdate())//if we put this before physstep, the camera lags!
             newState = Game::Quit;
 

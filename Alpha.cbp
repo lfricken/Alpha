@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Alpha" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Alpha" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="include/Universe" />
+					<Add directory="include/Overlay" />
+					<Add directory="include/Game" />
+					<Add directory="include" />
+					<Add directory="include/Control" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Alpha" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-DSFML_STATIC" />
+					<Add directory="include/Universe" />
+					<Add directory="include/Overlay" />
+					<Add directory="include/Game" />
+					<Add directory="include" />
+					<Add directory="include/Control" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-lsfml-network-s" />
+					<Add option="-lsfml-audio-s" />
+					<Add option="-lsfml-graphics-s" />
+					<Add option="-lsfml-window-s" />
+					<Add option="-lsfml-system-s" />
+					<Add library="..\..\..\Engines\Box2D\libs\libBox2D.a" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-O3" />
+			<Add option="-Wall" />
+			<Add directory="../../../Engines/SFML-2_recompile/include" />
+			<Add directory="../../../Engines/Box2D" />
+			<Add directory="include" />
+		</Compiler>
+		<Linker>
+			<Add directory="../../../Engines/SFML-2_recompile/lib" />
+		</Linker>
+		<Unit filename="include/Control/Camera.h" />
+		<Unit filename="include/Control/ControlManager.h" />
+		<Unit filename="include/Control/Intelligence.h" />
+		<Unit filename="include/Control/Player.h" />
+		<Unit filename="include/Game/Game.h" />
+		<Unit filename="include/Game/TextureAllocator.h" />
+		<Unit filename="include/IO/ActiveEventer.h" />
+		<Unit filename="include/IO/IOManager.h" />
+		<Unit filename="include/IO/PassiveEventer.h" />
+		<Unit filename="include/MultipleInheritance/GraphicsBase.h" />
+		<Unit filename="include/MultipleInheritance/IOBase.h" />
+		<Unit filename="include/MultipleInheritance/PhysicsBase.h" />
+		<Unit filename="include/Overlay/Button.h" />
+		<Unit filename="include/Overlay/ButtonBase.h" />
+		<Unit filename="include/Overlay/Overlay.h" />
+		<Unit filename="include/Overlay/OverlayManager.h" />
+		<Unit filename="include/Overlay/Panel.h" />
+		<Unit filename="include/Universe/Chunk.h" />
+		<Unit filename="include/Universe/DebugDraw.h" />
+		<Unit filename="include/Universe/GModule.h" />
+		<Unit filename="include/Universe/Module.h" />
+		<Unit filename="include/Universe/MultiTileMap.h" />
+		<Unit filename="include/Universe/UniversalContactListener.h" />
+		<Unit filename="include/Universe/Universe.h" />
+		<Unit filename="include/globals.h" />
+		<Unit filename="include/stdafx.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="src/Control/Camera.cpp" />
+		<Unit filename="src/Control/ControlManager.cpp" />
+		<Unit filename="src/Control/Intelligence.cpp" />
+		<Unit filename="src/Control/Player.cpp" />
+		<Unit filename="src/Game/Game.cpp" />
+		<Unit filename="src/Game/TextureAllocator.cpp" />
+		<Unit filename="src/IO/ActiveEventer.cpp" />
+		<Unit filename="src/IO/IOManager.cpp" />
+		<Unit filename="src/IO/PassiveEventer.cpp" />
+		<Unit filename="src/MultipleInheritance/GraphicsBase.cpp" />
+		<Unit filename="src/MultipleInheritance/IOBase.cpp" />
+		<Unit filename="src/MultipleInheritance/PhysicsBase.cpp" />
+		<Unit filename="src/Overlay/Button.cpp" />
+		<Unit filename="src/Overlay/ButtonBase.cpp" />
+		<Unit filename="src/Overlay/Overlay.cpp" />
+		<Unit filename="src/Overlay/OverlayManager.cpp" />
+		<Unit filename="src/Overlay/Panel.cpp" />
+		<Unit filename="src/Universe/Chunk.cpp" />
+		<Unit filename="src/Universe/DebugDraw.cpp" />
+		<Unit filename="src/Universe/GModule.cpp" />
+		<Unit filename="src/Universe/Module.cpp" />
+		<Unit filename="src/Universe/MultiTileMap.cpp" />
+		<Unit filename="src/Universe/UniversalContactListener.cpp" />
+		<Unit filename="src/Universe/Universe.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

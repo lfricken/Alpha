@@ -8,6 +8,11 @@ IOManager& IOBase::m_rIOManager = game.getGameIOManager();
 IOBase::IOBase()//unfinished
 {
 }
+IOBase::IOBase(const IOBaseData& data)
+{
+    m_name = data.name;
+    m_type = data.type;
+}
 IOBase::~IOBase()//unfinished
 {
 }
@@ -15,42 +20,28 @@ IOManager& IOBase::getIOManager()
 {
     return m_rIOManager;
 }
-bool IOBase::input(Package& rPackage)//unfinished
+void IOBase::setName(const string& name)//finished
 {
-    if(rPackage.commandType == CORE)
-        return coreInput(rPackage);
-    else if(rPackage.commandType == SPECIAL)
-        return specialInput(rPackage);
-    else
-        return false;
+    m_name = name;
 }
-void IOBase::setTargetName(string name)//finished
+const string& IOBase::getName() const//finished
 {
-    m_targetName = name;
+    return m_name;
 }
-const string& IOBase::getTargetName() const//finished
+unsigned int IOBase::getID() const
 {
-    return m_targetName;
+    return m_ID;
 }
 void IOBase::damage(int damage)
 {
 }
-bool IOBase::coreInput(Package& rPackage)
-{
-    if(rPackage.command == "Damage")
-    {
-        damage(atof(rPackage.parameter.c_str()));
-        return true;
-    }
-    else if(rPackage.command == "Activate1")
-    {
-        return false;
-        ///not done with that stuff yet
-    }
-    else
-        return false;
-}
-bool IOBase::specialInput(Package& rPackage)
-{
-    return false;
-}
+void IOBase::input_1(const std::string& rInput) {}
+void IOBase::input_2(const std::string& rInput) {}
+void IOBase::input_3(const std::string& rInput) {}
+void IOBase::input_4(const std::string& rInput) {}
+void IOBase::input_5(const std::string& rInput) {}
+void IOBase::input_6(const std::string& rInput) {}
+void IOBase::input_7(const std::string& rInput) {}
+void IOBase::input_8(const std::string& rInput) {}
+void IOBase::input_9(const std::string& rInput) {}
+void IOBase::input_10(const std::string& rInput) {}

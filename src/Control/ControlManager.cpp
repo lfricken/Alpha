@@ -8,7 +8,7 @@ ControlManager::ControlManager() : m_rUniverse(game.getGameUniverse()), m_rWindo
 {
     ///We actually should load this from a file
     m_localPlayerList.push_back(Player(1));
-    m_localPlayerList.front().setTargetName("player_1");
+    m_localPlayerList.front().setName("player_1");
     m_localPlayerList.front().setPlayerMode("god");
 
     InputConfig& rInputConfig = m_localPlayerList.front().getInputConfig();
@@ -42,7 +42,7 @@ Player& ControlManager::getPlayer(const std::string& target)
 {
     for(vector<Player>::iterator it = m_localPlayerList.begin(); it != m_localPlayerList.end(); ++it)
     {
-        if(it->getTargetName() == target)
+        if(it->getName() == target)
             return *it;
     }
     cout << "\nThere was an error finding player \"" << target << "\".";

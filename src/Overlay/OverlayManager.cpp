@@ -27,7 +27,7 @@ IOBase* OverlayManager::getTarget(string target)//finished
 {
     for(vector<Overlay>::iterator it = m_overlayList.begin(); it != m_overlayList.end(); ++it)
     {
-        if(it->getTargetName() == target)
+        if(it->getName() == target)
         {
             IOBase* pIOBase = &(*it);//pointer
             return pIOBase;

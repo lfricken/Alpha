@@ -4,8 +4,9 @@
 #include <IOBase.h>
 #include <PhysicsBase.h>
 
-struct ModuleData : public Data
+struct ModuleData
 {
+    IOBaseData baseData;
     PhysicsBaseData physicsData;
 };
 

@@ -24,6 +24,13 @@
 /** Coding Nomenclature and Standard Practices
 
 ///help do we use protected or private for inheritance?
+INCLUDING:
+Always have an include guard.
+Never include .cpp files!
+use #include "filename" for files we created
+use #include <filename> for files we didn't create
+#define constants go in stdafx.h
+
 COMMENTING:
 If you are creating, dereferencing, or otherwise interacting with pointers, put //pointer; right after it, plus anything else that needs to be described
 If there is something that needs to be created in the future, put ///code here
@@ -83,11 +90,12 @@ vertices    vert
 
 
 PREFIX: SITUATION:              EXAMPLE:
+f_  private member function     f_link();
 m_  private member variable     m_yourMom;
 r   variable is a reference     rYourMom;
 p   variable is a pointer       pBadBear;
 sp  variable is a smart ptr     spBadBear;
-it_ variable is an iterator     it_data; //if its the only iterator in the loop, just use it
+it_ variable is an iterator     it_data; //if its the only iterator in the loop, just use "it" for the name
 
 multiple: m_pVar, m_rVar
 

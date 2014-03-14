@@ -20,8 +20,6 @@ public:
     GraphicsBase(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset);
     virtual ~GraphicsBase();
 
-    virtual bool graphicsInput(Package& rPackage);/**returns true if it got called**/
-
     virtual void setTexName(const std::string& rTexName);
     virtual const std::string getTexName() const;
 

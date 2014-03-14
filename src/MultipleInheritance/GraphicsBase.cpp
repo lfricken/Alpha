@@ -15,15 +15,6 @@ GraphicsBase::~GraphicsBase()
 {
 }
 
-bool GraphicsBase::graphicsInput(Package& rPackage)
-{
-    if(rPackage.command == "IncTexTile")
-    {
-        incTexTile();
-        return true;
-    }
-    return false;
-}
 void GraphicsBase::setTexName(const string& texName)
 {
     m_texName = texName;///UPDATE OUR TEXTURE????

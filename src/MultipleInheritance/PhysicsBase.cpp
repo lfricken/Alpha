@@ -7,7 +7,7 @@ using namespace std;
 b2World& PhysicsBase::m_rPhysWorld = game.getGameUniverse().getWorld();
 
 
-PhysicsBase::PhysicsBase(PhysicsBaseData& data)// : m_rPhysWorld(rPhysWorld)
+PhysicsBase::PhysicsBase(const PhysicsBaseData& data, const IOBaseData& baseData) : IOBase(baseData)
 {
     if (data.shape == PhysicsBaseData::Box)
         m_shape.SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//set our shape
@@ -80,17 +80,15 @@ PhysicsBase::~PhysicsBase()
 {
 
 }
-bool PhysicsBase::physicsInput(Package& rPackage)
-{
-    return false;
-}
 bool PhysicsBase::collide(void* other)
 {
+    /*
     Package message;
     message.commandType = GRAPHICS;
     message.command = "IncTexTile";
     static_cast<IOBase*>(other)->input(message);
     return true;///why do we return true? should we be returning anything at all?
+    */
 }
 b2World& PhysicsBase::getWorld()
 {

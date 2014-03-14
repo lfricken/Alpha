@@ -4,6 +4,7 @@
 #include "IOManager.h"
 #include "TextureAllocator.h"
 #include "ControlManager.h"
+#include "Courier.h"
 
 class Game : public IOBase//holds a universe, OverlayManager, and IOManager, and other stuff
 {
@@ -45,7 +46,7 @@ private:
     sf::ContextSettings m_settings;///how can we edit the settings of the window?
     sf::Image m_icon;
 
-    void f_load(std::string stuff);
+    void f_load(const std::string& stuff);
     std::vector<Courier*> m_allCouriers;///this problem is so old we almost forgot about it
     ///IN order to avoid IOManager having to search for objects during runtime, it will find them
     ///at load time, and give them pointers to the IOBase part of the target, so later, it can just

@@ -53,27 +53,29 @@ Chunk::~Chunk()/**Don't destroy us in the middle of a physics step!**/
 }
 
 
-GModule* Chunk::getGModule(std::string targetName)
+GModule* Chunk::getGModule(const std::string& targetName)
 {
     for(vector<tr1::shared_ptr<GModule> >::const_iterator it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
     {
-        if((*it)->getTargetName() == targetName)
+        if((*it)->getName() == targetName)
             return &(**it);
     }
-    cout << "\nTarget " << targetName << " not found in chunk " << m_targetName;
+    cout << "\nTarget " << targetName << " not found in chunk \"" << m_name << "\":[" << m_ID << "]";
+        ///ERROR LOG
     return NULL;
 }
-Module* Chunk::getModule(std::string targetName)
+Module* Chunk::getModule(const std::string& targetName)
 {
     for(vector<tr1::shared_ptr<Module> >::const_iterator it = m_ModuleSPList.begin(); it != m_ModuleSPList.end(); ++it)
     {
-        if((*it)->getTargetName() == targetName)
+        if((*it)->getName() == targetName)
             return &(**it);
     }
-    cout << "\nTarget " << targetName << " not found in chunk " << m_targetName;
+    cout << "\nTarget " << targetName << " not found in chunk \"" << m_name << "\":[" << m_ID << "]";
+    ///ERROR LOG
     return NULL;
 }
-IOBase* Chunk::getIOBase(std::string targetName)
+IOBase* Chunk::getIOBase(const std::string& targetName)
 {
     IOBase* ptr = getGModule(targetName);
     if(ptr != NULL)
@@ -93,11 +95,12 @@ void Chunk::add(vector<GModuleData>& rDataList)
         GModule* ptr;
         it_data->physicsData.pBody = m_pBody;
 
-        if(it_data->type == "GModule")
+        if(it_data->baseData.type == "GModule")
             ptr = static_cast<GModule*>(new GModule(*it_data));
         else
         {
-            cout << "\nModule of type " << it_data->type << " was not found.";
+            cout << "\nModule of type " << it_data->baseData.type << " was not found.";
+            ///ERROR LOG
             ptr = new GModule(*it_data);
         }
         m_GModuleSPList.push_back(tr1::shared_ptr<GModule>(ptr));
@@ -125,11 +128,11 @@ void Chunk::add(vector<ModuleData>& rDataList)
         Module* ptr;
         it_data->physicsData.pBody = m_pBody;
 
-        if(it_data->type == "Module")
+        if(it_data->baseData.type == "Module")
             ptr = static_cast<Module*>(new Module(*it_data));
         else
         {
-            cout << "\nModule of type " << it_data->type << " was not found.";
+            cout << "\nModule of type " << it_data->baseData.type << " was not found.";
             ptr = new Module(*it_data);
         }
         m_ModuleSPList.push_back(tr1::shared_ptr<Module>(ptr));

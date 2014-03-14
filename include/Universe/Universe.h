@@ -12,10 +12,14 @@ public:
     ~Universe();
 
 
-    IOBase* getTarget(std::string target);//returns a pointer to the target object
-    Chunk* getPhysTarget(std::string target);
-    Chunk* getForward();///gets the next element
-    Chunk* getBackward();///gets the next backward element
+    IOBase* getTarget(const std::string& target);
+    IOBase* getTarget(unsigned int target);
+    Chunk* getPhysTarget(const std::string& target);
+    Chunk* getPhysTarget(unsigned int target);
+    ///same with graphics
+
+    Chunk* getForwardPhys();///gets the next element
+    Chunk* getBackwardPhys();///gets the next backward element
     ///Whatever We Call This* getGfxTarget(std::string target);
 
     b2World& getWorld();

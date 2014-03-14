@@ -2,18 +2,17 @@
 
 using namespace std;
 
-PassiveEventer::PassiveEventer()//finished
+PassiveEventer::PassiveEventer() : m_isActive(false)
 {
-    m_isActive = false;
 }
 
-PassiveEventer::~PassiveEventer()//finished
+PassiveEventer::~PassiveEventer()
 {
 }
-void PassiveEventer::event(const string variable)//finished
+void PassiveEventer::event(const string& variable, Variable variableName)
 {
 }
-bool PassiveEventer::isActive() const//finished
+bool PassiveEventer::isActive() const
 {
     return m_isActive;
 }

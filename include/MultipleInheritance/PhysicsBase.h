@@ -26,10 +26,9 @@ struct PhysicsBaseData
 class PhysicsBase : public IOBase
 {
 public:///MAYBE we shouldn't have this many functions!!!
-    PhysicsBase(PhysicsBaseData& data);
+    PhysicsBase(const PhysicsBaseData& data, const IOBaseData& baseData);
     virtual ~PhysicsBase();
 
-    virtual bool physicsInput(Package& rPackage);
     virtual bool collide(void* other);
 
     virtual b2World& getWorld();

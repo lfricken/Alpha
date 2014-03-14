@@ -23,7 +23,8 @@ bool Intelligence::hasTarget() const//done
 void Intelligence::linkControl(Chunk* target)
 {
     f_setTarget(target);
-    m_pTarget->f_setController(this);
+    if(target != NULL)
+        m_pTarget->f_setController(this);
 }
 void Intelligence::breakControl()//done
 {

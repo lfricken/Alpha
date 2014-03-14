@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Universe::Universe() : m_physWorld(b2Vec2(0,0))
+Universe::Universe() : IOBase(IOBaseData{"Universe", "Universe"}), m_physWorld(b2Vec2(0,0))
 {
     m_normalDraw = true;
     m_notPaused = true;
@@ -18,23 +18,10 @@ Universe::~Universe()///unfinished
 {
 
 }
-void Universe::removeBack()
-{
-    m_physList.pop_back();
-}
-void Universe::draw()///unfinished
-{
-    if(m_normalDraw)
-    {
-        for(vector<tr1::shared_ptr<Chunk> >::iterator it = m_physList.begin(); it != m_physList.end(); ++it)
-        {
-            (*it)->draw();
-        }
-    }
-    else
-        m_physWorld.DrawDebugData();
-}
-IOBase* Universe::getTarget(string target)///unfinished
+/**=====GET_TARGETS=====**/
+/**=================**/
+/**=================**/
+IOBase* Universe::getTarget(const string& target)///unfinished
 {
     /**Loop through everything and find the target**/
     /*
@@ -47,20 +34,34 @@ IOBase* Universe::getTarget(string target)///unfinished
     return NULL;
 
 }
-Chunk* Universe::getPhysTarget(std::string target)
+IOBase* Universe::getTarget(unsigned int target)///UNFINISHED
+{
+    return NULL;
+}
+Chunk* Universe::getPhysTarget(const std::string& target)
 {
     for(vector<std::tr1::shared_ptr<Chunk> >::iterator it = m_physList.begin(); it != m_physList.end(); ++it)
     {
-        if((*it)->getTargetName() == target)
+        if((*it)->getName() == target)
             return &(**it);
     }
     return &(*m_physList.back());
 }
-b2World& Universe::getWorld()
+Chunk* Universe::getPhysTarget(unsigned int target)///UNFINISHED
 {
-    return m_physWorld;
+    return NULL;
 }
-void Universe::add(Chunk* pChunk)///unfinished
+/**=================**/
+/**=================**/
+/**=====GET_TARGETS=====**/
+
+
+
+
+/**=====ADD=====**/
+/**=================**/
+/**=================**/
+void Universe::add(Chunk* pChunk)
 {
     m_physList.push_back(tr1::shared_ptr<Chunk>(pChunk));
 }
@@ -68,9 +69,45 @@ void Universe::add(tr1::shared_ptr<Chunk> spChunk)
 {
     m_physList.push_back(spChunk);
 }
+/**=================**/
+/**=================**/
+/**=====ADD=====**/
+
+
+
+
+
+
+/**=====DRAWING=====**/
+/**=================**/
+/**=================**/
+void Universe::draw()///unfinished
+{
+    if(m_normalDraw)
+    {
+        for(vector<tr1::shared_ptr<Chunk> >::iterator it = m_physList.begin(); it != m_physList.end(); ++it)
+        {
+            (*it)->draw();
+        }
+    }
+    else
+        m_physWorld.DrawDebugData();
+}
 void Universe::toggleDebugDraw()
 {
     m_normalDraw = !m_normalDraw;
+}
+/**=================**/
+/**=================**/
+/**=====DRAWING=====**/
+
+
+/**=================**/
+/**=================**/
+/**=====OTHER=====**/
+b2World& Universe::getWorld()
+{
+    return m_physWorld;
 }
 void Universe::togglePause()
 {
@@ -81,3 +118,10 @@ void Universe::physStep()
     if(m_notPaused)
         m_physWorld.Step(m_timeStep, m_velocityIterations, m_positionIterations);///this needs to be linked to frame rate
 }
+void Universe::removeBack()
+{
+    m_physList.pop_back();
+}
+/**=====OTHER=====**/
+/**=================**/
+/**=================**/

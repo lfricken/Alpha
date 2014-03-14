@@ -113,8 +113,16 @@ Game::Status Game::run()
 
 
 
-void Game::f_load(std::string stuff)///ITS NOT CLEAR WHAT WE ARE LOADING EXACTLY
+void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING EXACTLY
 {
+
+    ///Go through file sections
+    ///Intelligences
+    ///Universe Entities
+    ///Menu Items???
+
+
+
     /**STATIC CHUNKS**/
 
     float solidPos = -20.0;
@@ -125,7 +133,7 @@ void Game::f_load(std::string stuff)///ITS NOT CLEAR WHAT WE ARE LOADING EXACTLY
 
     vector<GModuleData> gModuleList3;
     GModuleData solidFixture;
-    solidFixture.type = "GModule";
+    solidFixture.baseData.type = "GModule";
     solidFixture.physicsData.shape = PhysicsBaseData::Octagon;
     solidFixture.physicsData.density = 1.0f;
     solidFixture.physicsData.friction = 0.4f;
@@ -149,11 +157,11 @@ void Game::f_load(std::string stuff)///ITS NOT CLEAR WHAT WE ARE LOADING EXACTLY
     Chunk* chunk1 = new Chunk(b2Vec2(20, -20));
     //Chunk chunk(b2Vec2(-5, -5));///help is chunk and module destructor set up?
 
-    chunk->setTargetName("ship_1");
-    chunk1->setTargetName("ship_2");
+    chunk->setName("ship_1");
+    chunk1->setName("ship_2");
 
     GModuleData data;
-    data.type = "GModule";
+    data.baseData.type = "GModule";
     data.physicsData.density = 1.0f;
     data.physicsData.friction = 0.4f;
     data.physicsData.halfSize = b2Vec2(0.25, 0.25);
@@ -167,7 +175,7 @@ void Game::f_load(std::string stuff)///ITS NOT CLEAR WHAT WE ARE LOADING EXACTLY
     data.graphicsData.color = sf::Color::White;
 
     ModuleData mdata;
-    mdata.type = "Module";
+    mdata.baseData.type = "Module";
     mdata.physicsData.density = 1.0f;
     mdata.physicsData.friction = 0.4f;
     mdata.physicsData.halfSize = b2Vec2(0.25, 0.25);
@@ -193,7 +201,7 @@ void Game::f_load(std::string stuff)///ITS NOT CLEAR WHAT WE ARE LOADING EXACTLY
             moduleList1.push_back(data);
         }
     }
-    data.targetName = "GM01";
+    data.baseData.name = "GM01";
     data.physicsData.offset.y = 5;
     moduleList1.push_back(data);
     moduleList2.push_back(mdata);

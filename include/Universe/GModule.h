@@ -5,8 +5,9 @@
 #include "GraphicsBase.h"
 #include "IOBase.h"
 
-struct GModuleData : public Data
+struct GModuleData
 {
+    IOBaseData baseData;
     PhysicsBaseData physicsData;
     GraphicsBaseData graphicsData;
 };
@@ -14,11 +15,8 @@ struct GModuleData : public Data
 class GModule : public PhysicsBase, public GraphicsBase
 {
 public:
-    GModule(GModuleData& data);
-    GModule(const GModule& old);///may be obsolete, and bad, should probably delete this
+    GModule(const GModuleData& data);
     virtual ~GModule();
-
-    virtual bool input(Package& rPackage);
 
 protected:
 

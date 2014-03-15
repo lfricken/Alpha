@@ -1,8 +1,13 @@
-#include "Game.h"
-#include "globals.h"
+/**WONT BE NEEDED**/
 #include "Chunk.h"
 #include "GModule.h"
 #include "DebugDraw.h"
+/**WONT BE NEEDED**/
+
+#include "Game.h"
+#include "globals.h"
+#include "IOManager.h"
+#include "ControlManager.h"
 
 using namespace std;
 
@@ -37,6 +42,14 @@ sf::RenderWindow& Game::getGameWindow()
 TextureAllocator& Game::getTextureAllocator()
 {
     return m_texAlloc;
+}
+Universe& Game::getGameUniverse()
+{
+    return m_gameUniverse;
+}
+OverlayManager& Game::getGameOverlayManager()
+{
+    return m_gameOverlayManager;
 }
 Game::Status Game::client()
 {

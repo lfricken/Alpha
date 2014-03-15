@@ -2,8 +2,8 @@
 #define ActiveEventer_H
 
 #include "PassiveEventer.h"
-#include "IOManager.h"
-#include "VariableNames.h"
+
+class IOManager;
 
 class ActiveEventer : public PassiveEventer
 {

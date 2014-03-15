@@ -1,7 +1,8 @@
 #ifndef PACKAGE_H
 #define PACKAGE_H
 
-#include "IOBase.h"
+#include "stdafx.h"
+class IOBase;
 
 class Package
 {

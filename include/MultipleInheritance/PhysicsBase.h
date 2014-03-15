@@ -47,8 +47,11 @@ public:///MAYBE we shouldn't have this many functions!!!
     virtual const b2FixtureDef& getFixtureDef() const;
     virtual b2FixtureDef& getFixtureDef();
 
-
+    /**OVERRIDE**/
+    virtual int damage(unsigned int damage);
 protected:
+    HealthData m_health;
+
     b2PolygonShape m_shape;
     b2FixtureDef m_fixtureDef;
 

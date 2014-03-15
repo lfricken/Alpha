@@ -18,9 +18,8 @@ public:
     GModule(const GModuleData& data);
     virtual ~GModule();
 
-    virtual bool damage(int damage);
+    virtual int damage(unsigned int);
 protected:
-    HealthData s_health;
 
 private:
 };

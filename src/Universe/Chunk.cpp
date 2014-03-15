@@ -1,5 +1,6 @@
 #include "Chunk.h"
 #include "globals.h"
+#include "Intelligence.h"
 
 using namespace std;
 b2World& Chunk::m_rPhysWorld = game.getGameUniverse().getWorld();

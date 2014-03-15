@@ -2,7 +2,7 @@
 #define IOBASE_H
 
 #include "stdafx.h"
-#include "Condition.h"
+#include "ActiveEventer.h"
 
 /*HOW IO WORKS
 When some event happens, whether its a player presssing a button, or a condition being met, a signal needs to sent to the target to tell it what to do.
@@ -38,7 +38,7 @@ public:
     unsigned int getID() const;//gets the name of this entity
 
 
-    virtual bool damage(int damage);
+    virtual int damage(unsigned int damage);
     virtual void input_1(const std::string& rInput);
     virtual void input_2(const std::string& rInput);
     virtual void input_3(const std::string& rInput);

@@ -2,10 +2,10 @@
 #define IOMANAGER_H
 
 #include "stdafx.h"
-#include "Package.h"
-#include "Universe.h"
-#include "OverlayManager.h"
 
+class Package;
+class Universe;
+class OverlayManager;
 class Game;
 
 class IOManager

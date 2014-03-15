@@ -1,25 +1,47 @@
-
 #ifndef VARIABLE_H
 #define VARIABLE_H
 
+#include "stdafx.h"
+
 enum Variable
 {
-    CHANGE = 0,
-    HEALTH,
+    HEALTH = 0,
     TEXTURE,
     TEXCOORDS,
 };
-struct Int_Attribute
+
+/**ATTRIBUTE**/
+class Attribute
 {
-    Int_Attribute(Variable a, int b) : varName(a), value(b) {}
+public:
+    Attribute(Variable a) : varName(a) {}
     Variable varName;
-    int value;
 };
 
-
-struct HealthData : public Int_Attribute
+/**VAR ATTRIBUTE**/
+class Int_Attribute : public Attribute
 {
+public:
+    Int_Attribute(Variable a, int b) : Attribute(a), value(b) {}
+    int value;
+};
+class Float_Attribute : public Attribute
+{
+public:
+    Float_Attribute(Variable a, float b) : Attribute(a), value(b) {}
+    float value;
+};
+
+/**SPECIFIC ATTRIBUTE**/
+class HealthData : public Int_Attribute
+{
+public:
     HealthData() : Int_Attribute(HEALTH, 100), armor(0) {}
+    int takeDamage(unsigned int d)
+    {
+        value -= abs(d-armor);
+        return value;
+    }
     int armor;
 };
 

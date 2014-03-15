@@ -1,6 +1,5 @@
 #include "IOBase.h"
 #include "globals.h"
-#include "ActiveEventer.h"
 
 
 IOManager& IOBase::m_rIOManager = game.getGameIOManager();
@@ -59,9 +58,9 @@ void IOBase::f_setID(unsigned int newID)
 {
     m_ID = newID;
 }
-bool IOBase::damage(int damage)
+int IOBase::damage(unsigned int damage)
 {
-    return true;
+    return 1;
 }
 void IOBase::input_1(const std::string& rInput) {}
 void IOBase::input_2(const std::string& rInput) {}

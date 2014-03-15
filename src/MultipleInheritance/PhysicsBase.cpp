@@ -137,3 +137,18 @@ void PhysicsBase::setBody(b2Body* pBody)
 {
     m_pBody = pBody;
 }
+
+
+int PhysicsBase::damage(unsigned int damage)
+{
+    m_health.takeDamage(damage);
+
+    if(m_spEventer->amount() != 0)
+    {
+        std::ostringstream convert;   // stream used for the conversion
+        convert << m_health.value;      // insert the textual representation of 'Number' in the characters in the stream
+        m_spEventer->event(convert.str(), m_health.varName);
+    }
+
+    return m_health.value;
+}

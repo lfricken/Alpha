@@ -1,7 +1,10 @@
 #include "ActiveEventer.h"
-#include "globals.h"
 
+
+#include "globals.h"
+#include "IOManager.h"
 using namespace std;
+
 
 IOManager& ActiveEventer::m_rIOManager = game.getGameIOManager();
 

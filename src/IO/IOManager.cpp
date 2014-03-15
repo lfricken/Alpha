@@ -1,18 +1,7 @@
+#include "IOManager.h"
 #include "Game.h"
 
 using namespace std;
-
-Universe& Game::getGameUniverse()
-{
-    return m_gameUniverse;
-}
-OverlayManager& Game::getGameOverlayManager()
-{
-    return m_gameOverlayManager;
-}
-
-
-
 
 IOManager::IOManager(Game& game) : m_rUniverse(game.getGameUniverse()), m_rOverlayManager(game.getGameOverlayManager())
 {

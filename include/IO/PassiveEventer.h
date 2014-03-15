@@ -1,11 +1,7 @@
 #ifndef PassiveEventer_H
 #define PassiveEventer_H
 
-#include "stdafx.h"
-#include "IOBase.h"
-#include "VariableNames.h"
 #include "Courier.h"
-
 
 class PassiveEventer//look at ActiveEventer for details.
 {

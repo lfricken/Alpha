@@ -42,6 +42,7 @@ private:
 
     bool m_notPaused;
     bool m_normalDraw;
+    unsigned int m_currentIDCount;//used to assign id's to things
 
     float m_timeStep;///this needs to be linked to frame rate
     int m_velocityIterations;

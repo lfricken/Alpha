@@ -2,7 +2,30 @@
 
 using namespace std;
 
-Universe::Universe() : IOBase(IOBaseData{"Universe", "Universe"}), m_physWorld(b2Vec2(0,0))
+
+template<class S, class R,typename T>
+int binary_find(vector<S>& container, T(R::*f)() const, T id)
+{
+    unsigned int first = 0;
+    unsigned int last = container.size()-1;
+    unsigned int middle = (first+last)/2;
+
+    while(first <= last)
+    {
+        if (((*container[middle]).*f)() < id)
+            first = middle + 1;
+        else if (((*container[middle]).*f)() == id)
+            return middle;
+        else
+            last = middle - 1;
+
+        middle = (first + last)/2;
+    }
+    if (first > last)
+        return -1;
+}
+
+Universe::Universe() : IOBase(IOBaseData {"Universe", "Universe"}), m_physWorld(b2Vec2(0,0))
 {
     m_normalDraw = true;
     m_notPaused = true;
@@ -24,19 +47,20 @@ Universe::~Universe()///unfinished
 IOBase* Universe::getTarget(const string& target)///unfinished
 {
     /**Loop through everything and find the target**/
-    /*
-    for(vector<IOBase*>::iterator it = m_namedObjects.begin(); it != m_namedObjects.end(); ++it)
+    for(vector<std::tr1::shared_ptr<Chunk> >::iterator it = m_physList.begin(); it != m_physList.end(); ++it)
     {
-        if((*it)->getTargetName() == target)
-            return (*it);
+        if((*it)->getName() == target)
+            return &(**it);
     }
-    */
     return NULL;
-
 }
-IOBase* Universe::getTarget(unsigned int target)///UNFINISHED
+IOBase* Universe::getTarget(unsigned int targetID)///UNFINISHED
 {
-    return NULL;
+    int location = binary_find(m_physList, &Chunk::getID, targetID);//<std::tr1::shared_ptr<Chunk>, Chunk, unsigned int>
+    if(location == -1)
+        return NULL;
+    else
+        return &(*m_physList[location]);
 }
 Chunk* Universe::getPhysTarget(const std::string& target)
 {
@@ -63,10 +87,12 @@ Chunk* Universe::getPhysTarget(unsigned int target)///UNFINISHED
 /**=================**/
 void Universe::add(Chunk* pChunk)
 {
+    pChunk->f_setID(++m_currentIDCount);
     m_physList.push_back(tr1::shared_ptr<Chunk>(pChunk));
 }
 void Universe::add(tr1::shared_ptr<Chunk> spChunk)
 {
+    spChunk->f_setID(++m_currentIDCount);
     m_physList.push_back(spChunk);
 }
 /**=================**/

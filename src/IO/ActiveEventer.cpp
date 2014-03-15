@@ -5,36 +5,33 @@ using namespace std;
 
 IOManager& ActiveEventer::m_rIOManager = game.getGameIOManager();
 
-ActiveEventer::ActiveEventer()//unfinished
+ActiveEventer::ActiveEventer()
 {
-    m_isActive = true;
-    //more stuff?
 }
 
-ActiveEventer::~ActiveEventer()//unfinished
+ActiveEventer::~ActiveEventer()
 {
-    //dtor
 }
-void ActiveEventer::add(const Courier& rCourier)//finished
+void ActiveEventer::add(std::tr1::shared_ptr<Courier> spCourier)
 {
-    m_courierList.push_back(rCourier);//adds the courier passed in to our list of couriers to be evented
+    m_spCourierMap[spCourier->condition.getVariableName()].push_back(spCourier);
 }
-int ActiveEventer::amount() const//finished
+int ActiveEventer::amount() const
 {
-    return m_courierList.size();
+    return m_spCourierMap.size();
 }
-void ActiveEventer::event(const std::string& variable, Variable variableName)//unfinished OVERLOAD me for floats, doubles, integers, and strings
+void ActiveEventer::event(const std::string& variable, Variable variableName)
 {
-    //loop over the conditions to see if they got activated using check, and if so, send them, if not, dont, destroy them if necessary
-    for(vector<Courier>::iterator it = m_courierList.begin(); it != m_courierList.end(); ++it)
+    vec& rVector = m_spCourierMap[variableName];//vec is defined in class
+    for(vec::iterator it = rVector.begin(); it != rVector.end(); ++it)
     {
-        if(it->condition.evaluate(variable))//if the condition was met
+        if((*it)->condition.evaluate(variable))//if the condition was met
         {
-            m_rIOManager.recieve(it->package);//send it to the IOManager to deal with
-            if(!(it->condition.isRepeatable()))//and if its not repeatable, remove it from our list
+            m_rIOManager.recieve((*it)->package);//send it to the IOManager to deal with
+            if(!((*it)->condition.isRepeatable()))//and if its not repeatable, remove it from our list
             {
-                m_courierList.erase(it);//pointer
-                --it;///MAJOR POINTER PROBLEM, WE WILL GET OUT OF SCOPE?
+                rVector.erase(it);//pointer
+                --it;///MAJOR POINTER PROBLEM, WE WILL GET OUT OF SCOPE POSSIBLY?
             }
         }
     }

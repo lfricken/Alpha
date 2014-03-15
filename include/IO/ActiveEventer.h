@@ -3,7 +3,6 @@
 
 #include "PassiveEventer.h"
 #include "IOManager.h"
-#include "Courier.h"
 #include "VariableNames.h"
 
 class ActiveEventer : public PassiveEventer
@@ -13,12 +12,14 @@ public:
     virtual ~ActiveEventer();
 
     int amount() const;
-    void add(const Courier& courier);//gets sent a courier and puts it into its vector to be checked later
+    void add(std::tr1::shared_ptr<Courier> spCourier);//gets sent a courier and puts it into its vector to be checked later
 
     void event(const std::string& variable, Variable variableName);
 
 protected:
-    std::vector<Courier> m_courierList;//the list of Couriers held by this eventer (each eventer is specific to a small group, or 1, variables in an entity
+    typedef std::vector<std::tr1::shared_ptr<Courier> > vec;
+    std::map<Variable, vec> m_spCourierMap;
+  //  std::vector<std::tr1::shared_ptr<Courier> > m_spCourierList;//the list of Couriers held by this eventer (each eventer is specific to a small group, or 1, variables in an entity
     static IOManager& m_rIOManager;//a reference to the world io manager
 private:
 };

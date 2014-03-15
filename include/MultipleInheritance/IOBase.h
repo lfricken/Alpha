@@ -13,6 +13,8 @@ In addition, Universe and OverlayManager need to have the input function so butt
 
 class IOManager;
 class IOBase;
+struct Courier;
+class PassiveEventer;
 
 struct IOBaseData
 {
@@ -25,7 +27,10 @@ public:
     IOBase();
     IOBase(const IOBaseData& data);
     virtual ~IOBase();
+    void initialize(const IOBaseData& data);
 
+    void addCouriers(std::vector<std::tr1::shared_ptr<Courier> >& spCourierList);
+    std::tr1::shared_ptr<PassiveEventer> getEventer();
 
     virtual IOManager& getIOManager();
     void setName(const std::string& name);//sets the name of this entity
@@ -33,7 +38,7 @@ public:
     unsigned int getID() const;//gets the name of this entity
 
 
-    virtual void damage(int damage);
+    virtual bool damage(int damage);
     virtual void input_1(const std::string& rInput);
     virtual void input_2(const std::string& rInput);
     virtual void input_3(const std::string& rInput);
@@ -52,6 +57,7 @@ protected:
     std::string m_name;//used by IO manager to locate specific named objects
     unsigned int m_ID;
 
+    std::tr1::shared_ptr<PassiveEventer> m_spEventer;
     static IOManager& m_rIOManager;///should we be using static?
 private:
 };

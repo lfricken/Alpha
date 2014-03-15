@@ -36,6 +36,7 @@ void IOManager::update()//unfinished, cause it got f'd up by adding the address 
         (*it)->changeTime(-m_ftime);
         if((*it)->getTimeRemaining() <= 0)
         {
+            cout << "here";
             (*it)->doActionOn(m_rUniverse.getTarget((*it)->getTargetID()));
             m_packageList.erase(it);//pointer
             --it;

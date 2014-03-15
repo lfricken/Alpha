@@ -82,13 +82,8 @@ PhysicsBase::~PhysicsBase()
 }
 bool PhysicsBase::collide(void* other)
 {
-    /*
-    Package message;
-    message.commandType = GRAPHICS;
-    message.command = "IncTexTile";
-    static_cast<IOBase*>(other)->input(message);
+    static_cast<IOBase*>(other)->damage(1);
     return true;///why do we return true? should we be returning anything at all?
-    */
 }
 b2World& PhysicsBase::getWorld()
 {

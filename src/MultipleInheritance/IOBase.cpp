@@ -1,30 +1,53 @@
 #include "IOBase.h"
 #include "globals.h"
+#include "ActiveEventer.h"
 
-using namespace std;
 
 IOManager& IOBase::m_rIOManager = game.getGameIOManager();
 
 IOBase::IOBase()//unfinished
 {
+    IOBaseData data;
+    data.name = "unknown name";
+    data.type = "unknown type";
+    initialize(data);
 }
 IOBase::IOBase(const IOBaseData& data)
 {
-    m_name = data.name;
-    m_type = data.type;
+    initialize(data);
 }
 IOBase::~IOBase()//unfinished
 {
+}
+void IOBase::initialize(const IOBaseData& data)
+{
+    m_name = data.name;
+    m_type = data.type;
+    m_spEventer = std::tr1::shared_ptr<PassiveEventer>(new PassiveEventer());
+}
+void IOBase::addCouriers(std::vector<std::tr1::shared_ptr<Courier> >& spCourierList)
+{
+    if(m_spEventer->amount() == 0)//if we had a passive eventer before
+    {
+        m_spEventer.reset();
+        m_spEventer = std::tr1::shared_ptr<PassiveEventer>(new ActiveEventer());
+    }
+    for(std::vector<std::tr1::shared_ptr<Courier> >::const_iterator it = spCourierList.begin(); it != spCourierList.end(); ++it)
+        m_spEventer->add(*it);
+}
+std::tr1::shared_ptr<PassiveEventer> IOBase::getEventer()
+{
+    return m_spEventer;
 }
 IOManager& IOBase::getIOManager()
 {
     return m_rIOManager;
 }
-void IOBase::setName(const string& name)//finished
+void IOBase::setName(const std::string& name)//finished
 {
     m_name = name;
 }
-const string& IOBase::getName() const//finished
+const std::string& IOBase::getName() const//finished
 {
     return m_name;
 }
@@ -32,8 +55,13 @@ unsigned int IOBase::getID() const
 {
     return m_ID;
 }
-void IOBase::damage(int damage)
+void IOBase::f_setID(unsigned int newID)
 {
+    m_ID = newID;
+}
+bool IOBase::damage(int damage)
+{
+    return true;
 }
 void IOBase::input_1(const std::string& rInput) {}
 void IOBase::input_2(const std::string& rInput) {}

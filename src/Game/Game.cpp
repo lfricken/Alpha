@@ -6,7 +6,6 @@
 
 using namespace std;
 
-
 Game::Game()
 {
     m_spGameIOManager = std::tr1::shared_ptr<IOManager>(new IOManager(*this));

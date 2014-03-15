@@ -91,6 +91,7 @@ vertices    vert
 
 PREFIX: SITUATION:              EXAMPLE:
 f_  private member function     f_link();
+s_  private member struct var   s_health;
 m_  private member variable     m_yourMom;
 r   variable is a reference     rYourMom;
 p   variable is a pointer       pBadBear;

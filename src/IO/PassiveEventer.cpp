@@ -2,7 +2,7 @@
 
 using namespace std;
 
-PassiveEventer::PassiveEventer() : m_isActive(false)
+PassiveEventer::PassiveEventer()
 {
 }
 
@@ -12,7 +12,11 @@ PassiveEventer::~PassiveEventer()
 void PassiveEventer::event(const string& variable, Variable variableName)
 {
 }
-bool PassiveEventer::isActive() const
+void PassiveEventer::add(std::tr1::shared_ptr<Courier> spCourier)
 {
-    return m_isActive;
+    ///ERROR LOG
+}
+int PassiveEventer::amount() const
+{
+    return 0;
 }

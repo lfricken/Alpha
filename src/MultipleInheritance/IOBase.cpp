@@ -83,13 +83,13 @@ int IOBase::getHealth() const
 {
     return 1;
 }
-void IOBase::input_1(sf::Packet& rInput) {}
-void IOBase::input_2(const std::string& rInput) {}
-void IOBase::input_3(const std::string& rInput) {}
-void IOBase::input_4(const std::string& rInput) {}
-void IOBase::input_5(const std::string& rInput) {}
-void IOBase::input_6(const std::string& rInput) {}
-void IOBase::input_7(const std::string& rInput) {}
-void IOBase::input_8(const std::string& rInput) {}
-void IOBase::input_9(const std::string& rInput) {}
-void IOBase::input_10(const std::string& rInput) {}
+IOBaseReturn IOBase::input_1(IOBaseArgs) {}
+IOBaseReturn IOBase::input_2(IOBaseArgs) {}
+IOBaseReturn IOBase::input_3(IOBaseArgs) {}
+IOBaseReturn IOBase::input_4(IOBaseArgs) {}
+IOBaseReturn IOBase::input_5(IOBaseArgs) {}
+IOBaseReturn IOBase::input_6(IOBaseArgs) {}
+IOBaseReturn IOBase::input_7(IOBaseArgs) {}
+IOBaseReturn IOBase::input_8(IOBaseArgs) {}
+IOBaseReturn IOBase::input_9(IOBaseArgs) {}
+IOBaseReturn IOBase::input_10(IOBaseArgs) {}

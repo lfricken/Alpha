@@ -2,10 +2,12 @@
 #define DCHUNK_H
 
 #include "stdafx.h"
-#include "GModule.h"
-#include "Module.h"
 #include "MultiTileMap.h"
 
+class GModule;
+struct GModuleData;
+class Module;
+struct ModuleData;
 class Intelligence;
 
 class Chunk : public IOBase

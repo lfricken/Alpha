@@ -61,6 +61,7 @@
 		<Unit filename="include/Game/Game.h" />
 		<Unit filename="include/Game/TextureAllocator.h" />
 		<Unit filename="include/IO/ActiveEventer.h" />
+		<Unit filename="include/IO/BaseFunctionFinder.h" />
 		<Unit filename="include/IO/Condition.h" />
 		<Unit filename="include/IO/Courier.h" />
 		<Unit filename="include/IO/IOManager.h" />
@@ -92,6 +93,7 @@
 		<Unit filename="src/Game/Game.cpp" />
 		<Unit filename="src/Game/TextureAllocator.cpp" />
 		<Unit filename="src/IO/ActiveEventer.cpp" />
+		<Unit filename="src/IO/BaseFunctionFinder.cpp" />
 		<Unit filename="src/IO/Condition.cpp" />
 		<Unit filename="src/IO/IOManager.cpp" />
 		<Unit filename="src/IO/Package.cpp" />

@@ -16,6 +16,9 @@ class IOBase;
 struct Courier;
 class PassiveEventer;
 
+#define IOBaseReturn void
+#define IOBaseArgs sf::Packet& rInput
+
 struct IOBaseData
 {
     IOBaseData () {}
@@ -43,16 +46,16 @@ public:
 
     virtual int damage(int damage);
     virtual int getHealth() const;
-    virtual void input_1(sf::Packet& rInput);
-    virtual void input_2(const std::string& rInput);
-    virtual void input_3(const std::string& rInput);
-    virtual void input_4(const std::string& rInput);
-    virtual void input_5(const std::string& rInput);
-    virtual void input_6(const std::string& rInput);
-    virtual void input_7(const std::string& rInput);
-    virtual void input_8(const std::string& rInput);
-    virtual void input_9(const std::string& rInput);
-    virtual void input_10(const std::string& rInput);
+    virtual IOBaseReturn input_1(IOBaseArgs);
+    virtual IOBaseReturn input_2(IOBaseArgs);
+    virtual IOBaseReturn input_3(IOBaseArgs);
+    virtual IOBaseReturn input_4(IOBaseArgs);
+    virtual IOBaseReturn input_5(IOBaseArgs);
+    virtual IOBaseReturn input_6(IOBaseArgs);
+    virtual IOBaseReturn input_7(IOBaseArgs);
+    virtual IOBaseReturn input_8(IOBaseArgs);
+    virtual IOBaseReturn input_9(IOBaseArgs);
+    virtual IOBaseReturn input_10(IOBaseArgs);
 
 protected:
     friend class Universe;

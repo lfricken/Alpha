@@ -1,6 +1,7 @@
 #include "Package.h"
 #include "IOBase.h"
-
+#include "BaseFunctionFinder.h"
+#include "globals.h"
 
 Package::Package()
 {
@@ -24,10 +25,8 @@ void Package::reset(const std::string& target, const std::string& command, sf::P
     m_delay = delay;
     m_targetID = 0;
     m_destination = dest;
-    ///if(command = anything in the list of input1)
-        m_commandFunction = &IOBase::input_1;
-    ///else
 
+    m_commandFunction = game.getGameFunctionFinder().getFunction(command);
 }
 void Package::setTargetID(unsigned int targetID)
 {

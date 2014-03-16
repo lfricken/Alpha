@@ -1,6 +1,9 @@
 #include "Chunk.h"
 #include "globals.h"
+
 #include "Intelligence.h"
+#include "GModule.h"
+#include "Module.h"
 
 using namespace std;
 b2World& Chunk::m_rPhysWorld = game.getGameUniverse().getWorld();///FIX THIS
@@ -8,7 +11,7 @@ b2World& Chunk::m_rPhysWorld = game.getGameUniverse().getWorld();///FIX THIS
 
 Chunk::Chunk() : m_rWindow(game.getGameWindow())
 {
-        ///make this into initialize func
+    ///make this into initialize func
     m_bodyDef.type = b2_dynamicBody;
     m_bodyDef.position = b2Vec2(0.0f, 0.0f);
     m_pBody = m_rPhysWorld.CreateBody(&m_bodyDef);
@@ -62,7 +65,7 @@ GModule* Chunk::getGModule(const std::string& targetName)
             return &(**it);
     }
     cout << "\nTarget " << targetName << " not found in chunk \"" << m_name << "\":[" << m_ID << "]";
-        ///ERROR LOG
+    ///ERROR LOG
     return NULL;
 }
 Module* Chunk::getModule(const std::string& targetName)

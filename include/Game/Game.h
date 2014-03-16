@@ -7,7 +7,7 @@
 #include "TextureAllocator.h"//ends
 #include "Universe.h"
 
-
+class BaseFunctionFinder;
 class IOManager;
 class ControlManager;
 
@@ -37,7 +37,7 @@ public:
     Universe& getGameUniverse();
     OverlayManager& getGameOverlayManager();
     TextureAllocator& getTextureAllocator();
-
+    BaseFunctionFinder& getGameFunctionFinder();
 
 protected:
 private:
@@ -47,6 +47,7 @@ private:
     TextureAllocator m_texAlloc;
     Universe m_gameUniverse;
     std::tr1::shared_ptr<ControlManager> m_spGameControlManager;
+    std::tr1::shared_ptr<BaseFunctionFinder> m_spGameFunctionFinder;
 
     sf::ContextSettings m_settings;///how can we edit the settings of the window?
     sf::Image m_icon;

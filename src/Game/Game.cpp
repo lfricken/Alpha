@@ -1,6 +1,7 @@
 /**WONT BE NEEDED**/
 #include "Chunk.h"
 #include "GModule.h"
+#include "Module.h"
 #include "DebugDraw.h"
 /**WONT BE NEEDED**/
 
@@ -8,6 +9,7 @@
 #include "globals.h"
 #include "IOManager.h"
 #include "ControlManager.h"
+#include "BaseFunctionFinder.h"
 
 using namespace std;
 
@@ -20,8 +22,9 @@ Game::Game()
     m_spGameWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(1200, 600), "SFML Box2D Test Environment", sf::Style::Default, m_settings));
     m_spGameWindow->setFramerateLimit(60);
 
-
+    m_spGameFunctionFinder = std::tr1::shared_ptr<BaseFunctionFinder>(new BaseFunctionFinder);
     m_spGameControlManager = std::tr1::shared_ptr<ControlManager>(new ControlManager);
+    m_spGameFunctionFinder->load("functionTable.tbl");
     ///This code won't work! WTF?
     ///if(!icon.loadFromFile("textures/tileset.png"))
        /// cout << "\nIcon Load Error";///texture allocator
@@ -50,6 +53,10 @@ Universe& Game::getGameUniverse()
 OverlayManager& Game::getGameOverlayManager()
 {
     return m_gameOverlayManager;
+}
+BaseFunctionFinder& Game::getGameFunctionFinder()
+{
+    return *m_spGameFunctionFinder;
 }
 Game::Status Game::client()
 {

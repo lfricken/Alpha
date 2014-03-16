@@ -22,17 +22,34 @@ void IOBase::initialize(const IOBaseData& data)
 {
     m_name = data.name;
     m_type = data.type;
-    m_spEventer = std::tr1::shared_ptr<PassiveEventer>(new PassiveEventer());
+    addCouriers(data.spCourierList);
 }
-void IOBase::addCouriers(std::vector<std::tr1::shared_ptr<Courier> >& spCourierList)
+void IOBase::addCouriers(const std::vector<std::tr1::shared_ptr<Courier> >& spCourierList)
 {
-    if(m_spEventer->amount() == 0)//if we had a passive eventer before
+    if(!m_spEventer)
+        m_spEventer = std::tr1::shared_ptr<PassiveEventer>(new PassiveEventer());
+
+    if(m_spEventer->amount() == 0 && spCourierList.size() == 0)//if we had a passive eventer before
+    {
+        m_spEventer.reset();
+        m_spEventer = std::tr1::shared_ptr<PassiveEventer>(new PassiveEventer());
+    }
+    else if(m_spEventer->amount() != 0 && spCourierList.size() != 0)
+    {
+        for(std::vector<std::tr1::shared_ptr<Courier> >::const_iterator it = spCourierList.begin(); it != spCourierList.end(); ++it)
+            m_spEventer->add(*it);
+    }
+    else if(m_spEventer->amount() == 0 && spCourierList.size() != 0)
     {
         m_spEventer.reset();
         m_spEventer = std::tr1::shared_ptr<PassiveEventer>(new ActiveEventer());
+        for(std::vector<std::tr1::shared_ptr<Courier> >::const_iterator it = spCourierList.begin(); it != spCourierList.end(); ++it)
+            m_spEventer->add(*it);
     }
-    for(std::vector<std::tr1::shared_ptr<Courier> >::const_iterator it = spCourierList.begin(); it != spCourierList.end(); ++it)
-        m_spEventer->add(*it);
+    else if(m_spEventer->amount() != 0 && spCourierList.size() == 0)
+    {
+        //DO NOTHING
+    }
 }
 std::tr1::shared_ptr<PassiveEventer> IOBase::getEventer()
 {
@@ -58,11 +75,15 @@ void IOBase::f_setID(unsigned int newID)
 {
     m_ID = newID;
 }
-int IOBase::damage(unsigned int damage)
+int IOBase::damage(int damage)
 {
     return 1;
 }
-void IOBase::input_1(const std::string& rInput) {}
+int IOBase::getHealth() const
+{
+    return 1;
+}
+void IOBase::input_1(sf::Packet& rInput) {}
 void IOBase::input_2(const std::string& rInput) {}
 void IOBase::input_3(const std::string& rInput) {}
 void IOBase::input_4(const std::string& rInput) {}

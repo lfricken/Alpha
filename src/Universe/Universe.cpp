@@ -6,9 +6,9 @@ using namespace std;
 template<class S, class R,typename T>
 int binary_find(vector<S>& container, T(R::*f)() const, T id)
 {
-    unsigned int first = 0;
-    unsigned int last = container.size()-1;
-    unsigned int middle = (first+last)/2;
+    int first = 0;
+    int last = container.size()-1;
+    int middle = (first+last)/2;
 
     while(first <= last)
     {
@@ -18,14 +18,18 @@ int binary_find(vector<S>& container, T(R::*f)() const, T id)
             return middle;
         else
             last = middle - 1;
-
         middle = (first + last)/2;
     }
     if (first > last)
         return -1;
+    else
+    {
+        ///ERROR LOG
+        return -1;
+    }
 }
 
-Universe::Universe() : IOBase(IOBaseData {"Universe", "Universe"}), m_physWorld(b2Vec2(0,0))
+Universe::Universe() : IOBase(IOBaseData("Universe", "Universe")), m_physWorld(b2Vec2(0,0))
 {
     m_normalDraw = true;
     m_notPaused = true;
@@ -58,7 +62,7 @@ IOBase* Universe::getTarget(unsigned int targetID)///UNFINISHED
 {
     int location = binary_find(m_physList, &Chunk::getID, targetID);//<std::tr1::shared_ptr<Chunk>, Chunk, unsigned int>
     if(location == -1)
-        return NULL;
+        return NULL;//couldnt find the target! :(
     else
         return &(*m_physList[location]);
 }

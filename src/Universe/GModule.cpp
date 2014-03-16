@@ -4,15 +4,16 @@
 
 using namespace sf;
 
-GModule::GModule(const GModuleData& data) : PhysicsBase(data.physicsData, data.baseData), GraphicsBase(data.graphicsData, data.physicsData.halfSize, data.physicsData.offset)
+GModule::GModule(GModuleData& data) : PhysicsBase(data.physicsData, data.baseData), GraphicsBase(data.graphicsData, data.physicsData.halfSize, data.physicsData.offset)
 {
     m_pFixture->SetUserData(this);
 }
 GModule::~GModule()
 {
 }
-int GModule::damage(unsigned int damage)
+int GModule::damage(int damage)
 {
     incTexTile();
     return PhysicsBase::damage(damage);
 }
+

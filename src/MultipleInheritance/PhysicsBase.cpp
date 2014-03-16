@@ -7,7 +7,7 @@ using namespace std;
 b2World& PhysicsBase::m_rPhysWorld = game.getGameUniverse().getWorld();
 
 
-PhysicsBase::PhysicsBase(const PhysicsBaseData& data, const IOBaseData& baseData) : IOBase(baseData)
+PhysicsBase::PhysicsBase(PhysicsBaseData& data, IOBaseData& baseData) : IOBase(baseData)
 {
     if (data.shape == PhysicsBaseData::Box)
         m_shape.SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//set our shape
@@ -80,17 +80,23 @@ PhysicsBase::~PhysicsBase()
 {
 
 }
-bool PhysicsBase::collide(void* other)
+bool PhysicsBase::contact(void* other)
 {
-    static_cast<IOBase*>(other)->damage(1);
+    damage(1);
     return true;///why do we return true? should we be returning anything at all?
 }
+bool PhysicsBase::endContact(void* other)
+{
+    ///end contact stuff that we do
+    return true;///why do we return true? should we be returning anything at all?
+}
+
+
+
 b2World& PhysicsBase::getWorld()
 {
     return m_rPhysWorld;
 }
-
-
 const b2PolygonShape& PhysicsBase::getShape() const
 {
     return m_shape;
@@ -139,10 +145,9 @@ void PhysicsBase::setBody(b2Body* pBody)
 }
 
 
-int PhysicsBase::damage(unsigned int damage)
+int PhysicsBase::damage(int damage)
 {
     m_health.takeDamage(damage);
-
     if(m_spEventer->amount() != 0)
     {
         std::ostringstream convert;   // stream used for the conversion
@@ -150,5 +155,9 @@ int PhysicsBase::damage(unsigned int damage)
         m_spEventer->event(convert.str(), m_health.varName);
     }
 
+    return m_health.value;
+}
+int PhysicsBase::getHealth() const
+{
     return m_health.value;
 }

@@ -18,8 +18,11 @@ class PassiveEventer;
 
 struct IOBaseData
 {
+    IOBaseData () {}
+    IOBaseData (const std::string& s1, const std::string& s2) : type(s1), name(s2) {}
     std::string type;
     std::string name;
+    std::vector<std::tr1::shared_ptr<Courier> > spCourierList;
 };
 class IOBase//base class inherited by literally everything, that way objects can always communicate
 {
@@ -29,7 +32,7 @@ public:
     virtual ~IOBase();
     void initialize(const IOBaseData& data);
 
-    void addCouriers(std::vector<std::tr1::shared_ptr<Courier> >& spCourierList);
+    void addCouriers(const std::vector<std::tr1::shared_ptr<Courier> >& spCourierList);
     std::tr1::shared_ptr<PassiveEventer> getEventer();
 
     virtual IOManager& getIOManager();
@@ -38,8 +41,9 @@ public:
     unsigned int getID() const;//gets the name of this entity
 
 
-    virtual int damage(unsigned int damage);
-    virtual void input_1(const std::string& rInput);
+    virtual int damage(int damage);
+    virtual int getHealth() const;
+    virtual void input_1(sf::Packet& rInput);
     virtual void input_2(const std::string& rInput);
     virtual void input_3(const std::string& rInput);
     virtual void input_4(const std::string& rInput);
@@ -49,6 +53,7 @@ public:
     virtual void input_8(const std::string& rInput);
     virtual void input_9(const std::string& rInput);
     virtual void input_10(const std::string& rInput);
+
 protected:
     friend class Universe;
     void f_setID(unsigned int newID);//sets the name of this entity

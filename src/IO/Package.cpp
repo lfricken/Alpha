@@ -1,41 +1,52 @@
 #include "Package.h"
+#include "IOBase.h"
 
-Package::Package(const std::string& target, const std::string& command, const std::string& parameter, float delay)
+
+Package::Package()
+{
+    m_targetName = "player_1";
+    m_command = "default";
+    m_parameter << 0;
+    m_delay = 0;
+    m_commandFunction = &IOBase::input_1;
+    m_targetID = 1;
+}
+Package::Package(const std::string& target, const std::string& command, sf::Packet& parameter, float delay)
 {
     reset(target, command, parameter, delay);
-    m_targetID = 0;
 }
 
 Package::~Package()
 {
 }
-void Package::reset(const std::string& target, const std::string& command, const std::string& parameter, float delay)
+void Package::reset(const std::string& target, const std::string& command, sf::Packet& parameter, float delay)
 {
     m_targetName = target;
     m_command = command;
     m_parameter = parameter;
     m_delay = delay;
-}
-void Package::doActionOn(IOBase* target) const
-{
-    if(target != NULL)
-        (*target.*m_commandFunction)(m_parameter);
+    ///if(command = anything in the list of input1)
+        m_commandFunction = &IOBase::input_1;
     ///else
-        ///ERROR LOG
+    m_targetID = 0;
 }
 void Package::setTargetID(unsigned int targetID)
 {
     m_targetID = targetID;
 }
+float Package::getDelay() const
+{
+    return m_delay;
+}
 unsigned int Package::getTargetID() const
 {
     return m_targetID;
 }
-float Package::changeTime(const float change)
+CommandFunction Package::getComFunc() const
 {
-    return m_delay += change;
+    return m_commandFunction;
 }
-float Package::getTimeRemaining() const
+sf::Packet& Package::getParameter()
 {
-    return m_delay;
+    return m_parameter;
 }

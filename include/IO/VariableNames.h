@@ -6,6 +6,7 @@
 enum Variable
 {
     HEALTH = 0,
+    COUNT,
     TEXTURE,
     TEXCOORDS,
 };
@@ -37,9 +38,12 @@ class HealthData : public Int_Attribute
 {
 public:
     HealthData() : Int_Attribute(HEALTH, 100), armor(0) {}
-    int takeDamage(unsigned int d)
+    int takeDamage(int d)
     {
-        value -= abs(d-armor);
+        if(d <= armor)
+            return value;
+        else
+            value -= abs(d-armor);
         return value;
     }
     int armor;

@@ -7,20 +7,14 @@ void UniversalContactListener::BeginContact(b2Contact* contact)
     PhysicsBase* fixA = static_cast<PhysicsBase*>(contact->GetFixtureA()->GetUserData());
     PhysicsBase* fixB = static_cast<PhysicsBase*>(contact->GetFixtureB()->GetUserData());
 
-    fixA->collide(fixB);
-    fixB->collide(fixA);
+    fixA->contact(fixB);
+    fixB->contact(fixA);
 }
 void UniversalContactListener::EndContact(b2Contact* contact)
 {
-    ///I haven't gotten to this part yet
-    bool first = false;
+    PhysicsBase* fixA = static_cast<PhysicsBase*>(contact->GetFixtureA()->GetUserData());
+    PhysicsBase* fixB = static_cast<PhysicsBase*>(contact->GetFixtureB()->GetUserData());
 
-
-    void* bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
-    if (bodyUserData)
-        first = true;
-
-    bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
-    if (bodyUserData && first)
-        true;
+    fixA->endContact(fixB);
+    fixB->endContact(fixA);
 }

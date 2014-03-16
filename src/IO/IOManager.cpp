@@ -3,9 +3,10 @@
 
 using namespace std;
 
-IOManager::IOManager(Game& game) : m_rUniverse(game.getGameUniverse()), m_rOverlayManager(game.getGameOverlayManager())
+IOManager::IOManager(Game& game)
 {
-
+    m_pUniverse = &game.getGameUniverse();
+    m_pOverlayManager = &game.getGameOverlayManager();
 }
 IOManager::~IOManager()//unfinished
 {
@@ -13,21 +14,27 @@ IOManager::~IOManager()//unfinished
 }
 void IOManager::recieve(Package& rPackage)//finished
 {
-    m_packageList.push_back(tr1::shared_ptr<Package>(&rPackage));
+    m_packageletList.push_back(Packagelet(rPackage.getDelay(), rPackage.getTargetID(), rPackage.getComFunc(), rPackage.getParameter()));
 }
 void IOManager::update()//unfinished, cause it got f'd up by adding the address to the package USE THIS CODE FOR GAME::setAddresses!!!!@@@@
 {
     m_elapsedTime = m_timer.restart();
     m_ftime = m_elapsedTime.asSeconds();
 
-    for(vector<tr1::shared_ptr<Package> >::iterator it = m_packageList.begin(); it != m_packageList.end(); ++it)
+
+    for(std::vector<Packagelet>::iterator it = m_packageletList.begin(); it != m_packageletList.end(); ++it)
     {
-        (*it)->changeTime(-m_ftime);
-        if((*it)->getTimeRemaining() <= 0)
+        (it)->timeRemaining -= m_ftime;
+        if((it)->timeRemaining <= 0)
         {
-            cout << "here";
-            (*it)->doActionOn(m_rUniverse.getTarget((*it)->getTargetID()));
-            m_packageList.erase(it);//pointer
+            m_currentTarget = m_pUniverse->getTarget((it)->targetID);
+
+            if(m_currentTarget != NULL)
+                (*m_currentTarget.*(it)->commandFunction)((it)->parameter);
+           /// else//if you uncomment this things break
+                ///ERROR LOG, couldnt find a target
+
+            m_packageletList.erase(it);//pointer
             --it;
         }
     }

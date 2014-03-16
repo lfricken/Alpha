@@ -58,6 +58,9 @@ public:
     virtual const std::vector<std::tr1::shared_ptr<Module> >& getModuleSPList() const;
     virtual const MultiTileMap& getTiles() const;
 
+    /**OVERRIDE**/
+    virtual void input_1(sf::Packet& rInput);
+
 protected:
     static b2World& m_rPhysWorld;
     sf::RenderWindow& m_rWindow;

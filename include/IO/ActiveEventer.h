@@ -20,7 +20,7 @@ protected:
     typedef std::vector<std::tr1::shared_ptr<Courier> > vec;
     std::map<Variable, vec> m_spCourierMap;
   //  std::vector<std::tr1::shared_ptr<Courier> > m_spCourierList;//the list of Couriers held by this eventer (each eventer is specific to a small group, or 1, variables in an entity
-    static IOManager& m_rIOManager;//a reference to the world io manager
+    IOManager* m_pIOManager;//a reference to the world io manager
 private:
 };
 

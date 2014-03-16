@@ -6,6 +6,7 @@
 class Condition//used to determine if the package should be sent
 {
 public:
+    Condition();
     Condition(Variable varName, const std::string& stringValue, float floatValue, char comparison, bool repeatable);
     virtual ~Condition();
     void reset(Variable varName, const std::string& stringValue, float floatValue, char comparison, bool repeatable);

@@ -26,10 +26,11 @@ struct PhysicsBaseData
 class PhysicsBase : public IOBase
 {
 public:///MAYBE we shouldn't have this many functions!!!
-    PhysicsBase(const PhysicsBaseData& data, const IOBaseData& baseData);
+    PhysicsBase(PhysicsBaseData& data, IOBaseData& baseData);
     virtual ~PhysicsBase();
 
-    virtual bool collide(void* other);
+    virtual bool contact(void* other);
+    virtual bool endContact(void* other);
 
     virtual b2World& getWorld();
 
@@ -48,7 +49,9 @@ public:///MAYBE we shouldn't have this many functions!!!
     virtual b2FixtureDef& getFixtureDef();
 
     /**OVERRIDE**/
-    virtual int damage(unsigned int damage);
+    virtual int damage(int damage);
+    virtual int getHealth() const;
+
 protected:
     HealthData m_health;
 

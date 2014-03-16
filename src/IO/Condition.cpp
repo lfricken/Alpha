@@ -1,6 +1,15 @@
 #include "Condition.h"
 
 /**=====PUBLIC=====**/
+Condition::Condition()
+{
+    m_variableName = HEALTH;
+    m_stringValue = "99";
+    m_floatValue = 99.0;
+    m_comparison = '<';
+    m_isRepeatable = true;
+    f_setComparisonFunction('<');
+}
 Condition::Condition(Variable varName, const std::string& stringVar, float floatVar, char comparison, bool repeatable)
 {
     reset(varName, stringVar, floatVar, comparison, repeatable);

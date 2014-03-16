@@ -15,7 +15,7 @@ Game::Game()
 {
     m_spGameIOManager = std::tr1::shared_ptr<IOManager>(new IOManager(*this));
     m_settings.antialiasingLevel = 4;
-    ///load data into settings, and launch window with the settings
+    ///load window data into settings, and launch window with the settings
 
     m_spGameWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(1200, 600), "SFML Box2D Test Environment", sf::Style::Default, m_settings));
     m_spGameWindow->setFramerateLimit(60);
@@ -108,6 +108,8 @@ Game::Status Game::run()
         if(m_spGameControlManager->choiceUpdate())//if we put this before physstep, the camera lags!
             newState = Game::Quit;
 
+        m_spGameIOManager->update();
+
         /**DRAW**/
         m_spGameWindow->clear();
         m_spGameControlManager->drawUpdate();
@@ -140,12 +142,21 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     float solidPos = -20.0;
 
     Chunk* temp = new Chunk(b2Vec2(solidPos,solidPos), b2_staticBody);
-
+    temp->setName("Static_Chunk_1");
 
 
     vector<GModuleData> gModuleList3;
     GModuleData solidFixture;
     solidFixture.baseData.type = "GModule";
+
+    solidFixture.baseData.spCourierList.push_back( tr1::shared_ptr<Courier>(new Courier()) );
+    Courier& cor = *solidFixture.baseData.spCourierList.front();
+    sf::Packet pack;
+    pack << "test";
+    cor.condition.reset(HEALTH, "", 97, '<', true);
+    cor.package.reset("Static_Chunk_1", "input_1", pack, 1);
+    cor.package.setTargetID(1);
+
     solidFixture.physicsData.shape = PhysicsBaseData::Octagon;
     solidFixture.physicsData.density = 1.0f;
     solidFixture.physicsData.friction = 0.4f;

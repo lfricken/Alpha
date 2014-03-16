@@ -3,7 +3,7 @@
 #include "Intelligence.h"
 
 using namespace std;
-b2World& Chunk::m_rPhysWorld = game.getGameUniverse().getWorld();
+b2World& Chunk::m_rPhysWorld = game.getGameUniverse().getWorld();///FIX THIS
 ///std::tr1::shared_ptr<sf::RenderWindow> Chunk::m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(&game.getGameWindow());
 
 Chunk::Chunk() : m_rWindow(game.getGameWindow())
@@ -257,3 +257,10 @@ void Chunk::f_setController(Intelligence* controller)//done
     m_hasController = true;
 }
 /**END**/
+
+void Chunk::input_1(sf::Packet& rInput)
+{
+    std::string n;
+    rInput >> n;
+    std::cout << std::endl << m_name << " has " << m_GModuleSPList.front()->getHealth() << " health, also " << n;
+}

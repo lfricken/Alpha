@@ -15,10 +15,11 @@ struct GModuleData
 class GModule : public PhysicsBase, public GraphicsBase
 {
 public:
-    GModule(const GModuleData& data);
+    GModule(GModuleData& data);
     virtual ~GModule();
 
-    virtual int damage(unsigned int);
+    virtual int damage(int);
+
 protected:
 
 private:

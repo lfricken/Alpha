@@ -14,7 +14,7 @@ IOManager::~IOManager()//unfinished
 }
 void IOManager::recieve(Package& rPackage)//finished
 {
-    m_packageletList.push_back(Packagelet(rPackage.getDelay(), rPackage.getTargetID(), rPackage.getComFunc(), rPackage.getParameter()));
+    m_packageletList.push_back(Packagelet(rPackage.getDelay(), rPackage.getTargetID(), rPackage.getComFunc(), rPackage.getDestination(), rPackage.getParameter()));
 }
 void IOManager::update()//unfinished, cause it got f'd up by adding the address to the package USE THIS CODE FOR GAME::setAddresses!!!!@@@@
 {
@@ -27,7 +27,11 @@ void IOManager::update()//unfinished, cause it got f'd up by adding the address 
         (it)->timeRemaining -= m_ftime;
         if((it)->timeRemaining <= 0)
         {
-            m_currentTarget = m_pUniverse->getTarget((it)->targetID);
+            if((it)->destination == Destination::UNIVERSE)
+                m_currentTarget = m_pUniverse->getTarget((it)->targetID);
+            else if((it)->destination == Destination::GUI)
+                m_currentTarget = NULL;///SHOULD FIND GUI STUFF
+            ///ect...
 
             if(m_currentTarget != NULL)
                 (*m_currentTarget.*(it)->commandFunction)((it)->parameter);

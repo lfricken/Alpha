@@ -4,31 +4,30 @@
 
 Package::Package()
 {
-    m_targetName = "player_1";
-    m_command = "default";
-    m_parameter << 0;
-    m_delay = 0;
-    m_commandFunction = &IOBase::input_1;
-    m_targetID = 1;
+    sf::Packet tempParam;
+    tempParam << 0;
+    reset("player_1", "default", tempParam, 0.0, Destination::UNIVERSE);
 }
-Package::Package(const std::string& target, const std::string& command, sf::Packet& parameter, float delay)
+Package::Package(const std::string& target, const std::string& command, sf::Packet& parameter, float delay, Destination dest)
 {
-    reset(target, command, parameter, delay);
+    reset(target, command, parameter, delay, dest);
 }
 
 Package::~Package()
 {
 }
-void Package::reset(const std::string& target, const std::string& command, sf::Packet& parameter, float delay)
+void Package::reset(const std::string& target, const std::string& command, sf::Packet& parameter, float delay, Destination dest)
 {
     m_targetName = target;
     m_command = command;
     m_parameter = parameter;
     m_delay = delay;
+    m_targetID = 0;
+    m_destination = dest;
     ///if(command = anything in the list of input1)
         m_commandFunction = &IOBase::input_1;
     ///else
-    m_targetID = 0;
+
 }
 void Package::setTargetID(unsigned int targetID)
 {
@@ -49,4 +48,12 @@ CommandFunction Package::getComFunc() const
 sf::Packet& Package::getParameter()
 {
     return m_parameter;
+}
+const std::string& Package::getTargetName()
+{
+    return m_targetName;
+}
+Destination Package::getDestination() const
+{
+    return m_destination;
 }

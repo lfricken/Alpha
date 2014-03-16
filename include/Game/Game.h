@@ -4,12 +4,12 @@
 
 #include "IOBase.h"
 #include "OverlayManager.h"
-#include "TextureAllocator.h"
+#include "TextureAllocator.h"//ends
 #include "Universe.h"
+
 
 class IOManager;
 class ControlManager;
-
 
 class Game : public IOBase//holds a universe, OverlayManager, and IOManager, and other stuff
 {

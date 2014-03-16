@@ -31,8 +31,8 @@ void ActiveEventer::event(const std::string& variable, Variable variableName)
     {
         if((*it)->condition.evaluate(variable))//if the condition was met
         {
-            std::cout << "\nHere";
-            m_pIOManager->recieve((*it)->package);///CURRENT cause of crash
+
+            m_pIOManager->recieve((*it)->package);
             if(!((*it)->condition.isRepeatable()))//and if its not repeatable, remove it from our list
             {
                 rVector.erase(it);//pointer

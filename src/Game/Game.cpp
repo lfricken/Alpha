@@ -153,9 +153,9 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     Courier& cor = *solidFixture.baseData.spCourierList.front();
     sf::Packet pack;
     pack << "test";
-    cor.condition.reset(HEALTH, "", 97, '<', true);
-    cor.package.reset("Static_Chunk_1", "input_1", pack, 1);
-    cor.package.setTargetID(1);
+    cor.condition.reset(HEALTH, "97", 97, '<', true);
+    cor.package.reset("Static_Chunk_1", "input_1", pack, 1, Destination::UNIVERSE);
+    m_allCouriers.push_back(&cor);
 
     solidFixture.physicsData.shape = PhysicsBaseData::Octagon;
     solidFixture.physicsData.density = 1.0f;
@@ -266,5 +266,19 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     m_gameUniverse.add(tr1::shared_ptr<Chunk>(chunk1));
     m_gameUniverse.add(tr1::shared_ptr<Chunk>(chunk));
 
+    /**SET UP TARGET ID's**/
+    for(vector<Courier*>::iterator it = m_allCouriers.begin(); it != m_allCouriers.end(); ++it)
+    {
+        if((*it)->package.getDestination() == Destination::UNIVERSE)
+            (*it)->package.setTargetID(   m_gameUniverse.getTarget((*it)->package.getTargetName())->getID()   );//set the couriers id data
 
+        else if((*it)->package.getDestination() == Destination::GUI)
+            m_gameOverlayManager.damage(0);///fix this, it should return a target
+
+        else if((*it)->package.getDestination() == Destination::GAME)
+            this->damage(0);///fix this, it should return a target
+
+        else
+            this->damage(0);///wtf do we do now???
+    }
 }

@@ -15,8 +15,7 @@ class Chunk : public IOBase
 public:
     Chunk();
     Chunk(b2Vec2 coordinate, b2BodyType bodyType = b2_dynamicBody);
-
-    Chunk(const Chunk& old);
+    Chunk(const Chunk& old);///should this exist?
     virtual ~Chunk();//Don't destroy us in the middle of a physics step
 
     virtual b2Body* getBody();
@@ -47,7 +46,7 @@ public:
     virtual void special_3();
     virtual void special_4();
 
-    friend class Intelligence;
+    /**CONTROL**/
     Intelligence* getController() const;
     bool hasController() const;
     void linkControl(Intelligence* controller);
@@ -77,6 +76,7 @@ protected:
     float m_accel, m_torque;///move these to a derivative of chunk
 
 private:
+    friend class Intelligence;
     void f_forgetController();//CONTROL
     void f_setController(Intelligence* controller);
     Intelligence* m_pController;//this is a pointer to our controller

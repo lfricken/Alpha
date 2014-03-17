@@ -27,7 +27,7 @@ Game::Game()
     m_spGameFunctionFinder->load("functionTable.tbl");
     ///This code won't work! WTF?
     ///if(!icon.loadFromFile("textures/tileset.png"))
-       /// cout << "\nIcon Load Error";///texture allocator
+    /// cout << "\nIcon Load Error";///texture allocator
     ///m_gameWindow.setIcon(32, 32, icon.getPixelsPtr());
 }
 Game::~Game()//unfinished
@@ -80,7 +80,7 @@ Game::Status Game::run()
 
     f_load("stuff");
 
-    m_spGameControlManager->getPlayer("player_1").linkControl(m_gameUniverse.getPhysTarget("ship_1"));
+
 
     /**HUD**/
     sf::ConvexShape convex;
@@ -98,6 +98,7 @@ Game::Status Game::run()
     float fps = 0;
     float firstTime = 0, secondTime = 0;
 
+    sf::Event event;
     while (m_spGameWindow->isOpen() && newState != Game::Quit)
     {
         secondTime = clock.getElapsedTime().asSeconds();
@@ -112,8 +113,12 @@ Game::Status Game::run()
         m_gameUniverse.physStep();
 
         /**INPUT**////WE need to somehow also factor in tgui!!!
-        if(m_spGameControlManager->choiceUpdate())//if we put this before physstep, the camera lags!
-            newState = Game::Quit;
+        m_spGameControlManager->pressedUpdate();
+        while (m_spGameWindow->pollEvent(event))
+        {
+            if(m_spGameControlManager->choiceUpdate(event))//if we put this before physstep, the camera lags!
+                newState = Game::Quit;
+        }
 
         m_spGameIOManager->update();
 
@@ -272,6 +277,11 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     }
     m_gameUniverse.add(tr1::shared_ptr<Chunk>(chunk1));
     m_gameUniverse.add(tr1::shared_ptr<Chunk>(chunk));
+
+
+    /**LOOP THROUGH CONTROLERS AND SET THEIR TARGETSs**/
+    m_spGameControlManager->setupControl();
+
 
     /**SET UP TARGET ID's**/
     for(vector<Courier*>::iterator it = m_allCouriers.begin(); it != m_allCouriers.end(); ++it)

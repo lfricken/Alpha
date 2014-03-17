@@ -54,3 +54,11 @@ const sf::Vector2f& Intelligence::getAim() const
 {
     return m_aim;
 }
+void Intelligence::setTargetName(const std::string& target)
+{
+    m_targetName = target;
+}
+const std::string& Intelligence::getTargetName()
+{
+    return m_targetName;
+}

@@ -150,7 +150,8 @@ void Universe::physStep()
 }
 void Universe::removeBack()
 {
-    m_physList.pop_back();
+    if(!m_physList.empty())
+        m_physList.pop_back();
 }
 /**=====OTHER=====**/
 /**=================**/

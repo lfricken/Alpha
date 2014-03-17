@@ -11,18 +11,20 @@ public:
     ControlManager();
     virtual ~ControlManager();
 
-    Player& getPlayer(const std::string& target);
-    int choiceUpdate();
+    Player* getPlayer(const std::string& target);
+    void setupControl();
+    int choiceUpdate(sf::Event& rEvent);
+    int pressedUpdate();
     void drawUpdate();
 protected:
 private:
-    void f_cheats(std::vector<Player>::iterator it);
+    void f_cheats(std::vector<std::tr1::shared_ptr<Player> >::iterator it, sf::Event& rEvent);
 
     Universe& m_rUniverse;
     sf::RenderWindow& m_rWindow;
-    sf::Event m_event;
+    b2Body* m_bodyTarget;
 
-    std::vector<Player> m_localPlayerList;
+    std::vector<std::tr1::shared_ptr<Player> > m_localPlayerList;
     std::vector<Player> m_deactivatedPlayerList;///we dont do these, what is this for????
     ///std::vector<std::tr1::shared_ptr<SyntheticIntelligence> > m_localSIList;
 };

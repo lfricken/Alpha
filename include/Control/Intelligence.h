@@ -10,7 +10,6 @@ class Intelligence : public IOBase
         Intelligence();
         virtual ~Intelligence();
 
-        friend class Chunk;
         Chunk* getTarget() const;
         bool hasTarget() const;
         void linkControl(Chunk* target);
@@ -19,11 +18,16 @@ class Intelligence : public IOBase
         void setAim(const sf::Vector2f& newAim);
         const sf::Vector2f& getAim() const;
 
+        void setTargetName(const std::string& target);
+        const std::string& getTargetName();
+
     protected:
     private:
+        friend class Chunk;
         void f_forgetTarget();//CONTROL
         void f_setTarget(Chunk* target);
         bool m_hasTarget;
+        std::string m_targetName;
         Chunk* m_pTarget;
 
         sf::Vector2f m_aim;

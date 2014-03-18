@@ -4,7 +4,7 @@ using namespace std;
 
 
 template<class S, class R,typename T>
-int binary_find(vector<S>& container, T(R::*f)() const, T id)
+int binary_find_ptr(vector<S>& container, T(R::*func)() const, T id)
 {
     int first = 0;
     int last = container.size()-1;
@@ -12,9 +12,9 @@ int binary_find(vector<S>& container, T(R::*f)() const, T id)
 
     while(first <= last)
     {
-        if (((*container[middle]).*f)() < id)
+        if (((*container[middle]).*func)() < id)
             first = middle + 1;
-        else if (((*container[middle]).*f)() == id)
+        else if (((*container[middle]).*func)() == id)
             return middle;
         else
             last = middle - 1;
@@ -34,9 +34,8 @@ Universe::Universe() : IOBase(IOBaseData("Universe", "Universe")), m_physWorld(b
     m_normalDraw = true;
     m_notPaused = true;
 
-    m_timeStep = 1.0f / 60.0f;///this needs to be linked to frame rate
-    m_velocityIterations = 4;
-    m_positionIterations = 2;
+    m_velocityIterations = 4;///how should these be set?
+    m_positionIterations = 2;///how should these be set?
 
     m_physWorld.SetContactListener(&m_contactListener);
 }
@@ -60,7 +59,9 @@ IOBase* Universe::getTarget(const string& target)///unfinished
 }
 IOBase* Universe::getTarget(unsigned int targetID)///UNFINISHED
 {
-    int location = binary_find(m_physList, &Chunk::getID, targetID);//<std::tr1::shared_ptr<Chunk>, Chunk, unsigned int>
+    int location = binary_find_ptr(m_physList, &Chunk::getID, targetID);//<std::tr1::shared_ptr<Chunk>, Chunk, unsigned int>
+    ///also search non physlist stuff?
+
     if(location == -1)
         return NULL;//couldnt find the target! :(
     else
@@ -143,10 +144,10 @@ void Universe::togglePause()
 {
     m_notPaused = !m_notPaused;
 }
-void Universe::physStep()
+void Universe::physStep(const float timeChange)
 {
     if(m_notPaused)
-        m_physWorld.Step(m_timeStep, m_velocityIterations, m_positionIterations);///this needs to be linked to frame rate
+        m_physWorld.Step(timeChange, m_velocityIterations, m_positionIterations);
 }
 void Universe::removeBack()
 {

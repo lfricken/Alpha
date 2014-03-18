@@ -16,14 +16,11 @@ class IOManager
         ~IOManager();
 
         void recieve(Package& rPackage);   //finished//called by a class to give the package to us
-        void update(); //iterate over the list of Packages, and if the time is up, call universe.send(Package); on that package
+        void update(const float timeChange); //iterate over the list of Packages, and if the time is up, call universe.send(Package); on that package
 
     protected:
     private:
-        sf::Clock m_timer;
-        sf::Time m_elapsedTime;
         IOBase* m_currentTarget;
-        float m_ftime;//please rename this to be more descriptive
         std::vector<Packagelet> m_packageletList;//list of packages to be sent
 
         Universe* m_pUniverse;

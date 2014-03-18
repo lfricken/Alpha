@@ -1,0 +1,2 @@
+Initializing stuff with a reference may not always work. When we would try to call push_back on that vector, it would crash
+, and then we found out it was because m_vectorObject was never initialized.

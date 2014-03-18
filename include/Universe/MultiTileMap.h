@@ -33,7 +33,6 @@ private:
 
     sf::Vector2i m_tileSize;
     std::vector<std::tr1::shared_ptr<texturedVertices> > m_TexVertSPList;
-    ///static TextureAllocator& m_rTexAlloc;
 };
 
 #endif // DCHUNK_H

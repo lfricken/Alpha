@@ -15,15 +15,22 @@ using namespace std;
 
 Game::Game()
 {
-    m_spGameIOManager = std::tr1::shared_ptr<IOManager>(new IOManager(*this));
-    m_settings.antialiasingLevel = 4;
     ///load window data into settings, and launch window with the settings
 
     m_spGameWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(1200, 600), "SFML Box2D Test Environment", sf::Style::Default, m_settings));
-    m_spGameWindow->setFramerateLimit(60);
+    m_spGameFunctionFinder = std::tr1::shared_ptr<BaseFunctionFinder>(new BaseFunctionFinder);//independent
+    m_spTexAlloc = std::tr1::shared_ptr<TextureAllocator>(new TextureAllocator());//independent
+    m_spGameOverlayManager = std::tr1::shared_ptr<OverlayManager>(new OverlayManager());//independent
+    m_spGameUniverse = std::tr1::shared_ptr<Universe>(new Universe());//independent
+    /**created last**/
+    m_spGameControlManager = std::tr1::shared_ptr<ControlManager>(new ControlManager);//needs Window and Universe
+    m_spGameIOManager = std::tr1::shared_ptr<IOManager>(new IOManager(*this));//requires Universe and OverlayManager
 
-    m_spGameFunctionFinder = std::tr1::shared_ptr<BaseFunctionFinder>(new BaseFunctionFinder);
-    m_spGameControlManager = std::tr1::shared_ptr<ControlManager>(new ControlManager);
+
+
+    m_settings.antialiasingLevel = 4;
+    int loadedFrameRate = 60;///called that because we are supposed to load that
+    m_spGameWindow->setFramerateLimit(loadedFrameRate);
     m_spGameFunctionFinder->load("functionTable.tbl");
     ///This code won't work! WTF?
     ///if(!icon.loadFromFile("textures/tileset.png"))
@@ -36,7 +43,7 @@ Game::~Game()//unfinished
 }
 IOManager& Game::getGameIOManager()
 {
-    return (*m_spGameIOManager);
+    return *m_spGameIOManager;
 }
 sf::RenderWindow& Game::getGameWindow()
 {
@@ -44,15 +51,15 @@ sf::RenderWindow& Game::getGameWindow()
 }
 TextureAllocator& Game::getTextureAllocator()
 {
-    return m_texAlloc;
+    return *m_spTexAlloc;
 }
 Universe& Game::getGameUniverse()
 {
-    return m_gameUniverse;
+    return *m_spGameUniverse;
 }
 OverlayManager& Game::getGameOverlayManager()
 {
-    return m_gameOverlayManager;
+    return *m_spGameOverlayManager;
 }
 BaseFunctionFinder& Game::getGameFunctionFinder()
 {
@@ -73,15 +80,12 @@ Game::Status Game::local()
 Game::Status Game::run()
 {
     /**initialize**/
-    b2World& rWorld = m_gameUniverse.getWorld();
+    b2World& rWorld = m_spGameUniverse->getWorld();
     DebugDraw debugDrawInstance;
     rWorld.SetDebugDraw(&debugDrawInstance);
     debugDrawInstance.SetFlags(b2Draw::e_shapeBit);
 
     f_load("stuff");
-
-
-
     /**HUD**/
     sf::ConvexShape convex;
     convex.setPointCount(5);    // resize it to 5 points
@@ -96,38 +100,33 @@ Game::Status Game::run()
     Game::Status newState = Game::Local;
     sf::Clock clock;
     float fps = 0;
-    float firstTime = 0, secondTime = 0;
+    float firstTime = 0, secondTime = 0, timeForFrame = 0;
 
     sf::Event event;
     while (m_spGameWindow->isOpen() && newState != Game::Quit)
     {
         secondTime = clock.getElapsedTime().asSeconds();
-        fps = 1.0f / (secondTime - firstTime);
+        timeForFrame = secondTime - firstTime;
+        fps = 1.0/timeForFrame;
         firstTime = clock.getElapsedTime().asSeconds();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
-        {
             cout << "\nFPS: " << fps;
-        }
 
-        /**PHYSICS STEP**/
-        m_gameUniverse.physStep();
-
-        /**INPUT**////WE need to somehow also factor in tgui!!!
+        /**INPUT/UPDATE**////WE need to somehow also factor in tgui!!!
         m_spGameControlManager->pressedUpdate();
+        m_spGameUniverse->physStep(timeForFrame);
         while (m_spGameWindow->pollEvent(event))
         {
             if(m_spGameControlManager->choiceUpdate(event))//if we put this before physstep, the camera lags!
                 newState = Game::Quit;
         }
-
-        m_spGameIOManager->update();
+        m_spGameIOManager->update(timeForFrame);
 
         /**DRAW**/
         m_spGameWindow->clear();
         m_spGameControlManager->drawUpdate();
 
-        /**HUD**/
-        m_spGameWindow->setView(m_spGameWindow->getDefaultView());//draw stuff that is abnormal
+        m_spGameWindow->setView(m_spGameWindow->getDefaultView());//draw stuff that is on hud
         convex.setPosition(m_spGameWindow->mapPixelToCoords(sf::Vector2i(40,40)));
         m_spGameWindow->draw(convex);
 
@@ -147,12 +146,19 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     ///Universe Entities
     ///Menu Items???
 
+    /**
+    IF TYPE = SOMETHING
+        BaseChunk* = NEW SOMETHING
+    ELSE IF TYPE = SOMETHING ELSE
+        BaseChunk* = NEW SOMETHING ELSE
 
+    add things to this thing...
+    push into universe or GUI thing...
+    repeat**/
 
     /**STATIC CHUNKS**/
-
+    /**^^^GENERIC EXAMPLE**/
     float solidPos = -20.0;
-
     Chunk* temp = new Chunk(b2Vec2(solidPos,solidPos), b2_staticBody);
     temp->setName("Static_Chunk_1");
 
@@ -184,7 +190,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     gModuleList3.push_back(solidFixture);
     temp->add(gModuleList3);
-    m_gameUniverse.add(tr1::shared_ptr<Chunk>(temp));
+    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(temp));
+    /**^^^GENERIC EXAMPLE**/
 
 
     /**DYNAMIC CHUNKS**/
@@ -260,25 +267,26 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     {
         temp = new Chunk(b2Vec2(x,y), b2_dynamicBody);
         temp->add(dataList);
-        m_gameUniverse.add(tr1::shared_ptr<Chunk>(temp));
+        m_spGameUniverse->add(tr1::shared_ptr<Chunk>(temp));
     }
 
     for (int i=0, x=3, y=3, numBoxs = 200; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
         temp = new Chunk(b2Vec2(x,y), b2_dynamicBody);
         temp->add(dataList);
-        m_gameUniverse.add(tr1::shared_ptr<Chunk>(temp));
+        m_spGameUniverse->add(tr1::shared_ptr<Chunk>(temp));
     }
     for (int i=0, x=5, y=3, numBoxs = 200; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
         temp = new Chunk(b2Vec2(x,y), b2_dynamicBody);
         temp->add(dataList);
-        m_gameUniverse.add(tr1::shared_ptr<Chunk>(temp));
+        m_spGameUniverse->add(tr1::shared_ptr<Chunk>(temp));
     }
-    m_gameUniverse.add(tr1::shared_ptr<Chunk>(chunk1));
-    m_gameUniverse.add(tr1::shared_ptr<Chunk>(chunk));
+    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(chunk1));
+    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(chunk));
 
 
+    /**FINALIZING LOADED STUFF**/
     /**LOOP THROUGH CONTROLERS AND SET THEIR TARGETSs**/
     m_spGameControlManager->setupControl();
 
@@ -287,15 +295,15 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     for(vector<Courier*>::iterator it = m_allCouriers.begin(); it != m_allCouriers.end(); ++it)
     {
         if((*it)->package.getDestination() == Destination::UNIVERSE)
-            (*it)->package.setTargetID(   m_gameUniverse.getTarget((*it)->package.getTargetName())->getID()   );//set the couriers id data
+            (*it)->package.setTargetID(   m_spGameUniverse->getTarget((*it)->package.getTargetName())->getID()   );//set the couriers id data
 
         else if((*it)->package.getDestination() == Destination::GUI)
-            m_gameOverlayManager.damage(0);///fix this, it should return a target
+            m_spGameOverlayManager->damage(0);///fix this, it should return a target, not damage, just some func
 
         else if((*it)->package.getDestination() == Destination::GAME)
-            this->damage(0);///fix this, it should return a target
+            this->damage(0);///fix this, it should return a target, not damage, just some func
 
         else
-            this->damage(0);///wtf do we do now???
+            this->damage(0);///wtf do we do we do if all that fails?
     }
 }

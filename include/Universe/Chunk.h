@@ -63,7 +63,7 @@ public:
     virtual void input_1(sf::Packet& rInput);
 
 protected:
-    static b2World& m_rPhysWorld;
+    b2World& m_rPhysWorld;
     sf::RenderWindow& m_rWindow;
 
     b2Body* m_pBody;

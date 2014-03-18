@@ -3,11 +3,7 @@
 
 using namespace std;
 
-
-b2World& PhysicsBase::m_rPhysWorld = game.getGameUniverse().getWorld();
-
-
-PhysicsBase::PhysicsBase(PhysicsBaseData& data, IOBaseData& baseData) : IOBase(baseData)
+PhysicsBase::PhysicsBase(PhysicsBaseData& data, IOBaseData& baseData) : IOBase(baseData), m_rPhysWorld(game.getGameUniverse().getWorld())
 {
     if (data.shape == PhysicsBaseData::Box)
         m_shape.SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//set our shape

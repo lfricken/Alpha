@@ -5,7 +5,7 @@
 #include "ActiveEventer.h"
 
 /*HOW IO WORKS
-When some event happens, whether its a player presssing a button, or a condition being met, a signal needs to sent to the target to tell it what to do.
+When some event happens, whether its a player pressing a button, or a condition being met, a signal needs to sent to the target to tell it what to do.
 All messages, regardless of their origin are sent to IOManager, so any object that wants to ever send a message needs to know about the IOManager. IOManager needs to know
 about Universe and OverlayManager, so it can make things happen in them, and then objects inside of OverlayManager and Universe need to know about IOManager for reasons we just talked about.
 In addition, Universe and OverlayManager need to have the input function so buttons and world events can call functions directly on eachother.
@@ -66,7 +66,7 @@ protected:
     unsigned int m_ID;
 
     std::tr1::shared_ptr<PassiveEventer> m_spEventer;
-    static IOManager& m_rIOManager;///should we be using static?
+    IOManager& m_rIOManager;
 private:
 };
 

@@ -62,7 +62,7 @@ protected:
     b2Fixture* m_pFixture;//pointer
 
 
-    static b2World& m_rPhysWorld;
+    b2World& m_rPhysWorld;
 
 private:
 };

@@ -6,10 +6,8 @@
 #include "Module.h"
 
 using namespace std;
-b2World& Chunk::m_rPhysWorld = game.getGameUniverse().getWorld();///FIX THIS
-///std::tr1::shared_ptr<sf::RenderWindow> Chunk::m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(&game.getGameWindow());
 
-Chunk::Chunk() : m_rWindow(game.getGameWindow())
+Chunk::Chunk() : m_rWindow(game.getGameWindow()), m_rPhysWorld(game.getGameUniverse().getWorld())
 {
     ///make this into initialize func
     m_bodyDef.type = b2_dynamicBody;
@@ -22,7 +20,7 @@ Chunk::Chunk() : m_rWindow(game.getGameWindow())
     m_accel = 50;
     m_torque = 50;
 }
-Chunk::Chunk(b2Vec2 coordinate, b2BodyType bodyType) : m_rWindow(game.getGameWindow())
+Chunk::Chunk(b2Vec2 coordinate, b2BodyType bodyType) : m_rWindow(game.getGameWindow()), m_rPhysWorld(game.getGameUniverse().getWorld())
 {
     ///make this into initialize func
     m_bodyDef.type = bodyType;
@@ -35,7 +33,7 @@ Chunk::Chunk(b2Vec2 coordinate, b2BodyType bodyType) : m_rWindow(game.getGameWin
     m_accel = 50;
     m_torque = 50;
 }
-Chunk::Chunk(const Chunk& old) : m_rWindow(game.getGameWindow())
+Chunk::Chunk(const Chunk& old) : m_rWindow(game.getGameWindow()), m_rPhysWorld(game.getGameUniverse().getWorld())
 {
     cout << "\nChunk Copy Called...";
     m_pBody = old.getBody();

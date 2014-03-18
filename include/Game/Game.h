@@ -41,16 +41,18 @@ public:
 
 protected:
 private:
-    std::tr1::shared_ptr<IOManager> m_spGameIOManager;//the games IOManager
-    OverlayManager m_gameOverlayManager;
-    std::tr1::shared_ptr<sf::RenderWindow> m_spGameWindow;//the display window
-    TextureAllocator m_texAlloc;
-    Universe m_gameUniverse;
-    std::tr1::shared_ptr<ControlManager> m_spGameControlManager;
+    /**created first**/
+    std::tr1::shared_ptr<sf::RenderWindow> m_spGameWindow;
     std::tr1::shared_ptr<BaseFunctionFinder> m_spGameFunctionFinder;
+    std::tr1::shared_ptr<TextureAllocator> m_spTexAlloc;
+    std::tr1::shared_ptr<OverlayManager> m_spGameOverlayManager;
+    std::tr1::shared_ptr<Universe> m_spGameUniverse;
+    /**needs access to previous ones**/
+    std::tr1::shared_ptr<ControlManager> m_spGameControlManager;
+    std::tr1::shared_ptr<IOManager> m_spGameIOManager;
 
-    sf::ContextSettings m_settings;///how can we edit the settings of the window?
     sf::Image m_icon;
+    sf::ContextSettings m_settings;///how can we edit the settings of the window?
 
     void f_load(const std::string& stuff);
     std::vector<Courier*> m_allCouriers;///this problem is so old we almost forgot about it

@@ -29,7 +29,6 @@ protected:
 
     sf::Vector2i m_pixCoords;
     sf::RenderWindow& m_rWindow;
-    ///static TextureAllocator& m_rTexAlloc;
 
     sf::Sprite m_sprite;
     std::string m_textureFile;

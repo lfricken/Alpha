@@ -2,16 +2,14 @@
 #include "globals.h"
 
 
-IOManager& IOBase::m_rIOManager = game.getGameIOManager();
-
-IOBase::IOBase()//unfinished
+IOBase::IOBase() : m_rIOManager(game.getGameIOManager())
 {
     IOBaseData data;
     data.name = "unknown name";
     data.type = "unknown type";
     initialize(data);
 }
-IOBase::IOBase(const IOBaseData& data)
+IOBase::IOBase(const IOBaseData& data) : m_rIOManager(game.getGameIOManager())
 {
     initialize(data);
 }

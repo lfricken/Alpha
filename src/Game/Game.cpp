@@ -272,7 +272,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     chunkData.position.x = 50;
     chunkData.position.y = -50;
-    chunkData.isBullet = true;
+    chunkData.isBullet = false;
     temp = new Chunk(chunkData);
     temp->add(dataList);
     m_spGameUniverse->add(tr1::shared_ptr<Chunk>(temp));
@@ -306,6 +306,30 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     }
     m_spGameUniverse->add(tr1::shared_ptr<Chunk>(chunk1));
     m_spGameUniverse->add(tr1::shared_ptr<Chunk>(chunk));
+
+
+    PlayerData player1;
+    player1.intellData.baseData.name = "player_1";
+    player1.intellData.baseData.type = "player";
+    player1.playerMode = "god";
+    player1.intellData.targetName = "ship_1";
+
+    player1.keyConfig.up = sf::Keyboard::W;
+    player1.keyConfig.down = sf::Keyboard::S;
+    player1.keyConfig.left = sf::Keyboard::Q;
+    player1.keyConfig.right = sf::Keyboard::E;
+    player1.keyConfig.rollLeft = sf::Keyboard::A;
+    player1.keyConfig.rollRight = sf::Keyboard::D;
+    player1.keyConfig.special_1 = sf::Keyboard::R;
+    player1.keyConfig.special_2 = sf::Keyboard::F;
+    player1.keyConfig.special_3 = sf::Keyboard::C;
+    player1.keyConfig.special_4 = sf::Keyboard::X;
+
+    player1.keyConfig.primary = sf::Mouse::Left;
+    player1.keyConfig.secondary = sf::Mouse::Right;
+
+    m_spGameControlManager->add(player1);
+
 
 
     /**FINALIZING LOADED STUFF**/

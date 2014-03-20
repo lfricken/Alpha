@@ -5,38 +5,18 @@ using namespace std;
 
 ControlManager::ControlManager() : m_rUniverse(game.getGameUniverse()), m_rWindow(game.getGameWindow())
 {
-    ///We actually should load this from a file
-    m_localPlayerList.push_back( tr1::shared_ptr<Player>(new Player(1)) );
-    m_localPlayerList.front()->setName("player_1");
-    m_localPlayerList.front()->setPlayerMode("god");
-    m_localPlayerList.front()->setTargetName("ship_1");
 
-    InputConfig& rInputConfig = m_localPlayerList.front()->getInputConfig();
-
-
-    rInputConfig.up = sf::Keyboard::W;
-    rInputConfig.down = sf::Keyboard::S;
-    rInputConfig.left = sf::Keyboard::Q;
-    rInputConfig.right = sf::Keyboard::E;
-    rInputConfig.rollLeft = sf::Keyboard::A;
-    rInputConfig.rollRight = sf::Keyboard::D;
-    rInputConfig.special_1 = sf::Keyboard::R;
-    rInputConfig.special_2 = sf::Keyboard::F;
-    rInputConfig.special_3 = sf::Keyboard::C;
-    rInputConfig.special_4 = sf::Keyboard::X;
-
-    rInputConfig.primary = sf::Mouse::Left;
-    rInputConfig.secondary = sf::Mouse::Right;
-
-    m_localPlayerList.front()->getCamera().getView().setSize(static_cast<sf::Vector2f>(m_rWindow.getSize()));
-    m_localPlayerList.front()->getCamera().getView().setCenter(sf::Vector2f(0, 0));
-
-    ///m_localPlayerList.front().hasController(this);///what?
 }
 
 ControlManager::~ControlManager()
 {
     ///target->noController();
+}
+void ControlManager::add(const PlayerData& data)
+{
+    m_localPlayerList.push_back(tr1::shared_ptr<Player>(new Player(data)));
+    m_localPlayerList.back()->getCamera().getView().setSize(static_cast<sf::Vector2f>(m_rWindow.getSize()));
+    m_localPlayerList.back()->getCamera().getView().setCenter(sf::Vector2f(0, 0));
 }
 void ControlManager::setupControl()
 {

@@ -1,15 +1,15 @@
 #include "Player.h"
 
-Player::Player(int playerNumber)///do something with the number
-{
-    ///Load pllayer number keys from file
-}
 
 Player::~Player()
 {
-    //dtor
-}
 
+}
+Player::Player(const PlayerData& data) : Intelligence(data.intellData)
+{
+    m_inputConfig = data.keyConfig;
+    m_playerMode = data.playerMode;
+}
 Camera& Player::getCamera()
 {
     return m_camera;

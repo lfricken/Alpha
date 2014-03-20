@@ -95,7 +95,7 @@ void Chunk::add(vector<GModuleData>& rDataList)
         if(it_data->baseData.type == "GModule")
             ptr = static_cast<GModule*>(new GModule(*it_data));
 
-        ///list all types here
+        ///list all types of modules here
 
 
         else

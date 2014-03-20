@@ -4,10 +4,17 @@
 #include "IOBase.h"
 #include "Chunk.h"
 
+struct IntelligenceData
+{
+    IOBaseData baseData;
+    std::string targetName;
+};
+
 class Intelligence : public IOBase
 {
     public:
         Intelligence();
+        Intelligence(const IntelligenceData& data);
         virtual ~Intelligence();
 
         Chunk* getTarget() const;

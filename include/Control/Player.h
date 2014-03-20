@@ -20,12 +20,16 @@ struct InputConfig
     sf::Mouse::Button primary;
     sf::Mouse::Button secondary;
 };
-
-
+struct PlayerData
+{
+    InputConfig keyConfig;
+    IntelligenceData intellData;
+    std::string playerMode;
+};
 class Player : public Intelligence
 {
 public:
-    Player(int playerNumber);
+    Player(const PlayerData& data);
     virtual ~Player();
 
     Camera& getCamera();

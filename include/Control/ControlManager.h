@@ -8,10 +8,16 @@
 class ControlManager
 {
 public:
-    ControlManager();
+    ControlManager();;
     virtual ~ControlManager();
 
+    Intelligence* getIntelligence(const std::string& target);
     Player* getPlayer(const std::string& target);
+    ///also get SI;
+
+    void add(const PlayerData& data);
+    ///also add SI;
+
     void setupControl();
     int choiceUpdate(sf::Event& rEvent);
     int pressedUpdate();

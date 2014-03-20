@@ -5,7 +5,12 @@ Intelligence::Intelligence()
     m_pTarget = NULL;
     m_hasTarget = false;
 }
-
+Intelligence::Intelligence(const IntelligenceData& data) : IOBase(data.baseData)
+{
+    m_pTarget = NULL;
+    m_hasTarget = false;
+    m_targetName = data.targetName;
+}
 Intelligence::~Intelligence()
 {
     breakControl();

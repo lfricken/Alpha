@@ -34,7 +34,7 @@ Universe::Universe() : IOBase(IOBaseData("Universe", "Universe")), m_physWorld(b
     m_normalDraw = true;
     m_notPaused = true;
 
-    m_velocityIterations = 8;///how should these be set?
+    m_velocityIterations = 3;///how should these be set?
     m_positionIterations = 3;///how should these be set?
 
     m_physWorld.SetContactListener(&m_contactListener);

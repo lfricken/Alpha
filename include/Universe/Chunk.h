@@ -10,13 +10,22 @@ class Module;
 struct ModuleData;
 class Intelligence;
 
+struct ChunkData
+{
+    IOBaseData baseData;
+    b2BodyType bodyType;
+    b2Vec2 position;
+    bool isBullet;
+};
+
 class Chunk : public IOBase
 {
 public:
     Chunk();
-    Chunk(b2Vec2 coordinate, b2BodyType bodyType = b2_dynamicBody);
+    Chunk(const ChunkData& data);
     Chunk(const Chunk& old);///should this exist?
     virtual ~Chunk();//Don't destroy us in the middle of a physics step
+
 
     virtual b2Body* getBody();
 
@@ -29,7 +38,6 @@ public:
 
     virtual void draw();
 
-    ///virtual void remove();//how to remove a module, if possible?
 
     /**INPUT**/
     virtual void primary(sf::Vector2f coords);
@@ -76,6 +84,8 @@ protected:
     float m_accel, m_torque;///move these to a derivative of chunk
 
 private:
+    void f_initialize(const ChunkData& data);
+
     friend class Intelligence;
     void f_forgetController();//CONTROL
     void f_setController(Intelligence* controller);

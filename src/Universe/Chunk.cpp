@@ -9,29 +9,15 @@ using namespace std;
 
 Chunk::Chunk() : m_rWindow(game.getGameWindow()), m_rPhysWorld(game.getGameUniverse().getWorld())
 {
-    ///make this into initialize func
-    m_bodyDef.type = b2_dynamicBody;
-    m_bodyDef.position = b2Vec2(0.0f, 0.0f);
-    m_pBody = m_rPhysWorld.CreateBody(&m_bodyDef);
-    m_pBody->SetUserData(this);
-    m_pController = NULL;
-    m_hasController = false;
-
-    m_accel = 50;
-    m_torque = 50;
+    ChunkData data;
+    data.isBullet = false;
+    data.bodyType = b2_dynamicBody;
+    data.position = b2Vec2(0.0f, 0.0f);
+    f_initialize(data);
 }
-Chunk::Chunk(b2Vec2 coordinate, b2BodyType bodyType) : m_rWindow(game.getGameWindow()), m_rPhysWorld(game.getGameUniverse().getWorld())
+Chunk::Chunk(const ChunkData& data) : m_rWindow(game.getGameWindow()), m_rPhysWorld(game.getGameUniverse().getWorld()), IOBase(data.baseData)
 {
-    ///make this into initialize func
-    m_bodyDef.type = bodyType;
-    m_bodyDef.position = coordinate;
-    m_pBody = m_rPhysWorld.CreateBody(&m_bodyDef);
-    m_pBody->SetUserData(this);
-    m_pController = NULL;
-    m_hasController = false;
-
-    m_accel = 50;
-    m_torque = 50;
+    f_initialize(data);
 }
 Chunk::Chunk(const Chunk& old) : m_rWindow(game.getGameWindow()), m_rPhysWorld(game.getGameUniverse().getWorld())
 {
@@ -45,15 +31,24 @@ Chunk::Chunk(const Chunk& old) : m_rWindow(game.getGameWindow()), m_rPhysWorld(g
 }
 Chunk::~Chunk()/**Don't destroy us in the middle of a physics step!**/
 {
-    /**Destroy all our module list, because the modules are preserved via SP **/
-    //happens automatically
-    /**Destroy our MultiTileMap, cause the textured verts should have been preserved via SP**/
-    //This happens automatically.
-    /**how do we delete our body??**/
     m_rPhysWorld.DestroyBody(m_pBody);
     breakControl();
 }
+void Chunk::f_initialize(const ChunkData& data)
+{
+    m_bodyDef.bullet = data.isBullet;
+    m_bodyDef.type = data.bodyType;
+    m_bodyDef.position = data.position;
 
+    m_pBody = m_rPhysWorld.CreateBody(&m_bodyDef);
+    m_pBody->SetUserData(this);
+    m_pController = NULL;
+    m_hasController = false;
+
+    ///TEMPORARY
+    m_accel = 50;
+    m_torque = 50;
+}
 
 GModule* Chunk::getGModule(const std::string& targetName)
 {
@@ -99,6 +94,10 @@ void Chunk::add(vector<GModuleData>& rDataList)
 
         if(it_data->baseData.type == "GModule")
             ptr = static_cast<GModule*>(new GModule(*it_data));
+
+        ///list all types here
+
+
         else
         {
             cout << "\nModule of type " << it_data->baseData.type << " was not found.";

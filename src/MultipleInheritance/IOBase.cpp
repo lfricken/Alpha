@@ -7,16 +7,16 @@ IOBase::IOBase() : m_rIOManager(game.getGameIOManager())
     IOBaseData data;
     data.name = "unknown name";
     data.type = "unknown type";
-    initialize(data);
+    f_initialize(data);
 }
 IOBase::IOBase(const IOBaseData& data) : m_rIOManager(game.getGameIOManager())
 {
-    initialize(data);
+    f_initialize(data);
 }
 IOBase::~IOBase()//unfinished
 {
 }
-void IOBase::initialize(const IOBaseData& data)
+void IOBase::f_initialize(const IOBaseData& data)
 {
     m_name = data.name;
     m_type = data.type;
@@ -91,3 +91,13 @@ IOBaseReturn IOBase::input_7(IOBaseArgs) {}
 IOBaseReturn IOBase::input_8(IOBaseArgs) {}
 IOBaseReturn IOBase::input_9(IOBaseArgs) {}
 IOBaseReturn IOBase::input_10(IOBaseArgs) {}
+IOBaseReturn IOBase::input_11(IOBaseArgs) {}
+IOBaseReturn IOBase::input_12(IOBaseArgs) {}
+IOBaseReturn IOBase::input_13(IOBaseArgs) {}
+IOBaseReturn IOBase::input_14(IOBaseArgs) {}
+IOBaseReturn IOBase::input_15(IOBaseArgs) {}
+IOBaseReturn IOBase::input_16(IOBaseArgs) {}
+IOBaseReturn IOBase::input_17(IOBaseArgs) {}
+IOBaseReturn IOBase::input_18(IOBaseArgs) {}
+IOBaseReturn IOBase::input_19(IOBaseArgs) {}
+IOBaseReturn IOBase::input_20(IOBaseArgs) {}

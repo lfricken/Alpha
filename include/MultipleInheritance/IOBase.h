@@ -33,7 +33,7 @@ public:
     IOBase();
     IOBase(const IOBaseData& data);
     virtual ~IOBase();
-    void initialize(const IOBaseData& data);
+
 
     void addCouriers(const std::vector<std::tr1::shared_ptr<Courier> >& spCourierList);
     std::tr1::shared_ptr<PassiveEventer> getEventer();
@@ -56,10 +56,21 @@ public:
     virtual IOBaseReturn input_8(IOBaseArgs);
     virtual IOBaseReturn input_9(IOBaseArgs);
     virtual IOBaseReturn input_10(IOBaseArgs);
+    virtual IOBaseReturn input_11(IOBaseArgs);
+    virtual IOBaseReturn input_12(IOBaseArgs);
+    virtual IOBaseReturn input_13(IOBaseArgs);
+    virtual IOBaseReturn input_14(IOBaseArgs);
+    virtual IOBaseReturn input_15(IOBaseArgs);
+    virtual IOBaseReturn input_16(IOBaseArgs);
+    virtual IOBaseReturn input_17(IOBaseArgs);
+    virtual IOBaseReturn input_18(IOBaseArgs);
+    virtual IOBaseReturn input_19(IOBaseArgs);
+    virtual IOBaseReturn input_20(IOBaseArgs);
 
 protected:
     friend class Universe;
     void f_setID(unsigned int newID);//sets the name of this entity
+    void f_initialize(const IOBaseData& data);
 
     std::string m_type;//type of object that we are
     std::string m_name;//used by IO manager to locate specific named objects

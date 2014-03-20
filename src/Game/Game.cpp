@@ -16,7 +16,7 @@ using namespace std;
 Game::Game()
 {
     ///load window data into settings, and launch window with the settings
-
+    m_settings.antialiasingLevel = 4;
     m_spGameWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(1200, 600), "SFML Box2D Test Environment", sf::Style::Default, m_settings));
     m_spGameFunctionFinder = std::tr1::shared_ptr<BaseFunctionFinder>(new BaseFunctionFinder);//independent
     m_spTexAlloc = std::tr1::shared_ptr<TextureAllocator>(new TextureAllocator());//independent
@@ -28,7 +28,7 @@ Game::Game()
 
 
 
-    m_settings.antialiasingLevel = 4;
+
     int loadedFrameRate = 60;///called that because we are supposed to load that
     m_spGameWindow->setFramerateLimit(loadedFrameRate);
     m_spGameFunctionFinder->load("functionTable.tbl");
@@ -88,8 +88,8 @@ Game::Status Game::run()
     f_load("stuff");
     /**HUD**/
     sf::ConvexShape convex;
-    convex.setPointCount(5);    // resize it to 5 points
-    convex.setPoint(0, sf::Vector2f(0, 0));    // define the points
+    convex.setPointCount(5);
+    convex.setPoint(0, sf::Vector2f(0, 0));
     convex.setPoint(1, sf::Vector2f(150, 10));
     convex.setPoint(2, sf::Vector2f(60, 30));
     convex.setPoint(3, sf::Vector2f(30, 100));
@@ -158,8 +158,11 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     /**STATIC CHUNKS**/
     /**^^^GENERIC EXAMPLE**/
-    float solidPos = -20.0;
-    Chunk* temp = new Chunk(b2Vec2(solidPos,solidPos), b2_staticBody);
+    ChunkData chunkData;
+    chunkData.position = b2Vec2(-20,-20);
+    chunkData.bodyType = b2BodyType::b2_staticBody;
+    chunkData.isBullet = false;
+    Chunk* temp = new Chunk(chunkData);
     temp->setName("Static_Chunk_1");
 
 
@@ -178,7 +181,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     solidFixture.physicsData.shape = PhysicsBaseData::Octagon;
     solidFixture.physicsData.density = 1.0f;
     solidFixture.physicsData.friction = 0.4f;
-    solidFixture.physicsData.halfSize = b2Vec2(5, 5);
+    solidFixture.physicsData.halfSize = b2Vec2(2, 5);
     solidFixture.physicsData.offset = b2Vec2(0, 0);
     solidFixture.physicsData.pBody = NULL;//we dont know it yet
     solidFixture.physicsData.restitution = 0.2f;
@@ -195,8 +198,11 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
 
     /**DYNAMIC CHUNKS**/
-    Chunk* chunk = new Chunk(b2Vec2(-5, -5));
-    Chunk* chunk1 = new Chunk(b2Vec2(20, -20));
+    chunkData.bodyType = b2BodyType::b2_dynamicBody;
+    chunkData.position = b2Vec2(-5, -5);
+    Chunk* chunk = new Chunk(chunkData);
+    chunkData.position = b2Vec2(20, -20);
+    Chunk* chunk1 = new Chunk(chunkData);
     //Chunk chunk(b2Vec2(-5, -5));///help is chunk and module destructor set up?
 
     chunk->setName("ship_1");
@@ -263,22 +269,38 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     dataList.back().physicsData.offset.x = offsetDelta;
     dataList.back().physicsData.offset.y = 0;
 
+
+    chunkData.position.x = 50;
+    chunkData.position.y = -50;
+    chunkData.isBullet = true;
+    temp = new Chunk(chunkData);
+    temp->add(dataList);
+    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(temp));
+
+    chunkData.isBullet = false;
+
     for (int i=0, x=1, y=3, numBoxs = 200; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
-        temp = new Chunk(b2Vec2(x,y), b2_dynamicBody);
+        chunkData.position.x = x;
+        chunkData.position.y = y;
+        temp = new Chunk(chunkData);
         temp->add(dataList);
         m_spGameUniverse->add(tr1::shared_ptr<Chunk>(temp));
     }
 
     for (int i=0, x=3, y=3, numBoxs = 200; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
-        temp = new Chunk(b2Vec2(x,y), b2_dynamicBody);
+        chunkData.position.x = x;
+        chunkData.position.y = y;
+        temp = new Chunk(chunkData);
         temp->add(dataList);
         m_spGameUniverse->add(tr1::shared_ptr<Chunk>(temp));
     }
     for (int i=0, x=5, y=3, numBoxs = 200; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
-        temp = new Chunk(b2Vec2(x,y), b2_dynamicBody);
+        chunkData.position.x = x;
+        chunkData.position.y = y;
+        temp = new Chunk(chunkData);
         temp->add(dataList);
         m_spGameUniverse->add(tr1::shared_ptr<Chunk>(temp));
     }
@@ -292,6 +314,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
 
     /**SET UP TARGET ID's**/
+
+
     for(vector<Courier*>::iterator it = m_allCouriers.begin(); it != m_allCouriers.end(); ++it)
     {
         if((*it)->package.getDestination() == Destination::UNIVERSE)

@@ -11,8 +11,10 @@ struct PhysicsBaseData
         Box = 0,
         Octagon = 1,
         Triangle = 2,
+        Circle = 3,
     };
     Shape shape;
+    bool isSensor;
     b2Vec2 offset;/**physics**///offset of the box from the center
     b2Vec2 halfSize;//half size of the box2dBox, also controls the tileSize in graphics
     float density;
@@ -42,8 +44,8 @@ public:///MAYBE we shouldn't have this many functions!!!
     virtual b2Body& getBody();
     virtual void setBody(b2Body* fix);
 
-    virtual const b2PolygonShape& getShape() const;
-    virtual b2PolygonShape& getShape();
+    virtual const b2Shape& getShape() const;
+    virtual b2Shape& getShape();
 
     virtual const b2FixtureDef& getFixtureDef() const;
     virtual b2FixtureDef& getFixtureDef();
@@ -55,7 +57,7 @@ public:///MAYBE we shouldn't have this many functions!!!
 protected:
     HealthData m_health;
 
-    b2PolygonShape m_shape;
+    b2Shape* m_shape; ///HOLY BALLS MAN, NAKED??? BE CAREFUL, WE WERE HAVING TROUBLE CASTING THIS
     b2FixtureDef m_fixtureDef;
 
     b2Body* m_pBody;//pointer

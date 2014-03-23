@@ -14,6 +14,7 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add directory="include/IO" />
+					<Add directory="include/Universe" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -24,6 +25,7 @@
 				<Compiler>
 					<Add option="-DSFML_STATIC" />
 					<Add directory="include/IO" />
+					<Add directory="include/Universe" />
 				</Compiler>
 				<Linker>
 					<Add option="-lsfml-network-s" />
@@ -36,7 +38,6 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-O3" />
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add directory="../../../Engines/SFML-2_recompile/include" />
@@ -76,10 +77,16 @@
 		<Unit filename="include/Overlay/Panel.h" />
 		<Unit filename="include/Universe/Chunk.h" />
 		<Unit filename="include/Universe/DebugDraw.h" />
+		<Unit filename="include/Universe/ForceField.h" />
 		<Unit filename="include/Universe/GModule.h" />
 		<Unit filename="include/Universe/Module.h" />
 		<Unit filename="include/Universe/MultiTileMap.h" />
+		<Unit filename="include/Universe/Ship.h" />
+		<Unit filename="include/Universe/ShipField.h" />
+		<Unit filename="include/Universe/SpecialPhys.h" />
+		<Unit filename="include/Universe/Types.h" />
 		<Unit filename="include/Universe/UniversalContactListener.h" />
+		<Unit filename="include/Universe/UniversalQueryCallback.h" />
 		<Unit filename="include/Universe/Universe.h" />
 		<Unit filename="include/globals.h" />
 		<Unit filename="include/stdafx.h" />
@@ -106,10 +113,15 @@
 		<Unit filename="src/Overlay/Panel.cpp" />
 		<Unit filename="src/Universe/Chunk.cpp" />
 		<Unit filename="src/Universe/DebugDraw.cpp" />
+		<Unit filename="src/Universe/ForceField.cpp" />
 		<Unit filename="src/Universe/GModule.cpp" />
 		<Unit filename="src/Universe/Module.cpp" />
 		<Unit filename="src/Universe/MultiTileMap.cpp" />
+		<Unit filename="src/Universe/Ship.cpp" />
+		<Unit filename="src/Universe/ShipField.cpp" />
+		<Unit filename="src/Universe/SpecialPhys.cpp" />
 		<Unit filename="src/Universe/UniversalContactListener.cpp" />
+		<Unit filename="src/Universe/UniversalQueryCallback.cpp" />
 		<Unit filename="src/Universe/Universe.cpp" />
 		<Extensions>
 			<code_completion />

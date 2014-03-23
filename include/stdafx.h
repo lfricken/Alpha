@@ -7,6 +7,7 @@
 #include <string>
 #include <sstream>
 #include <cmath>
+#include <unordered_map>
 #include <tr1/memory>
 
 #include <SFML/System.hpp>

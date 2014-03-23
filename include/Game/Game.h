@@ -22,7 +22,7 @@ public:
         Client,
         Server,
         Local,
-        Quit
+        Quit,
     };
     //loop over our contents and do stuff
     //void load(stuff);//loads stuff from files, and puts it in the right places, how should we go about this???

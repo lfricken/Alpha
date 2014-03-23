@@ -1,4 +1,6 @@
 #include "Universe.h"
+#include "Types.h"
+#include "ShipField.h"
 
 using namespace std;
 
@@ -29,20 +31,23 @@ int binary_find_ptr(vector<S>& container, T(R::*func)() const, T id)
     }
 }
 
-Universe::Universe() : IOBase(IOBaseData("Universe", "Universe")), m_physWorld(b2Vec2(0,0))
+Universe::Universe() : IOBase(IOBaseData(ClassType::ROOTGAME, "Universe")), m_physWorld(b2Vec2(0,0))
 {
     m_normalDraw = true;
     m_notPaused = true;
 
-    m_velocityIterations = 3;///how should these be set?
+    m_velocityIterations = 8;///how should these be set?
     m_positionIterations = 3;///how should these be set?
+    m_maxTimeStep = 1.0/40.0;
 
     m_physWorld.SetContactListener(&m_contactListener);
+
+    m_physWorld.SetDebugDraw(&m_debugDraw);
+    m_debugDraw.SetFlags(b2Draw::e_shapeBit);
 }
 
 Universe::~Universe()///unfinished
 {
-
 }
 /**=====GET_TARGETS=====**/
 /**=================**/
@@ -120,6 +125,7 @@ void Universe::draw()///unfinished
         {
             (*it)->draw();
         }
+        ///also draw invisibles
     }
     else
         m_physWorld.DrawDebugData();
@@ -140,14 +146,29 @@ b2World& Universe::getWorld()
 {
     return m_physWorld;
 }
+std::vector<std::tr1::shared_ptr<ShipField> >& Universe::getFields()
+{
+    return m_spFieldList;
+}
 void Universe::togglePause()
 {
     m_notPaused = !m_notPaused;
 }
-void Universe::physStep(const float timeChange)
+void Universe::physStep(float timeChange)
 {
     if(m_notPaused)
-        m_physWorld.Step(timeChange, m_velocityIterations, m_positionIterations);
+    {
+        for(vector<tr1::shared_ptr<Chunk> >::iterator it = m_physList.begin(); it != m_physList.end(); ++it)
+        {
+            (*it)->physUpdate();
+        }
+        if(timeChange > m_maxTimeStep)
+        {
+            m_physWorld.Step(m_maxTimeStep, m_velocityIterations, m_positionIterations);
+        }
+        else
+            m_physWorld.Step(timeChange, m_velocityIterations, m_positionIterations);
+    }
 }
 void Universe::removeBack()
 {

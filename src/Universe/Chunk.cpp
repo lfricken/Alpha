@@ -84,15 +84,28 @@ IOBase* Chunk::getIOBase(const std::string& targetName)
 1. OUR LIST: Create GModules in our GModuleList
 2. TILEMAP: Pass them to our MultiTileMap to be drawn later.
 **/
+float Chunk::f_findRadius(vector<GModuleData>& rDataList)
+{
+    float a, b, c, maxRadius = 1;
+    for(vector<GModuleData>::iterator it = rDataList.begin(); it != rDataList.end(); ++it)
+    {
+        a = it->physicsData.offset.x;
+        b = it->physicsData.offset.y;
+        c = sqrt(a*a + b*b);
+        if(c > maxRadius)
+            maxRadius = c;
+    }
+    return maxRadius;
+}
 void Chunk::add(vector<GModuleData>& rDataList)
 {
-    /**OUR LIST: Take our list of module data and make real modules with it!**/
+    /**Take our list of gmodule data and make real modules with it! rDataList**/
     for(vector<GModuleData>::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
         GModule* ptr;
         it_data->physicsData.pBody = m_pBody;
 
-        if(it_data->baseData.type == "GModule")
+        if(it_data->baseData.type == ClassType::GMODULE)
             ptr = static_cast<GModule*>(new GModule(*it_data));
 
         ///list all types of modules here
@@ -100,7 +113,70 @@ void Chunk::add(vector<GModuleData>& rDataList)
 
         else
         {
-            cout << "\nModule of type " << it_data->baseData.type << " was not found.";
+            cout << "\nModule of type " << it_data->baseData.type << " with name " << it_data->baseData.name <<  " was not found.";
+            ///ERROR LOG
+            ptr = new GModule(*it_data);
+        }
+        m_GModuleSPList.push_back(tr1::shared_ptr<GModule>(ptr));
+    }
+
+
+    /**TILEMAP: Create a Base Pointer List to pass to our tileMap**/
+    vector<GraphicsBase*> gfxBasePList;
+    for(vector<tr1::shared_ptr<GModule> >::const_iterator it_derived = m_GModuleSPList.begin(); it_derived != m_GModuleSPList.end(); ++it_derived)
+    {
+        gfxBasePList.push_back(&(*(*it_derived)));
+    }
+    m_tiles.add(gfxBasePList);
+
+
+    if(!rDataList.empty())/**Now, offset our origin by the appropriate amount indicated by the physData**/
+        m_tiles.setOrigin(rDataList[0].physicsData.halfSize.x * scale , rDataList[0].physicsData.halfSize.y * scale);
+    else
+        cout << "\nWARNING: Chunk::add()";
+}
+void Chunk::add(vector<GModuleData>& rDataList, vector<b2Vec2>& vertices)
+{
+    /**create our bounding box for large chunk collisions using vertices**/
+
+
+    if(vertices.size() < 3)/**create us with a circle**//**
+    {
+        float radius = f_findRadius(rDataList);
+        m_shape.setas
+    }
+    else
+    {
+
+
+    }
+**/
+
+/**
+    m_shape.SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//default
+    m_fixtureDef.shape = &m_shape;//give our shape to our fixture definition
+    m_fixtureDef.density = data.density;
+    m_fixtureDef.friction = data.friction;
+    m_fixtureDef.restitution = data.restitution;//setting our fixture data
+    m_pBody = data.pBody;
+
+    m_pFixture = m_pBody->CreateFixture(&m_fixtureDef);**/
+
+    /**Take our list of gmodule data and make real modules with it! rDataList**/
+    for(vector<GModuleData>::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
+    {
+        GModule* ptr;
+        it_data->physicsData.pBody = m_pBody;
+
+        if(it_data->baseData.type == ClassType::GMODULE)
+            ptr = static_cast<GModule*>(new GModule(*it_data));
+
+        ///list all types of modules here
+
+
+        else
+        {
+            cout << "\nModule of type " << it_data->baseData.type << " with name " << it_data->baseData.name <<  " was not found.";
             ///ERROR LOG
             ptr = new GModule(*it_data);
         }
@@ -129,7 +205,7 @@ void Chunk::add(vector<ModuleData>& rDataList)
         Module* ptr;
         it_data->physicsData.pBody = m_pBody;
 
-        if(it_data->baseData.type == "Module")
+        if(it_data->baseData.type == ClassType::MODULE)
             ptr = static_cast<Module*>(new Module(*it_data));
         else
         {
@@ -144,6 +220,13 @@ void Chunk::draw()
     m_tiles.setPosition(scale*m_pBody->GetPosition().x, scale*m_pBody->GetPosition().y);
     m_tiles.setRotation(180.0*m_pBody->GetAngle()/PI);
     m_rWindow.draw(m_tiles);
+}
+void Chunk::physUpdate()
+{
+    for(vector<SpecialPhys*>::iterator it = m_SpecialPhysPList.begin(); it != m_SpecialPhysPList.end(); ++it)
+    {
+        (*it)->physUpdate();
+    }
 }
 b2Body* Chunk::getBody()
 {

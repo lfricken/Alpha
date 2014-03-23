@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "ActiveEventer.h"
+#include "Types.h"
 
 /*HOW IO WORKS
 When some event happens, whether its a player pressing a button, or a condition being met, a signal needs to sent to the target to tell it what to do.
@@ -22,8 +23,8 @@ class PassiveEventer;
 struct IOBaseData
 {
     IOBaseData () {}
-    IOBaseData (const std::string& s1, const std::string& s2) : type(s1), name(s2) {}
-    std::string type;
+    IOBaseData (ClassType s1, const std::string& s2) : type(s1), name(s2) {}
+    ClassType type;
     std::string name;
     std::vector<std::tr1::shared_ptr<Courier> > spCourierList;
 };
@@ -42,6 +43,7 @@ public:
     void setName(const std::string& name);//sets the name of this entity
     const std::string& getName() const;//gets the name of this entity
     unsigned int getID() const;//gets the name of this entity
+    ClassType getType() const;
 
 
     virtual int damage(int damage);
@@ -72,7 +74,7 @@ protected:
     void f_setID(unsigned int newID);//sets the name of this entity
     void f_initialize(const IOBaseData& data);
 
-    std::string m_type;//type of object that we are
+    ClassType m_type;//type of object that we are
     std::string m_name;//used by IO manager to locate specific named objects
     unsigned int m_ID;
 

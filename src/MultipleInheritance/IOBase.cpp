@@ -6,7 +6,7 @@ IOBase::IOBase() : m_rIOManager(game.getGameIOManager())
 {
     IOBaseData data;
     data.name = "unknown name";
-    data.type = "unknown type";
+    data.type = ClassType::UNKNOWN;
     f_initialize(data);
 }
 IOBase::IOBase(const IOBaseData& data) : m_rIOManager(game.getGameIOManager())
@@ -68,6 +68,10 @@ const std::string& IOBase::getName() const//finished
 unsigned int IOBase::getID() const
 {
     return m_ID;
+}
+ClassType IOBase::getType() const
+{
+    return m_type;
 }
 void IOBase::f_setID(unsigned int newID)
 {

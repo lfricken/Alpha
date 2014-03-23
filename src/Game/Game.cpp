@@ -1,8 +1,9 @@
 /**WONT BE NEEDED**/
 #include "Chunk.h"
+#include "Ship.h"
+
 #include "GModule.h"
 #include "Module.h"
-#include "DebugDraw.h"
 /**WONT BE NEEDED**/
 
 #include "Game.h"
@@ -81,9 +82,6 @@ Game::Status Game::run()
 {
     /**initialize**/
     b2World& rWorld = m_spGameUniverse->getWorld();
-    DebugDraw debugDrawInstance;
-    rWorld.SetDebugDraw(&debugDrawInstance);
-    debugDrawInstance.SetFlags(b2Draw::e_shapeBit);
 
     f_load("stuff");
     /**HUD**/
@@ -168,7 +166,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     vector<GModuleData> gModuleList3;
     GModuleData solidFixture;
-    solidFixture.baseData.type = "GModule";
+    solidFixture.baseData.type = ClassType::GMODULE;
 
     solidFixture.baseData.spCourierList.push_back( tr1::shared_ptr<Courier>(new Courier()) );
     Courier& cor = *solidFixture.baseData.spCourierList.front();
@@ -192,7 +190,9 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     solidFixture.graphicsData.color = sf::Color::Red;
 
     gModuleList3.push_back(solidFixture);
-    temp->add(gModuleList3);
+
+    std::vector<b2Vec2> example;
+    temp->add(gModuleList3, example);
     m_spGameUniverse->add(tr1::shared_ptr<Chunk>(temp));
     /**^^^GENERIC EXAMPLE**/
 
@@ -200,16 +200,27 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     /**DYNAMIC CHUNKS**/
     chunkData.bodyType = b2BodyType::b2_dynamicBody;
     chunkData.position = b2Vec2(-5, -5);
+    chunkData.baseData.type = ClassType::SHIP;
     Chunk* chunk = new Chunk(chunkData);
     chunkData.position = b2Vec2(20, -20);
     Chunk* chunk1 = new Chunk(chunkData);
+
+    ShipData shipDat;
+    chunkData.position = b2Vec2(-20, 20);
+    shipDat.chunk = chunkData;
+    Chunk* ship1 = new Ship(shipDat);
+
+
     //Chunk chunk(b2Vec2(-5, -5));///help is chunk and module destructor set up?
 
-    chunk->setName("ship_1");
-    chunk1->setName("ship_2");
+    chunk->setName("bigChunk_1");
+    chunk1->setName("bigChunk_2");
+    ship1->setName("ship_1");
 
     GModuleData data;
-    data.baseData.type = "GModule";
+    data.baseData.type = ClassType::GMODULE;
+    data.physicsData.shape = PhysicsBaseData::Box;
+    data.physicsData.isSensor = false;
     data.physicsData.density = 1.0f;
     data.physicsData.friction = 0.4f;
     data.physicsData.halfSize = b2Vec2(0.25, 0.25);
@@ -223,7 +234,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     data.graphicsData.color = sf::Color::White;
 
     ModuleData mdata;
-    mdata.baseData.type = "Module";
+    mdata.baseData.type = ClassType::MODULE;
     mdata.physicsData.density = 1.0f;
     mdata.physicsData.friction = 0.4f;
     mdata.physicsData.halfSize = b2Vec2(0.25, 0.25);
@@ -254,8 +265,18 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     moduleList1.push_back(data);
     moduleList2.push_back(mdata);
     //chunk->add(moduleList2);
-    chunk->add(moduleList1);
-    chunk1->add(moduleList1);
+    chunk->add(moduleList1, example);
+    chunk1->add(moduleList1, example);
+
+
+    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(chunk1));
+    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(chunk));
+
+
+
+
+
+
 
 
     vector<GModuleData> dataList;
@@ -273,9 +294,12 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     chunkData.position.x = 50;
     chunkData.position.y = -50;
     chunkData.isBullet = false;
+    chunkData.baseData.type = ClassType::CHUNK;
     temp = new Chunk(chunkData);
     temp->add(dataList);
     m_spGameUniverse->add(tr1::shared_ptr<Chunk>(temp));
+
+
 
     chunkData.isBullet = false;
 
@@ -304,13 +328,12 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
         temp->add(dataList);
         m_spGameUniverse->add(tr1::shared_ptr<Chunk>(temp));
     }
-    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(chunk1));
-    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(chunk));
+
 
 
     PlayerData player1;
     player1.intellData.baseData.name = "player_1";
-    player1.intellData.baseData.type = "player";
+    player1.intellData.baseData.type = ClassType::PLAYER;
     player1.playerMode = "god";
     player1.intellData.targetName = "ship_1";
 
@@ -330,6 +353,9 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     m_spGameControlManager->add(player1);
 
+
+        ship1->add(moduleList1);
+    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(ship1));
 
 
     /**FINALIZING LOADED STUFF**/

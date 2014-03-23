@@ -6,9 +6,13 @@ using namespace std;
 PhysicsBase::PhysicsBase(PhysicsBaseData& data, IOBaseData& baseData) : IOBase(baseData), m_rPhysWorld(game.getGameUniverse().getWorld())
 {
     if (data.shape == PhysicsBaseData::Box)
-        m_shape.SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//set our shape
+    {
+        m_shape = new b2PolygonShape;
+        static_cast<b2PolygonShape*>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//set our shape
+    }
     else if((data.shape == PhysicsBaseData::Octagon) && (data.halfSize.x < data.halfSize.y))
     {
+        m_shape = new b2PolygonShape;
         int32 num = 8;
         float x = data.halfSize.x, y = data.halfSize.y;
         b2Vec2 vertices[num];
@@ -25,10 +29,11 @@ PhysicsBase::PhysicsBase(PhysicsBaseData& data, IOBaseData& baseData) : IOBase(b
         for(int i = 0; i < num; ++i)
             vertices[i]+= data.offset;
 
-        m_shape.Set(vertices, num);
+        static_cast<b2PolygonShape*>(m_shape)->Set(vertices, num);
     }
     else if((data.shape == PhysicsBaseData::Octagon) && (data.halfSize.x >= data.halfSize.y))
     {
+        m_shape = new b2PolygonShape;
         int32 num = 8;
         float x = data.halfSize.x, y = data.halfSize.y;
         b2Vec2 vertices[num];
@@ -44,10 +49,11 @@ PhysicsBase::PhysicsBase(PhysicsBaseData& data, IOBaseData& baseData) : IOBase(b
         for(int i = 0; i < num; ++i)
             vertices[i]+= data.offset;
 
-        m_shape.Set(vertices, num);
+        static_cast<b2PolygonShape*>(m_shape)->Set(vertices, num);
     }
     else if(data.shape == PhysicsBaseData::Triangle)
     {
+        m_shape = new b2PolygonShape;
         int32 num = 3;
         float x = data.halfSize.x, y = data.halfSize.y;
         b2Vec2 vertices[num];
@@ -58,23 +64,35 @@ PhysicsBase::PhysicsBase(PhysicsBaseData& data, IOBaseData& baseData) : IOBase(b
         for(int i = 0; i < num; ++i)
             vertices[i]+= data.offset;
 
-        m_shape.Set(vertices, num);
+        static_cast<b2PolygonShape*>(m_shape)->Set(vertices, num);
+    }
+    else if(data.shape == PhysicsBaseData::Circle)
+    {
+                cout << "\nCircle";
+        m_shape = new b2CircleShape;
+        static_cast<b2CircleShape*>(m_shape)->m_p.Set(data.offset.x, data.offset.y);
+        static_cast<b2CircleShape*>(m_shape)->m_radius = data.halfSize.x;
+
     }
     else
-        m_shape.SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//default
+    {
+        m_shape = new b2PolygonShape;
+        static_cast<b2PolygonShape*>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//default
+    }
 
-
-    m_fixtureDef.shape = &m_shape;//give our shape to our fixture definition
+    m_fixtureDef.isSensor = data.isSensor;
+    m_fixtureDef.shape = m_shape;//give our shape to our fixture definition
     m_fixtureDef.density = data.density;
     m_fixtureDef.friction = data.friction;
     m_fixtureDef.restitution = data.restitution;//setting our fixture data
     m_pBody = data.pBody;
 
     m_pFixture = m_pBody->CreateFixture(&m_fixtureDef);
+
 }
 PhysicsBase::~PhysicsBase()
 {
-
+    delete m_shape;
 }
 bool PhysicsBase::contact(void* other)
 {
@@ -93,13 +111,13 @@ b2World& PhysicsBase::getWorld()
 {
     return m_rPhysWorld;
 }
-const b2PolygonShape& PhysicsBase::getShape() const
+const b2Shape& PhysicsBase::getShape() const
 {
-    return m_shape;
+    return *m_shape;
 }
-b2PolygonShape& PhysicsBase::getShape()
+b2Shape& PhysicsBase::getShape()
 {
-    return m_shape;
+    return *m_shape;
 }
 
 const b2FixtureDef& PhysicsBase::getFixtureDef() const

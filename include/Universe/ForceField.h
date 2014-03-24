@@ -20,7 +20,9 @@ public:
 protected:
 private:
     PhysicsBase* m_target;//for convienience;
+    b2Fixture* m_targetFixture;
     b2ContactEdge* m_contactList;
+    bool m_hasContact;
 };
 
 #endif // FORCEFIELD_H

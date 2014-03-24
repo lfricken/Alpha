@@ -85,8 +85,10 @@ PhysicsBase::PhysicsBase(PhysicsBaseData& data, IOBaseData& baseData) : IOBase(b
     m_fixtureDef.density = data.density;
     m_fixtureDef.friction = data.friction;
     m_fixtureDef.restitution = data.restitution;//setting our fixture data
-    m_pBody = data.pBody;
+    m_fixtureDef.filter.maskBits = data.maskBits;
+    m_fixtureDef.filter.categoryBits = data.categoryBits;
 
+    m_pBody = data.pBody;
     m_pFixture = m_pBody->CreateFixture(&m_fixtureDef);
 
 }

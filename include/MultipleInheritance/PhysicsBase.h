@@ -4,6 +4,16 @@
 #include "stdafx.h"
 #include "IOBase.h"
 
+enum CollisionCategory
+{
+    None = 0x0000,
+    Projectile = 0x0001,
+    ShipModule = 0x0002,
+    Sensor = 0x0004,
+    ShipHull = 0x0008,
+    Entity = 0x0010,
+};
+
 struct PhysicsBaseData
 {
     enum Shape
@@ -14,6 +24,8 @@ struct PhysicsBaseData
         Circle = 3,
     };
     Shape shape;
+    int categoryBits;//what type of object we are
+    int maskBits;//what we will try and collide with
     bool isSensor;
     b2Vec2 offset;/**physics**///offset of the box from the center
     b2Vec2 halfSize;//half size of the box2dBox, also controls the tileSize in graphics

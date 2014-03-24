@@ -12,6 +12,8 @@ Ship::Ship()
     data.moduleBaseData.physicsData.halfSize = b2Vec2(8,8);
     data.moduleBaseData.physicsData.density = 0;
     data.moduleBaseData.physicsData.pBody = m_pBody;
+    data.moduleBaseData.physicsData.categoryBits = CollisionCategory::Sensor;
+    data.moduleBaseData.physicsData.maskBits = CollisionCategory::Projectile | CollisionCategory::Sensor;
 
     ForceField* tempPtr = new ForceField(data);
     m_ModuleSPList.push_back(tr1::shared_ptr<Module>(tempPtr));

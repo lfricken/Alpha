@@ -35,7 +35,7 @@ public:
     bool removeTarget(std::string target);
     ///void add(stuff);//overloaded so we can add things that are different
 
-    void physStep(float step);
+    float physStep();
     void togglePause();
 
     void draw();//draws everything thats drawable in universe
@@ -50,7 +50,10 @@ private:
     bool m_normalDraw;
     unsigned int m_currentIDCount;//used to assign id's to things
 
-    float m_maxTimeStep;
+    int m_iterations;
+    int m_maxIterations;
+    float m_remainingTime;
+    float m_timeStep;
     int m_velocityIterations;
     int m_positionIterations;
     ///std::vector<tr1::shared_ptr<Whatever We Call This> > m_gfxList; //all the objects that have graphics but no physics

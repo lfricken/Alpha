@@ -36,9 +36,10 @@ Universe::Universe() : IOBase(IOBaseData(ClassType::ROOTGAME, "Universe")), m_ph
     m_normalDraw = true;
     m_notPaused = true;
 
-    m_velocityIterations = 8;///how should these be set?
-    m_positionIterations = 3;///how should these be set?
-    m_maxTimeStep = 1.0/40.0;
+    m_velocityIterations = 2;///how should these be set?
+    m_positionIterations = 1;///how should these be set?
+    m_timeStep = 1.0f/120.0f;
+    m_maxIterations = 6;
 
     m_physWorld.SetContactListener(&m_contactListener);
 
@@ -125,7 +126,7 @@ void Universe::draw()///unfinished
         {
             (*it)->draw();
         }
-        ///also draw invisibles
+        ///also draw graphics objects
     }
     else
         m_physWorld.DrawDebugData();
@@ -154,21 +155,18 @@ void Universe::togglePause()
 {
     m_notPaused = !m_notPaused;
 }
-void Universe::physStep(float timeChange)
+float Universe::physStep()
 {
-    if(m_notPaused)
+    if(!m_notPaused)
     {
         for(vector<tr1::shared_ptr<Chunk> >::iterator it = m_physList.begin(); it != m_physList.end(); ++it)
         {
             (*it)->physUpdate();
         }
-        if(timeChange > m_maxTimeStep)
-        {
-            m_physWorld.Step(m_maxTimeStep, m_velocityIterations, m_positionIterations);
-        }
-        else
-            m_physWorld.Step(timeChange, m_velocityIterations, m_positionIterations);
+        m_physWorld.Step(m_timeStep, m_velocityIterations, m_positionIterations);
     }
+
+    return m_timeStep;
 }
 void Universe::removeBack()
 {

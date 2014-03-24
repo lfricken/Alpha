@@ -98,27 +98,45 @@ Game::Status Game::run()
     Game::Status newState = Game::Local;
     sf::Clock clock;
     float fps = 0;
-    float firstTime = 0, secondTime = 0, timeForFrame = 0;
+    float firstTime = 0, secondTime = 0, timeForFrame = 0, computeTime = 0, remainder = 0;
+    int i = 0;
 
     sf::Event event;
     while (m_spGameWindow->isOpen() && newState != Game::Quit)
     {
         secondTime = clock.getElapsedTime().asSeconds();
         timeForFrame = secondTime - firstTime;
+        computeTime = timeForFrame + remainder;
         fps = 1.0/timeForFrame;
         firstTime = clock.getElapsedTime().asSeconds();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
             cout << "\nFPS: " << fps;
 
-        /**INPUT/UPDATE**////WE need to somehow also factor in tgui!!!
-        m_spGameControlManager->pressedUpdate();
-        m_spGameUniverse->physStep(timeForFrame);
+        /**INPUT and PHYSICS**/
+
+
+
         while (m_spGameWindow->pollEvent(event))
         {
             if(m_spGameControlManager->choiceUpdate(event))//if we put this before physstep, the camera lags!
                 newState = Game::Quit;
         }
+
+        while(computeTime > 0 && i < 6)///should max iterations depend on how far we are behind?
+        {
+            ++i;
+            m_spGameControlManager->pressedUpdate();
+            computeTime -= m_spGameUniverse->physStep();
+        }
+        remainder = computeTime;
+        i = 0;
+        if(remainder > 0)
+            cout << endl << remainder;
+
+
         m_spGameIOManager->update(timeForFrame);
+
+
 
         /**DRAW**/
         m_spGameWindow->clear();
@@ -176,6 +194,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     cor.package.reset("Static_Chunk_1", "input_1", pack, 1, Destination::UNIVERSE);
     m_allCouriers.push_back(&cor);
 
+    solidFixture.physicsData.isSensor = false;
     solidFixture.physicsData.shape = PhysicsBaseData::Octagon;
     solidFixture.physicsData.density = 1.0f;
     solidFixture.physicsData.friction = 0.4f;
@@ -220,6 +239,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     GModuleData data;
     data.baseData.type = ClassType::GMODULE;
     data.physicsData.shape = PhysicsBaseData::Box;
+    data.physicsData.categoryBits = CollisionCategory::ShipModule;
+    data.physicsData.maskBits = CollisionCategory::Projectile;
     data.physicsData.isSensor = false;
     data.physicsData.density = 1.0f;
     data.physicsData.friction = 0.4f;
@@ -275,10 +296,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
 
 
-
-
-
-
+    data.physicsData.categoryBits = CollisionCategory::Projectile;
+    data.physicsData.maskBits = CollisionCategory::ShipModule | CollisionCategory::Sensor;
     vector<GModuleData> dataList;
     dataList.push_back(data);
     dataList.back().physicsData.offset.x = 0;

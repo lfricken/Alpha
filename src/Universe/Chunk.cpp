@@ -140,7 +140,10 @@ void Chunk::add(vector<GModuleData>& rDataList, vector<b2Vec2>& vertices)
     /**create our bounding box for large chunk collisions using vertices**/
 
 
-    if(vertices.size() < 3)/**create us with a circle**//**
+    if(vertices.size() < 3)
+        cout << "\nBroken??";
+    /**create us with a circle**//**
+
     {
         float radius = f_findRadius(rDataList);
         m_shape.setas

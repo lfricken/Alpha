@@ -23,6 +23,8 @@ const string GraphicsBase::getTexName() const
 {
     return m_texName;
 }
+
+
 void GraphicsBase::setVertex(sf::Vertex* pVertex)///verify pointer integrity
 {
     m_pVertex = pVertex;
@@ -30,13 +32,37 @@ void GraphicsBase::setVertex(sf::Vertex* pVertex)///verify pointer integrity
     setTexTile(m_texTile);
     setTilePos(m_tilePos);
 }
-const sf::Vertex* GraphicsBase::getVertex() const///verify pointer integrity
+const sf::Vertex* GraphicsBase::getVertex() const///verify pointer integrity??
 {
-    return m_pVertex;
+    return ((*m_pTextVertex)[m_textVertexIndex]);
 }
+void GraphicsBase::setTextVertex(TexturedVertices* pTextVertex, const int index)
+{
+    m_textVertexIndex = index;
+    m_pTextVertex = pTextVertex;
+    m_pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
+    setColor(m_color);
+    setTexTile(m_texTile);
+    setTilePos(m_tilePos);
+}
+const TexturedVertices* GraphicsBase::getTextVertex() const
+{
+    return m_pTextVertex;
+}
+int GraphicsBase::getTextVertexIndex() const
+{
+    return m_textVertexIndex;
+}
+
+
+
+
 void GraphicsBase::setTilePos(const sf::Vector2f& rTilePos)///THIS IS GOING WRONG SOMEHOW, or is it?
 {
     m_tilePos = rTilePos;//pointer
+        ///make this use the tex vert pointer
+    m_pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
+
     m_pVertex[0].position = sf::Vector2f(scale*m_tilePos.x, scale*m_tilePos.y);//0
     m_pVertex[1].position = sf::Vector2f(scale*(m_tilePos.x+m_tileSize.x), scale*m_tilePos.y);//1
     m_pVertex[2].position = sf::Vector2f(scale*(m_tilePos.x+m_tileSize.x), scale*(m_tilePos.y+m_tileSize.y));//2
@@ -57,6 +83,8 @@ void GraphicsBase::incTexTile()
 void GraphicsBase::setTexTile(const sf::Vector2f& rTexTile)
 {
     m_texTile = rTexTile;//pointer
+        ///make this use the tex vert pointer
+    m_pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
     m_pVertex[0].texCoords = sf::Vector2f(m_texTileSize.x*(m_texTile.x), m_texTileSize.y*(m_texTile.y));
     m_pVertex[1].texCoords = sf::Vector2f(m_texTileSize.x*(m_texTile.x+1), m_texTileSize.y*(m_texTile.y));
     m_pVertex[2].texCoords = sf::Vector2f(m_texTileSize.x*(m_texTile.x+1), m_texTileSize.y*(m_texTile.y+1));
@@ -79,15 +107,19 @@ const sf::Vector2f& GraphicsBase::getTileSize() const
 void GraphicsBase::setColor(const sf::Color& rColor)
 {
     m_color = rColor;//pointer
+    ///make this use the tex vert pointer
+    m_pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
     m_pVertex[0].color = rColor;
     m_pVertex[1].color = rColor;
     m_pVertex[2].color = rColor;
     m_pVertex[3].color = rColor;
 }
-const sf::Color& GraphicsBase::getColor() const
+const sf::Color& GraphicsBase::getColor()
 {
+    m_pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
     return m_pVertex[0].color;//pointer
 }
+/*
 void GraphicsBase::setDispPri(const int dispPri)
 {
     m_dispPri = dispPri;
@@ -96,5 +128,5 @@ const int GraphicsBase::getDispPri() const
 {
     return m_dispPri;
 }
-
+*/
 /**Const Overloads**/

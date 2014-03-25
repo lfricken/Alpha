@@ -20,6 +20,7 @@ void IOBase::f_initialize(const IOBaseData& data)
 {
     m_name = data.name;
     m_type = data.type;
+    m_isEnabled = data.isEnabled;
     addCouriers(data.spCourierList);
 }
 void IOBase::addCouriers(const std::vector<std::tr1::shared_ptr<Courier> >& spCourierList)
@@ -77,10 +78,12 @@ void IOBase::f_setID(unsigned int newID)
 {
     m_ID = newID;
 }
+/**
 int IOBase::damage(int damage)
 {
     return 1;
 }
+**/
 int IOBase::getHealth() const
 {
     return 1;

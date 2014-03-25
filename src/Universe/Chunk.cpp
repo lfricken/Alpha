@@ -223,7 +223,7 @@ void Chunk::draw()
 }
 void Chunk::physUpdate()
 {
-    for(vector<SpecialPhys*>::iterator it = m_SpecialPhysPList.begin(); it != m_SpecialPhysPList.end(); ++it)
+    for(vector<PhysicsBase*>::iterator it = m_SpecialPhysPList.begin(); it != m_SpecialPhysPList.end(); ++it)
     {
         (*it)->physUpdate();
     }

@@ -106,7 +106,10 @@ bool PhysicsBase::endContact(void* other)
     ///end contact stuff that we do
     return true;///why do we return true? should we be returning anything at all?
 }
-
+bool PhysicsBase::physUpdate()
+{
+    return false;
+}
 
 
 b2World& PhysicsBase::getWorld()
@@ -167,13 +170,13 @@ int PhysicsBase::damage(int damage)
     if(m_spEventer->amount() != 0)
     {
         std::ostringstream convert;   // stream used for the conversion
-        convert << m_health.value;      // insert the textual representation of 'Number' in the characters in the stream
-        m_spEventer->event(convert.str(), m_health.varName);
+        convert << m_health.getValue();      // insert the textual representation of 'Number' in the characters in the stream
+        m_spEventer->event(convert.str(), m_health.getVarType());
     }
 
-    return m_health.value;
+    return m_health.getValue();
 }
 int PhysicsBase::getHealth() const
 {
-    return m_health.value;
+    return m_health.getValue();
 }

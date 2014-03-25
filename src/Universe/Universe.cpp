@@ -1,6 +1,5 @@
 #include "Universe.h"
 #include "Types.h"
-#include "ShipField.h"
 
 using namespace std;
 
@@ -30,14 +29,13 @@ int binary_find_ptr(vector<S>& container, T(R::*func)() const, T id)
         return -1;
     }
 }
-
 Universe::Universe() : IOBase(IOBaseData(ClassType::ROOTGAME, "Universe")), m_physWorld(b2Vec2(0,0))
 {
     m_normalDraw = true;
     m_notPaused = true;
 
-    m_velocityIterations = 2;///how should these be set?
-    m_positionIterations = 1;///how should these be set?
+    m_velocityIterations = 4;///how should these be set?
+    m_positionIterations = 2;///how should these be set?
     m_timeStep = 1.0f/120.0f;
     m_maxIterations = 6;
 
@@ -157,7 +155,7 @@ void Universe::togglePause()
 }
 float Universe::physStep()
 {
-    if(!m_notPaused)
+    if(m_notPaused)
     {
         for(vector<tr1::shared_ptr<Chunk> >::iterator it = m_physList.begin(); it != m_physList.end(); ++it)
         {

@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "IOBase.h"
 
+struct TexturedVertices;
+
 struct GraphicsBaseData
 {
     std::string texName;/**graphics**/
@@ -26,6 +28,10 @@ public:
     virtual void setVertex(sf::Vertex* pVertex);
     virtual const sf::Vertex* getVertex() const;
 
+    virtual void setTextVertex(TexturedVertices* pTextVertex, const int index);
+    virtual const TexturedVertices* getTextVertex() const;
+    int getTextVertexIndex() const;
+
     virtual void setTilePos(const sf::Vector2f& rTilePos);
     virtual const sf::Vector2f& getTilePosition() const;
 
@@ -38,10 +44,11 @@ public:
     virtual const sf::Vector2f& getTileSize() const;
 
     virtual void setColor(const sf::Color& rColor);
-    virtual const sf::Color& getColor() const;
-
+    virtual const sf::Color& getColor();
+/*
     virtual void setDispPri(const int dispPri);
     virtual const int getDispPri() const;
+    */
 protected:
     sf::Color m_color;//color modifier for the vertices
     sf::Vector2f m_tileSize;//size of pos coords
@@ -52,6 +59,8 @@ protected:
 
     int m_dispPri;///display priority, has it been implemented?
     sf::Vertex* m_pVertex;/**never go above 3rd index,because we only have our own set of 4 vertices**/
+    TexturedVertices* m_pTextVertex;
+    int m_textVertexIndex;
     std::string m_texName;
 private:
 };

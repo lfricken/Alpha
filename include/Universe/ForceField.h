@@ -2,7 +2,6 @@
 #define FORCEFIELD_H
 
 #include "Module.h"
-#include "SpecialPhys.h"
 
 struct ForceFieldData
 {
@@ -10,7 +9,7 @@ struct ForceFieldData
     ModuleData moduleBaseData;
 };
 
-class ForceField : public Module, public SpecialPhys
+class ForceField : public Module
 {
 public:
     ForceField(ForceFieldData& data);
@@ -22,7 +21,16 @@ private:
     PhysicsBase* m_target;//for convienience;
     b2Fixture* m_targetFixture;
     b2ContactEdge* m_contactList;
+
+    float m_strength;
     bool m_hasContact;
+
+    b2Vec2 m_force;
+    b2Vec2 m_ourCoords;
+    b2Vec2 m_theirCoords;
+    float m_distance;
+    float m_theirMass;
+    b2Vec2 m_direction;
 };
 
 #endif // FORCEFIELD_H

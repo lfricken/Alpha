@@ -49,10 +49,10 @@ void MultiTileMap::add(vector<GraphicsBase*> gfxBaseList)
 
 
     /**3**/
-    vector<tr1::shared_ptr<texturedVertices> >::iterator it_texVert = m_TexVertSPList.begin();
+    vector<tr1::shared_ptr<TexturedVertices> >::iterator it_texVert = m_TexVertSPList.begin();
     for(map<string, int>::const_iterator it_map = texTally.begin(); it_map != texTally.end(); ++it_map, ++it_texVert)
     {
-        (*it_texVert) = tr1::shared_ptr<texturedVertices>(new texturedVertices);
+        (*it_texVert) = tr1::shared_ptr<TexturedVertices>(new TexturedVertices);
         (*it_texVert)->pTexture = game.getTextureAllocator().request(it_map->first);
         (*it_texVert)->textureName = it_map->first;//go through our map of textures to find the correct one to associate with this
         (*it_texVert)->vertices.setPrimitiveType(sf::Quads);//these are squares that we want to hold
@@ -68,7 +68,9 @@ void MultiTileMap::add(vector<GraphicsBase*> gfxBaseList)
         {
             if( (*it_texVert)->textureName == (*it_gfxBase)->getTexName() )
             {
-                (*it_gfxBase)->setVertex( &(*it_texVert)->vertices[ (*it_texVert)->nextAccessed ] );//GraphicsBase::setVertex should handle all this???
+                (*it_gfxBase)->setTextVertex(&(**it_texVert), (*it_texVert)->nextAccessed);
+
+               /// (*it_gfxBase)->setVertex( &(*it_texVert)->vertices[ (*it_texVert)->nextAccessed ] );//GraphicsBase::setVertex should handle all this???
                 (*it_texVert)->nextAccessed += 4;
             }
         }
@@ -77,7 +79,7 @@ void MultiTileMap::add(vector<GraphicsBase*> gfxBaseList)
 void MultiTileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
-    for(vector<tr1::shared_ptr<texturedVertices> >::const_iterator it_texVert = m_TexVertSPList.begin(); it_texVert != m_TexVertSPList.end(); ++it_texVert)
+    for(vector<tr1::shared_ptr<TexturedVertices> >::const_iterator it_texVert = m_TexVertSPList.begin(); it_texVert != m_TexVertSPList.end(); ++it_texVert)
     {
         states.texture = (*it_texVert)->pTexture;
         target.draw((*it_texVert)->vertices, states);
@@ -88,7 +90,7 @@ const sf::Vector2i& MultiTileMap::getTileSize() const
 {
     return m_tileSize;
 }
-const vector<tr1::shared_ptr<texturedVertices> >& MultiTileMap::getTexVertList() const
+const vector<tr1::shared_ptr<TexturedVertices> >& MultiTileMap::getTexVertList() const
 {
     return m_TexVertSPList;
 }

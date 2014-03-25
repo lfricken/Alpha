@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 
-enum ClassType///look at physbase.h
+enum ClassType///look at COLLISIONCATEGORY.h, and classes.txt
 {
     UNKNOWN = 0,
     ROOTGAME,

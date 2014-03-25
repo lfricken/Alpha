@@ -3,16 +3,7 @@
 
 #include "stdafx.h"
 #include "IOBase.h"
-
-enum CollisionCategory
-{
-    None = 0x0000,
-    Projectile = 0x0001,
-    ShipModule = 0x0002,
-    Sensor = 0x0004,
-    ShipHull = 0x0008,
-    Entity = 0x0010,
-};
+#include "CollisionCategory.h"
 
 struct PhysicsBaseData
 {
@@ -45,6 +36,7 @@ public:///MAYBE we shouldn't have this many functions!!!
 
     virtual bool contact(void* other);
     virtual bool endContact(void* other);
+    virtual bool physUpdate();
 
     virtual b2World& getWorld();
 

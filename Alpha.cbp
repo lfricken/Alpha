@@ -23,11 +23,14 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-pg" />
+					<Add option="-g" />
 					<Add option="-DSFML_STATIC" />
 					<Add directory="include/IO" />
 					<Add directory="include/Universe" />
 				</Compiler>
 				<Linker>
+					<Add option="-pg -lgmon" />
 					<Add option="-lsfml-network-s" />
 					<Add option="-lsfml-audio-s" />
 					<Add option="-lsfml-graphics-s" />
@@ -76,15 +79,14 @@
 		<Unit filename="include/Overlay/OverlayManager.h" />
 		<Unit filename="include/Overlay/Panel.h" />
 		<Unit filename="include/Universe/Chunk.h" />
+		<Unit filename="include/Universe/ClassType.h" />
+		<Unit filename="include/Universe/CollisionCategory.h" />
 		<Unit filename="include/Universe/DebugDraw.h" />
 		<Unit filename="include/Universe/ForceField.h" />
 		<Unit filename="include/Universe/GModule.h" />
 		<Unit filename="include/Universe/Module.h" />
 		<Unit filename="include/Universe/MultiTileMap.h" />
 		<Unit filename="include/Universe/Ship.h" />
-		<Unit filename="include/Universe/ShipField.h" />
-		<Unit filename="include/Universe/SpecialPhys.h" />
-		<Unit filename="include/Universe/Types.h" />
 		<Unit filename="include/Universe/UniversalContactListener.h" />
 		<Unit filename="include/Universe/UniversalQueryCallback.h" />
 		<Unit filename="include/Universe/Universe.h" />
@@ -118,8 +120,6 @@
 		<Unit filename="src/Universe/Module.cpp" />
 		<Unit filename="src/Universe/MultiTileMap.cpp" />
 		<Unit filename="src/Universe/Ship.cpp" />
-		<Unit filename="src/Universe/ShipField.cpp" />
-		<Unit filename="src/Universe/SpecialPhys.cpp" />
 		<Unit filename="src/Universe/UniversalContactListener.cpp" />
 		<Unit filename="src/Universe/UniversalQueryCallback.cpp" />
 		<Unit filename="src/Universe/Universe.cpp" />

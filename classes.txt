@@ -1,0 +1,111 @@
+	Common:
+Enable	(none)
+Disable	(none)
+Die	(none)
+
+Set(Function) (modifyer, +, -, *, /, = num)
+
+
+=======================================================================================TRIGGERS
+	Triggers are sensors that do various things:
+Enable: will operate normally
+Disable: wont search for things triggering
+Die: destroys this
+
+INPUTS:
+SetFilter: will use the filter to get objects
+OUTPUTS:
+OnTrigger
+OnUntrigger
+OnCount num
+
+
+
+///Trigger_Base{sets up generic trigger like functions and variables}
+Trigger_Push {an entity that exerts a force on objects in itself}
+Trigger_Control {switches control from the entity that entered it to the chunk it is a part of, can also restore control}
+Trigger_Teleport {teleports the chunk to the target point}
+
+
+=======================================================================================CHUNKS
+	Chunks are the bodies basically, they can be as large as you want, 
+	and can be created in seperate files, and loaded into the
+	editor, or created then and there. They can have a controller
+Enable: will take control
+Disable: won't accept control inputs
+Die: destroys this
+
+INPUTS:
+Sleep: invisible and doesnt do anything (offworld)
+Wake: goes to normal
+AddEnergy: {adds the amount of energy to our reserves}
+SendSubMessage: {as the parameter, dictate another message to be sent to our modules}
+OUTPUTS:
+OnEnergy num
+OnSpeed num
+
+///Chunk_Base
+Chunk_Ship {}
+Chunk_Station {static chunk}
+Chunk_Creature {}
+Chunk_Debris {}
+Chunk_Bullet {collision with non sensor is set to do damage and die}
+Chunk_Wall {rectangular wall, can be visible or invisible}
+Chunk_Item {on contact with Creature, tries to add its data to the body}
+
+=======================================================================================MODULES
+	Modules are things that go on a ship, dictates health, textures, and other attributes
+Enable: operates normally and sets itself to standard form
+Disable: is destroyed, doesn't function, could be repaired
+Die: destroys this
+
+INPUTS:
+Activate: does something, like shoot, turn shield on, open, ect
+SetHealth: sets our current health to the
+SetArmor: set our armor
+Damage: applies damage with standard calculations
+OUTPUTS:
+OnHealth num
+
+
+///Module_Base {health, the ability to be destroyed, activate function}
+Module_Shield {creates a Trigger_Push that is radialy outward}
+Module_Capacitor {Adds to the max electrical capacity of the Chunk)}
+Module_Radar {increases maximum zoom level}
+Module_Turret {Holds one gun, and limited amounts of each ammo type}
+Module_Door {activate toggles openness, also activated by touch}
+Module_Floor {allows players and bullets to pass through them to allow movement}
+Module_Container {holds any item}
+
+
+=======================================================================================IO
+	IO is for managing the IO system
+Enable: will accept activate command
+Disable: wont accept activate command
+Die: destroys this
+
+INPUTS:
+Activate: sends outputs
+OUTPUTS:
+OnActivated
+
+IO_Filter {filters based on type selected}
+IO_Relay {just a container for complex IO systems}
+IO_Timer {container for timed outputs}
+IO_Sound {plays a sound at the given volume and position on activate}
+IO_Count {keeps count of a number, additional: OnCount num, SetCount
+
+=======================================================================================POINT
+Enable: normal
+Disable: is destroyed, doesn't function
+Die: destroys this
+
+Point_Target {just a coordinate for other people to use}
+Point_ShadowController {governs over various start end points}
+Point_ShadowStart {two points are used to form shadows}
+Point_ShadowEnd {start links to end to form simple 4 sided polygon to shade in}
+
+
+
+Sub Typed:
+Trigger_Push (Radial, Linear): Radial can dictate distance modifier, linear dictates direction

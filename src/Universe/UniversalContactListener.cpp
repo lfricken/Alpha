@@ -2,6 +2,8 @@
 #include "PhysicsBase.h"
 #include "GModule.h"
 
+using namespace std;
+
 void UniversalContactListener::BeginContact(b2Contact* contact)
 {
     PhysicsBase* fixA = static_cast<PhysicsBase*>(contact->GetFixtureA()->GetUserData());

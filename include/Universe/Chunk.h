@@ -83,7 +83,7 @@ protected:
 
     std::vector<std::tr1::shared_ptr<GModule> > m_GModuleSPList;
     std::vector<std::tr1::shared_ptr<Module> > m_ModuleSPList;
-    std::vector<SpecialPhys*> m_SpecialPhysPList;
+    std::vector<PhysicsBase*> m_SpecialPhysPList;
 
     float m_accel, m_torque;///move these to a derivative of chunk
 

@@ -18,8 +18,7 @@ public:
 
 protected:
     typedef std::vector<std::tr1::shared_ptr<Courier> > vec;
-    std::map<Variable, vec> m_spCourierMap;
-  //  std::vector<std::tr1::shared_ptr<Courier> > m_spCourierList;//the list of Couriers held by this eventer (each eventer is specific to a small group, or 1, variables in an entity
+    std::map<Variable, vec> m_spCourierMap;/**holds all the couriers for this object**/
     IOManager* m_pIOManager;//a reference to the world io manager
 private:
 };

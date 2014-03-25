@@ -25,6 +25,7 @@ struct IOBaseData
     IOBaseData () {}
     IOBaseData (ClassType s1, const std::string& s2) : type(s1), name(s2) {}
     ClassType type;
+    bool isEnabled;
     std::string name;
     std::vector<std::tr1::shared_ptr<Courier> > spCourierList;
 };
@@ -45,12 +46,11 @@ public:
     unsigned int getID() const;//gets the name of this entity
     ClassType getType() const;
 
-
-    virtual int damage(int damage);
+   /// virtual int damage(int damage);
     virtual int getHealth() const;
-    virtual IOBaseReturn input_1(IOBaseArgs);
-    virtual IOBaseReturn input_2(IOBaseArgs);
-    virtual IOBaseReturn input_3(IOBaseArgs);
+    virtual IOBaseReturn input_1(IOBaseArgs);/**ENABLE**/
+    virtual IOBaseReturn input_2(IOBaseArgs);/**DISABLE**/
+    virtual IOBaseReturn input_3(IOBaseArgs);/**DIE**/
     virtual IOBaseReturn input_4(IOBaseArgs);
     virtual IOBaseReturn input_5(IOBaseArgs);
     virtual IOBaseReturn input_6(IOBaseArgs);
@@ -74,6 +74,7 @@ protected:
     void f_setID(unsigned int newID);//sets the name of this entity
     void f_initialize(const IOBaseData& data);
 
+    bool m_isEnabled;
     ClassType m_type;//type of object that we are
     std::string m_name;//used by IO manager to locate specific named objects
     unsigned int m_ID;

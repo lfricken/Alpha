@@ -17,5 +17,7 @@ int main()
             state = game.server();
     }
     std::cout << "Done\n\n";
+    char j;
+    std::cin >> j;
     return 0;
 }

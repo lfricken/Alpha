@@ -22,12 +22,9 @@ bool ForceField::physUpdate()
 
         while(m_contactList != NULL)
         {
-        if(m_contactList->contact->IsTouching())
-            return false;
-            /**
+
             if(m_contactList->contact->IsTouching())
             {
-
                 m_targetFixture = m_contactList->contact->GetFixtureA();
 
                 if(m_pFixture != m_targetFixture)
@@ -53,7 +50,7 @@ bool ForceField::physUpdate()
 
             }
             m_contactList = m_contactList->next;
-                            **/
+
 
 
         }

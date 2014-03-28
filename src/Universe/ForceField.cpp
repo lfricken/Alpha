@@ -81,6 +81,7 @@ bool ForceField::physUpdate()
         return m_hasContact;
 
     }
+        */
     return false;
-    */
+
 }

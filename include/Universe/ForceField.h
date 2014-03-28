@@ -18,6 +18,7 @@ public:
     virtual ~ForceField();
 
     virtual int startContact(void* other);
+    virtual int endContact(void* other);
     virtual int preSolveContact(void* other);
     virtual int postSolveContact(void* other);
 

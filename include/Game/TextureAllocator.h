@@ -2,6 +2,7 @@
 #define TEXTUREALLOCATOR_H
 
 #include "stdafx.h"
+#include "defaults.h"
 
 class TextureAllocator
 {

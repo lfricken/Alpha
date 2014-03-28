@@ -22,7 +22,12 @@ void ForceField::f_initialize(const ForceFieldData& data)
 }
 int ForceField::startContact(void* other)
 {
-    cout << "start";
+    cout << "\nstart";
+    return 0;
+}
+int ForceField::endContact(void* other)
+{
+    cout << "\nend";
     return 0;
 }
 int ForceField::preSolveContact(void* other)

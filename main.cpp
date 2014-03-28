@@ -31,17 +31,19 @@ const float defaultRotation = 0.0;
 
 
 /**GRAPHICS**/
- const std::string defaultTexName = "defaultTexture.png";
- const sf::Color defaultColor = sf::Color::White;
- const sf::Vector2f defaultTexTileSize = sf::Vector2f(64, 64);
- const sf::Vector2f defaultTexTile = sf::Vector2f(0, 0);
+const std::string defaultTexName = "textures/dev_64x64.png";
+const sf::Color defaultColor = sf::Color::White;
+const sf::Vector2f defaultTexTileSize = sf::Vector2f(64, 64);
+const sf::Vector2f defaultTexTile = sf::Vector2f(0, 0);
 /**GRAPHICS**/
 
 
 /**CHUNK**/
- const b2BodyType defaultBodyType = b2BodyType::b2_dynamicBody;
- const b2Vec2 defaultPosition = b2Vec2(0,0);
- const bool defaultIsBullet = false;
+const b2BodyType defaultBodyType = b2BodyType::b2_dynamicBody;
+const b2Vec2 defaultPosition = b2Vec2(0,0);
+const bool defaultIsBullet = false;
+const float defaultMaxZoom = 16.0f;
+const float defaultMinZoom = 0.5f;
 /**CHUNK**/
 
 

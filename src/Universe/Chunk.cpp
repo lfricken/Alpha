@@ -18,11 +18,14 @@ Chunk::Chunk(const ChunkData& data) : IOBase(static_cast<IOBaseData>(data)), m_r
 }
 Chunk::~Chunk()/**Don't destroy us in the middle of a physics step!**/
 {
-    m_rPhysWorld.DestroyBody(m_pBody);
     breakControl();
+    m_rPhysWorld.DestroyBody(m_pBody);
 }
 void Chunk::f_initialize(const ChunkData& data)
 {
+    m_maxZoom = data.maxZoom;
+    m_minZoom = data.minZoom;
+
     m_bodyDef.bullet = data.isBullet;
     m_bodyDef.type = data.bodyType;
     m_bodyDef.position = data.position;
@@ -206,7 +209,10 @@ void Chunk::add(vector<GModuleData>& rDataList, vector<b2Vec2>& vertices)
     if(!rDataList.empty())/**Now, offset our origin by the appropriate amount indicated by the physData**/
         m_tiles.setOrigin(rDataList[0].halfSize.x * scale , rDataList[0].halfSize.y * scale);
     else
+    {
         cout << "\nWARNING: Chunk::add()";
+        ///ERROR LOG
+    }
 }
 void Chunk::add(vector<ModuleData>& rDataList)
 {
@@ -219,6 +225,7 @@ void Chunk::add(vector<ModuleData>& rDataList)
             ptr = static_cast<Module*>(new Module(*it_data));
         else
         {
+            ///ERROR LOG
             cout << "\nModule of type " << it_data->type << " was not found.";
             ptr = new Module(*it_data);
         }
@@ -315,6 +322,14 @@ void Chunk::special_3()
 void Chunk::special_4()
 {
 
+}
+float Chunk::getMaxZoom() const
+{
+    return m_maxZoom;
+}
+float Chunk::getMinZoom() const
+{
+    return m_minZoom;
 }
 /**CONTROL**/
 Intelligence* Chunk::getController() const//done

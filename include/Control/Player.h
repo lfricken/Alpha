@@ -26,6 +26,7 @@ struct PlayerData
     IntelligenceData intellData;
     std::string playerMode;
 };
+
 class Player : public Intelligence
 {
 public:
@@ -35,6 +36,9 @@ public:
     Camera& getCamera();
     const Camera& getCamera() const;
 
+    void setMouseCoords(const sf::Vector2i& screenCoords);
+    const sf::Vector2i& getMouseCoords() const;
+
     void setPlayerMode(const std::string& mode);
     const std::string& getPlayerMode() const;
 
@@ -43,6 +47,7 @@ public:
     const InputConfig& getInputConfig() const;
 protected:
 private:
+    sf::Vector2i m_mouseCoords;
     Camera m_camera;
     std::string m_playerMode;///STATE INSTEAD??
     InputConfig m_inputConfig;

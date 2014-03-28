@@ -22,7 +22,7 @@ void Ship::f_initialize(const ShipData& sData)
     ForceFieldData data;
     data.shape = Shape::Circle;
     data.isSensor = true;
-    data.halfSize = b2Vec2(4, 4);
+    data.halfSize = b2Vec2(8, 8);
     data.density = 0;
     data.pBody = m_pBody;
     data.categoryBits = CollisionCategory::Sensor;

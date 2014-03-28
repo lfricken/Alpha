@@ -17,12 +17,16 @@ struct ChunkData : public IOBaseData//initialized
         IOBaseData(),
         bodyType(defaultBodyType),
         position(defaultPosition),
-        isBullet(defaultIsBullet)
+        isBullet(defaultIsBullet),
+        maxZoom(defaultMaxZoom),
+        minZoom(defaultMinZoom)
         {}
 
     b2BodyType bodyType;
     b2Vec2 position;
     bool isBullet;
+    float maxZoom;
+    float minZoom;
 };
 
 class Chunk : public IOBase
@@ -62,6 +66,9 @@ public:
     virtual void special_3();
     virtual void special_4();
 
+    virtual float getMaxZoom() const;
+    virtual float getMinZoom() const;
+
     /**CONTROL**/
     Intelligence* getController() const;
     bool hasController() const;
@@ -82,6 +89,8 @@ protected:
     sf::RenderWindow& m_rWindow;
     b2World& m_rPhysWorld;
 
+    float m_maxZoom;
+    float m_minZoom;
 
     b2Body* m_pBody;
     b2BodyDef m_bodyDef;

@@ -40,6 +40,8 @@ extern const sf::Vector2f defaultTexTile;
 extern const b2BodyType defaultBodyType;
 extern const b2Vec2 defaultPosition;
 extern const bool defaultIsBullet;
+extern const float defaultMaxZoom;
+extern const float defaultMinZoom;
 /**CHUNK**/
 
 

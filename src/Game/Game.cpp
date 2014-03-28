@@ -18,7 +18,7 @@ Game::Game()
 {
     ///load window data into settings, and launch window with the settings
     m_settings.antialiasingLevel = 4;
-    m_spGameWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(1200, 600), "SFML Box2D Test Environment", sf::Style::Default, m_settings));
+    m_spGameWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(1600, 900), "SFML Box2D Test Environment", sf::Style::Default, m_settings));
     m_spGameFunctionFinder = std::tr1::shared_ptr<BaseFunctionFinder>(new BaseFunctionFinder);//independent
     m_spTexAlloc = std::tr1::shared_ptr<TextureAllocator>(new TextureAllocator());//independent
     m_spGameOverlayManager = std::tr1::shared_ptr<OverlayManager>(new OverlayManager());//independent
@@ -259,7 +259,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     mdata.restitution = 0.2f;
     mdata.rotation = 0.0f;
 
-    ///WE NEED TO GET A STANDARD SIZE
+    ///WE NEED TO GET A STANDARD SIZE??
     vector<GModuleData> moduleList1;
     vector<ModuleData> moduleList2;
     short int texTile = 0;
@@ -311,8 +311,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     shipDat.position = b2Vec2(-20, 20);
     Chunk* ship1 = new Ship(shipDat);//WTF IS GOING ON (solved, the force field wasnt getting initialized properly)
     ship1->setName("ship_1");
-    ship1->add(moduleList1, example);///this line and the one below it wont work properly, cant be above the debris chunks
-    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(ship1));///WTF
+    ship1->add(moduleList1, example);
+    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(ship1));
     /**SHIP CHUNKS**/
 
     /**=============================================SHIPS=============================================**/
@@ -335,13 +335,11 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     debrisModuleData.pBody = NULL;//we dont know it yet
     debrisModuleData.restitution = 0.2f;
     debrisModuleData.rotation = 0.0f;
-    debrisModuleData.texName = "textures/tileset.png";
+    debrisModuleData.texName = "textures/door1.png";
     debrisModuleData.texTile = sf::Vector2f(0, 0);
     debrisModuleData.texTileSize = sf::Vector2f(64, 64);
     debrisModuleData.color = sf::Color::White;
 
-    debrisModuleData.categoryBits = CollisionCategory::Projectile;
-    debrisModuleData.maskBits = CollisionCategory::ShipModule | CollisionCategory::Sensor;
     vector<GModuleData> DebrisDataList;
     DebrisDataList.push_back(debrisModuleData);
     DebrisDataList.back().offset.x = 0;
@@ -362,6 +360,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     debrisData.position.y = -50;
     debrisData.isBullet = false;
     debrisData.type = ClassType::CHUNK;
+
     Chunk* debrisChunk = new Chunk(debrisData);
     debrisChunk->add(DebrisDataList);
     m_spGameUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));

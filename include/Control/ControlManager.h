@@ -29,6 +29,7 @@ private:
     Universe& m_rUniverse;
     sf::RenderWindow& m_rWindow;
     b2Body* m_bodyTarget;
+    Chunk* m_chunkTarget;
 
     std::vector<std::tr1::shared_ptr<Player> > m_localPlayerList;
     std::vector<Player> m_deactivatedPlayerList;///we dont do these, what is this for????

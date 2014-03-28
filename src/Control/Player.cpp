@@ -18,7 +18,14 @@ const Camera& Player::getCamera() const
 {
     return m_camera;
 }
-
+void Player::setMouseCoords(const sf::Vector2i& screenCoords)
+{
+    m_mouseCoords = screenCoords;
+}
+const sf::Vector2i& Player::getMouseCoords() const
+{
+    return m_mouseCoords;
+}
 void Player::setPlayerMode(const std::string& mode)
 {
     m_playerMode = mode;

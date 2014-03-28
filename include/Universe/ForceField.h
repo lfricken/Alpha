@@ -3,23 +3,31 @@
 
 #include "Module.h"
 
-struct ForceFieldData
+struct ForceFieldData : public ModuleData
 {
-    ForceFieldData(){moduleBaseData.physicsData.isSensor = true;}
-    ModuleData moduleBaseData;
+    ForceFieldData() :
+        ModuleData()
+        {}
 };
 
 class ForceField : public Module
 {
 public:
-    ForceField(ForceFieldData& data);
+    ForceField();
+    ForceField(const ForceFieldData& data);
     virtual ~ForceField();
+
+    virtual int startContact(void* other);
+    virtual int preSolveContact(void* other);
+    virtual int postSolveContact(void* other);
 
     virtual bool physUpdate();
 protected:
 private:
+    virtual void f_initialize(const ForceFieldData& data);
+
     PhysicsBase* m_target;//for convienience;
-    b2Fixture* m_targetFixture;
+    b2Body* m_targetBody;
     b2ContactEdge* m_contactList;
 
     float m_strength;

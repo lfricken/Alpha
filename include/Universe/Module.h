@@ -4,21 +4,24 @@
 #include <IOBase.h>
 #include <PhysicsBase.h>
 
-struct ModuleData
+struct ModuleData : public PhysicsBaseData
 {
-    IOBaseData baseData;
-    PhysicsBaseData physicsData;
+    ModuleData() :
+        PhysicsBaseData()
+        {}
 };
 
 
 class Module : public PhysicsBase
 {
     public:
-        Module(ModuleData& data);
+        Module();
+        Module(const ModuleData& data);
         virtual ~Module();
 
     protected:
     private:
+        virtual void f_initialize(const ModuleData& data);
 };
 
 #endif // DMODULE_H

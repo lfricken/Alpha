@@ -6,9 +6,16 @@
 
 struct TexturedVertices;
 
-struct GraphicsBaseData
+struct GraphicsBaseData//initialized
 {
-    std::string texName;/**graphics**/
+    GraphicsBaseData() :
+        texName(defaultTexName),
+        color(defaultColor),
+        texTileSize(defaultTexTileSize),
+        texTile(defaultTexTile)
+        {}
+
+    std::string texName;
     sf::Color color;//color mask
     sf::Vector2f texTileSize;//size of the texture rectangle
     sf::Vector2f texTile;//texture tile that needs to be displayed
@@ -19,6 +26,7 @@ class GraphicsBase///http://stackoverflow.com/questions/14399929/should-i-use-pu
 ///read first post
 {
 public:
+    GraphicsBase();
     GraphicsBase(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset);
     virtual ~GraphicsBase();
 
@@ -63,6 +71,7 @@ protected:
     int m_textVertexIndex;
     std::string m_texName;
 private:
+    virtual void f_initialize(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset);
 };
 
 #endif // GRAPHICSBASE_H

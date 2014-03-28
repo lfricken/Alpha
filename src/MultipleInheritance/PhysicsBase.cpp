@@ -3,14 +3,27 @@
 
 using namespace std;
 
-PhysicsBase::PhysicsBase(PhysicsBaseData& data, IOBaseData& baseData) : IOBase(baseData), m_rPhysWorld(game.getGameUniverse().getWorld())
+PhysicsBase::PhysicsBase() :
+    IOBase(),
+    m_rPhysWorld(game.getGameUniverse().getWorld())
 {
-    if (data.shape == PhysicsBaseData::Box)
+    PhysicsBaseData data;
+    f_initialize(data);
+}
+PhysicsBase::PhysicsBase(const PhysicsBaseData& data) :
+    IOBase(static_cast<IOBaseData>(data)),
+    m_rPhysWorld(game.getGameUniverse().getWorld())
+{
+    f_initialize(data);
+}
+void PhysicsBase::f_initialize(const PhysicsBaseData& data)
+{
+    if (data.shape == Shape::Box)
     {
         m_shape = new b2PolygonShape;
         static_cast<b2PolygonShape*>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//set our shape
     }
-    else if((data.shape == PhysicsBaseData::Octagon) && (data.halfSize.x < data.halfSize.y))
+    else if((data.shape == Shape::Octagon) && (data.halfSize.x < data.halfSize.y))
     {
         m_shape = new b2PolygonShape;
         int32 num = 8;
@@ -27,11 +40,14 @@ PhysicsBase::PhysicsBase(PhysicsBaseData& data, IOBaseData& baseData) : IOBase(b
         vertices[7].Set(x/2, y);
 
         for(int i = 0; i < num; ++i)
-            vertices[i]+= data.offset;
+        {
+            ///use rotation matrix??? to calculate rotation
+            vertices[i] += data.offset;
+        }
 
         static_cast<b2PolygonShape*>(m_shape)->Set(vertices, num);
     }
-    else if((data.shape == PhysicsBaseData::Octagon) && (data.halfSize.x >= data.halfSize.y))
+    else if((data.shape == Shape::Octagon) && (data.halfSize.x >= data.halfSize.y))
     {
         m_shape = new b2PolygonShape;
         int32 num = 8;
@@ -46,12 +62,16 @@ PhysicsBase::PhysicsBase(PhysicsBaseData& data, IOBaseData& baseData) : IOBase(b
         vertices[5].Set(x, -y/2);
         vertices[6].Set(x, y/2);
         vertices[7].Set(x/2, y);
+
         for(int i = 0; i < num; ++i)
-            vertices[i]+= data.offset;
+        {
+            ///use rotation matrix??? to calculate rotation
+            vertices[i] += data.offset;
+        }
 
         static_cast<b2PolygonShape*>(m_shape)->Set(vertices, num);
     }
-    else if(data.shape == PhysicsBaseData::Triangle)
+    else if(data.shape == Shape::Triangle)
     {
         m_shape = new b2PolygonShape;
         int32 num = 3;
@@ -61,14 +81,17 @@ PhysicsBase::PhysicsBase(PhysicsBaseData& data, IOBaseData& baseData) : IOBase(b
         vertices[0].Set(0, 0);//define CCW, starting at right angle, then go left, then go up and left
         vertices[1].Set(2*x, 0);// *2 because halfsize
         vertices[2].Set(0, 2*y);// *2 because halfsize
+
         for(int i = 0; i < num; ++i)
-            vertices[i]+= data.offset;
+        {
+            ///use rotation matrix??? to calculate rotation
+            vertices[i] += data.offset;
+        }
 
         static_cast<b2PolygonShape*>(m_shape)->Set(vertices, num);
     }
-    else if(data.shape == PhysicsBaseData::Circle)
+    else if(data.shape == Shape::Circle)
     {
-                cout << "\nCircle";
         m_shape = new b2CircleShape;
         static_cast<b2CircleShape*>(m_shape)->m_p.Set(data.offset.x, data.offset.y);
         static_cast<b2CircleShape*>(m_shape)->m_radius = data.halfSize.x;
@@ -90,28 +113,36 @@ PhysicsBase::PhysicsBase(PhysicsBaseData& data, IOBaseData& baseData) : IOBase(b
 
     m_pBody = data.pBody;
     m_pFixture = m_pBody->CreateFixture(&m_fixtureDef);
-
+    m_pFixture->SetUserData(this);
 }
 PhysicsBase::~PhysicsBase()
 {
     delete m_shape;
 }
-bool PhysicsBase::contact(void* other)
+int PhysicsBase::startContact(void* other)
 {
     damage(1);
-    return true;///why do we return true? should we be returning anything at all?
+    return 0;
 }
-bool PhysicsBase::endContact(void* other)
+int PhysicsBase::endContact(void* other)
 {
-    ///end contact stuff that we do
-    return true;///why do we return true? should we be returning anything at all?
+    return 0;
 }
+int PhysicsBase::preSolveContact(void* other)
+{
+    return 0;
+}
+int PhysicsBase::postSolveContact(void* other)
+{
+    return 0;
+}
+
+
+
 bool PhysicsBase::physUpdate()
 {
     return false;
 }
-
-
 b2World& PhysicsBase::getWorld()
 {
     return m_rPhysWorld;
@@ -135,23 +166,23 @@ b2FixtureDef& PhysicsBase::getFixtureDef()
 }
 
 
-b2Fixture& PhysicsBase::getFixture() const
+b2Fixture* PhysicsBase::getFixture() const
 {
-    return *m_pFixture;
+    return m_pFixture;
 }
-b2Body& PhysicsBase::getBody() const
+b2Body* PhysicsBase::getBody() const
 {
-    return *m_pBody;
+    return m_pBody;
 }
 
 
-b2Fixture& PhysicsBase::getFixture()
+b2Fixture* PhysicsBase::getFixture()
 {
-    return *m_pFixture;
+    return m_pFixture;
 }
-b2Body& PhysicsBase::getBody()
+b2Body* PhysicsBase::getBody()
 {
-    return *m_pBody;
+    return m_pBody;
 }
 
 void PhysicsBase::setFixture(b2Fixture* pFixture)

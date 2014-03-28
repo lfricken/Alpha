@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "MultiTileMap.h"
-#include "ForceField.h"
+#include "ForceField.h"///dont need this??
 
 class GModule;
 struct GModuleData;
@@ -11,9 +11,15 @@ class Module;
 struct ModuleData;
 class Intelligence;
 
-struct ChunkData
+struct ChunkData : public IOBaseData//initialized
 {
-    IOBaseData baseData;
+    ChunkData() :
+        IOBaseData(),
+        bodyType(defaultBodyType),
+        position(defaultPosition),
+        isBullet(defaultIsBullet)
+        {}
+
     b2BodyType bodyType;
     b2Vec2 position;
     bool isBullet;
@@ -24,9 +30,8 @@ class Chunk : public IOBase
 public:
     Chunk();
     Chunk(const ChunkData& data);
-    Chunk(const Chunk& old);///should this exist?
     virtual ~Chunk();//Don't destroy us in the middle of a physics step
-
+    ///Chunk(const Chunk& old);///should this exist?
 
     virtual b2Body* getBody();
 
@@ -74,8 +79,9 @@ public:
     virtual void input_1(sf::Packet& rInput);
 
 protected:
-    b2World& m_rPhysWorld;
     sf::RenderWindow& m_rWindow;
+    b2World& m_rPhysWorld;
+
 
     b2Body* m_pBody;
     b2BodyDef m_bodyDef;
@@ -89,7 +95,7 @@ protected:
 
 private:
     float f_findRadius(std::vector<GModuleData>& rDataList);//finds the top/bottom left, bottom
-    void f_initialize(const ChunkData& data);
+    virtual void f_initialize(const ChunkData& data);
 
     friend class Intelligence;
     void f_forgetController();//CONTROL

@@ -29,7 +29,7 @@ int binary_find_ptr(vector<S>& container, T(R::*func)() const, T id)
         return -1;
     }
 }
-Universe::Universe() : IOBase(IOBaseData(ClassType::ROOTGAME, "Universe")), m_physWorld(b2Vec2(0,0))
+Universe::Universe() : IOBase(), m_physWorld(b2Vec2(0,0))
 {
     m_normalDraw = true;
     m_notPaused = true;
@@ -45,9 +45,14 @@ Universe::Universe() : IOBase(IOBaseData(ClassType::ROOTGAME, "Universe")), m_ph
     m_debugDraw.SetFlags(b2Draw::e_shapeBit);
 }
 
-Universe::~Universe()///unfinished
+Universe::~Universe()
 {
 }
+
+
+
+
+
 /**=====GET_TARGETS=====**/
 /**=================**/
 /**=================**/
@@ -87,6 +92,9 @@ Chunk* Universe::getPhysTarget(unsigned int target)///UNFINISHED
 /**=================**/
 /**=================**/
 /**=====GET_TARGETS=====**/
+
+
+
 
 
 
@@ -138,16 +146,15 @@ void Universe::toggleDebugDraw()
 /**=====DRAWING=====**/
 
 
+
+
+
 /**=================**/
 /**=================**/
 /**=====OTHER=====**/
 b2World& Universe::getWorld()
 {
     return m_physWorld;
-}
-std::vector<std::tr1::shared_ptr<ShipField> >& Universe::getFields()
-{
-    return m_spFieldList;
 }
 void Universe::togglePause()
 {
@@ -163,7 +170,6 @@ float Universe::physStep()
         }
         m_physWorld.Step(m_timeStep, m_velocityIterations, m_positionIterations);
     }
-
     return m_timeStep;
 }
 void Universe::removeBack()

@@ -5,15 +5,24 @@
 #include "IOBase.h"
 #include "CollisionCategory.h"
 
-struct PhysicsBaseData
+struct PhysicsBaseData : public IOBaseData//initialized
 {
-    enum Shape
-    {
-        Box = 0,
-        Octagon = 1,
-        Triangle = 2,
-        Circle = 3,
-    };
+    PhysicsBaseData() :
+        IOBaseData(),
+        shape(defaultShape),
+        categoryBits(defaultCollisionCategory),
+        maskBits(defaultMaskBits),
+        isSensor(defaultIsSensor),
+        offset(defaultOffset),
+        halfSize(defaultHalfSize),
+        density(defaultDensity),
+        friction(defaultFriction),
+        restitution(defaultRestitution),
+        rotation(defaultRotation),
+        pBody(NULL)
+        {}
+
+
     Shape shape;
     int categoryBits;//what type of object we are
     int maskBits;//what we will try and collide with
@@ -31,28 +40,34 @@ struct PhysicsBaseData
 class PhysicsBase : public IOBase
 {
 public:///MAYBE we shouldn't have this many functions!!!
-    PhysicsBase(PhysicsBaseData& data, IOBaseData& baseData);
+    PhysicsBase();
+    PhysicsBase(const PhysicsBaseData& data);
     virtual ~PhysicsBase();
 
-    virtual bool contact(void* other);
-    virtual bool endContact(void* other);
-    virtual bool physUpdate();
+    virtual int startContact(void* other);
+    virtual int endContact(void* other);
+    virtual int preSolveContact(void* other);
+    virtual int postSolveContact(void* other);
+
+    virtual bool physUpdate();///OBSOLETE???
 
     virtual b2World& getWorld();
 
-    virtual b2Fixture& getFixture() const;
-    virtual b2Fixture& getFixture();
+    virtual b2Fixture* getFixture();
     virtual void setFixture(b2Fixture* fix);
 
-    virtual b2Body& getBody() const;
-    virtual b2Body& getBody();
+    virtual b2Body* getBody();
     virtual void setBody(b2Body* fix);
 
-    virtual const b2Shape& getShape() const;
     virtual b2Shape& getShape();
 
     virtual const b2FixtureDef& getFixtureDef() const;
     virtual b2FixtureDef& getFixtureDef();
+
+    /**CONST OVERLOADS**/
+    virtual b2Fixture* getFixture() const;
+    virtual b2Body* getBody() const;
+    virtual const b2Shape& getShape() const;
 
     /**OVERRIDE**/
     virtual int damage(int damage);
@@ -61,7 +76,7 @@ public:///MAYBE we shouldn't have this many functions!!!
 protected:
     HealthData m_health;
 
-    b2Shape* m_shape; ///HOLY BALLS MAN, NAKED??? BE CAREFUL, WE WERE HAVING TROUBLE CASTING THIS
+    b2Shape* m_shape; ///HOLY BALLS MAN, NAKED??? BE CAREFUL, ITS BECAUSE WE WERE HAVING TROUBLE CASTING THIS
     b2FixtureDef m_fixtureDef;
 
     b2Body* m_pBody;//pointer
@@ -71,6 +86,7 @@ protected:
     b2World& m_rPhysWorld;
 
 private:
+    virtual void f_initialize(const PhysicsBaseData& data);
 };
 
 #endif // PHYSICSBASE_H

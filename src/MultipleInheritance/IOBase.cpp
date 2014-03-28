@@ -1,12 +1,11 @@
 #include "IOBase.h"
 #include "globals.h"
 
+using namespace std;
 
 IOBase::IOBase() : m_rIOManager(game.getGameIOManager())
 {
     IOBaseData data;
-    data.name = "unknown name";
-    data.type = ClassType::UNKNOWN;
     f_initialize(data);
 }
 IOBase::IOBase(const IOBaseData& data) : m_rIOManager(game.getGameIOManager())
@@ -21,6 +20,7 @@ void IOBase::f_initialize(const IOBaseData& data)
     m_name = data.name;
     m_type = data.type;
     m_isEnabled = data.isEnabled;
+    m_ID = data.ID;
     addCouriers(data.spCourierList);
 }
 void IOBase::addCouriers(const std::vector<std::tr1::shared_ptr<Courier> >& spCourierList)

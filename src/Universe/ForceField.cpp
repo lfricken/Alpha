@@ -2,17 +2,43 @@
 
 using namespace std;
 
-ForceField::ForceField(ForceFieldData& data) : Module(data.moduleBaseData)
+ForceField::ForceField() : Module()
 {
-    m_strength = 400;
+    ForceFieldData data;
+    f_initialize(data);
+}
+ForceField::ForceField(const ForceFieldData& data) : Module(static_cast<ModuleData>(data))
+{
+    f_initialize(data);
 }
 
 ForceField::~ForceField()
 {
 
 }
+void ForceField::f_initialize(const ForceFieldData& data)
+{
+    m_strength = 400;
+}
+int ForceField::startContact(void* other)
+{
+    cout << "start";
+    return 0;
+}
+int ForceField::preSolveContact(void* other)
+{
+    cout << "Contacting";
+    return 0;
+}
+int ForceField::postSolveContact(void* other)
+{
+    cout << "Contacting";
+    return 0;
+}
+
 bool ForceField::physUpdate()
 {
+    /*
     if(m_isEnabled)
     {
 
@@ -22,17 +48,17 @@ bool ForceField::physUpdate()
 
         while(m_contactList != NULL)
         {
-
+       //     cout << "\nContact List != NULL";
             if(m_contactList->contact->IsTouching())
             {
-                m_targetFixture = m_contactList->contact->GetFixtureA();
+                m_targetBody = m_contactList->contact->GetFixtureA()->GetBody();
 
-                if(m_pFixture != m_targetFixture)
-                    m_target = static_cast<PhysicsBase*>(m_targetFixture->GetUserData());
-                else
-                    m_target = static_cast<PhysicsBase*>(m_contactList->contact->GetFixtureB()->GetUserData());
-                m_theirCoords = m_target->getBody().GetWorldCenter();
-                m_theirMass = m_target->getBody().GetMass();
+                if(m_pBody == m_targetBody)
+                    m_targetBody = m_contactList->contact->GetFixtureB()->GetBody();
+
+                m_theirCoords = m_targetBody->GetWorldCenter();
+                m_theirMass = m_targetBody->GetMass();
+
                 m_direction.x = m_theirCoords.x-m_ourCoords.x;
                 m_direction.y = m_theirCoords.y-m_ourCoords.y;
                 m_distance = sqrt(m_direction.x*m_direction.x + m_direction.y*m_direction.y);
@@ -43,7 +69,7 @@ bool ForceField::physUpdate()
                 m_force.x = m_direction.x*m_theirMass*m_strength*1/m_distance;
                 m_force.y = m_direction.y*m_theirMass*m_strength*1/m_distance;
 
-                m_target->getBody().ApplyForceToCenter(m_force, true);
+                m_targetBody->ApplyForceToCenter(m_force, true);///cant apply force?
                 m_pBody->ApplyForceToCenter(-m_force, true);
 
                 m_hasContact = true;
@@ -51,12 +77,10 @@ bool ForceField::physUpdate()
             }
             m_contactList = m_contactList->next;
 
-
-
         }
-
         return m_hasContact;
 
     }
     return false;
+    */
 }

@@ -23,11 +23,14 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-pg" />
+					<Add option="-g" />
 					<Add option="-DSFML_STATIC" />
 					<Add directory="include/IO" />
 					<Add directory="include/Universe" />
 				</Compiler>
 				<Linker>
+					<Add option="-pg -lgmon" />
 					<Add option="-lsfml-network-s" />
 					<Add option="-lsfml-audio-s" />
 					<Add option="-lsfml-graphics-s" />
@@ -83,10 +86,12 @@
 		<Unit filename="include/Universe/GModule.h" />
 		<Unit filename="include/Universe/Module.h" />
 		<Unit filename="include/Universe/MultiTileMap.h" />
+		<Unit filename="include/Universe/Shape.h" />
 		<Unit filename="include/Universe/Ship.h" />
 		<Unit filename="include/Universe/UniversalContactListener.h" />
 		<Unit filename="include/Universe/UniversalQueryCallback.h" />
 		<Unit filename="include/Universe/Universe.h" />
+		<Unit filename="include/defaults.h" />
 		<Unit filename="include/globals.h" />
 		<Unit filename="include/stdafx.h" />
 		<Unit filename="main.cpp" />

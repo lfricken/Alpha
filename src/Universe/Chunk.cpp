@@ -7,27 +7,14 @@
 
 using namespace std;
 
-Chunk::Chunk() : m_rWindow(game.getGameWindow()), m_rPhysWorld(game.getGameUniverse().getWorld())
+Chunk::Chunk() : IOBase(), m_rWindow(game.getGameWindow()), m_rPhysWorld(game.getGameUniverse().getWorld())
 {
     ChunkData data;
-    data.isBullet = false;
-    data.bodyType = b2_dynamicBody;
-    data.position = b2Vec2(0.0f, 0.0f);
     f_initialize(data);
 }
-Chunk::Chunk(const ChunkData& data) : m_rWindow(game.getGameWindow()), m_rPhysWorld(game.getGameUniverse().getWorld()), IOBase(data.baseData)
+Chunk::Chunk(const ChunkData& data) : IOBase(static_cast<IOBaseData>(data)), m_rWindow(game.getGameWindow()), m_rPhysWorld(game.getGameUniverse().getWorld())
 {
     f_initialize(data);
-}
-Chunk::Chunk(const Chunk& old) : m_rWindow(game.getGameWindow()), m_rPhysWorld(game.getGameUniverse().getWorld())
-{
-    cout << "\nChunk Copy Called...";
-    m_pBody = old.getBody();
-    m_bodyDef = old.getBodyDef();
-    m_tiles = old.getTiles();
-    m_GModuleSPList = old.getGModuleSPList();
-    m_ModuleSPList = old.getModuleSPList();
-    cout << "Completed.";
 }
 Chunk::~Chunk()/**Don't destroy us in the middle of a physics step!**/
 {
@@ -49,6 +36,22 @@ void Chunk::f_initialize(const ChunkData& data)
     m_accel = 50;
     m_torque = 50;
 }
+/*
+Chunk::Chunk(const Chunk& old) : m_rWindow(game.getGameWindow()), m_rPhysWorld(game.getGameUniverse().getWorld())
+{
+    cout << "\nChunk Copy Called...";
+    m_pBody = old.getBody();
+    m_bodyDef = old.getBodyDef();
+    m_tiles = old.getTiles();
+    m_GModuleSPList = old.getGModuleSPList();
+    m_ModuleSPList = old.getModuleSPList();
+    cout << "Completed.";
+}
+*/
+
+
+
+
 
 GModule* Chunk::getGModule(const std::string& targetName)
 {
@@ -89,8 +92,8 @@ float Chunk::f_findRadius(vector<GModuleData>& rDataList)
     float a, b, c, maxRadius = 1;
     for(vector<GModuleData>::iterator it = rDataList.begin(); it != rDataList.end(); ++it)
     {
-        a = it->physicsData.offset.x;
-        b = it->physicsData.offset.y;
+        a = it->offset.x;
+        b = it->offset.y;
         c = sqrt(a*a + b*b);
         if(c > maxRadius)
             maxRadius = c;
@@ -103,9 +106,9 @@ void Chunk::add(vector<GModuleData>& rDataList)
     for(vector<GModuleData>::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
         GModule* ptr;
-        it_data->physicsData.pBody = m_pBody;
+        it_data->pBody = m_pBody;
 
-        if(it_data->baseData.type == ClassType::GMODULE)
+        if(it_data->type == ClassType::GMODULE)
             ptr = static_cast<GModule*>(new GModule(*it_data));
 
         ///list all types of modules here
@@ -113,7 +116,7 @@ void Chunk::add(vector<GModuleData>& rDataList)
 
         else
         {
-            cout << "\nModule of type " << it_data->baseData.type << " with name " << it_data->baseData.name <<  " was not found.";
+            cout << "\nModule of type " << it_data->type << " with name " << it_data->name <<  " was not found.";
             ///ERROR LOG
             ptr = new GModule(*it_data);
         }
@@ -131,7 +134,7 @@ void Chunk::add(vector<GModuleData>& rDataList)
 
 
     if(!rDataList.empty())/**Now, offset our origin by the appropriate amount indicated by the physData**/
-        m_tiles.setOrigin(rDataList[0].physicsData.halfSize.x * scale , rDataList[0].physicsData.halfSize.y * scale);
+        m_tiles.setOrigin(rDataList[0].halfSize.x * scale , rDataList[0].halfSize.y * scale);
     else
         cout << "\nWARNING: Chunk::add()";
 }
@@ -141,37 +144,41 @@ void Chunk::add(vector<GModuleData>& rDataList, vector<b2Vec2>& vertices)
 
 
     if(vertices.size() < 3)
-        cout << "\nBroken??";
-    /**create us with a circle**//**
-
-    {
-        float radius = f_findRadius(rDataList);
-        m_shape.setas
-    }
-    else
     {
 
+        /**create us with a circle**//**
 
+        {
+            float radius = f_findRadius(rDataList);
+            m_shape.setas
+        }
+        else
+        {
+
+
+        }
+        **/
+
+        /**
+            m_shape.SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//default
+            m_fixtureDef.shape = &m_shape;//give our shape to our fixture definition
+            m_fixtureDef.density = data.density;
+            m_fixtureDef.friction = data.friction;
+            m_fixtureDef.restitution = data.restitution;//setting our fixture data
+            m_pBody = data.pBody;
+
+            m_pFixture = m_pBody->CreateFixture(&m_fixtureDef);**/
+
+        /**Take our list of gmodule data and make real modules with it! rDataList**/
     }
-**/
 
-/**
-    m_shape.SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//default
-    m_fixtureDef.shape = &m_shape;//give our shape to our fixture definition
-    m_fixtureDef.density = data.density;
-    m_fixtureDef.friction = data.friction;
-    m_fixtureDef.restitution = data.restitution;//setting our fixture data
-    m_pBody = data.pBody;
 
-    m_pFixture = m_pBody->CreateFixture(&m_fixtureDef);**/
-
-    /**Take our list of gmodule data and make real modules with it! rDataList**/
     for(vector<GModuleData>::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
         GModule* ptr;
-        it_data->physicsData.pBody = m_pBody;
+        it_data->pBody = m_pBody;
 
-        if(it_data->baseData.type == ClassType::GMODULE)
+        if(it_data->type == ClassType::GMODULE)
             ptr = static_cast<GModule*>(new GModule(*it_data));
 
         ///list all types of modules here
@@ -179,7 +186,7 @@ void Chunk::add(vector<GModuleData>& rDataList, vector<b2Vec2>& vertices)
 
         else
         {
-            cout << "\nModule of type " << it_data->baseData.type << " with name " << it_data->baseData.name <<  " was not found.";
+            cout << "\nModule of type " << it_data->type << " with name " << it_data->name <<  " was not found.";
             ///ERROR LOG
             ptr = new GModule(*it_data);
         }
@@ -197,7 +204,7 @@ void Chunk::add(vector<GModuleData>& rDataList, vector<b2Vec2>& vertices)
 
 
     if(!rDataList.empty())/**Now, offset our origin by the appropriate amount indicated by the physData**/
-        m_tiles.setOrigin(rDataList[0].physicsData.halfSize.x * scale , rDataList[0].physicsData.halfSize.y * scale);
+        m_tiles.setOrigin(rDataList[0].halfSize.x * scale , rDataList[0].halfSize.y * scale);
     else
         cout << "\nWARNING: Chunk::add()";
 }
@@ -206,13 +213,13 @@ void Chunk::add(vector<ModuleData>& rDataList)
     for(vector<ModuleData>::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
         Module* ptr;
-        it_data->physicsData.pBody = m_pBody;
+        it_data->pBody = m_pBody;
 
-        if(it_data->baseData.type == ClassType::MODULE)
+        if(it_data->type == ClassType::MODULE)
             ptr = static_cast<Module*>(new Module(*it_data));
         else
         {
-            cout << "\nModule of type " << it_data->baseData.type << " was not found.";
+            cout << "\nModule of type " << it_data->type << " was not found.";
             ptr = new Module(*it_data);
         }
         m_ModuleSPList.push_back(tr1::shared_ptr<Module>(ptr));

@@ -4,47 +4,31 @@
 
 using namespace std;
 
-Ship::Ship()
-{/**
-    ForceFieldData data;
-    data.moduleBaseData.physicsData.shape = PhysicsBaseData::Circle;
-    data.moduleBaseData.physicsData.isSensor = true;
-    data.moduleBaseData.physicsData.halfSize = b2Vec2(15,0);
-    data.moduleBaseData.physicsData.density = 0;
-    data.moduleBaseData.physicsData.pBody = m_pBody;
-    std::cout << m_pBody->GetWorldCenter().x;
-    data.moduleBaseData.physicsData.categoryBits = CollisionCategory::Sensor;
-    data.moduleBaseData.physicsData.maskBits = CollisionCategory::Projectile | CollisionCategory::Sensor;
-
-    ForceField* tempPtr = new ForceField(data);
-    m_ModuleSPList.push_back(tr1::shared_ptr<Module>(tempPtr));
-    m_SpecialPhysPList.push_back(tempPtr);
-    **/
-  //  m_spShipField = tr1::shared_ptr<ShipField>(new ShipField(this));
-  //  m_spShipField->setup();
-}
-Ship::Ship(ShipData& sData) : Chunk(sData.chunk)
+Ship::Ship() : Chunk()
 {
-
-    ForceFieldData data;
-    data.moduleBaseData.physicsData.shape = PhysicsBaseData::Circle;
-    data.moduleBaseData.physicsData.isSensor = true;
-    data.moduleBaseData.baseData.isEnabled = true;
-    data.moduleBaseData.physicsData.halfSize = b2Vec2(10,0);
-    data.moduleBaseData.physicsData.density = 0;
-    data.moduleBaseData.physicsData.pBody = m_pBody;
-
-    data.moduleBaseData.physicsData.categoryBits = CollisionCategory::Sensor;
-    data.moduleBaseData.physicsData.maskBits = CollisionCategory::Projectile | CollisionCategory::Sensor;
-
-    ForceField* tempPtr = new ForceField(data);
-    m_ModuleSPList.push_back(tr1::shared_ptr<Module>(tempPtr));
-    m_SpecialPhysPList.push_back(tempPtr);
-
-  //  m_spShipField = tr1::shared_ptr<ShipField>(new ShipField(this));
-   // m_spShipField->setup();
+    ShipData data;
+    f_initialize(data);
+}
+Ship::Ship(const ShipData& sData) : Chunk(static_cast<ChunkData>(sData))
+{
+    f_initialize(sData);
 }
 Ship::~Ship()
 {
 
+}
+void Ship::f_initialize(const ShipData& sData)
+{
+    ForceFieldData data;
+    data.shape = Shape::Circle;
+    data.isSensor = true;
+    data.halfSize = b2Vec2(4, 4);
+    data.density = 0;
+    data.pBody = m_pBody;
+    data.categoryBits = CollisionCategory::Sensor;
+    data.maskBits = CollisionCategory::Projectile | CollisionCategory::Sensor;
+
+    ForceField* tempPtr = new ForceField(data);
+    m_ModuleSPList.push_back(tr1::shared_ptr<Module>(tempPtr));
+    m_SpecialPhysPList.push_back(tempPtr);
 }

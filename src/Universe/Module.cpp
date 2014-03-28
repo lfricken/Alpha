@@ -1,7 +1,19 @@
 #include "Module.h"
 
-Module::Module(ModuleData& data) : PhysicsBase(data.physicsData, data.baseData)
+Module::Module() : PhysicsBase()
 {
-    m_pFixture->SetUserData(static_cast<IOBase*>(this));
+    ModuleData data;
+    f_initialize(data);
 }
-Module::~Module(){}
+Module::Module(const ModuleData& data) : PhysicsBase(static_cast<PhysicsBaseData>(data))
+{
+    f_initialize(data);
+}
+Module::~Module()
+{
+
+}
+void Module::f_initialize(const ModuleData& data)
+{
+
+}

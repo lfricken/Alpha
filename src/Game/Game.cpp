@@ -82,7 +82,7 @@ Game::Status Game::local()
 Game::Status Game::run()
 {
     /**initialize**/
- //   b2World& rWorld = m_spGameUniverse->getWorld();
+//   b2World& rWorld = m_spGameUniverse->getWorld();
 
     f_load("stuff");
     /**HUD**/
@@ -172,54 +172,57 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     add things to this thing...
     push into universe or GUI thing...
     repeat**/
+
+
+    std::vector<b2Vec2> example;
+
 ///==============================================================================
 ///==============================================================================
 ///==============================================================================
     /**=============================================STATIC=============================================**/
 
-    /**STATIC CHUNK**/
-    ChunkData staticChunkData;
-    staticChunkData.position = b2Vec2(-20,-20);
-    staticChunkData.bodyType = b2BodyType::b2_staticBody;
-    staticChunkData.isBullet = false;
-    Chunk* staticChunk = new Chunk(staticChunkData);
-    staticChunk->setName("Static_Chunk_1");
-
-    vector<GModuleData> staticGModuleDataList;
-    /**STATIC CHUNK**/
-
     /**STATIC MODULES**/
-    GModuleData solidFixture;
-    solidFixture.baseData.type = ClassType::GMODULE;
+    vector<GModuleData> staticGModuleDataList;
+    GModuleData solidFixtureData;
+    solidFixtureData.type = ClassType::GMODULE;
 
-    solidFixture.baseData.spCourierList.push_back( tr1::shared_ptr<Courier>(new Courier()) );
-    Courier& cor = *solidFixture.baseData.spCourierList.front();
+    solidFixtureData.spCourierList.push_back( tr1::shared_ptr<Courier>(new Courier()) );
+    Courier& cor = *solidFixtureData.spCourierList.front();
     sf::Packet pack;
     pack << "test";
     cor.condition.reset(HEALTH, "97", 97, '<', true);
     cor.package.reset("Static_Chunk_1", "input_1", pack, 1, Destination::UNIVERSE);
     m_allCouriers.push_back(&cor);
 
-    solidFixture.physicsData.isSensor = false;
-    solidFixture.physicsData.shape = PhysicsBaseData::Octagon;
-    solidFixture.physicsData.density = 1.0f;
-    solidFixture.physicsData.friction = 0.4f;
-    solidFixture.physicsData.halfSize = b2Vec2(2, 5);
-    solidFixture.physicsData.offset = b2Vec2(0, 0);
-    solidFixture.physicsData.pBody = NULL;//we dont know it yet
-    solidFixture.physicsData.restitution = 0.2f;
-    solidFixture.physicsData.rotation = 0.0f;
-    solidFixture.graphicsData.texName = "textures/tileset.png";
-    solidFixture.graphicsData.texTile = sf::Vector2f(0, 0);
-    solidFixture.graphicsData.texTileSize = sf::Vector2f(64, 64);
-    solidFixture.graphicsData.color = sf::Color::Red;
+    solidFixtureData.isSensor = false;
+    solidFixtureData.shape = Shape::Octagon;
+    solidFixtureData.density = 1.0f;
+    solidFixtureData.friction = 0.4f;
+    solidFixtureData.halfSize = b2Vec2(2, 5);
+    solidFixtureData.offset = b2Vec2(0, 0);
+    solidFixtureData.pBody = NULL;//we dont know it yet
+    solidFixtureData.restitution = 0.2f;
+    solidFixtureData.rotation = 0.0f;
+    solidFixtureData.texName = "textures/tileset.png";
+    solidFixtureData.texTile = sf::Vector2f(0, 0);
+    solidFixtureData.texTileSize = sf::Vector2f(64, 64);
+    solidFixtureData.color = sf::Color::Red;
 
-    staticGModuleDataList.push_back(solidFixture);
+    staticGModuleDataList.push_back(solidFixtureData);
+    /**STATIC MODULES**/
 
-    std::vector<b2Vec2> example;
+    /**STATIC CHUNK**/
+    ChunkData staticChunkData;
+    staticChunkData.position = b2Vec2(-20,-20);
+    staticChunkData.isEnabled = true;
+    staticChunkData.bodyType = b2BodyType::b2_staticBody;
+    staticChunkData.isBullet = false;
+    staticChunkData.name = "Static_Chunk_1";
+
+    Chunk* staticChunk = new Chunk(staticChunkData);
     staticChunk->add(staticGModuleDataList, example);
     m_spGameUniverse->add(tr1::shared_ptr<Chunk>(staticChunk));
-    /**STATIC MODULES**/
+    /**STATIC CHUNK**/
 
     /**=============================================STATIC=============================================**/
 ///==============================================================================
@@ -227,130 +230,128 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 ///==============================================================================
     /**=============================================SHIPS=============================================**/
 
-    /**LARGE DYNAMIC CHUNKS**/
-    ChunkData largeChunkData;
-    largeChunkData.isBullet = false;
-    largeChunkData.bodyType = b2BodyType::b2_dynamicBody;
-    largeChunkData.baseData.type = ClassType::CHUNK;
-
-    largeChunkData.position = b2Vec2(-5, -5);
-    Chunk* chunk0 = new Chunk(largeChunkData);
-
-
-    largeChunkData.position = b2Vec2(20, -20);
-    Chunk* chunk1 = new Chunk(largeChunkData);
-
-    ShipData shipDat;
-    shipDat.chunk.isBullet = false;
-    shipDat.chunk.baseData.isEnabled = true;
-    shipDat.chunk.bodyType = b2BodyType::b2_dynamicBody;
-    shipDat.chunk.baseData.type = ClassType::SHIP;
-
-    shipDat.chunk.position = b2Vec2(-20, 20);
-    Chunk* ship1 = new Ship(shipDat);    ///WTF IS GOING ON
-
-
-    chunk0->setName("bigChunk_56");///if we put this before new ship()the ship is broken
-    chunk1->setName("bigChunk_2");
-    ship1->setName("ship_1");
-
-
+    /**SHIP MODULES**/
     GModuleData shipModuleData;
-    shipModuleData.baseData.type = ClassType::GMODULE;
-    shipModuleData.physicsData.shape = PhysicsBaseData::Box;
-    shipModuleData.physicsData.categoryBits = CollisionCategory::ShipModule;
-    shipModuleData.physicsData.maskBits = CollisionCategory::Projectile;
-    shipModuleData.physicsData.isSensor = false;
-    shipModuleData.physicsData.density = 1.0f;
-    shipModuleData.physicsData.friction = 0.4f;
-    shipModuleData.physicsData.halfSize = b2Vec2(0.25, 0.25);
-    shipModuleData.physicsData.offset = b2Vec2(0, 0);
-    shipModuleData.physicsData.pBody = NULL;//we dont know it yet
-    shipModuleData.physicsData.restitution = 0.2f;
-    shipModuleData.physicsData.rotation = 0.0f;
-    shipModuleData.graphicsData.texName = "textures/tileset.png";
-    shipModuleData.graphicsData.texTile = sf::Vector2f(0, 0);
-    shipModuleData.graphicsData.texTileSize = sf::Vector2f(64, 64);
-    shipModuleData.graphicsData.color = sf::Color::White;
+    shipModuleData.type = ClassType::GMODULE;
+    shipModuleData.shape = Shape::Box;
+    shipModuleData.categoryBits = CollisionCategory::ShipModule;
+    shipModuleData.maskBits = CollisionCategory::Projectile;
+    shipModuleData.isSensor = false;
+    shipModuleData.density = 1.0f;
+    shipModuleData.friction = 0.4f;
+    shipModuleData.halfSize = b2Vec2(0.25, 0.25);
+    shipModuleData.offset = b2Vec2(0, 0);
+    shipModuleData.pBody = NULL;//we dont know it yet
+    shipModuleData.restitution = 0.2f;
+    shipModuleData.rotation = 0.0f;
+    shipModuleData.texName = "textures/tileset.png";
+    shipModuleData.texTile = sf::Vector2f(0, 0);
+    shipModuleData.texTileSize = sf::Vector2f(64, 64);
+    shipModuleData.color = sf::Color::White;
 
     ModuleData mdata;
-    mdata.baseData.type = ClassType::MODULE;
-    mdata.physicsData.density = 1.0f;
-    mdata.physicsData.friction = 0.4f;
-    mdata.physicsData.halfSize = b2Vec2(0.25, 0.25);
-    mdata.physicsData.offset = b2Vec2(0, -5);
-    mdata.physicsData.pBody = NULL;//we dont know it yet
-    mdata.physicsData.restitution = 0.2f;
-    mdata.physicsData.rotation = 0.0f;
+    mdata.type = ClassType::MODULE;
+    mdata.density = 1.0f;
+    mdata.friction = 0.4f;
+    mdata.halfSize = b2Vec2(0.25, 0.25);
+    mdata.offset = b2Vec2(0, -5);
+    mdata.pBody = NULL;//we dont know it yet
+    mdata.restitution = 0.2f;
+    mdata.rotation = 0.0f;
 
     ///WE NEED TO GET A STANDARD SIZE
     vector<GModuleData> moduleList1;
     vector<ModuleData> moduleList2;
     short int texTile = 0;
-    float offsetDelta = 2*shipModuleData.physicsData.halfSize.x;
+    float offsetDelta = 2*shipModuleData.halfSize.x;
     for (float i=0, x=-2, numBoxsX = 9; i<numBoxsX; ++i, x+=offsetDelta)//creates boxes in a line
     {
         for (float c=0, y=-4.5, numBoxsY = 19; c<numBoxsY; ++c, y+=offsetDelta, ++texTile)
         {
             if (texTile == 4)
                 texTile = 0;
-            shipModuleData.physicsData.offset.x = x;
-            shipModuleData.physicsData.offset.y = y;
-            shipModuleData.graphicsData.texTile.x = texTile;
+            shipModuleData.offset.x = x;
+            shipModuleData.offset.y = y;
+            shipModuleData.texTile.x = texTile;
             moduleList1.push_back(shipModuleData);
         }
     }
-    shipModuleData.baseData.name = "GM01";
-    shipModuleData.physicsData.offset.y = 5;
+    shipModuleData.name = "GM01";
+    shipModuleData.offset.y = 5;
     moduleList1.push_back(shipModuleData);
     moduleList2.push_back(mdata);
-    //chunk0->add(moduleList2);
+    /**SHIP MODULES**/
+
+
+    /**SHIP CHUNKS**/
+    ChunkData largeChunkData;
+    largeChunkData.isBullet = false;
+    largeChunkData.isEnabled = true;
+    largeChunkData.bodyType = b2BodyType::b2_dynamicBody;
+    largeChunkData.type = ClassType::CHUNK;
+    ShipData shipDat;
+    shipDat.isBullet = false;
+    shipDat.isEnabled = true;
+    shipDat.bodyType = b2BodyType::b2_dynamicBody;
+    shipDat.type = ClassType::SHIP;
+
+    largeChunkData.position = b2Vec2(-5, -5);
+    Chunk* chunk0 = new Chunk(largeChunkData);
+    chunk0->setName("bigChunk_56");
     chunk0->add(moduleList1, example);
-    chunk1->add(moduleList1, example);
-
-
-    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(chunk1));
+    //chunk0->add(moduleList2);
     m_spGameUniverse->add(tr1::shared_ptr<Chunk>(chunk0));
 
-    /**LARGE DYNAMIC CHUNKS**/
+    largeChunkData.position = b2Vec2(20, -20);
+    Chunk* chunk1 = new Chunk(largeChunkData);
+    chunk1->setName("bigChunk_2");
+    chunk1->add(moduleList1, example);
+    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(chunk1));
+
+    shipDat.position = b2Vec2(-20, 20);
+    Chunk* ship1 = new Ship(shipDat);//WTF IS GOING ON (solved, the force field wasnt getting initialized properly)
+    ship1->setName("ship_1");
+    ship1->add(moduleList1, example);///this line and the one below it wont work properly, cant be above the debris chunks
+    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(ship1));///WTF
+    /**SHIP CHUNKS**/
 
     /**=============================================SHIPS=============================================**/
 ///==============================================================================
 ///==============================================================================
 ///==============================================================================
-/**======================DEBRIS============================**/
+    /**======================DEBRIS============================**/
 
     /**DEBRIS MODULES**/
     GModuleData debrisModuleData;
-    debrisModuleData.baseData.type = ClassType::GMODULE;
-    debrisModuleData.physicsData.shape = PhysicsBaseData::Box;
-    debrisModuleData.physicsData.categoryBits = CollisionCategory::Projectile;
-    debrisModuleData.physicsData.maskBits = CollisionCategory::ShipModule | CollisionCategory::Sensor;
-    debrisModuleData.physicsData.isSensor = false;
-    debrisModuleData.physicsData.density = 1.0f;
-    debrisModuleData.physicsData.friction = 0.4f;
-    debrisModuleData.physicsData.halfSize = b2Vec2(0.25, 0.25);
-    debrisModuleData.physicsData.offset = b2Vec2(0, 0);
-    debrisModuleData.physicsData.pBody = NULL;//we dont know it yet
-    debrisModuleData.physicsData.restitution = 0.2f;
-    debrisModuleData.physicsData.rotation = 0.0f;
-    debrisModuleData.graphicsData.texName = "textures/tileset.png";
-    debrisModuleData.graphicsData.texTile = sf::Vector2f(0, 0);
-    debrisModuleData.graphicsData.texTileSize = sf::Vector2f(64, 64);
-    debrisModuleData.graphicsData.color = sf::Color::White;
+    debrisModuleData.type = ClassType::GMODULE;
+    debrisModuleData.shape = Shape::Box;
+    debrisModuleData.categoryBits = CollisionCategory::Projectile;
+    debrisModuleData.maskBits = CollisionCategory::ShipModule | CollisionCategory::Sensor;
+    debrisModuleData.isSensor = false;
+    debrisModuleData.density = 1.0f;
+    debrisModuleData.friction = 0.4f;
+    debrisModuleData.halfSize = b2Vec2(0.25, 0.25);
+    debrisModuleData.offset = b2Vec2(0, 0);
+    debrisModuleData.pBody = NULL;//we dont know it yet
+    debrisModuleData.restitution = 0.2f;
+    debrisModuleData.rotation = 0.0f;
+    debrisModuleData.texName = "textures/tileset.png";
+    debrisModuleData.texTile = sf::Vector2f(0, 0);
+    debrisModuleData.texTileSize = sf::Vector2f(64, 64);
+    debrisModuleData.color = sf::Color::White;
 
-    debrisModuleData.physicsData.categoryBits = CollisionCategory::Projectile;
-    debrisModuleData.physicsData.maskBits = CollisionCategory::ShipModule | CollisionCategory::Sensor;
+    debrisModuleData.categoryBits = CollisionCategory::Projectile;
+    debrisModuleData.maskBits = CollisionCategory::ShipModule | CollisionCategory::Sensor;
     vector<GModuleData> DebrisDataList;
     DebrisDataList.push_back(debrisModuleData);
-    DebrisDataList.back().physicsData.offset.x = 0;
-    DebrisDataList.back().physicsData.offset.y = 0;
-    DebrisDataList.back().graphicsData.texTile.x = 0;
+    DebrisDataList.back().offset.x = 0;
+    DebrisDataList.back().offset.y = 0;
+    DebrisDataList.back().texTile.x = 0;
 
     DebrisDataList.push_back(debrisModuleData);
-    DebrisDataList.back().graphicsData.texTile.x = 1;
-    DebrisDataList.back().physicsData.offset.x = offsetDelta;
-    DebrisDataList.back().physicsData.offset.y = 0;
+    DebrisDataList.back().texTile.x = 1;
+    DebrisDataList.back().offset.x = offsetDelta;
+    DebrisDataList.back().offset.y = 0;
     /**DEBRIS MODULES**/
 
 
@@ -360,11 +361,13 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     debrisData.position.x = 50;
     debrisData.position.y = -50;
     debrisData.isBullet = false;
-    debrisData.baseData.type = ClassType::CHUNK;
+    debrisData.type = ClassType::CHUNK;
     Chunk* debrisChunk = new Chunk(debrisData);
     debrisChunk->add(DebrisDataList);
     m_spGameUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
-    for (int i=0, x=1, y=3, numBoxs = 200; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
+
+
+    for (int i=0, x=1, y=3, numBoxs = 1; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
         debrisData.position.x = x;
         debrisData.position.y = y;
@@ -372,7 +375,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
         debrisChunk->add(DebrisDataList);
         m_spGameUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
     }
-    for (int i=0, x=3, y=3, numBoxs = 200; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
+    for (int i=0, x=3, y=3, numBoxs = 1; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
         debrisData.position.x = x;
         debrisData.position.y = y;
@@ -380,7 +383,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
         debrisChunk->add(DebrisDataList);
         m_spGameUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
     }
-    for (int i=0, x=5, y=3, numBoxs = 200; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
+    for (int i=0, x=5, y=3, numBoxs = 1; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
         debrisData.position.x = x;
         debrisData.position.y = y;
@@ -390,12 +393,11 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     }
     /**DEBRIS CHUNKS**/
 
-
-/**======================DEBRIS============================**/
+    /**======================DEBRIS============================**/
 ///==============================================================================
 ///==============================================================================
 ///==============================================================================
-/**===========================PLAYER===========================**/
+    /**===========================PLAYER===========================**/
     PlayerData player1;
     player1.intellData.baseData.name = "player_1";
     player1.intellData.baseData.type = ClassType::PLAYER;
@@ -417,14 +419,12 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     player1.keyConfig.secondary = sf::Mouse::Right;
 
     m_spGameControlManager->add(player1);
-/**===========================PLAYER===========================**/
+    /**===========================PLAYER===========================**/
 ///==============================================================================
 ///==============================================================================
 ///==============================================================================
 
 
-    ship1->add(moduleList1);///WTF
-    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(ship1));///WTF
 
     /**=================================FINALIZING LOADED STUFF===========================================**/
     /**CONTROLLER TARGETS**/

@@ -5,22 +5,25 @@
 #include "GraphicsBase.h"
 #include "IOBase.h"
 
-struct GModuleData
+struct GModuleData : public PhysicsBaseData, public GraphicsBaseData
 {
-    IOBaseData baseData;
-    PhysicsBaseData physicsData;
-    GraphicsBaseData graphicsData;
+    GModuleData() :
+        PhysicsBaseData(),
+        GraphicsBaseData()
+        {}
 };
 
 class GModule : public PhysicsBase, public GraphicsBase
 {
 public:
-    GModule(GModuleData& data);
+    GModule();
+    GModule(const GModuleData& data);
     virtual ~GModule();
 
     virtual int damage(int);
 
 protected:
+    virtual void f_initialize(const GModuleData& data);
 
 private:
 };

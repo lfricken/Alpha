@@ -2,22 +2,24 @@
 #define SHIP_H
 
 #include "Chunk.h"
-class ShipField;
 
-struct ShipData
+struct ShipData : public ChunkData//initialized
 {
-    ChunkData chunk;
+    ShipData() :
+        ChunkData()
+        {}
 };
 
 class Ship : public Chunk
 {
     public:
         Ship();
-        Ship(ShipData& data);
+        Ship(const ShipData& data);
         virtual ~Ship();
 
     protected:
     private:
+        virtual void f_initialize(const ShipData& data);
 
 };
 

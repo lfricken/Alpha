@@ -2,6 +2,7 @@
 #define IOBASE_H
 
 #include "stdafx.h"
+#include "defaults.h"
 #include "ActiveEventer.h"
 #include "Types.h"
 
@@ -20,13 +21,19 @@ class PassiveEventer;
 #define IOBaseReturn void
 #define IOBaseArgs sf::Packet& rInput
 
-struct IOBaseData
+struct IOBaseData//initialized
 {
-    IOBaseData () {}
-    IOBaseData (ClassType s1, const std::string& s2) : type(s1), name(s2) {}
+    IOBaseData () :
+        type(defaultClassType),
+        isEnabled(defaultIsEnabled),
+        name(defaultName),
+        ID(defaultID)
+        {}
     ClassType type;
     bool isEnabled;
     std::string name;
+    unsigned int ID;
+
     std::vector<std::tr1::shared_ptr<Courier> > spCourierList;
 };
 class IOBase//base class inherited by literally everything, that way objects can always communicate
@@ -46,9 +53,8 @@ public:
     unsigned int getID() const;//gets the name of this entity
     ClassType getType() const;
 
-   /// virtual int damage(int damage);
     virtual int getHealth() const;
-    virtual IOBaseReturn input_1(IOBaseArgs);/**ENABLE**/
+    virtual IOBaseReturn input_1(IOBaseArgs);/**ENABLE**////where should these be named??
     virtual IOBaseReturn input_2(IOBaseArgs);/**DISABLE**/
     virtual IOBaseReturn input_3(IOBaseArgs);/**DIE**/
     virtual IOBaseReturn input_4(IOBaseArgs);
@@ -70,18 +76,18 @@ public:
     virtual IOBaseReturn input_20(IOBaseArgs);
 
 protected:
-    friend class Universe;
+    friend class Universe;//to set id's
     void f_setID(unsigned int newID);//sets the name of this entity
-    void f_initialize(const IOBaseData& data);
 
-    bool m_isEnabled;
     ClassType m_type;//type of object that we are
+    bool m_isEnabled;
     std::string m_name;//used by IO manager to locate specific named objects
     unsigned int m_ID;
 
     std::tr1::shared_ptr<PassiveEventer> m_spEventer;
     IOManager& m_rIOManager;
 private:
+    virtual void f_initialize(const IOBaseData& data);
 };
 
 #endif // IOBASE_H

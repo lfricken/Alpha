@@ -3,17 +3,37 @@
 
 using namespace std;
 
-GraphicsBase::GraphicsBase(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset)
-    : m_color(rData.color), m_tileSize(rHalfSize.x*2, rHalfSize.y*2), m_tilePos(rOffset.x, rOffset.y)///IS M_TILEPOS CORRECTLY SET?
+GraphicsBase::GraphicsBase()
 {
+    GraphicsBaseData data;
+
+    f_initialize(data, defaultHalfSize, defaultOffset);
+}
+GraphicsBase::GraphicsBase(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset)
+{
+    f_initialize(rData, rHalfSize, rOffset);
+}
+GraphicsBase::~GraphicsBase()
+{
+}
+///    : m_color(rData.color), m_tileSize(rHalfSize.x*2, rHalfSize.y*2), m_tilePos(rOffset.x, rOffset.y)
+void GraphicsBase::f_initialize(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset)
+{
+    m_color = rData.color;
+    m_tileSize = sf::Vector2f(rHalfSize.x*2, rHalfSize.y*2);
+    m_tilePos = sf::Vector2f(rOffset.x, rOffset.y);///IS M_TILEPOS CORRECTLY SET?
+
     m_pVertex = NULL;
     m_texTileSize = rData.texTileSize;
     m_texTile = rData.texTile;
     m_texName = rData.texName;
 }
-GraphicsBase::~GraphicsBase()
-{
-}
+
+
+
+
+
+
 
 void GraphicsBase::setTexName(const string& texName)
 {
@@ -23,8 +43,6 @@ const string GraphicsBase::getTexName() const
 {
     return m_texName;
 }
-
-
 void GraphicsBase::setVertex(sf::Vertex* pVertex)///verify pointer integrity
 {
     m_pVertex = pVertex;

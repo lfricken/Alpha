@@ -3,10 +3,14 @@
 
 #include "IOBase.h"
 #include "Chunk.h"
+#include "defaults.h"
 
-struct IntelligenceData
+struct IntelligenceData : public IOBaseData
 {
-    IOBaseData baseData;
+    IntelligenceData() :
+        IOBaseData(),
+        targetName(defaultTargetName)
+        {}
     std::string targetName;
 };
 
@@ -22,6 +26,10 @@ class Intelligence : public IOBase
         void linkControl(Chunk* target);
         void breakControl();//called to break the control links
 
+        bool toggleSending();
+        bool toggleSending(bool newState);//changes whether or not we will send commands
+        bool isSending() const;
+
         void setAim(const sf::Vector2f& newAim);
         const sf::Vector2f& getAim() const;
 
@@ -30,10 +38,13 @@ class Intelligence : public IOBase
 
     protected:
     private:
+        virtual void f_initialize(const IntelligenceData& data);
+
         friend class Chunk;
         void f_forgetTarget();//CONTROL
         void f_setTarget(Chunk* target);
         bool m_hasTarget;
+        bool m_isSending;
         std::string m_targetName;
         Chunk* m_pTarget;
 

@@ -3,9 +3,25 @@
 
 #include "Intelligence.h"
 #include "Camera.h"
+#include "defaults.h"
 
 struct InputConfig
 {
+    InputConfig() :
+        up(sf::Keyboard::W),
+        down(sf::Keyboard::S),
+        left(sf::Keyboard::A),
+        right(sf::Keyboard::D),
+        rollLeft(sf::Keyboard::A),
+        rollRight(sf::Keyboard::D),
+        special_1(sf::Keyboard::R),
+        special_2(sf::Keyboard::F),
+        special_3(sf::Keyboard::C),
+        special_4(sf::Keyboard::X),
+        primary(sf::Mouse::Left),
+        secondary(sf::Mouse::Right)
+        {}
+
     sf::Keyboard::Key up;
     sf::Keyboard::Key down;
     sf::Keyboard::Key left;
@@ -20,16 +36,21 @@ struct InputConfig
     sf::Mouse::Button primary;
     sf::Mouse::Button secondary;
 };
-struct PlayerData
+struct PlayerData : public IntelligenceData
 {
+    PlayerData() :
+        IntelligenceData(),
+        keyConfig(),
+        playerMode(defaultPlayerMode)
+    {}
     InputConfig keyConfig;
-    IntelligenceData intellData;
     std::string playerMode;
 };
 
 class Player : public Intelligence
 {
 public:
+    Player();
     Player(const PlayerData& data);
     virtual ~Player();
 
@@ -47,6 +68,8 @@ public:
     const InputConfig& getInputConfig() const;
 protected:
 private:
+    virtual void f_initialize(const PlayerData& data);
+
     sf::Vector2i m_mouseCoords;
     Camera m_camera;
     std::string m_playerMode;///STATE INSTEAD??

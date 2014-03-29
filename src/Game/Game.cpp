@@ -18,26 +18,29 @@ Game::Game()
 {
     ///load window data into settings, and launch window with the settings
     m_settings.antialiasingLevel = 4;
-    m_spGameWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(1600, 900), "SFML Box2D Test Environment", sf::Style::Default, m_settings));
-    m_spGameFunctionFinder = std::tr1::shared_ptr<BaseFunctionFinder>(new BaseFunctionFinder);//independent
+    m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(1600, 900), "SFML Box2D Test Environment", sf::Style::Default, m_settings));
+    m_spFunctionFinder = std::tr1::shared_ptr<BaseFunctionFinder>(new BaseFunctionFinder);//independent
     m_spTexAlloc = std::tr1::shared_ptr<TextureAllocator>(new TextureAllocator());//independent
-    m_spGameOverlayManager = std::tr1::shared_ptr<OverlayManager>(new OverlayManager());//independent
-    m_spGameUniverse = std::tr1::shared_ptr<Universe>(new Universe());//independent
+    m_spOverlayManager = std::tr1::shared_ptr<OverlayManager>(new OverlayManager());//independent
+    m_spUniverse = std::tr1::shared_ptr<Universe>(new Universe());//independent
     /**created last**/
-    m_spGameControlManager = std::tr1::shared_ptr<ControlManager>(new ControlManager);//needs Window and Universe
-    m_spGameIOManager = std::tr1::shared_ptr<IOManager>(new IOManager(*this));//requires Universe and OverlayManager
+    m_spControlManager = std::tr1::shared_ptr<ControlManager>(new ControlManager);//needs Window and Universe
+    m_spIOManager = std::tr1::shared_ptr<IOManager>(new IOManager(*this));//requires Universe and OverlayManager
+    m_spGui = std::tr1::shared_ptr<tgui::Gui>(new tgui::Gui(*m_spWindow));
 
 
-
-    bool vsinc = true;
+    bool loadedVsinc = true;
     int loadedFrameRate = 60;///called that because we are supposed to load that
-    m_spGameWindow->setVerticalSyncEnabled(vsinc);
-    m_spGameWindow->setFramerateLimit(loadedFrameRate);
-    m_spGameFunctionFinder->load("functionTable.tbl");
+    std::string loadedFont = "TGUI/fonts/DejaVuSans.ttf";
+
+    m_spGui->setGlobalFont(loadedFont);
+    m_spWindow->setVerticalSyncEnabled(loadedVsinc);
+    m_spWindow->setFramerateLimit(loadedFrameRate);
+    m_spFunctionFinder->load("functionTable.tbl");
     ///This code won't work! WTF?
     ///if(!icon.loadFromFile("textures/tileset.png"))
     /// cout << "\nIcon Load Error";///texture allocator
-    ///m_gameWindow.setIcon(32, 32, icon.getPixelsPtr());
+    ///m_spWindow.setIcon(32, 32, icon.getPixelsPtr());
 }
 Game::~Game()//unfinished
 {
@@ -45,11 +48,11 @@ Game::~Game()//unfinished
 }
 IOManager& Game::getGameIOManager()
 {
-    return *m_spGameIOManager;
+    return *m_spIOManager;
 }
 sf::RenderWindow& Game::getGameWindow()
 {
-    return *m_spGameWindow;
+    return *m_spWindow;
 }
 TextureAllocator& Game::getTextureAllocator()
 {
@@ -57,15 +60,15 @@ TextureAllocator& Game::getTextureAllocator()
 }
 Universe& Game::getGameUniverse()
 {
-    return *m_spGameUniverse;
+    return *m_spUniverse;
 }
 OverlayManager& Game::getGameOverlayManager()
 {
-    return *m_spGameOverlayManager;
+    return *m_spOverlayManager;
 }
 BaseFunctionFinder& Game::getGameFunctionFinder()
 {
-    return *m_spGameFunctionFinder;
+    return *m_spFunctionFinder;
 }
 Game::Status Game::client()
 {
@@ -81,19 +84,8 @@ Game::Status Game::local()
 }
 Game::Status Game::run()
 {
-    /**initialize**/
-//   b2World& rWorld = m_spGameUniverse->getWorld();
-
     f_load("stuff");
-    /**HUD**/
-    sf::ConvexShape convex;
-    convex.setPointCount(5);
-    convex.setPoint(0, sf::Vector2f(0, 0));
-    convex.setPoint(1, sf::Vector2f(150, 10));
-    convex.setPoint(2, sf::Vector2f(60, 30));
-    convex.setPoint(3, sf::Vector2f(30, 100));
-    convex.setPoint(4, sf::Vector2f(0, 50));
-
+    cout << "\nLoad";
 
     /**SIMULATION & RUNTIME**/
     Game::Status newState = Game::Local;
@@ -103,7 +95,7 @@ Game::Status Game::run()
     int i = 0;
 
     sf::Event event;
-    while (m_spGameWindow->isOpen() && newState != Game::Quit)
+    while (m_spWindow->isOpen() && newState != Game::Quit)
     {
         secondTime = clock.getElapsedTime().asSeconds();
         timeForFrame = secondTime - firstTime;
@@ -115,19 +107,17 @@ Game::Status Game::run()
 
         /**INPUT and PHYSICS**/
 
-
-
-        while (m_spGameWindow->pollEvent(event))
+        while (m_spWindow->pollEvent(event))
         {
-            if(m_spGameControlManager->choiceUpdate(event))//if we put this before physstep, the camera lags!
+            m_spGui->handleEvent(event);
+            if(m_spControlManager->choiceUpdate(event))//if we put this before physstep, the camera lags!
                 newState = Game::Quit;
         }
-
         while(computeTime > 0 && i < 6)///should max iterations depend on how far we are behind?
         {
             ++i;
-            m_spGameControlManager->pressedUpdate();
-            computeTime -= m_spGameUniverse->physStep();
+            m_spControlManager->pressedUpdate();
+            computeTime -= m_spUniverse->physStep();
         }
         remainder = computeTime;
         i = 0;
@@ -135,19 +125,17 @@ Game::Status Game::run()
             cout << endl << remainder;
 
 
-        m_spGameIOManager->update(timeForFrame);
-
-
+        m_spIOManager->update(timeForFrame);
 
         /**DRAW**/
-        m_spGameWindow->clear();
-        m_spGameControlManager->drawUpdate();
+        m_spWindow->clear();
+        m_spControlManager->drawUpdate();
 
-        m_spGameWindow->setView(m_spGameWindow->getDefaultView());//draw stuff that is on hud
-        convex.setPosition(m_spGameWindow->mapPixelToCoords(sf::Vector2i(40,40)));
-        m_spGameWindow->draw(convex);
+        m_spWindow->setView(m_spWindow->getDefaultView());//draw stuff that is on hud
+        m_spGui->draw();
 
-        m_spGameWindow->display();
+        m_spWindow->display();
+
     }
     return newState;
 }
@@ -172,14 +160,26 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     add things to this thing...
     push into universe or GUI thing...
     repeat**/
+    /**=============================================GUI=============================================**/
+    std::string config = "TGUI/widgets/Black.conf";
+
+    /**TAB**/
+    tgui::Tab::Ptr tab(*m_spGui);
+    tab->load(config);
+    tab->setPosition(10, 10);
+    tab->add("Weapon");
+    tab->add("Ammo");
+    tab->add("Items");
+    /**TAB**/
 
 
-    std::vector<b2Vec2> example;
-
+    /**=============================================GUI=============================================**/
 ///==============================================================================
 ///==============================================================================
 ///==============================================================================
     /**=============================================STATIC=============================================**/
+
+    std::vector<b2Vec2> example;
 
     /**STATIC MODULES**/
     vector<GModuleData> staticGModuleDataList;
@@ -221,7 +221,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     Chunk* staticChunk = new Chunk(staticChunkData);
     staticChunk->add(staticGModuleDataList, example);
-    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(staticChunk));
+    m_spUniverse->add(tr1::shared_ptr<Chunk>(staticChunk));
     /**STATIC CHUNK**/
 
     /**=============================================STATIC=============================================**/
@@ -229,6 +229,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 ///==============================================================================
 ///==============================================================================
     /**=============================================SHIPS=============================================**/
+
+
 
     /**SHIP MODULES**/
     GModuleData shipModuleData;
@@ -300,19 +302,19 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     chunk0->setName("bigChunk_56");
     chunk0->add(moduleList1, example);
     //chunk0->add(moduleList2);
-    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(chunk0));
+    m_spUniverse->add(tr1::shared_ptr<Chunk>(chunk0));
 
     largeChunkData.position = b2Vec2(20, -20);
     Chunk* chunk1 = new Chunk(largeChunkData);
     chunk1->setName("bigChunk_2");
     chunk1->add(moduleList1, example);
-    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(chunk1));
+    m_spUniverse->add(tr1::shared_ptr<Chunk>(chunk1));
 
     shipDat.position = b2Vec2(-20, 20);
     Chunk* ship1 = new Ship(shipDat);//WTF IS GOING ON (solved, the force field wasnt getting initialized properly)
     ship1->setName("ship_1");
     ship1->add(moduleList1, example);
-    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(ship1));
+    m_spUniverse->add(tr1::shared_ptr<Chunk>(ship1));
     /**SHIP CHUNKS**/
 
     /**=============================================SHIPS=============================================**/
@@ -363,7 +365,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     Chunk* debrisChunk = new Chunk(debrisData);
     debrisChunk->add(DebrisDataList);
-    m_spGameUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
+    m_spUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
 
 
     for (int i=0, x=1, y=3, numBoxs = 1; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
@@ -372,7 +374,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
         debrisData.position.y = y;
         debrisChunk = new Chunk(debrisData);
         debrisChunk->add(DebrisDataList);
-        m_spGameUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
+        m_spUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
     }
     for (int i=0, x=3, y=3, numBoxs = 1; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
@@ -380,7 +382,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
         debrisData.position.y = y;
         debrisChunk = new Chunk(debrisData);
         debrisChunk->add(DebrisDataList);
-        m_spGameUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
+        m_spUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
     }
     for (int i=0, x=5, y=3, numBoxs = 1; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
@@ -388,7 +390,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
         debrisData.position.y = y;
         debrisChunk = new Chunk(debrisData);
         debrisChunk->add(DebrisDataList);
-        m_spGameUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
+        m_spUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
     }
     /**DEBRIS CHUNKS**/
 
@@ -397,11 +399,12 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 ///==============================================================================
 ///==============================================================================
     /**===========================PLAYER===========================**/
+
     PlayerData player1;
-    player1.intellData.baseData.name = "player_1";
-    player1.intellData.baseData.type = ClassType::PLAYER;
+    player1.name = "player_1";
+    player1.type = ClassType::PLAYER;
     player1.playerMode = "god";
-    player1.intellData.targetName = "ship_1";
+    player1.targetName = "ship_1";
 
     player1.keyConfig.up = sf::Keyboard::W;
     player1.keyConfig.down = sf::Keyboard::S;
@@ -417,7 +420,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     player1.keyConfig.primary = sf::Mouse::Left;
     player1.keyConfig.secondary = sf::Mouse::Right;
 
-    m_spGameControlManager->add(player1);
+    m_spControlManager->add(player1);
     /**===========================PLAYER===========================**/
 ///==============================================================================
 ///==============================================================================
@@ -427,17 +430,17 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     /**=================================FINALIZING LOADED STUFF===========================================**/
     /**CONTROLLER TARGETS**/
-    m_spGameControlManager->setupControl();
+    m_spControlManager->setupControl();
     /**CONTROLLER TARGETS**/
 
     /**TARGET ID'S**/
     for(vector<Courier*>::iterator it = m_allCouriers.begin(); it != m_allCouriers.end(); ++it)
     {
         if((*it)->package.getDestination() == Destination::UNIVERSE)
-            (*it)->package.setTargetID(   m_spGameUniverse->getTarget((*it)->package.getTargetName())->getID()   );//set the couriers id data
+            (*it)->package.setTargetID(   m_spUniverse->getTarget((*it)->package.getTargetName())->getID()   );//set the couriers id data
 
         else if((*it)->package.getDestination() == Destination::GUI)
-            m_spGameOverlayManager->getEventer();///fix this, it should return a target, not damage, just some func
+            m_spOverlayManager->getEventer();///fix this, it should return a target, not damage, just some func
 
         else if((*it)->package.getDestination() == Destination::GAME)
             this->getEventer();///fix this, it should return a target, not damage, just some func

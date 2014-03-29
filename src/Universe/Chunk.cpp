@@ -272,7 +272,7 @@ const MultiTileMap& Chunk::getTiles() const
 
 void Chunk::primary(sf::Vector2f coords)
 {
-
+    cout << "\nPrimary: (" << coords.x << "," << coords.y << ")";
 }
 void Chunk::secondary(sf::Vector2f coords)
 {
@@ -280,7 +280,7 @@ void Chunk::secondary(sf::Vector2f coords)
 }
 void Chunk::aim(sf::Vector2f coords)
 {
-
+    cout << "\nAiming: (" << coords.x << "," << coords.y << ")";
 }
 void Chunk::up()
 {

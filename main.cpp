@@ -47,6 +47,11 @@ const float defaultMinZoom = 0.5f;
 /**CHUNK**/
 
 
+/**CONTROLERS**/
+const std::string defaultTargetName = defaultName;
+const std::string defaultPlayerMode = "normal";
+/**CONTROLERS**/
+
 
 /**CONVERSIONS**/
 const int scale = 128;//use this when converting from Box2D coordinates, to sfml coordinates

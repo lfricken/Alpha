@@ -26,6 +26,8 @@ protected:
 private:
     void f_cheats(std::vector<std::tr1::shared_ptr<Player> >::iterator it, sf::Event& rEvent);
 
+    Intelligence* m_pCIT;
+    Player* m_pCPT;
     Universe& m_rUniverse;
     sf::RenderWindow& m_rWindow;
     b2Body* m_bodyTarget;

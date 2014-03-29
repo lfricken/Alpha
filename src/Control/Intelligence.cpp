@@ -2,20 +2,24 @@
 
 Intelligence::Intelligence()
 {
-    m_pTarget = NULL;
-    m_hasTarget = false;
+    IntelligenceData data;
+    f_initialize(data);
 }
-Intelligence::Intelligence(const IntelligenceData& data) : IOBase(data.baseData)
+Intelligence::Intelligence(const IntelligenceData& data) : IOBase(static_cast<IOBaseData>(data))
 {
-    m_pTarget = NULL;
-    m_hasTarget = false;
-    m_targetName = data.targetName;
+    f_initialize(data);
 }
 Intelligence::~Intelligence()
 {
     breakControl();
 }
-
+void Intelligence::f_initialize(const IntelligenceData& data)
+{
+    m_pTarget = NULL;
+    m_hasTarget = false;
+    m_isSending = true;
+    m_targetName = data.targetName;
+}
 /**CONTROL**/
 Chunk* Intelligence::getTarget() const//done
 {
@@ -30,6 +34,7 @@ void Intelligence::linkControl(Chunk* target)
     f_setTarget(target);
     if(target != NULL)
         m_pTarget->f_setController(this);
+
 }
 void Intelligence::breakControl()//done
 {
@@ -37,6 +42,20 @@ void Intelligence::breakControl()//done
         m_pTarget->f_forgetController();
 
     f_forgetTarget();
+}
+bool Intelligence::toggleSending()//changes whether or not we will send commands
+{
+    m_isSending = !m_isSending;
+    return m_isSending;
+}
+bool Intelligence::toggleSending(bool newState)//changes whether or not we will send commands
+{
+    m_isSending = newState;
+    return m_isSending;
+}
+bool Intelligence::isSending() const
+{
+    return m_isSending;
 }
 void Intelligence::f_forgetTarget()//done
 {

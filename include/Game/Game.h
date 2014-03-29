@@ -42,14 +42,15 @@ public:
 protected:
 private:
     /**created first**/
-    std::tr1::shared_ptr<sf::RenderWindow> m_spGameWindow;
-    std::tr1::shared_ptr<BaseFunctionFinder> m_spGameFunctionFinder;
+    std::tr1::shared_ptr<sf::RenderWindow> m_spWindow;
+    std::tr1::shared_ptr<BaseFunctionFinder> m_spFunctionFinder;
     std::tr1::shared_ptr<TextureAllocator> m_spTexAlloc;
-    std::tr1::shared_ptr<OverlayManager> m_spGameOverlayManager;
-    std::tr1::shared_ptr<Universe> m_spGameUniverse;
+    std::tr1::shared_ptr<OverlayManager> m_spOverlayManager;///obsolete
+    std::tr1::shared_ptr<Universe> m_spUniverse;
     /**needs access to previous ones**/
-    std::tr1::shared_ptr<ControlManager> m_spGameControlManager;
-    std::tr1::shared_ptr<IOManager> m_spGameIOManager;
+    std::tr1::shared_ptr<ControlManager> m_spControlManager;
+    std::tr1::shared_ptr<IOManager> m_spIOManager;
+    std::tr1::shared_ptr<tgui::Gui> m_spGui;
 
     sf::Image m_icon;
     sf::ContextSettings m_settings;///how can we edit the settings of the window?

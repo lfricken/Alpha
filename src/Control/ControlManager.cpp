@@ -26,7 +26,9 @@ void ControlManager::setupControl()
     {
         chunk = m_rUniverse.getPhysTarget((*it)->getTargetName());
         if(chunk != NULL)
+        {
             (*it)->linkControl(chunk);
+        }
     }
 
     ///LOOP OVER SI HERE
@@ -49,24 +51,24 @@ int ControlManager::pressedUpdate()
 
     for(vector<tr1::shared_ptr<Player> >::iterator it = m_localPlayerList.begin(); it != m_localPlayerList.end(); ++it)
     {
-
-        if((*it)->hasTarget())
+        m_pCPT = &**it;
+        if(m_pCPT->hasTarget() && m_pCPT->isSending())
         {
 
-            InputConfig& rInputConfig = (*it)->getInputConfig();///temp
-            mass = (*it)->getTarget()->getBody()->GetMass();///temp
-            m_bodyTarget = (*it)->getTarget()->getBody();///temp
-            m_chunkTarget = (*it)->getTarget();
+            InputConfig& rInputConfig = m_pCPT->getInputConfig();///temp
+            mass = m_pCPT->getTarget()->getBody()->GetMass();///temp
+            m_bodyTarget = m_pCPT->getTarget()->getBody();///temp
+            m_chunkTarget = m_pCPT->getTarget();
 
             if (sf::Mouse::isButtonPressed(rInputConfig.primary))
             {
-                (*it)->setAim(m_rWindow.mapPixelToCoords((*it)->getMouseCoords(), (*it)->getCamera().getView() ));
-                (*it)->getTarget()->primary((*it)->getAim());
+                m_pCPT->setAim(m_rWindow.mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView() ));
+                m_pCPT->getTarget()->primary((*it)->getAim());
             }
             if (sf::Mouse::isButtonPressed(rInputConfig.secondary))
             {
-                (*it)->setAim(m_rWindow.mapPixelToCoords((*it)->getMouseCoords(), (*it)->getCamera().getView() ));
-                (*it)->getTarget()->primary((*it)->getAim());
+                m_pCPT->setAim(m_rWindow.mapPixelToCoords((*it)->getMouseCoords(), m_pCPT->getCamera().getView() ));
+                m_pCPT->getTarget()->secondary((*it)->getAim());
             }
             if (sf::Keyboard::isKeyPressed(rInputConfig.up))
             {
@@ -121,7 +123,7 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
     for(vector<tr1::shared_ptr<Player> >::iterator it = m_localPlayerList.begin(); it != m_localPlayerList.end(); ++it)
     {
         /**START OF PLAYER LOOP**/
-
+        m_pCPT = &**it;
         if (rEvent.type == sf::Event::Closed)//closed window
         {
             m_rWindow.close();
@@ -134,14 +136,19 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
                 cout << "\n\n\nExiting...";
                 return 1;///USE STATES
             }
+            if (rEvent.key.code == sf::Keyboard::Tab)
+            {
+                m_pCPT->toggleSending();
+            }
         }
         if (rEvent.type == sf::Event::MouseMoved)//aim on mouse move
         {
-            (*it)->setMouseCoords(sf::Vector2i(rEvent.mouseMove.x, rEvent.mouseMove.y));
-            (*it)->setAim(m_rWindow.mapPixelToCoords(sf::Vector2i(rEvent.mouseMove.x, rEvent.mouseMove.y), (*it)->getCamera().getView()));
-            if((*it)->hasTarget())
-                (*it)->getTarget()->aim((*it)->getAim());
+            m_pCPT->setMouseCoords(sf::Vector2i(rEvent.mouseMove.x, rEvent.mouseMove.y));
+            m_pCPT->setAim(m_rWindow.mapPixelToCoords(sf::Vector2i(rEvent.mouseMove.x, rEvent.mouseMove.y), m_pCPT->getCamera().getView()));
+            if(m_pCPT->hasTarget() && m_pCPT->isSending())
+                m_pCPT->getTarget()->aim(m_pCPT->getAim());
         }
+
         if (rEvent.type == sf::Event::MouseWheelMoved)//zoom
         {
             float zoomChange = rEvent.mouseWheel.delta;
@@ -150,23 +157,23 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
             else if (zoomChange < 0)
                 zoomChange = 2.0;
 
-            if((*it)->hasTarget())
+            if(m_pCPT->hasTarget() && m_pCPT->isSending())
             {
-                if(zoomChange*(*it)->getCamera().getZoomLevel() > (*it)->getTarget()->getMaxZoom())
+                if(zoomChange*m_pCPT->getCamera().getZoomLevel() > m_pCPT->getTarget()->getMaxZoom())
                     zoomChange = 1;
-                else if(zoomChange*(*it)->getCamera().getZoomLevel() < (*it)->getTarget()->getMinZoom())
+                else if(zoomChange*m_pCPT->getCamera().getZoomLevel() < m_pCPT->getTarget()->getMinZoom())
                     zoomChange = 1;
             }
 
-            (*it)->getCamera().getView().zoom(zoomChange);
-            (*it)->getCamera().zoomFactor(zoomChange);
+            m_pCPT->getCamera().getView().zoom(zoomChange);
+            m_pCPT->getCamera().zoomFactor(zoomChange);
 
-            sf::Vector2f smooth = (*it)->getCamera().getView().getCenter();//we do this so zooming to a spot is smoother
-            (*it)->getCamera().getView().setCenter(sf::Vector2f( ((*it)->getAim().x+smooth.x)/2, ((*it)->getAim().y+smooth.y)/2 ));
+            sf::Vector2f smooth = m_pCPT->getCamera().getView().getCenter();//we do this so zooming to a spot is smoother
+            m_pCPT->getCamera().getView().setCenter(sf::Vector2f( (m_pCPT->getAim().x+smooth.x)/2, (m_pCPT->getAim().y+smooth.y)/2 ));
         }
 
 
-        if((*it)->getPlayerMode() == "god")//cheats
+        if(m_pCPT->getPlayerMode() == "god")//cheats
             f_cheats(it, rEvent);
 
 

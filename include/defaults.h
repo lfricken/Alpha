@@ -45,6 +45,12 @@ extern const float defaultMinZoom;
 /**CHUNK**/
 
 
+/**CONTROLERS**/
+extern const std::string defaultTargetName;
+extern const std::string defaultPlayerMode;
+/**CONTROLERS**/
+
+
 /**CONVERSIONS**/
 extern const int scale;//use this when converting from Box2D coordinates, to sfml coordinates
 /**CONVERSIONS**/

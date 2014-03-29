@@ -1,11 +1,19 @@
 #include "Player.h"
 
-
+Player::Player() : Intelligence()
+{
+    PlayerData data;
+    f_initialize(data);
+}
+Player::Player(const PlayerData& data) : Intelligence(static_cast<IntelligenceData>(data))
+{
+    f_initialize(data);
+}
 Player::~Player()
 {
 
 }
-Player::Player(const PlayerData& data) : Intelligence(data.intellData)
+void Player::f_initialize(const PlayerData& data)
 {
     m_inputConfig = data.keyConfig;
     m_playerMode = data.playerMode;

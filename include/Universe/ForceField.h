@@ -19,27 +19,26 @@ public:
 
     virtual int startContact(void* other);
     virtual int endContact(void* other);
-    virtual int preSolveContact(void* other);
-    virtual int postSolveContact(void* other);
 
     virtual bool physUpdate();
 protected:
 private:
     virtual void f_initialize(const ForceFieldData& data);
 
-    PhysicsBase* m_target;//for convienience;
     b2Body* m_targetBody;
-    b2ContactEdge* m_contactList;
 
     float m_strength;
     bool m_hasContact;
 
+    std::map<b2Body*, int>::iterator m_it;
     b2Vec2 m_force;
     b2Vec2 m_ourCoords;
     b2Vec2 m_theirCoords;
     float m_distance;
     float m_theirMass;
     b2Vec2 m_direction;
+
+    std::map<b2Body*, int> m_targets;
 };
 
 #endif // FORCEFIELD_H

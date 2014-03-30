@@ -30,6 +30,7 @@ private:
     Player* m_pCPT;
     Universe& m_rUniverse;
     sf::RenderWindow& m_rWindow;
+    tgui::Gui& m_rGui;
     b2Body* m_bodyTarget;
     Chunk* m_chunkTarget;
 

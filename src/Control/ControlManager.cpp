@@ -3,11 +3,10 @@
 
 using namespace std;
 
-ControlManager::ControlManager() : m_rUniverse(game.getGameUniverse()), m_rWindow(game.getGameWindow())
+ControlManager::ControlManager() : m_rUniverse(game.getGameUniverse()), m_rWindow(game.getGameWindow()), m_rGui(game.getGameGui())
 {
 
 }
-
 ControlManager::~ControlManager()
 {
     ///target->noController();
@@ -124,6 +123,8 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
     {
         /**START OF PLAYER LOOP**/
         m_pCPT = &**it;
+
+        /**THINGS WE SHOULD ALWAYS BE LISTENING FOR**/
         if (rEvent.type == sf::Event::Closed)//closed window
         {
             m_rWindow.close();
@@ -131,54 +132,65 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
         }
         if (rEvent.type == sf::Event::KeyPressed)//on key press
         {
+            if (rEvent.key.code == sf::Keyboard::Tab)
+            {
+                m_pCPT->toggleSending();
+            }
             if (rEvent.key.code == sf::Keyboard::Escape)
             {
                 cout << "\n\n\nExiting...";
                 return 1;///USE STATES
             }
-            if (rEvent.key.code == sf::Keyboard::Tab)
-            {
-                m_pCPT->toggleSending();
-            }
         }
-        if (rEvent.type == sf::Event::MouseMoved)//aim on mouse move
+
+
+        /**THINGS THAT DEPEND WHAT MODE WE ARE IN**/
+        if(!m_pCPT->isSending())
+            m_rGui.handleEvent(rEvent);/**GUI EVENT HANDLER**/
+        else
         {
-            m_pCPT->setMouseCoords(sf::Vector2i(rEvent.mouseMove.x, rEvent.mouseMove.y));
-            m_pCPT->setAim(m_rWindow.mapPixelToCoords(sf::Vector2i(rEvent.mouseMove.x, rEvent.mouseMove.y), m_pCPT->getCamera().getView()));
-            if(m_pCPT->hasTarget() && m_pCPT->isSending())
-                m_pCPT->getTarget()->aim(m_pCPT->getAim());
-        }
-
-        if (rEvent.type == sf::Event::MouseWheelMoved)//zoom
-        {
-            float zoomChange = rEvent.mouseWheel.delta;
-            if (zoomChange > 0)
-                zoomChange = 0.5;
-            else if (zoomChange < 0)
-                zoomChange = 2.0;
-
-            if(m_pCPT->hasTarget() && m_pCPT->isSending())
+            if (rEvent.type == sf::Event::KeyPressed)//on key press
             {
-                if(zoomChange*m_pCPT->getCamera().getZoomLevel() > m_pCPT->getTarget()->getMaxZoom())
-                    zoomChange = 1;
-                else if(zoomChange*m_pCPT->getCamera().getZoomLevel() < m_pCPT->getTarget()->getMinZoom())
-                    zoomChange = 1;
+
+            }
+            if (rEvent.type == sf::Event::MouseMoved)//aim on mouse move
+            {
+                m_pCPT->setMouseCoords(sf::Vector2i(rEvent.mouseMove.x, rEvent.mouseMove.y));
+                m_pCPT->setAim(m_rWindow.mapPixelToCoords(sf::Vector2i(rEvent.mouseMove.x, rEvent.mouseMove.y), m_pCPT->getCamera().getView()));
+                if(m_pCPT->hasTarget())
+                    m_pCPT->getTarget()->aim(m_pCPT->getAim());
+            }
+            if (rEvent.type == sf::Event::MouseWheelMoved)//zoom
+            {
+                float zoomChange = rEvent.mouseWheel.delta;
+                if (zoomChange > 0)
+                    zoomChange = 0.5;
+                else if (zoomChange < 0)
+                    zoomChange = 2.0;
+
+                if(m_pCPT->hasTarget())
+                {
+                    if(zoomChange*m_pCPT->getCamera().getZoomLevel() > m_pCPT->getTarget()->getMaxZoom())
+                        zoomChange = 1;
+                    else if(zoomChange*m_pCPT->getCamera().getZoomLevel() < m_pCPT->getTarget()->getMinZoom())
+                        zoomChange = 1;
+                }
+
+                m_pCPT->getCamera().getView().zoom(zoomChange);
+                m_pCPT->getCamera().zoomFactor(zoomChange);
+
+                sf::Vector2f smooth = m_pCPT->getCamera().getView().getCenter();//we do this so zooming to a spot is smoother
+                m_pCPT->getCamera().getView().setCenter(sf::Vector2f( (m_pCPT->getAim().x+smooth.x)/2, (m_pCPT->getAim().y+smooth.y)/2 ));
             }
 
-            m_pCPT->getCamera().getView().zoom(zoomChange);
-            m_pCPT->getCamera().zoomFactor(zoomChange);
 
-            sf::Vector2f smooth = m_pCPT->getCamera().getView().getCenter();//we do this so zooming to a spot is smoother
-            m_pCPT->getCamera().getView().setCenter(sf::Vector2f( (m_pCPT->getAim().x+smooth.x)/2, (m_pCPT->getAim().y+smooth.y)/2 ));
-        }
+            if(m_pCPT->getPlayerMode() == "god")//cheats
+                f_cheats(it, rEvent);
 
 
-        if(m_pCPT->getPlayerMode() == "god")//cheats
-            f_cheats(it, rEvent);
 
-
-    }/**END OF PLAYER LOOP**/
-
+        }/**END OF PLAYER LOOP**/
+    }
     ///LOOP OVER AI HERE??? what would we update?
     return 0;
 }

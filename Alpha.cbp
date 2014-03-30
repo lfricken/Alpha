@@ -15,6 +15,7 @@
 					<Add option="-g" />
 					<Add directory="include/IO" />
 					<Add directory="include/Universe" />
+					<Add directory="include/GUI" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -25,7 +26,7 @@
 				<Compiler>
 					<Add option="-pg" />
 					<Add option="-g" />
-					<Add option="-DSFML_STATIC" />
+					<Add directory="include/GUI" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
@@ -34,6 +35,7 @@
 					<Add option="-lsfml-graphics-s" />
 					<Add option="-lsfml-window-s" />
 					<Add option="-lsfml-system-s" />
+					<Add option="-static-libgcc" />
 					<Add library="..\..\..\Engines\Box2D\libs\libBox2D.a" />
 					<Add library="..\..\..\Engines\TGUI-0.6.1\lib\libtgui.a" />
 				</Linker>
@@ -42,6 +44,7 @@
 		<Compiler>
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
+			<Add option="-DSFML_STATIC" />
 			<Add directory="../../../Engines/SFML-2_recompile/include" />
 			<Add directory="../../../Engines/TGUI-0.6.1/include" />
 			<Add directory="../../../Engines/Box2D" />
@@ -52,6 +55,7 @@
 			<Add directory="include/Game" />
 			<Add directory="include/Overlay" />
 			<Add directory="include/MultipleInheritance" />
+			<Add directory="include/GUI" />
 		</Compiler>
 		<Linker>
 			<Add directory="../../../Engines/SFML-2_recompile/lib" />
@@ -61,6 +65,8 @@
 		<Unit filename="include/Control/ControlManager.h" />
 		<Unit filename="include/Control/Intelligence.h" />
 		<Unit filename="include/Control/Player.h" />
+		<Unit filename="include/GUI/Button.h" />
+		<Unit filename="include/GUI/WidgetBase.h" />
 		<Unit filename="include/Game/Game.h" />
 		<Unit filename="include/Game/TextureAllocator.h" />
 		<Unit filename="include/IO/ActiveEventer.h" />
@@ -74,11 +80,8 @@
 		<Unit filename="include/MultipleInheritance/GraphicsBase.h" />
 		<Unit filename="include/MultipleInheritance/IOBase.h" />
 		<Unit filename="include/MultipleInheritance/PhysicsBase.h" />
-		<Unit filename="include/Overlay/Button.h" />
-		<Unit filename="include/Overlay/ButtonBase.h" />
 		<Unit filename="include/Overlay/Overlay.h" />
 		<Unit filename="include/Overlay/OverlayManager.h" />
-		<Unit filename="include/Overlay/Panel.h" />
 		<Unit filename="include/Universe/Chunk.h" />
 		<Unit filename="include/Universe/ClassType.h" />
 		<Unit filename="include/Universe/CollisionCategory.h" />
@@ -100,6 +103,8 @@
 		<Unit filename="src/Control/ControlManager.cpp" />
 		<Unit filename="src/Control/Intelligence.cpp" />
 		<Unit filename="src/Control/Player.cpp" />
+		<Unit filename="src/GUI/Button.cpp" />
+		<Unit filename="src/GUI/WidgetBase.cpp" />
 		<Unit filename="src/Game/Game.cpp" />
 		<Unit filename="src/Game/TextureAllocator.cpp" />
 		<Unit filename="src/IO/ActiveEventer.cpp" />
@@ -111,11 +116,8 @@
 		<Unit filename="src/MultipleInheritance/GraphicsBase.cpp" />
 		<Unit filename="src/MultipleInheritance/IOBase.cpp" />
 		<Unit filename="src/MultipleInheritance/PhysicsBase.cpp" />
-		<Unit filename="src/Overlay/Button.cpp" />
-		<Unit filename="src/Overlay/ButtonBase.cpp" />
 		<Unit filename="src/Overlay/Overlay.cpp" />
 		<Unit filename="src/Overlay/OverlayManager.cpp" />
-		<Unit filename="src/Overlay/Panel.cpp" />
 		<Unit filename="src/Universe/Chunk.cpp" />
 		<Unit filename="src/Universe/DebugDraw.cpp" />
 		<Unit filename="src/Universe/ForceField.cpp" />

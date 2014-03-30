@@ -38,6 +38,7 @@ public:
     OverlayManager& getGameOverlayManager();
     TextureAllocator& getTextureAllocator();
     BaseFunctionFinder& getGameFunctionFinder();
+    tgui::Gui& getGameGui();
 
 protected:
 private:

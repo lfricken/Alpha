@@ -51,6 +51,17 @@ extern const std::string defaultPlayerMode;
 /**CONTROLERS**/
 
 
+
+/**GUI**/
+namespace leon
+{
+extern const std::string defaultButtonText;
+extern const std::string defaultConfig;
+extern const sf::Vector2f defaultPosition;
+extern const sf::Vector2f defaultSize;
+}
+/**GUI**/
+
 /**CONVERSIONS**/
 extern const int scale;//use this when converting from Box2D coordinates, to sfml coordinates
 /**CONVERSIONS**/

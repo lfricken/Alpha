@@ -31,9 +31,9 @@ const float defaultRotation = 0.0;
 
 
 /**GRAPHICS**/
-const std::string defaultTexName = "textures/dev_64x64.png";
+const std::string defaultTexName = "textures/dev_128x128.png";
 const sf::Color defaultColor = sf::Color::White;
-const sf::Vector2f defaultTexTileSize = sf::Vector2f(64, 64);
+const sf::Vector2f defaultTexTileSize = sf::Vector2f(128, 128);
 const sf::Vector2f defaultTexTile = sf::Vector2f(0, 0);
 /**GRAPHICS**/
 
@@ -51,6 +51,17 @@ const float defaultMinZoom = 0.5f;
 const std::string defaultTargetName = defaultName;
 const std::string defaultPlayerMode = "normal";
 /**CONTROLERS**/
+
+
+/**GUI**/
+namespace leon
+{
+const std::string defaultButtonText = "FixThis";
+const std::string defaultConfig = "TGUI/widgets/Black.conf";
+const sf::Vector2f defaultPosition = sf::Vector2f(10, 10);
+const sf::Vector2f defaultSize = sf::Vector2f(100, 50);
+}
+/**GUI**/
 
 
 /**CONVERSIONS**/

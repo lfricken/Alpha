@@ -4,6 +4,7 @@
 
 #include "GModule.h"
 #include "Module.h"
+#include "Button.h"
 /**WONT BE NEEDED**/
 
 #include "Game.h"
@@ -18,15 +19,18 @@ Game::Game()
 {
     ///load window data into settings, and launch window with the settings
     m_settings.antialiasingLevel = 4;
-    m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(1600, 900), "SFML Box2D Test Environment", sf::Style::Default, m_settings));
+
+    sf::VideoMode mode = sf::VideoMode::getDesktopMode();
+    mode = sf::VideoMode(1200, 700, 32);
+    m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(800, 600, 32), "SFML Box2D Test Environment", sf::Style::Default, m_settings));
     m_spFunctionFinder = std::tr1::shared_ptr<BaseFunctionFinder>(new BaseFunctionFinder);//independent
     m_spTexAlloc = std::tr1::shared_ptr<TextureAllocator>(new TextureAllocator());//independent
     m_spOverlayManager = std::tr1::shared_ptr<OverlayManager>(new OverlayManager());//independent
     m_spUniverse = std::tr1::shared_ptr<Universe>(new Universe());//independent
     /**created last**/
-    m_spControlManager = std::tr1::shared_ptr<ControlManager>(new ControlManager);//needs Window and Universe
+    m_spGui = std::tr1::shared_ptr<tgui::Gui>(new tgui::Gui(*m_spWindow));//requires window
     m_spIOManager = std::tr1::shared_ptr<IOManager>(new IOManager(*this));//requires Universe and OverlayManager
-    m_spGui = std::tr1::shared_ptr<tgui::Gui>(new tgui::Gui(*m_spWindow));
+    m_spControlManager = std::tr1::shared_ptr<ControlManager>(new ControlManager);//needs Window and Universe and GUI
 
 
     bool loadedVsinc = true;
@@ -70,6 +74,10 @@ BaseFunctionFinder& Game::getGameFunctionFinder()
 {
     return *m_spFunctionFinder;
 }
+tgui::Gui& Game::getGameGui()
+{
+    return *m_spGui;
+}
 Game::Status Game::client()
 {
     return run();
@@ -85,7 +93,13 @@ Game::Status Game::local()
 Game::Status Game::run()
 {
     f_load("stuff");
-    cout << "\nLoad";
+
+    leon::ButtonData buttonData;
+    buttonData.size = sf::Vector2f(100,50);
+    buttonData.buttonText = "Win";
+    buttonData.position = sf::Vector2f(20, 300);
+    leon::Button buttonInstance(*m_spGui, buttonData);///we need this button to  deleted so its temporarily in the main loop
+
 
     /**SIMULATION & RUNTIME**/
     Game::Status newState = Game::Local;
@@ -109,7 +123,6 @@ Game::Status Game::run()
 
         while (m_spWindow->pollEvent(event))
         {
-            m_spGui->handleEvent(event);
             if(m_spControlManager->choiceUpdate(event))//if we put this before physstep, the camera lags!
                 newState = Game::Quit;
         }
@@ -172,6 +185,15 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     tab->add("Items");
     /**TAB**/
 
+/**
+    leon::ButtonData buttonData;
+    buttonData.size = sf::Vector2f(100,50);
+    buttonData.buttonText = "Win";
+    buttonData.position = sf::Vector2f(20, 300);
+
+    leon::Button(*m_spGui, buttonData);///we need this button to be deleted so its temporarily in the main loop
+    **/
+
 
     /**=============================================GUI=============================================**/
 ///==============================================================================
@@ -205,7 +227,6 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     solidFixtureData.rotation = 0.0f;
     solidFixtureData.texName = "textures/tileset.png";
     solidFixtureData.texTile = sf::Vector2f(0, 0);
-    solidFixtureData.texTileSize = sf::Vector2f(64, 64);
     solidFixtureData.color = sf::Color::Red;
 
     staticGModuleDataList.push_back(solidFixtureData);
@@ -248,7 +269,6 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     shipModuleData.rotation = 0.0f;
     shipModuleData.texName = "textures/tileset.png";
     shipModuleData.texTile = sf::Vector2f(0, 0);
-    shipModuleData.texTileSize = sf::Vector2f(64, 64);
     shipModuleData.color = sf::Color::White;
 
     ModuleData mdata;
@@ -337,9 +357,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     debrisModuleData.pBody = NULL;//we dont know it yet
     debrisModuleData.restitution = 0.2f;
     debrisModuleData.rotation = 0.0f;
-    debrisModuleData.texName = "textures/door1.png";
     debrisModuleData.texTile = sf::Vector2f(0, 0);
-    debrisModuleData.texTileSize = sf::Vector2f(64, 64);
     debrisModuleData.color = sf::Color::White;
 
     vector<GModuleData> DebrisDataList;
@@ -367,6 +385,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     debrisChunk->add(DebrisDataList);
     m_spUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
 
+    DebrisDataList.back().texName = "textures/door_1.png";
+    DebrisDataList.front().texName = "textures/door_1.png";
 
     for (int i=0, x=1, y=3, numBoxs = 1; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {

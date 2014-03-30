@@ -2,7 +2,6 @@
 #define OVERLAY_H
 
 #include "IOBase.h"
-#include "Panel.h"
 
 class Overlay : public IOBase//an overlay can have panels, which are just collections of buttons
 {
@@ -16,7 +15,7 @@ public:
 
     void setDisplayPriority(int priority);
     int getDisplayPriority();
-    void add(Panel& rPanel);//add a copy of this pannel to the list of panels in this overlay
+///    void add(Panel& rPanel);//add a copy of this pannel to the list of panels in this overlay
 
     IOBase* getTarget(std::string target);//returns a pointer to the target object
 
@@ -29,7 +28,7 @@ public:
 protected:
 
 private:
-    std::vector<Panel> m_panelsList;//list of panels on this overlay
+ ///   std::vector<Panel> m_panelsList;//list of panels on this overlay
     bool m_isActive;//is this panel active or not
     int m_displayPriority;//higher numberse mean higher priority, so 1000 will get displayed on top of 999, so if two overlays are active, higher pri will get clicked first and displayed on top
 };

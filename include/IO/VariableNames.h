@@ -11,6 +11,9 @@ enum Variable
     COUNT,
     TEXTURE,
     TEXCOORDS,
+    MOUSELEFT,
+    MOUSEENTERED,
+    LEFTMOUSECLICKED,
 };
 
 /**ATTRIBUTE**/

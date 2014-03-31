@@ -13,7 +13,7 @@ WidgetBase::WidgetBase(const WidgetBaseData& data) : IOBase(static_cast<IOBaseDa
 }
 WidgetBase::~WidgetBase()
 {
-    //dtor
+
 }
 void WidgetBase::callback(const tgui::Callback& callback)
 {
@@ -21,5 +21,17 @@ void WidgetBase::callback(const tgui::Callback& callback)
 }
 void WidgetBase::f_initialize(const WidgetBaseData& data)
 {
-
+    //initialize data
+}
+void WidgetBase::f_MouseEntered()
+{
+    m_spEventer->event("", Variable::MOUSEENTERED);
+}
+void WidgetBase::f_LeftMouseClicked()
+{
+    m_spEventer->event("", Variable::LEFTMOUSECLICKED);
+}
+void WidgetBase::f_MouseLeft()
+{
+    m_spEventer->event("", Variable::MOUSELEFT);
 }

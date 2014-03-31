@@ -1,40 +1,63 @@
 #include "Button.h"
 
-//using namespace leon;
+using namespace leon;
 
-leon::Button::Button(tgui::Gui& gui) : m_pButton(gui)
+Button::Button(tgui::Gui& gui) : m_pButton(gui)
 {
     ButtonData data;
     f_initialize(data);
 }
-leon::Button::Button(tgui::Gui& gui, const ButtonData& data) : WidgetBase(static_cast<WidgetBaseData>(data)), m_pButton(gui)
+Button::Button(tgui::Gui& gui, const ButtonData& data) : WidgetBase(static_cast<WidgetBaseData>(data)), m_pButton(gui)
 {
     f_initialize(data);
 }
-leon::Button::Button(tgui::Container& container) : m_pButton(container)
+Button::Button(tgui::Container& container) : m_pButton(container)
 {
     ButtonData data;
     f_initialize(data);
 }
-leon::Button::Button(tgui::Container& container, const ButtonData& data) : WidgetBase(static_cast<WidgetBaseData>(data)), m_pButton(container)
+Button::Button(tgui::Container& container, const ButtonData& data) : WidgetBase(static_cast<WidgetBaseData>(data)), m_pButton(container)
 {
     f_initialize(data);
 }
-leon::Button::~Button()
+Button::~Button()
 {
 
 }
-void leon::Button::f_initialize(const ButtonData& data)
+void Button::f_initialize(const ButtonData& data)
 {
     m_pButton->load(data.configFile);
     m_pButton->setPosition(data.position);
     m_pButton->setText(data.buttonText);
     m_pButton->setSize(data.size.x, data.size.y);
-    m_pButton->bindCallbackEx(&leon::Button::callback, this, tgui::Button::LeftMouseClicked);
+    m_pButton->bindCallbackEx(&Button::callback, this, tgui::Button::AllButtonCallbacks);
 }
-void leon::Button::callback(const tgui::Callback& callback)
+void Button::callback(const tgui::Callback& callback)
 {
-    std::cout << m_name << " was clicked. Checking for events...";
-    std::cout << " none found.";
+    if(callback.trigger == tgui::Button::MouseEntered)
+    {
+        f_MouseEntered();
+    }
+    else if(callback.trigger == tgui::Button::LeftMouseClicked)
+    {
+        f_LeftMouseClicked();
+    }
+    else if(callback.trigger == tgui::Button::MouseLeft)
+    {
+        f_MouseLeft();
+    }
 }
-
+/*
+void Button::f_MouseEntered()
+{
+    ///eventer for enter (change, not value)
+}
+void Button::f_LeftMouseClicked()
+{
+    ///eventer for clicked (change, not value)
+}
+void Button::f_MouseLeft()
+{
+    ///eventer for leave (change, not value)
+}
+*/

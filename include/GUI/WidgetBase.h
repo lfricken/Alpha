@@ -28,7 +28,12 @@ public:
     virtual ~WidgetBase();
 
     virtual void callback(const tgui::Callback& callback);
+
 protected:
+    void f_MouseEntered();
+    void f_LeftMouseClicked();
+    void f_MouseLeft();
+
 private:
     virtual void f_initialize(const WidgetBaseData& data);
 };

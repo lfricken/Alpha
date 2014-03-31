@@ -5,19 +5,52 @@
 
 enum ClassType///look at COLLISIONCATEGORY.h, and classes.txt
 {
+    /**default**/
     UNKNOWN = 0,
-    ROOTGAME,
 
+    /**UNIVERSE, GAME, GUI ect.**/
+    ROOTGAME,///<---whats this for???
+    UNIVERSE,
+    OVERLAYMANAGER,
+    GAME,
+
+    /**GUI**/
+    BUTTON,
+    PANEL,
+    SLIDER,
+    CHECKBOX,
+    RADIOBUTTON,
+    LOADINGBAR,
+    EDITBOX,
+    MENUBAR,
+    TAB,
+    LABEL,
+    CHILDWINDOW,
+    CHATBOX,
+    SCROLLBAR,
+    LISTBOX,
+    COMBOBOX,
+
+    /**MODULES**/
     MODULE,
     TRIGGER,
+    FORCE,
 
+    /**GMODULES**/
     GMODULE,
     ARMOR,
+    CAPACITOR,
+    TURRET,
+    FLOOR,
 
+    /**CHUNKS**/
     CHUNK,
+    STATION,
     SHIP,
-    CREATURE,
+    ACTOR,
+    ITEM,
 
+    /**INTELLIGENCE**/
     PLAYER,
     SI,
 };

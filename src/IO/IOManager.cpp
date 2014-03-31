@@ -25,8 +25,11 @@ void IOManager::update(const float timeChange)//unfinished, cause it got f'd up 
         {
             if((it)->destination == Destination::UNIVERSE)
                 m_currentTarget = m_pUniverse->getTarget((it)->targetID);
-            else if((it)->destination == Destination::GUI)
-                m_currentTarget = NULL;///SHOULD FIND GUI STUFF
+            else if((it)->destination == Destination::OVERLAYMANAGER)
+                m_currentTarget = m_pOverlayManager->getTarget((it)->targetID);
+
+
+
             ///ect...
 
             if(m_currentTarget != NULL)

@@ -3,7 +3,6 @@
 
 #include "WidgetBase.h"
 
-
 namespace leon
 {
 struct ButtonData : public WidgetBaseData

@@ -61,11 +61,13 @@
 			<Add directory="../../../Engines/SFML-2_recompile/lib" />
 			<Add directory="../../../Engines/TGUI-0.6.1/lib" />
 		</Linker>
+		<Unit filename="include/BinaryVectorSearch.h" />
 		<Unit filename="include/Control/Camera.h" />
 		<Unit filename="include/Control/ControlManager.h" />
 		<Unit filename="include/Control/Intelligence.h" />
 		<Unit filename="include/Control/Player.h" />
 		<Unit filename="include/GUI/Button.h" />
+		<Unit filename="include/GUI/Panel.h" />
 		<Unit filename="include/GUI/WidgetBase.h" />
 		<Unit filename="include/Game/Game.h" />
 		<Unit filename="include/Game/TextureAllocator.h" />
@@ -103,6 +105,7 @@
 		<Unit filename="src/Control/Intelligence.cpp" />
 		<Unit filename="src/Control/Player.cpp" />
 		<Unit filename="src/GUI/Button.cpp" />
+		<Unit filename="src/GUI/Panel.cpp" />
 		<Unit filename="src/GUI/WidgetBase.cpp" />
 		<Unit filename="src/Game/Game.cpp" />
 		<Unit filename="src/Game/TextureAllocator.cpp" />

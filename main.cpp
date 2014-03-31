@@ -56,6 +56,7 @@ const std::string defaultPlayerMode = "normal";
 /**GUI**/
 namespace leon
 {
+const sf::Color defaultBackgroundColor = sf::Color::White;
 const std::string defaultButtonText = "FixThis";
 const std::string defaultConfig = "TGUI/widgets/Black.conf";
 const sf::Vector2f defaultPosition = sf::Vector2f(10, 10);

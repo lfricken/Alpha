@@ -11,6 +11,9 @@ extern const ClassType defaultClassType;
 extern const bool defaultIsEnabled;
 extern const std::string defaultName;
 extern const unsigned int defaultID;
+
+#define IOBaseReturn void
+#define IOBaseArgs sf::Packet& rInput
 /**IOBASE**/
 
 
@@ -55,6 +58,7 @@ extern const std::string defaultPlayerMode;
 /**GUI**/
 namespace leon
 {
+extern const sf::Color defaultBackgroundColor;
 extern const std::string defaultButtonText;
 extern const std::string defaultConfig;
 extern const sf::Vector2f defaultPosition;

@@ -15,6 +15,16 @@ BaseFunctionFinder::BaseFunctionFinder()
     m_aliasMap.insert(std::pair<std::string, TargetFunc>("input_8", &IOBase::input_8));
     m_aliasMap.insert(std::pair<std::string, TargetFunc>("input_9", &IOBase::input_9));
     m_aliasMap.insert(std::pair<std::string, TargetFunc>("input_10", &IOBase::input_10));
+    m_aliasMap.insert(std::pair<std::string, TargetFunc>("input_11", &IOBase::input_11));
+    m_aliasMap.insert(std::pair<std::string, TargetFunc>("input_12", &IOBase::input_12));
+    m_aliasMap.insert(std::pair<std::string, TargetFunc>("input_13", &IOBase::input_13));
+    m_aliasMap.insert(std::pair<std::string, TargetFunc>("input_14", &IOBase::input_14));
+    m_aliasMap.insert(std::pair<std::string, TargetFunc>("input_15", &IOBase::input_15));
+    m_aliasMap.insert(std::pair<std::string, TargetFunc>("input_16", &IOBase::input_16));
+    m_aliasMap.insert(std::pair<std::string, TargetFunc>("input_17", &IOBase::input_17));
+    m_aliasMap.insert(std::pair<std::string, TargetFunc>("input_18", &IOBase::input_18));
+    m_aliasMap.insert(std::pair<std::string, TargetFunc>("input_19", &IOBase::input_19));
+    m_aliasMap.insert(std::pair<std::string, TargetFunc>("input_20", &IOBase::input_20));
 }
 
 BaseFunctionFinder::~BaseFunctionFinder()

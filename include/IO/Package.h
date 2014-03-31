@@ -2,14 +2,11 @@
 #define PACKAGE_H
 
 #include "stdafx.h"
+#include "ClassType.h"
+
 class IOBase;
 
-enum Destination
-{
-    UNIVERSE = 0,
-    GUI,
-    GAME
-};
+typedef ClassType Destination;
 
 typedef void (IOBase::*CommandFunction)(sf::Packet&);
 class Package

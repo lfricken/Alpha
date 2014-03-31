@@ -25,10 +25,9 @@ Game::Game()
     m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(800, 600, 32), "SFML Box2D Test Environment", sf::Style::Default, m_settings));
     m_spFunctionFinder = std::tr1::shared_ptr<BaseFunctionFinder>(new BaseFunctionFinder);//independent
     m_spTexAlloc = std::tr1::shared_ptr<TextureAllocator>(new TextureAllocator());//independent
-    m_spOverlayManager = std::tr1::shared_ptr<OverlayManager>(new OverlayManager());//independent
     m_spUniverse = std::tr1::shared_ptr<Universe>(new Universe());//independent
     /**created last**/
-    m_spGui = std::tr1::shared_ptr<tgui::Gui>(new tgui::Gui(*m_spWindow));//requires window
+    m_spOverlayManager = std::tr1::shared_ptr<OverlayManager>(new OverlayManager(*m_spWindow));//independent
     m_spIOManager = std::tr1::shared_ptr<IOManager>(new IOManager(*this));//requires Universe and OverlayManager
     m_spControlManager = std::tr1::shared_ptr<ControlManager>(new ControlManager);//needs Window and Universe and GUI
 
@@ -40,7 +39,7 @@ Game::Game()
     int loadedFrameRate = 60;///called that because we are supposed to load that
     std::string loadedFont = "TGUI/fonts/DejaVuSans.ttf";
 
-    m_spGui->setGlobalFont(loadedFont);
+    m_spOverlayManager->getGui().setGlobalFont(loadedFont);
     m_spWindow->setVerticalSyncEnabled(loadedVsinc);
     m_spWindow->setFramerateLimit(loadedFrameRate);
     m_spFunctionFinder->load("functionTable.tbl");
@@ -77,10 +76,6 @@ BaseFunctionFinder& Game::getGameFunctionFinder()
 {
     return *m_spFunctionFinder;
 }
-tgui::Gui& Game::getGameGui()
-{
-    return *m_spGui;
-}
 Game::Status Game::client()
 {
     return run();
@@ -101,7 +96,7 @@ Game::Status Game::run()
     buttonData.size = sf::Vector2f(100,50);
     buttonData.buttonText = "Win";
     buttonData.position = sf::Vector2f(20, 300);
-    leon::Button buttonInstance(*m_spGui, buttonData);///we need this button to  deleted so its temporarily in the main loop
+    leon::Button buttonInstance(m_spOverlayManager->getGui(), buttonData);///we need this button to  deleted so its temporarily in the main loop
 
 
     /**SIMULATION & RUNTIME**/
@@ -148,7 +143,7 @@ Game::Status Game::run()
         m_spControlManager->drawUpdate();
 
         m_spWindow->setView(m_spWindow->getDefaultView());//draw stuff that is on hud
-        m_spGui->draw();
+        m_spOverlayManager->draw();
 
         m_spWindow->display();
 
@@ -180,7 +175,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     std::string config = "TGUI/widgets/Black.conf";
 
     /**TAB**/
-    tgui::Tab::Ptr tab(*m_spGui);
+    tgui::Tab::Ptr tab(m_spOverlayManager->getGui());
     tab->load(config);
     tab->setPosition(10, 10);
     tab->add("Weapon");
@@ -460,10 +455,14 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     for(vector<Courier*>::iterator it = m_allCouriers.begin(); it != m_allCouriers.end(); ++it)
     {
         if((*it)->package.getDestination() == Destination::UNIVERSE)
-            (*it)->package.setTargetID(   m_spUniverse->getTarget((*it)->package.getTargetName())->getID()   );//set the couriers id data
+        {
+            (*it)->package.setTargetID(m_spUniverse->getTarget((*it)->package.getTargetName())->getID());//set the couriers id data
+        }
 
-        else if((*it)->package.getDestination() == Destination::GUI)
-            m_spOverlayManager->getEventer();///fix this, it should return a target, not damage, just some func
+        else if( (*it)->package.getDestination() == Destination::OVERLAYMANAGER )
+        {
+            (*it)->package.setTargetID(m_spOverlayManager->getTarget((*it)->package.getTargetName())->getID());//set the couriers id data
+        }
 
         else if((*it)->package.getDestination() == Destination::GAME)
             this->getEventer();///fix this, it should return a target, not damage, just some func

@@ -2,9 +2,11 @@
 #define BASEFUNCTIONFINDER_H
 
 #include "stdafx.h"
+#include "defaults.h"
 class IOBase;
 
-typedef void (IOBase::*TargetFunc)(sf::Packet& input);
+typedef IOBaseReturn (IOBase::*TargetFunc)(IOBaseArgs);
+
 class BaseFunctionFinder
 {
     public:

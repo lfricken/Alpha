@@ -7,7 +7,7 @@ Button::Button(tgui::Gui& gui) : m_pButton(gui)
     ButtonData data;
     f_initialize(data);
 }
-Button::Button(tgui::Gui& gui, const ButtonData& data) : WidgetBase(static_cast<WidgetBaseData>(data)), m_pButton(gui)
+Button::Button(tgui::Gui& gui, const ButtonData& data) : WidgetBase(static_cast<WidgetBaseData>(data)), m_pButton(gui, data.name)
 {
     f_initialize(data);
 }
@@ -16,7 +16,7 @@ Button::Button(tgui::Container& container) : m_pButton(container)
     ButtonData data;
     f_initialize(data);
 }
-Button::Button(tgui::Container& container, const ButtonData& data) : WidgetBase(static_cast<WidgetBaseData>(data)), m_pButton(container)
+Button::Button(tgui::Container& container, const ButtonData& data) : WidgetBase(static_cast<WidgetBaseData>(data)), m_pButton(container, data.name)
 {
     f_initialize(data);
 }

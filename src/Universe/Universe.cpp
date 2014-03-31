@@ -1,34 +1,9 @@
 #include "Universe.h"
 #include "Types.h"
+#include "BinaryVectorSearch.h"
 
 using namespace std;
 
-
-template<class S, class R,typename T>
-int binary_find_ptr(vector<S>& container, T(R::*func)() const, T id)
-{
-    int first = 0;
-    int last = container.size()-1;
-    int middle = (first+last)/2;
-
-    while(first <= last)
-    {
-        if (((*container[middle]).*func)() < id)
-            first = middle + 1;
-        else if (((*container[middle]).*func)() == id)
-            return middle;
-        else
-            last = middle - 1;
-        middle = (first + last)/2;
-    }
-    if (first > last)
-        return -1;
-    else
-    {
-        ///ERROR LOG
-        return -1;
-    }
-}
 Universe::Universe() : IOBase(), m_physWorld(b2Vec2(0,0))
 {
     m_normalDraw = true;
@@ -70,7 +45,7 @@ IOBase* Universe::getTarget(unsigned int targetID)///UNFINISHED
 {
     int location = binary_find_ptr(m_physList, &Chunk::getID, targetID);//<std::tr1::shared_ptr<Chunk>, Chunk, unsigned int>
     ///also search non physlist stuff?
-
+    cout << location;
     if(location == -1)
         return NULL;//couldnt find the target! :(
     else

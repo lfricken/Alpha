@@ -18,9 +18,6 @@ class IOBase;
 struct Courier;
 class ActiveEventer;
 
-#define IOBaseReturn void
-#define IOBaseArgs sf::Packet& rInput
-
 struct IOBaseData//initialized
 {
     IOBaseData () :

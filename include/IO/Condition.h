@@ -7,11 +7,11 @@ class Condition//used to determine if the package should be sent
 {
 public:
     Condition();
-    Condition(Variable varName, const std::string& stringValue, float floatValue, char comparison, bool repeatable);
+    Condition(Event varName, const std::string& stringValue, float floatValue, char comparison, bool repeatable);
     virtual ~Condition();
-    void reset(Variable varName, const std::string& stringValue, float floatValue, char comparison, bool repeatable);
+    void reset(Event varName, const std::string& stringValue, float floatValue, char comparison, bool repeatable);
 
-    Variable getVariableName() const;
+    Event getEventName() const;
     bool evaluate(const std::string& input) const;
     bool isRepeatable() const;
 
@@ -26,7 +26,7 @@ private:
     typedef bool (Condition::*ComparisonFunction)(const std::string&) const;
     ComparisonFunction m_evaluationFunction;
 
-    Variable m_variableName;
+    Event m_eventName;
     std::string m_stringValue;//the value to compare to the current variable
     float m_floatValue;//incase its a numerical value, we can put it in here when this is created
     char m_comparison;//character type used to compare, so it could be >, <, or =

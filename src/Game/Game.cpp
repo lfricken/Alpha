@@ -32,6 +32,9 @@ Game::Game()
     m_spIOManager = std::tr1::shared_ptr<IOManager>(new IOManager(*this));//requires Universe and OverlayManager
     m_spControlManager = std::tr1::shared_ptr<ControlManager>(new ControlManager);//needs Window and Universe and GUI
 
+    m_spUniverse->resetEventer();/**these objects need to create an IOBase, and thus need active eventer, and thus need a pointer to IOManager**/
+    m_spOverlayManager->resetEventer();/** ^ **/
+    this->resetEventer();/** ^ **/
 
     bool loadedVsinc = true;
     int loadedFrameRate = 60;///called that because we are supposed to load that
@@ -212,7 +215,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     Courier& cor = *solidFixtureData.spCourierList.front();
     sf::Packet pack;
     pack << "test";
-    cor.condition.reset(HEALTH, "97", 97, '<', true);
+    cor.condition.reset(Health, "97", 97, '<', true);
     cor.package.reset("Static_Chunk_1", "input_1", pack, 1, Destination::UNIVERSE);
     m_allCouriers.push_back(&cor);
 

@@ -3,30 +3,31 @@
 /**=====PUBLIC=====**/
 Condition::Condition()
 {
-    m_variableName = HEALTH;
+    ///this shouldn't be the defualt condition
+    m_eventName = Event::Health;
     m_stringValue = "99";
     m_floatValue = 99.0;
     m_comparison = '<';
     m_isRepeatable = true;
     f_setComparisonFunction('<');
 }
-Condition::Condition(Variable varName, const std::string& stringVar, float floatVar, char comparison, bool repeatable)
+Condition::Condition(Event eventName, const std::string& stringVar, float floatVar, char comparison, bool repeatable)
 {
-    reset(varName, stringVar, floatVar, comparison, repeatable);
+    reset(eventName, stringVar, floatVar, comparison, repeatable);
 }
 Condition::~Condition() {}
-void Condition::reset(Variable varName, const std::string& stringValue, float floatValue, char comparison, bool repeatable)
+void Condition::reset(Event eventName, const std::string& stringValue, float floatValue, char comparison, bool repeatable)
 {
-    m_variableName = varName;
+    m_eventName = eventName;
     m_stringValue = stringValue;
     m_floatValue = floatValue;
     m_comparison = comparison;
     m_isRepeatable = repeatable;
     f_setComparisonFunction(comparison);
 }
-Variable Condition::getVariableName() const
+Event Condition::getEventName() const
 {
-    return m_variableName;
+    return m_eventName;
 }
 bool Condition::evaluate(const std::string& input) const
 {

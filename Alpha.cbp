@@ -75,7 +75,6 @@
 		<Unit filename="include/IO/Courier.h" />
 		<Unit filename="include/IO/IOManager.h" />
 		<Unit filename="include/IO/Package.h" />
-		<Unit filename="include/IO/PassiveEventer.h" />
 		<Unit filename="include/IO/VariableNames.h" />
 		<Unit filename="include/MultipleInheritance/GraphicsBase.h" />
 		<Unit filename="include/MultipleInheritance/IOBase.h" />
@@ -112,7 +111,6 @@
 		<Unit filename="src/IO/Condition.cpp" />
 		<Unit filename="src/IO/IOManager.cpp" />
 		<Unit filename="src/IO/Package.cpp" />
-		<Unit filename="src/IO/PassiveEventer.cpp" />
 		<Unit filename="src/MultipleInheritance/GraphicsBase.cpp" />
 		<Unit filename="src/MultipleInheritance/IOBase.cpp" />
 		<Unit filename="src/MultipleInheritance/PhysicsBase.cpp" />

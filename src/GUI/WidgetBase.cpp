@@ -25,13 +25,13 @@ void WidgetBase::f_initialize(const WidgetBaseData& data)
 }
 void WidgetBase::f_MouseEntered()
 {
-    m_spEventer->event("", Variable::MOUSEENTERED);
+    m_spEventer->event("", Event::MouseEntered);
 }
 void WidgetBase::f_LeftMouseClicked()
 {
-    m_spEventer->event("", Variable::LEFTMOUSECLICKED);
+    m_spEventer->event("", Event::LeftMouseClicked);
 }
 void WidgetBase::f_MouseLeft()
 {
-    m_spEventer->event("", Variable::MOUSELEFT);
+    m_spEventer->event("", Event::MouseLeft);
 }

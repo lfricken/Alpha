@@ -3,34 +3,34 @@
 
 #include "stdafx.h"
 
-enum Variable
+enum Event
 {
-    HEALTH = 0,
-    ENERGY,
-    STATE,
-    COUNT,
-    TEXTURE,
-    TEXCOORDS,
-    MOUSELEFT,
-    MOUSEENTERED,
-    LEFTMOUSECLICKED,
+    Health = 0,
+    Energy,
+    State,
+    Count,
+    Texture,
+    TexCoords,
+    MouseLeft,
+    MouseEntered,
+    LeftMouseClicked,
 };
 
 /**ATTRIBUTE**/
 class Attribute
 {
 public:
-    Attribute(Variable a) : varName(a) {}
-    Variable getVarType() const {return varName;}
+    Attribute(Event a) : eventName(a) {}
+    Event getEventType() const {return eventName;}
 private:
-    Variable varName;
+    Event eventName;
 };
 
 /**VAR_TYPE ATTRIBUTE**/
 class Int_Attribute : public Attribute
 {
 public:
-    Int_Attribute(Variable a, int b) : Attribute(a), value(b) {}
+    Int_Attribute(Event a, int b) : Attribute(a), value(b) {}
     int getValue() const {return value;}
     void setValue(int c) {value = c;}
 protected:
@@ -39,7 +39,7 @@ protected:
 class Float_Attribute : public Attribute
 {
 public:
-    Float_Attribute(Variable a, float b) : Attribute(a), value(b) {}
+    Float_Attribute(Event a, float b) : Attribute(a), value(b) {}
     float getValue() const {return value;}
     void setValue(float c) {value = c;}
 protected:
@@ -54,7 +54,7 @@ protected:
 class HealthData : public Int_Attribute
 {
 public:
-    HealthData() : Int_Attribute(HEALTH, 100), armor(0) {}
+    HealthData() : Int_Attribute(Health, 100), armor(0) {}
     int takeDamage(int d)
     {
         if(d <= armor)

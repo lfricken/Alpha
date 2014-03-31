@@ -10,34 +10,36 @@ ActiveEventer::ActiveEventer()
     m_pIOManager = &game.getGameIOManager();
 
     if(m_pIOManager == NULL)///DEBUG
-        cout << "\nError ActiveEventerCtor";
+    {
+        ///ERROR LOG
+    }
 }
 ActiveEventer::~ActiveEventer()
 {
 }
 void ActiveEventer::add(const std::tr1::shared_ptr<Courier> spCourier)
 {
-    m_spCourierMap[spCourier->condition.getVariableName()].push_back(spCourier);
+    m_spCourierMap[spCourier->condition.getEventName()].push_back(spCourier);
 }
-int ActiveEventer::amount() const
+void ActiveEventer::event(const std::string& variable, Event variableName)
 {
-    return m_spCourierMap.size();
-}
-void ActiveEventer::event(const std::string& variable, Variable variableName)
-{
-    vec& rVector = m_spCourierMap[variableName];//vec is defined in class
+    std::map<Event, vec>::iterator it_map = m_spCourierMap.find(variableName);
 
-    for(vec::iterator it = rVector.begin(); it != rVector.end(); ++it)
+    if(it_map != m_spCourierMap.end())
     {
-        if((*it)->condition.evaluate(variable))//if the condition was met
+        //element found
+        vec& rVector = m_spCourierMap[variableName];//vec is defined in class
+
+        for(vec::iterator it = rVector.begin(); it != rVector.end(); ++it)
         {
-
-            m_pIOManager->recieve((*it)->package);
-            if(!((*it)->condition.isRepeatable()))//and if its not repeatable, remove it from our list
+            if((*it)->condition.evaluate(variable))//if the condition was met
             {
-                rVector.erase(it);//pointer
-                --it;///MAJOR POINTER PROBLEM, WE WILL GET OUT OF SCOPE POSSIBLY?
-
+                m_pIOManager->recieve((*it)->package);
+                if(!((*it)->condition.isRepeatable()))//and if its not repeatable, remove it from our list
+                {
+                    rVector.erase(it);//pointer
+                    --it;///MAJOR POINTER PROBLEM, WE WILL GET OUT OF SCOPE POSSIBLY?
+                }
             }
         }
     }

@@ -23,34 +23,20 @@ void IOBase::f_initialize(const IOBaseData& data)
     m_ID = data.ID;
     addCouriers(data.spCourierList);
 }
+void IOBase::resetEventer()
+{
+    m_spEventer.reset();
+    m_spEventer = std::tr1::shared_ptr<ActiveEventer>(new ActiveEventer());
+}
 void IOBase::addCouriers(const std::vector<std::tr1::shared_ptr<Courier> >& spCourierList)
 {
     if(!m_spEventer)
-        m_spEventer = std::tr1::shared_ptr<PassiveEventer>(new PassiveEventer());
+        m_spEventer = std::tr1::shared_ptr<ActiveEventer>(new ActiveEventer());
 
-    if(m_spEventer->amount() == 0 && spCourierList.size() == 0)//if we had a passive eventer before
-    {
-        m_spEventer.reset();
-        m_spEventer = std::tr1::shared_ptr<PassiveEventer>(new PassiveEventer());
-    }
-    else if(m_spEventer->amount() != 0 && spCourierList.size() != 0)
-    {
-        for(std::vector<std::tr1::shared_ptr<Courier> >::const_iterator it = spCourierList.begin(); it != spCourierList.end(); ++it)
-            m_spEventer->add(*it);
-    }
-    else if(m_spEventer->amount() == 0 && spCourierList.size() != 0)
-    {
-        m_spEventer.reset();
-        m_spEventer = std::tr1::shared_ptr<PassiveEventer>(new ActiveEventer());
-        for(std::vector<std::tr1::shared_ptr<Courier> >::const_iterator it = spCourierList.begin(); it != spCourierList.end(); ++it)
-            m_spEventer->add(*it);
-    }
-    else if(m_spEventer->amount() != 0 && spCourierList.size() == 0)
-    {
-        //DO NOTHING
-    }
+    for(std::vector<std::tr1::shared_ptr<Courier> >::const_iterator it = spCourierList.begin(); it != spCourierList.end(); ++it)
+        m_spEventer->add(*it);
 }
-std::tr1::shared_ptr<PassiveEventer> IOBase::getEventer()
+std::tr1::shared_ptr<ActiveEventer> IOBase::getEventer()
 {
     return m_spEventer;
 }

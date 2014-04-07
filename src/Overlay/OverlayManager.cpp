@@ -40,9 +40,9 @@ IOBase* OverlayManager::getTarget(const std::string& target)//finished
     return NULL;
 }
 
-IOBase* OverlayManager::getTarget(unsigned int targetID)///UNFINISHED
+IOBase* OverlayManager::getTarget(unsigned long long int targetID)///UNFINISHED
 {
-    int location = binary_find_ptr(m_panelList, &leon::Panel::getID, targetID);//<std::tr1::shared_ptr<Chunk>, Chunk, unsigned int>
+    int location = BinarySearchPtrVector(m_panelList, &leon::Panel::getID, targetID);//<std::tr1::shared_ptr<Chunk>, Chunk, unsigned int>
 
     if(location == -1)
         return NULL;//couldnt find the target! :(

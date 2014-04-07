@@ -4,10 +4,11 @@
 
 enum Shape
 {
-    Box = 0,
-    Octagon = 1,
-    Triangle = 2,
-    Circle = 3,
+    BOX = 0,
+    OCTAGON = 1,
+    TRIANGLE = 2,
+    CIRCLE = 3,
+    POLYGON = 4,
 };
 
 

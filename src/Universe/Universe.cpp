@@ -1,6 +1,7 @@
 #include "Universe.h"
 #include "Types.h"
 #include "BinaryVectorSearch.h"
+#include "Sort.h"
 
 using namespace std;
 
@@ -41,11 +42,11 @@ IOBase* Universe::getTarget(const string& target)///unfinished
     }
     return NULL;
 }
-IOBase* Universe::getTarget(unsigned int targetID)///UNFINISHED
+IOBase* Universe::getTarget(unsigned long long int targetID)
 {
-    int location = binary_find_ptr(m_physList, &Chunk::getID, targetID);//<std::tr1::shared_ptr<Chunk>, Chunk, unsigned int>
-    ///also search non physlist stuff?
-    cout << location;
+    ///first search non physlist stuff
+    int location = BinarySearchPtrVector(m_physList, &Chunk::getID, targetID);//<std::tr1::shared_ptr<Chunk>, Chunk, unsigned int>
+
     if(location == -1)
         return NULL;//couldnt find the target! :(
     else
@@ -58,9 +59,9 @@ Chunk* Universe::getPhysTarget(const std::string& target)
         if((*it)->getName() == target)
             return &(**it);
     }
-    return &(*m_physList.back());
+    return NULL;
 }
-Chunk* Universe::getPhysTarget(unsigned int target)///UNFINISHED
+Chunk* Universe::getPhysTarget(unsigned long long int targetID)
 {
     return NULL;
 }
@@ -79,13 +80,11 @@ Chunk* Universe::getPhysTarget(unsigned int target)///UNFINISHED
 /**=================**/
 void Universe::add(Chunk* pChunk)
 {
-    pChunk->f_setID(++m_currentIDCount);
-    m_physList.push_back(tr1::shared_ptr<Chunk>(pChunk));
+    InsertPtrVector(m_physList, &IOBase::getID, tr1::shared_ptr<Chunk>(pChunk));
 }
 void Universe::add(tr1::shared_ptr<Chunk> spChunk)
 {
-    spChunk->f_setID(++m_currentIDCount);
-    m_physList.push_back(spChunk);
+    InsertPtrVector(m_physList, &IOBase::getID, spChunk);
 }
 /**=================**/
 /**=================**/

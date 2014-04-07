@@ -1,6 +1,8 @@
 #include "IOBase.h"
 #include "globals.h"
 
+#include "Enumerate.h"
+
 using namespace std;
 
 IOBase::IOBase() : m_rIOManager(game.getGameIOManager())
@@ -20,7 +22,7 @@ void IOBase::f_initialize(const IOBaseData& data)
     m_name = data.name;
     m_type = data.type;
     m_isEnabled = data.isEnabled;
-    m_ID = data.ID;
+    m_ID = Enumerate(m_name);
     addCouriers(data.spCourierList);
 }
 void IOBase::resetEventer()
@@ -52,17 +54,13 @@ const std::string& IOBase::getName() const//finished
 {
     return m_name;
 }
-unsigned int IOBase::getID() const
+unsigned long long int IOBase::getID() const
 {
     return m_ID;
 }
 ClassType IOBase::getType() const
 {
     return m_type;
-}
-void IOBase::f_setID(unsigned int newID)
-{
-    m_ID = newID;
 }
 /**
 int IOBase::damage(int damage)

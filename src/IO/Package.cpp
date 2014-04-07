@@ -3,6 +3,8 @@
 #include "BaseFunctionFinder.h"
 #include "globals.h"
 
+#include "Enumerate.h"
+
 Package::Package()
 {
     sf::Packet tempParam;
@@ -23,20 +25,22 @@ void Package::reset(const std::string& target, const std::string& command, sf::P
     m_command = command;
     m_parameter = parameter;
     m_delay = delay;
-    m_targetID = 0;
+    m_targetID = Enumerate(m_targetName);
     m_destination = dest;
 
     m_commandFunction = game.getGameFunctionFinder().getFunction(command);
 }
+/*
 void Package::setTargetID(unsigned int targetID)
 {
     m_targetID = targetID;
 }
+*/
 float Package::getDelay() const
 {
     return m_delay;
 }
-unsigned int Package::getTargetID() const
+unsigned long long int Package::getTargetID() const
 {
     return m_targetID;
 }

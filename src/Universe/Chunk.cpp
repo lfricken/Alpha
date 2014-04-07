@@ -4,6 +4,7 @@
 #include "Intelligence.h"
 #include "GModule.h"
 #include "Module.h"
+#include "Sort.h"
 
 using namespace std;
 
@@ -39,23 +40,19 @@ void Chunk::f_initialize(const ChunkData& data)
     m_accel = 50;
     m_torque = 50;
 }
-/*
-Chunk::Chunk(const Chunk& old) : m_rWindow(game.getGameWindow()), m_rPhysWorld(game.getGameUniverse().getWorld())
+float Chunk::f_findRadius(std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList)
 {
-    cout << "\nChunk Copy Called...";
-    m_pBody = old.getBody();
-    m_bodyDef = old.getBodyDef();
-    m_tiles = old.getTiles();
-    m_GModuleSPList = old.getGModuleSPList();
-    m_ModuleSPList = old.getModuleSPList();
-    cout << "Completed.";
+    float a, b, c, maxRadius = 1;
+    for(vector<std::tr1::shared_ptr<GModuleData> >::iterator it = rDataList.begin(); it != rDataList.end(); ++it)
+    {
+        a = (*it)->offset.x;
+        b = (*it)->offset.y;
+        c = sqrt(a*a + b*b);
+        if(c > maxRadius)
+            maxRadius = c;
+    }
+    return maxRadius;
 }
-*/
-
-
-
-
-
 GModule* Chunk::getGModule(const std::string& targetName)
 {
     for(vector<tr1::shared_ptr<GModule> >::const_iterator it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
@@ -90,79 +87,24 @@ IOBase* Chunk::getIOBase(const std::string& targetName)
 1. OUR LIST: Create GModules in our GModuleList
 2. TILEMAP: Pass them to our MultiTileMap to be drawn later.
 **/
-float Chunk::f_findRadius(vector<GModuleData>& rDataList)
+void Chunk::add(vector<tr1::shared_ptr<GModuleData> >& rDataList, vector<b2Vec2>& vertices)
 {
-    float a, b, c, maxRadius = 1;
-    for(vector<GModuleData>::iterator it = rDataList.begin(); it != rDataList.end(); ++it)
-    {
-        a = it->offset.x;
-        b = it->offset.y;
-        c = sqrt(a*a + b*b);
-        if(c > maxRadius)
-            maxRadius = c;
-    }
-    return maxRadius;
-}
-void Chunk::add(vector<GModuleData>& rDataList)
-{
-    /**Take our list of gmodule data and make real modules with it! rDataList**/
-    for(vector<GModuleData>::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
-    {
-        GModule* ptr;
-        it_data->pBody = m_pBody;
-
-        if(it_data->type == ClassType::GMODULE)
-            ptr = static_cast<GModule*>(new GModule(*it_data));
-
-        ///list all types of modules here
-
-
-        else
-        {
-            cout << "\nModule of type " << it_data->type << " with name " << it_data->name <<  " was not found.";
-            ///ERROR LOG
-            ptr = new GModule(*it_data);
-        }
-        m_GModuleSPList.push_back(tr1::shared_ptr<GModule>(ptr));
-    }
-
-
-    /**TILEMAP: Create a Base Pointer List to pass to our tileMap**/
-    vector<GraphicsBase*> gfxBasePList;
-    for(vector<tr1::shared_ptr<GModule> >::const_iterator it_derived = m_GModuleSPList.begin(); it_derived != m_GModuleSPList.end(); ++it_derived)
-    {
-        gfxBasePList.push_back(&(*(*it_derived)));
-    }
-    m_tiles.add(gfxBasePList);
-
-
-    if(!rDataList.empty())/**Now, offset our origin by the appropriate amount indicated by the physData**/
-        m_tiles.setOrigin(rDataList[0].halfSize.x * scale , rDataList[0].halfSize.y * scale);
-    else
-        cout << "\nWARNING: Chunk::add()";
-}
-void Chunk::add(vector<GModuleData>& rDataList, vector<b2Vec2>& vertices)
-{
+    ///THIS SHOULD BE DONE SOMEWHERE ELSE
     /**create our bounding box for large chunk collisions using vertices**/
 
-
-    if(vertices.size() < 3)
+    if(vertices.empty())
     {
-
-        /**create us with a circle**//**
-
-        {
-            float radius = f_findRadius(rDataList);
-            m_shape.setas
-        }
-        else
-        {
-
-
-        }
-        **/
+        //don't create anything
+    }
+    else if(vertices.size() < 3)
+    {
+        //create a circle module with ship collision using f_findRadius
 
         /**
+        float radius = f_findRadius(rDataList);
+        m_shape = tr1::shared_ptr<b2Shape>(new b2CircleShape());
+        std::static_pointer_cast<b2CircleShape>(m_shape)->m_p.Set(0, 0);
+        std::static_pointer_cast<b2CircleShape>(m_shape)->m_radius = radius;
             m_shape.SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//default
             m_fixtureDef.shape = &m_shape;//give our shape to our fixture definition
             m_fixtureDef.density = data.density;
@@ -174,26 +116,32 @@ void Chunk::add(vector<GModuleData>& rDataList, vector<b2Vec2>& vertices)
 
         /**Take our list of gmodule data and make real modules with it! rDataList**/
     }
+    else
+    {
+        //create a module with ship collisions with those coordinates
+    }
 
 
-    for(vector<GModuleData>::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
+
+
+    for(vector<tr1::shared_ptr<GModuleData> >::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
         GModule* ptr;
-        it_data->pBody = m_pBody;
+        (*it_data)->pBody = m_pBody;
 
-        if(it_data->type == ClassType::GMODULE)
-            ptr = static_cast<GModule*>(new GModule(*it_data));
+        if((*it_data)->type == ClassType::GMODULE)
+            ptr = new GModule(**it_data);
 
         ///list all types of modules here
 
 
         else
         {
-            cout << "\nModule of type " << it_data->type << " with name " << it_data->name <<  " was not found.";
+            cout << "\nModule of type " << (*it_data)->type << " with name " << (*it_data)->name <<  " was not found.";
             ///ERROR LOG
-            ptr = new GModule(*it_data);
+            ptr = new GModule(**it_data);
         }
-        m_GModuleSPList.push_back(tr1::shared_ptr<GModule>(ptr));
+        InsertPtrVector(m_GModuleSPList, &IOBase::getID, tr1::shared_ptr<GModule>(ptr));
     }
 
 
@@ -207,29 +155,29 @@ void Chunk::add(vector<GModuleData>& rDataList, vector<b2Vec2>& vertices)
 
 
     if(!rDataList.empty())/**Now, offset our origin by the appropriate amount indicated by the physData**/
-        m_tiles.setOrigin(rDataList[0].halfSize.x * scale , rDataList[0].halfSize.y * scale);
+        m_tiles.setOrigin(rDataList[0]->halfSize.x * scale , rDataList[0]->halfSize.y * scale);
     else
     {
         cout << "\nWARNING: Chunk::add()";
         ///ERROR LOG
     }
 }
-void Chunk::add(vector<ModuleData>& rDataList)
+void Chunk::add(vector<tr1::shared_ptr<ModuleData> >& rDataList)
 {
-    for(vector<ModuleData>::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
+    for(vector<tr1::shared_ptr<ModuleData> >::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
         Module* ptr;
-        it_data->pBody = m_pBody;
+        (*it_data)->pBody = m_pBody;
 
-        if(it_data->type == ClassType::MODULE)
-            ptr = static_cast<Module*>(new Module(*it_data));
+        if((*it_data)->type == ClassType::MODULE)
+            ptr = new Module(**it_data);
         else
         {
             ///ERROR LOG
-            cout << "\nModule of type " << it_data->type << " was not found.";
-            ptr = new Module(*it_data);
+            cout << "\nModule of type " << (*it_data)->type << " was not found.";
+            ptr = new Module(**it_data);
         }
-        m_ModuleSPList.push_back(tr1::shared_ptr<Module>(ptr));
+        InsertPtrVector(m_ModuleSPList, &IOBase::getID, tr1::shared_ptr<Module>(ptr));
     }
 }
 void Chunk::draw()
@@ -372,3 +320,62 @@ void Chunk::input_1(sf::Packet& rInput)
     rInput >> n;
     std::cout << std::endl << m_name << " has " << m_GModuleSPList.front()->getHealth() << " health, also " << n;
 }
+
+
+/*
+void Chunk::add(vector<tr1::shared_ptr<GModuleData> >& rDataList)
+{
+    //Take our list of gmodule data and make real modules with it! rDataList
+    for(vector<tr1::shared_ptr<GModuleData> >::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
+    {
+        GModule* ptr;
+        (*it_data)->pBody = m_pBody;
+
+        if((*it_data)->type == ClassType::GMODULE)
+            ptr = new GModule(**it_data);
+
+        ///list all types of modules here
+
+
+        else
+        {
+            cout << "\nModule of type " << (*it_data)->type << " with name " << (*it_data)->name <<  " was not found.";
+            ///ERROR LOG
+            ptr = new GModule(**it_data);
+        }
+        m_GModuleSPList.push_back(tr1::shared_ptr<GModule>(ptr));
+    }
+
+
+    //TILEMAP: Create a Base Pointer List to pass to our tileMap
+    vector<GraphicsBase*> gfxBasePList;
+    for(vector<tr1::shared_ptr<GModule> >::const_iterator it_derived = m_GModuleSPList.begin(); it_derived != m_GModuleSPList.end(); ++it_derived)
+    {
+        gfxBasePList.push_back(&(*(*it_derived)));
+    }
+    m_tiles.add(gfxBasePList);
+
+
+    if(!rDataList.empty())//Now, offset our origin by the appropriate amount indicated by the physData
+        m_tiles.setOrigin(rDataList[0]->halfSize.x * scale , rDataList[0]->halfSize.y * scale);
+    else
+        cout << "\nWARNING: Chunk::add()";
+}
+*/
+
+
+
+
+
+/*
+Chunk::Chunk(const Chunk& old) : m_rWindow(game.getGameWindow()), m_rPhysWorld(game.getGameUniverse().getWorld())
+{
+    cout << "\nChunk Copy Called...";
+    m_pBody = old.getBody();
+    m_bodyDef = old.getBodyDef();
+    m_tiles = old.getTiles();
+    m_GModuleSPList = old.getGModuleSPList();
+    m_ModuleSPList = old.getModuleSPList();
+    cout << "Completed.";
+}
+*/

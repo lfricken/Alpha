@@ -43,9 +43,9 @@ public:
     virtual Module* getModule(const std::string& targetName);
     virtual IOBase* getIOBase(const std::string& targetName);
 
-    virtual void add(std::vector<GModuleData>& rDataList);
-    virtual void add(std::vector<GModuleData>& rDataList, std::vector<b2Vec2>& vertices);//we only call this once!
-    virtual void add(std::vector<ModuleData>& data);//we only call this once!
+  ///  virtual void add(std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);
+    virtual void add(std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList, std::vector<b2Vec2>& vertices);//we only call this once!
+    virtual void add(std::vector<std::tr1::shared_ptr<ModuleData> >& data);//we only call this once!
 
     virtual void draw();
     virtual void physUpdate();
@@ -103,7 +103,7 @@ protected:
     float m_accel, m_torque;///move these to a derivative of chunk
 
 private:
-    float f_findRadius(std::vector<GModuleData>& rDataList);//finds the top/bottom left, bottom
+    float f_findRadius(std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);//finds the top/bottom left, bottom
     virtual void f_initialize(const ChunkData& data);
 
     friend class Intelligence;
@@ -111,9 +111,6 @@ private:
     void f_setController(Intelligence* controller);
     Intelligence* m_pController;//this is a pointer to our controller
     bool m_hasController;
-
-    std::tr1::shared_ptr<b2Shape> m_shape;
-    b2FixtureDef m_fixtureDef;
 };
 
 #endif // DCHUNK_H

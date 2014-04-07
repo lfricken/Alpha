@@ -17,7 +17,7 @@ const unsigned int defaultID = 4294967295;//max value
 
 
 /**PHYSICS**/
-const Shape defaultShape = Shape::Box;
+const Shape defaultShape = Shape::BOX;
 const int defaultCollisionCategory = CollisionCategory::Projectile;
 const int defaultMaskBits = CollisionCategory::All;
 const bool defaultIsSensor = true;

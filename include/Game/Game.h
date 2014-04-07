@@ -56,7 +56,9 @@ private:
     sf::ContextSettings m_settings;///how can we edit the settings of the window?
 
     void f_load(const std::string& stuff);
-    std::vector<Courier*> m_allCouriers;///this problem is so old we almost forgot about it
+
+    ///DONT NEED IT ANYMORE
+    ///std::vector<Courier*> m_allCouriers;///this problem is so old we almost forgot about it
     ///IN order to avoid IOManager having to search for objects during runtime, it will find them
     ///at load time, and give them pointers to the IOBase part of the target, so later, it can just
     /// use the pointer and send the message instantly

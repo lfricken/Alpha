@@ -47,17 +47,17 @@ void Button::callback(const tgui::Callback& callback)
         f_MouseLeft();
     }
 }
-/*
+
 void Button::f_MouseEntered()
 {
-    ///eventer for enter (change, not value)
+    m_spEventer->event("", Event::MouseEntered);
 }
 void Button::f_LeftMouseClicked()
 {
-    ///eventer for clicked (change, not value)
+    m_spEventer->event("", Event::LeftMouseClicked);
 }
 void Button::f_MouseLeft()
 {
-    ///eventer for leave (change, not value)
+    m_spEventer->event("", Event::MouseLeft);
 }
-*/
+

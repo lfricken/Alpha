@@ -5,15 +5,26 @@
 
 enum Event
 {
-    Health = 0,
-    Energy,
+    /**GENERIC**/
     State,
     Count,
-    Texture,
-    TexCoords,
+    /**GENERIC**/
+
+    /**UNIVERSE**/
+    Health = 0,
+    Energy,
+    /**UNIVERSE**/
+
+    /**GUI**/
     MouseLeft,
     MouseEntered,
     LeftMouseClicked,
+    /**GUI**/
+
+    /**GRAPHICS**/
+    Texture,
+    TexCoords,
+    /**GRAPHICS**/
 };
 
 /**ATTRIBUTE**/
@@ -21,27 +32,44 @@ class Attribute
 {
 public:
     Attribute(Event a) : eventName(a) {}
-    Event getEventType() const {return eventName;}
+    Event getEventType() const
+    {
+        return eventName;
+    }
 private:
     Event eventName;
 };
 
+
+
 /**VAR_TYPE ATTRIBUTE**/
-class Int_Attribute : public Attribute
+class Int_Attribute : public Attribute/**INT ATTRIBUTE**/
 {
 public:
     Int_Attribute(Event a, int b) : Attribute(a), value(b) {}
-    int getValue() const {return value;}
-    void setValue(int c) {value = c;}
+    int getValue() const
+    {
+        return value;
+    }
+    void setValue(int c)
+    {
+        value = c;
+    }
 protected:
     int value;
 };
-class Float_Attribute : public Attribute
+class Float_Attribute : public Attribute/**FLOAT ATTRIBUTE**/
 {
 public:
     Float_Attribute(Event a, float b) : Attribute(a), value(b) {}
-    float getValue() const {return value;}
-    void setValue(float c) {value = c;}
+    float getValue() const
+    {
+        return value;
+    }
+    void setValue(float c)
+    {
+        value = c;
+    }
 protected:
     float value;
 };
@@ -63,7 +91,10 @@ public:
             value -= d-armor;
         return value;
     }
-    void heal(int h){value += h;}
+    void heal(int h)
+    {
+        value += h;
+    }
 protected:
     int armor;
 };

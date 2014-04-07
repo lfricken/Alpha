@@ -4,7 +4,7 @@
 #include "stdafx.h"
 
 template<class S, class R,typename T>
-int binary_find_ptr(std::vector<S>& container, T(R::*func)() const, T id)
+inline int BinarySearchPtrVector(std::vector<S>& container, T(R::*func)() const, T id)
 {
     int first = 0;
     int last = container.size()-1;

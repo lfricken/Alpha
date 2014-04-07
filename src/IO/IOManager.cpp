@@ -27,15 +27,18 @@ void IOManager::update(const float timeChange)//unfinished, cause it got f'd up 
                 m_currentTarget = m_pUniverse->getTarget((it)->targetID);
             else if((it)->destination == Destination::OVERLAYMANAGER)
                 m_currentTarget = m_pOverlayManager->getTarget((it)->targetID);
-
-
-
             ///ect...
 
+
             if(m_currentTarget != NULL)
+            {
                 (*m_currentTarget.*(it)->commandFunction)((it)->parameter);
-           /// else//if you uncomment this things break
+            }
+            else
+            {
+                cout << "\nNull target.";
                 ///ERROR LOG, couldnt find a target
+            }
 
             m_packageletList.erase(it);//pointer
             --it;

@@ -75,6 +75,7 @@
 		<Unit filename="include/IO/BaseFunctionFinder.h" />
 		<Unit filename="include/IO/Condition.h" />
 		<Unit filename="include/IO/Courier.h" />
+		<Unit filename="include/IO/Enumerate.h" />
 		<Unit filename="include/IO/IOManager.h" />
 		<Unit filename="include/IO/Package.h" />
 		<Unit filename="include/IO/VariableNames.h" />
@@ -83,6 +84,8 @@
 		<Unit filename="include/MultipleInheritance/PhysicsBase.h" />
 		<Unit filename="include/Overlay/Overlay.h" />
 		<Unit filename="include/Overlay/OverlayManager.h" />
+		<Unit filename="include/Rotate.h" />
+		<Unit filename="include/Sort.h" />
 		<Unit filename="include/Universe/Chunk.h" />
 		<Unit filename="include/Universe/ClassType.h" />
 		<Unit filename="include/Universe/CollisionCategory.h" />

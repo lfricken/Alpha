@@ -34,6 +34,7 @@ struct PhysicsBaseData : public IOBaseData//initialized
     float restitution;
     float rotation;//degrees
     b2Body* pBody;
+    std::vector<b2Vec2> vertices;
 };
 
 
@@ -76,11 +77,11 @@ public:///MAYBE we shouldn't have this many functions!!!
 protected:
     HealthData m_health;
 
-    b2Shape* m_shape; ///HOLY BALLS MAN, NAKED??? BE CAREFUL, ITS BECAUSE WE WERE HAVING TROUBLE CASTING THIS
+    std::tr1::shared_ptr<b2Shape> m_shape; ///HOLY BALLS MAN, NAKED??? BE CAREFUL, ITS BECAUSE WE WERE HAVING TROUBLE CASTING THIS
     b2FixtureDef m_fixtureDef;
 
-    b2Body* m_pBody;//pointer
-    b2Fixture* m_pFixture;//pointer
+    b2Body* m_pBody;//pointer, no ownership
+    b2Fixture* m_pFixture;//pointer, no ownership
 
 
     b2World& m_rPhysWorld;

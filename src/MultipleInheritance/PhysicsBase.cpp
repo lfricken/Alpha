@@ -1,5 +1,6 @@
 #include "PhysicsBase.h"
 #include "globals.h"
+#include "Rotate.h"
 
 using namespace std;
 
@@ -18,14 +19,14 @@ PhysicsBase::PhysicsBase(const PhysicsBaseData& data) :
 }
 void PhysicsBase::f_initialize(const PhysicsBaseData& data)
 {
-    if (data.shape == Shape::Box)
+    if (data.shape == Shape::BOX)
     {
-        m_shape = new b2PolygonShape;
-        static_cast<b2PolygonShape*>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//set our shape
+        m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
+        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//set our shape
     }
-    else if((data.shape == Shape::Octagon) && (data.halfSize.x < data.halfSize.y))
+    else if((data.shape == Shape::OCTAGON) && (data.halfSize.x < data.halfSize.y))
     {
-        m_shape = new b2PolygonShape;
+        m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
         int32 num = 8;
         float x = data.halfSize.x, y = data.halfSize.y;
         b2Vec2 vertices[num];
@@ -45,11 +46,11 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
             vertices[i] += data.offset;
         }
 
-        static_cast<b2PolygonShape*>(m_shape)->Set(vertices, num);
+        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->Set(vertices, num);
     }
-    else if((data.shape == Shape::Octagon) && (data.halfSize.x >= data.halfSize.y))
+    else if((data.shape == Shape::OCTAGON) && (data.halfSize.x >= data.halfSize.y))
     {
-        m_shape = new b2PolygonShape;
+        m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
         int32 num = 8;
         float x = data.halfSize.x, y = data.halfSize.y;
         b2Vec2 vertices[num];
@@ -69,13 +70,14 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
             vertices[i] += data.offset;
         }
 
-        static_cast<b2PolygonShape*>(m_shape)->Set(vertices, num);
+        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->Set(vertices, num);
     }
-    else if(data.shape == Shape::Triangle)
+    else if(data.shape == Shape::TRIANGLE)
     {
-        m_shape = new b2PolygonShape;
+        m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
         int32 num = 3;
-        float x = data.halfSize.x, y = data.halfSize.y;
+        float x = data.halfSize.x;
+        float y = data.halfSize.y;
         b2Vec2 vertices[num];
 
         vertices[0].Set(0, 0);//define CCW, starting at right angle, then go left, then go up and left
@@ -88,23 +90,37 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
             vertices[i] += data.offset;
         }
 
-        static_cast<b2PolygonShape*>(m_shape)->Set(vertices, num);
+        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->Set(vertices, num);
     }
-    else if(data.shape == Shape::Circle)
+    else if(data.shape == Shape::CIRCLE)
     {
-        m_shape = new b2CircleShape;
-        static_cast<b2CircleShape*>(m_shape)->m_p.Set(data.offset.x, data.offset.y);
-        static_cast<b2CircleShape*>(m_shape)->m_radius = data.halfSize.x;
+        m_shape = std::tr1::shared_ptr<b2Shape>(new b2CircleShape);
+        b2CircleShape* temp = &*std::tr1::static_pointer_cast<b2CircleShape>(m_shape);
+        temp->m_p.Set(data.offset.x, data.offset.y);
+        temp->m_radius = data.halfSize.x;
 
+    }
+    else if((data.shape == Shape::POLYGON) && (data.vertices.size() > 2))
+    {
+        m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
+        b2Vec2 vertices[data.vertices.size()];
+
+        for(unsigned int i = 0; i < data.vertices.size(); ++i)
+        {
+            ///use rotation matrix??? to calculate rotation
+            vertices[i] += data.offset;
+        }
+
+        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->Set(vertices, data.vertices.size());
     }
     else
     {
-        m_shape = new b2PolygonShape;
-        static_cast<b2PolygonShape*>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//default
+        m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
+        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//default
     }
 
     m_fixtureDef.isSensor = data.isSensor;
-    m_fixtureDef.shape = m_shape;//give our shape to our fixture definition
+    m_fixtureDef.shape = m_shape.get();//give our shape to our fixture definition
     m_fixtureDef.density = data.density;
     m_fixtureDef.friction = data.friction;
     m_fixtureDef.restitution = data.restitution;//setting our fixture data
@@ -117,11 +133,11 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
 }
 PhysicsBase::~PhysicsBase()
 {
-    delete m_shape;
+
 }
 int PhysicsBase::startContact(void* other)
 {
-    damage(1);
+    //damage(1);
     return 0;
 }
 int PhysicsBase::endContact(void* other)
@@ -194,7 +210,7 @@ void PhysicsBase::setBody(b2Body* pBody)
     m_pBody = pBody;
 }
 
-
+///just for testing purposes
 int PhysicsBase::damage(int damage)
 {
     m_health.takeDamage(damage);
@@ -202,7 +218,6 @@ int PhysicsBase::damage(int damage)
     std::ostringstream convert;   // stream used for the conversion
     convert << m_health.getValue();      // insert the textual representation of 'Number' in the characters in the stream
     m_spEventer->event(convert.str(), m_health.getEventType());
-
 
     return m_health.getValue();
 }

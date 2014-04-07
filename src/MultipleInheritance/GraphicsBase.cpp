@@ -58,6 +58,7 @@ void GraphicsBase::setTextVertex(TexturedVertices* pTextVertex, const int index)
 {
     m_textVertexIndex = index;
     m_pTextVertex = pTextVertex;
+
     m_pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
     setColor(m_color);
     setTexTile(m_texTile);
@@ -127,6 +128,7 @@ void GraphicsBase::setColor(const sf::Color& rColor)
     m_color = rColor;//pointer
     ///make this use the tex vert pointer
     m_pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
+
     m_pVertex[0].color = rColor;
     m_pVertex[1].color = rColor;
     m_pVertex[2].color = rColor;

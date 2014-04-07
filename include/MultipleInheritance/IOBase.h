@@ -23,13 +23,15 @@ struct IOBaseData//initialized
     IOBaseData () :
         type(defaultClassType),
         isEnabled(defaultIsEnabled),
-        name(defaultName),
-        ID(defaultID)
+        name(defaultName)
+     ///  , ID(defaultID)
         {}
+   /// unsigned long long int getID() const{return ID;}
+
     ClassType type;
     bool isEnabled;
     std::string name;
-    unsigned int ID;
+    ///unsigned long long int ID;
 
     std::vector<std::tr1::shared_ptr<Courier> > spCourierList;
 };
@@ -48,7 +50,7 @@ public:
     virtual IOManager& getIOManager();
     void setName(const std::string& name);//sets the name of this entity
     const std::string& getName() const;//gets the name of this entity
-    unsigned int getID() const;//gets the name of this entity
+    unsigned long long int getID() const;//gets the name of this entity
     ClassType getType() const;
 
     virtual int getHealth() const;
@@ -74,13 +76,10 @@ public:
     virtual IOBaseReturn input_20(IOBaseArgs);
 
 protected:
-    friend class Universe;//to set id's
-    void f_setID(unsigned int newID);//sets the name of this entity
-
     ClassType m_type;//type of object that we are
     bool m_isEnabled;
     std::string m_name;//used by IO manager to locate specific named objects
-    unsigned int m_ID;
+    unsigned long long int m_ID;
 
     std::tr1::shared_ptr<ActiveEventer> m_spEventer;
     IOManager& m_rIOManager;

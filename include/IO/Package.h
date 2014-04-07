@@ -17,11 +17,11 @@ public:
     ~Package();
     void reset(const std::string& target, const std::string& command, sf::Packet& parameter, float delay, Destination dest);
 
-    void setTargetID(unsigned int targetID);
+  ///  void setTargetID(unsigned int targetID);
 
     const std::string& getTargetName();
     float getDelay() const;
-    unsigned int getTargetID() const;
+    unsigned long long int getTargetID() const;
     CommandFunction getComFunc() const;
     Destination getDestination() const;
     sf::Packet& getParameter();
@@ -34,14 +34,14 @@ private:
     Destination m_destination;
 
     /**INITIALIZED AFTER CREATION**/
-    unsigned int m_targetID;//used to do binary search for object, after everything is loaded into mem, have someone do setTargetIDs()
+    unsigned long long int m_targetID;//used to do binary search for object, after everything is loaded into mem, have someone do setTargetIDs()
     CommandFunction m_commandFunction;
 };
 
-struct Packagelet
+struct Packagelet///WTF IS THIS???
 {
     Packagelet() {}
-    Packagelet(float time, unsigned int target, CommandFunction command, Destination dest,sf::Packet& param)
+    Packagelet(float time, unsigned long long int target, CommandFunction command, Destination dest, sf::Packet& param)
         : timeRemaining(time), targetID(target), commandFunction(command), destination(dest),parameter(param) {}
         /**
     Packagelet(const Packagelet& old)
@@ -61,7 +61,7 @@ struct Packagelet
     }
 **/
     float timeRemaining;
-    unsigned int targetID;
+    unsigned long long int targetID;
     CommandFunction commandFunction;
     Destination destination;
     sf::Packet parameter;

@@ -14,9 +14,9 @@ public:
     ~Universe();
 
     IOBase* getTarget(const std::string& target);
-    IOBase* getTarget(unsigned int target);
+    IOBase* getTarget(unsigned long long int targetID);
     Chunk* getPhysTarget(const std::string& target);
-    Chunk* getPhysTarget(unsigned int target);
+    Chunk* getPhysTarget(unsigned long long int targetID);
     ///same with graphics
 
 

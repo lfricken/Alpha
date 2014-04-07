@@ -7,6 +7,7 @@
 #include "Button.h"
 /**WONT BE NEEDED**/
 
+#include "Sort.h"
 #include "Game.h"
 #include "globals.h"
 #include "IOManager.h"
@@ -202,20 +203,19 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     std::vector<b2Vec2> example;
 
     /**STATIC MODULES**/
-    vector<GModuleData> staticGModuleDataList;
+    vector<tr1::shared_ptr<GModuleData> > staticGModuleDataList;
     GModuleData solidFixtureData;
     solidFixtureData.type = ClassType::GMODULE;
 
     solidFixtureData.spCourierList.push_back( tr1::shared_ptr<Courier>(new Courier()) );
     Courier& cor = *solidFixtureData.spCourierList.front();
     sf::Packet pack;
-    pack << "test";
+    pack << "testData";
     cor.condition.reset(Health, "97", 97, '<', true);
     cor.package.reset("Static_Chunk_1", "input_1", pack, 1, Destination::UNIVERSE);
-    m_allCouriers.push_back(&cor);
 
     solidFixtureData.isSensor = false;
-    solidFixtureData.shape = Shape::Octagon;
+    solidFixtureData.shape = Shape::OCTAGON;
     solidFixtureData.density = 1.0f;
     solidFixtureData.friction = 0.4f;
     solidFixtureData.halfSize = b2Vec2(2, 5);
@@ -227,7 +227,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     solidFixtureData.texTile = sf::Vector2f(0, 0);
     solidFixtureData.color = sf::Color::Red;
 
-    staticGModuleDataList.push_back(solidFixtureData);
+    staticGModuleDataList.push_back(tr1::shared_ptr<GModuleData>(new GModuleData(solidFixtureData)));
     /**STATIC MODULES**/
 
     /**STATIC CHUNK**/
@@ -254,7 +254,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     /**SHIP MODULES**/
     GModuleData shipModuleData;
     shipModuleData.type = ClassType::GMODULE;
-    shipModuleData.shape = Shape::Box;
+    shipModuleData.shape = Shape::BOX;
     shipModuleData.categoryBits = CollisionCategory::ShipModule;
     shipModuleData.maskBits = CollisionCategory::Projectile;
     shipModuleData.isSensor = false;
@@ -280,7 +280,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     mdata.rotation = 0.0f;
 
     ///WE NEED TO GET A STANDARD SIZE??
-    vector<GModuleData> moduleList1;
+    vector<tr1::shared_ptr<GModuleData> > moduleList1;
     vector<ModuleData> moduleList2;
     short int texTile = 0;
     float offsetDelta = 2*shipModuleData.halfSize.x;
@@ -293,13 +293,15 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
             shipModuleData.offset.x = x;
             shipModuleData.offset.y = y;
             shipModuleData.texTile.x = texTile;
-            moduleList1.push_back(shipModuleData);
+            moduleList1.push_back( tr1::shared_ptr<GModuleData>(new GModuleData(shipModuleData)) );
         }
     }
     shipModuleData.name = "GM01";
     shipModuleData.offset.y = 5;
-    moduleList1.push_back(shipModuleData);
+    moduleList1.push_back(tr1::shared_ptr<GModuleData>(new GModuleData(shipModuleData)));
     moduleList2.push_back(mdata);
+    ///SortPtrVector(moduleList1, &IOBaseData::getID);
+
     /**SHIP MODULES**/
 
 
@@ -344,7 +346,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     /**DEBRIS MODULES**/
     GModuleData debrisModuleData;
     debrisModuleData.type = ClassType::GMODULE;
-    debrisModuleData.shape = Shape::Box;
+    debrisModuleData.shape = Shape::BOX;
     debrisModuleData.categoryBits = CollisionCategory::Projectile;
     debrisModuleData.maskBits = CollisionCategory::ShipModule | CollisionCategory::Sensor;
     debrisModuleData.isSensor = false;
@@ -358,16 +360,16 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     debrisModuleData.texTile = sf::Vector2f(0, 0);
     debrisModuleData.color = sf::Color::White;
 
-    vector<GModuleData> DebrisDataList;
-    DebrisDataList.push_back(debrisModuleData);
-    DebrisDataList.back().offset.x = 0;
-    DebrisDataList.back().offset.y = 0;
-    DebrisDataList.back().texTile.x = 0;
+    vector<tr1::shared_ptr<GModuleData> > DebrisDataList;
+    DebrisDataList.push_back(tr1::shared_ptr<GModuleData>( new GModuleData(debrisModuleData)));
+    DebrisDataList.back()->offset.x = 0;
+    DebrisDataList.back()->offset.y = 0;
+    DebrisDataList.back()->texTile.x = 0;
 
-    DebrisDataList.push_back(debrisModuleData);
-    DebrisDataList.back().texTile.x = 1;
-    DebrisDataList.back().offset.x = offsetDelta;
-    DebrisDataList.back().offset.y = 0;
+    DebrisDataList.push_back(tr1::shared_ptr<GModuleData>( new GModuleData(debrisModuleData)));
+    DebrisDataList.back()->texTile.x = 1;
+    DebrisDataList.back()->offset.x = offsetDelta;
+    DebrisDataList.back()->offset.y = 0;
     /**DEBRIS MODULES**/
 
 
@@ -380,18 +382,18 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     debrisData.type = ClassType::CHUNK;
 
     Chunk* debrisChunk = new Chunk(debrisData);
-    debrisChunk->add(DebrisDataList);
+    debrisChunk->add(DebrisDataList, example);
     m_spUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
 
-    DebrisDataList.back().texName = "textures/door_1.png";
-    DebrisDataList.front().texName = "textures/door_1.png";
+    DebrisDataList.back()->texName = "textures/door_1.png";
+    DebrisDataList.front()->texName = "textures/door_1.png";
 
     for (int i=0, x=1, y=3, numBoxs = 1; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
         debrisData.position.x = x;
         debrisData.position.y = y;
         debrisChunk = new Chunk(debrisData);
-        debrisChunk->add(DebrisDataList);
+    debrisChunk->add(DebrisDataList, example);
         m_spUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
     }
     for (int i=0, x=3, y=3, numBoxs = 1; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
@@ -399,7 +401,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
         debrisData.position.x = x;
         debrisData.position.y = y;
         debrisChunk = new Chunk(debrisData);
-        debrisChunk->add(DebrisDataList);
+        debrisChunk->add(DebrisDataList, example);
         m_spUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
     }
     for (int i=0, x=5, y=3, numBoxs = 1; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
@@ -407,7 +409,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
         debrisData.position.x = x;
         debrisData.position.y = y;
         debrisChunk = new Chunk(debrisData);
-        debrisChunk->add(DebrisDataList);
+        debrisChunk->add(DebrisDataList, example);
         m_spUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
     }
     /**DEBRIS CHUNKS**/
@@ -451,25 +453,5 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     m_spControlManager->setupControl();
     /**CONTROLLER TARGETS**/
 
-    /**TARGET ID'S**/
-    for(vector<Courier*>::iterator it = m_allCouriers.begin(); it != m_allCouriers.end(); ++it)
-    {
-        if((*it)->package.getDestination() == Destination::UNIVERSE)
-        {
-            (*it)->package.setTargetID(m_spUniverse->getTarget((*it)->package.getTargetName())->getID());//set the couriers id data
-        }
-
-        else if( (*it)->package.getDestination() == Destination::OVERLAYMANAGER )
-        {
-            (*it)->package.setTargetID(m_spOverlayManager->getTarget((*it)->package.getTargetName())->getID());//set the couriers id data
-        }
-
-        else if((*it)->package.getDestination() == Destination::GAME)
-            this->getEventer();///fix this, it should return a target, not damage, just some func
-
-        else
-            this->getEventer();///wtf do we do we do if all that fails?
-    }
-    /**TARGET ID'S**/
     /**=================================FINALIZING LOADED STUFF===========================================**/
 }

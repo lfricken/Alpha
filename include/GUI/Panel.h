@@ -24,8 +24,10 @@ public:
     Panel(tgui::Container& container, const PanelData& data);
     ~Panel();
 
-    void toggleActive(const std::string& target);/**enable disable**/
-    void toggleShow(const std::string& target);/**sleep wake**/
+    void toggleActive(const std::string& target);/**enable disable**///takes input
+    void toggleShow(const std::string& target);/**sleep wake**///visible or invisible
+
+    WidgetBase* getTarget(const std::string& target);
 
     void add(std::tr1::shared_ptr<WidgetBase> sp_widget);
 

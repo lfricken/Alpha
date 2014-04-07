@@ -31,7 +31,7 @@ class OverlayManager : public IOBase//Overlay Manager holds overlays. Each overl
         tgui::Gui& getGui();
 
         IOBase* getTarget(const std::string& target);//returns base pointer to target
-        IOBase* getTarget(unsigned int target);
+        IOBase* getTarget(unsigned long long int targetID);
 
         void draw();//draws everything thats active, just calls gui draw
 

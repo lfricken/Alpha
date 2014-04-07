@@ -35,6 +35,11 @@ void Panel::add(std::tr1::shared_ptr<WidgetBase> sp_widget)
 {
     m_widgetList.push_back(sp_widget);
 }
+WidgetBase* getTarget(const std::string& target)
+{
+    /**search widget list**/
+}
+
 void Panel::callback(const tgui::Callback& callback)
 {
 

@@ -13,9 +13,6 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-					<Add directory="include/IO" />
-					<Add directory="include/Universe" />
-					<Add directory="include/GUI" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -26,7 +23,6 @@
 				<Compiler>
 					<Add option="-pg" />
 					<Add option="-g" />
-					<Add directory="include/GUI" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
@@ -53,7 +49,6 @@
 			<Add directory="include/Universe" />
 			<Add directory="include/IO" />
 			<Add directory="include/Game" />
-			<Add directory="include/Overlay" />
 			<Add directory="include/MultipleInheritance" />
 			<Add directory="include/GUI" />
 		</Compiler>
@@ -67,6 +62,7 @@
 		<Unit filename="include/Control/Intelligence.h" />
 		<Unit filename="include/Control/Player.h" />
 		<Unit filename="include/GUI/Button.h" />
+		<Unit filename="include/GUI/OverlayManager.h" />
 		<Unit filename="include/GUI/Panel.h" />
 		<Unit filename="include/GUI/WidgetBase.h" />
 		<Unit filename="include/Game/Game.h" />
@@ -82,8 +78,6 @@
 		<Unit filename="include/MultipleInheritance/GraphicsBase.h" />
 		<Unit filename="include/MultipleInheritance/IOBase.h" />
 		<Unit filename="include/MultipleInheritance/PhysicsBase.h" />
-		<Unit filename="include/Overlay/Overlay.h" />
-		<Unit filename="include/Overlay/OverlayManager.h" />
 		<Unit filename="include/Rotate.h" />
 		<Unit filename="include/Sort.h" />
 		<Unit filename="include/Universe/Chunk.h" />
@@ -108,6 +102,7 @@
 		<Unit filename="src/Control/Intelligence.cpp" />
 		<Unit filename="src/Control/Player.cpp" />
 		<Unit filename="src/GUI/Button.cpp" />
+		<Unit filename="src/GUI/OverlayManager.cpp" />
 		<Unit filename="src/GUI/Panel.cpp" />
 		<Unit filename="src/GUI/WidgetBase.cpp" />
 		<Unit filename="src/Game/Game.cpp" />
@@ -120,8 +115,6 @@
 		<Unit filename="src/MultipleInheritance/GraphicsBase.cpp" />
 		<Unit filename="src/MultipleInheritance/IOBase.cpp" />
 		<Unit filename="src/MultipleInheritance/PhysicsBase.cpp" />
-		<Unit filename="src/Overlay/Overlay.cpp" />
-		<Unit filename="src/Overlay/OverlayManager.cpp" />
 		<Unit filename="src/Universe/Chunk.cpp" />
 		<Unit filename="src/Universe/DebugDraw.cpp" />
 		<Unit filename="src/Universe/ForceField.cpp" />

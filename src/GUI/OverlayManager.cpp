@@ -7,18 +7,10 @@ using namespace std;
 OverlayManager::OverlayManager(sf::RenderWindow& window) : m_gui(window)
 {
 }
-
 OverlayManager::~OverlayManager()//unfinished
 {
     //dtor
 }
-
-
-void OverlayManager::setActive(const std::string& target)//unfinished
-{
-
-}
-
 void OverlayManager::deactivateAll()//unfinished
 {
 
@@ -27,20 +19,20 @@ tgui::Gui& OverlayManager::getGui()
 {
     return m_gui;
 }
-IOBase* OverlayManager::getTarget(const std::string& target)//finished
+leon::Panel* OverlayManager::getTarget(const std::string& target)//finished
 {
     for(vector<std::tr1::shared_ptr<leon::Panel> >::const_iterator it = m_panelList.begin(); it != m_panelList.end(); ++it)
     {
         if((*it)->getName() == target)
         {
-            IOBase* pIOBase = &(**it);//pointer
+            leon::Panel* pIOBase = &(**it);//pointer
             return pIOBase;
         }
     }
     return NULL;
 }
 
-IOBase* OverlayManager::getTarget(unsigned long long int targetID)///UNFINISHED
+leon::Panel* OverlayManager::getTarget(unsigned long long int targetID)///UNFINISHED
 {
     int location = BinarySearchPtrVector(m_panelList, &leon::Panel::getID, targetID);//<std::tr1::shared_ptr<Chunk>, Chunk, unsigned int>
 

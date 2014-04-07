@@ -13,25 +13,16 @@ class OverlayManager : public IOBase//Overlay Manager holds overlays. Each overl
         OverlayManager(sf::RenderWindow& window);
         ~OverlayManager();
 
-        void setActive(const std::string& target);//sets the target overlay active(taking input)
-        void setInactive(const std::string& target);//sets target overlay inactive(not taking input)
-        void show(const std::string& target);//sets the target overlay to showing
-        void hide(const std::string& target);
-
-        void toggleActive(const std::string& target);//toggles the activity of an overlay
-        void toggleShow(const std::string& target);
-
         void deactivateAll();//deactivate all Overlays
         void activateAll();
         void showAll();
         void hideAll();
 
         void add(std::tr1::shared_ptr<leon::Panel> panel);
+        leon::Panel* getTarget(const std::string& target);//returns base pointer to target
+        leon::Panel* getTarget(unsigned long long int targetID);
 
         tgui::Gui& getGui();
-
-        IOBase* getTarget(const std::string& target);//returns base pointer to target
-        IOBase* getTarget(unsigned long long int targetID);
 
         void draw();//draws everything thats active, just calls gui draw
 
@@ -43,3 +34,14 @@ class OverlayManager : public IOBase//Overlay Manager holds overlays. Each overl
 };
 
 #endif // OverlayManager_H
+
+/*
+
+        void setActive(const std::string& target);//sets the target overlay active(taking input)
+        void setInactive(const std::string& target);//sets target overlay inactive(not taking input)
+        void show(const std::string& target);//sets the target overlay to showing
+        void hide(const std::string& target);
+
+        void toggleActive(const std::string& target);//toggles the activity of an overlay
+        void toggleShow(const std::string& target);
+*/

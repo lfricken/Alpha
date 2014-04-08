@@ -1,4 +1,5 @@
 #include "Panel.h"
+#include "Sort.h"
 
 using namespace leon;
 
@@ -33,14 +34,27 @@ void Panel::f_initialize(const PanelData& data)
 }
 void Panel::add(std::tr1::shared_ptr<WidgetBase> sp_widget)
 {
-    m_widgetList.push_back(sp_widget);
+    InsertPtrVector(m_widgetList, &IOBase::getID, sp_widget);
 }
-WidgetBase* getTarget(const std::string& target)
+WidgetBase* Panel::getTarget(const std::string& target)
 {
     /**search widget list**/
 }
-
+tgui::Panel::Ptr Panel::getPanel() const
+{
+    return m_pPanel;
+}
 void Panel::callback(const tgui::Callback& callback)
 {
-
+    if(true)
+    {
+        std::vector<tgui::Widget::Ptr>(m_pPanel->getWidgets());
+        //std::string blab = callback.;
+     //   std::cout << blab;
+    }
+    else
+    {
+        std::cout << "\nCallback";
+        std::cout << "(" << callback.mouse.x << "," << callback.mouse.y << ")";
+    }
 }

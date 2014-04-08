@@ -95,45 +95,9 @@ void Universe::add(tr1::shared_ptr<Chunk> spChunk)
 
 
 
-/**=====DRAWING=====**/
+/**=====UPDATE=====**/
 /**=================**/
 /**=================**/
-void Universe::draw()///unfinished
-{
-    if(m_normalDraw)
-    {
-        for(vector<tr1::shared_ptr<Chunk> >::iterator it = m_physList.begin(); it != m_physList.end(); ++it)
-        {
-            (*it)->draw();
-        }
-        ///also draw graphics objects
-    }
-    else
-        m_physWorld.DrawDebugData();
-}
-void Universe::toggleDebugDraw()
-{
-    m_normalDraw = !m_normalDraw;
-}
-/**=================**/
-/**=================**/
-/**=====DRAWING=====**/
-
-
-
-
-
-/**=================**/
-/**=================**/
-/**=====OTHER=====**/
-b2World& Universe::getWorld()
-{
-    return m_physWorld;
-}
-void Universe::togglePause()
-{
-    m_notPaused = !m_notPaused;
-}
 float Universe::physStep()
 {
     if(m_notPaused)
@@ -145,6 +109,42 @@ float Universe::physStep()
         m_physWorld.Step(m_timeStep, m_velocityIterations, m_positionIterations);
     }
     return m_timeStep;
+}
+void Universe::togglePause()
+{
+    m_notPaused = !m_notPaused;
+}
+void Universe::draw()
+{
+    if(m_normalDraw)
+    {
+        for(vector<tr1::shared_ptr<Chunk> >::iterator it = m_physList.begin(); it != m_physList.end(); ++it)
+        {
+            (*it)->draw();
+        }
+        ///also draw graphics objects?? maybe we should have another section for that??
+    }
+    else
+        m_physWorld.DrawDebugData();
+}
+void Universe::toggleDebugDraw()
+{
+    m_normalDraw = !m_normalDraw;
+}
+/**=================**/
+/**=================**/
+/**=====UPDATE=====**/
+
+
+
+
+
+/**=================**/
+/**=================**/
+/**=====OTHER=====**/
+b2World& Universe::getWorld()
+{
+    return m_physWorld;
 }
 void Universe::removeBack()
 {

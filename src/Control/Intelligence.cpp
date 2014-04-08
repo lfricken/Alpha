@@ -17,7 +17,8 @@ void Intelligence::f_initialize(const IntelligenceData& data)
 {
     m_pTarget = NULL;
     m_hasTarget = false;
-    m_isSending = true;
+    m_playerState = PlayerState::Playing;
+    m_HUDspElements = data.hudSPelements;
     m_targetName = data.targetName;
 }
 /**CONTROL**/
@@ -34,7 +35,6 @@ void Intelligence::linkControl(Chunk* target)
     f_setTarget(target);
     if(target != NULL)
         m_pTarget->f_setController(this);
-
 }
 void Intelligence::breakControl()//done
 {
@@ -43,19 +43,25 @@ void Intelligence::breakControl()//done
 
     f_forgetTarget();
 }
-bool Intelligence::toggleSending()//changes whether or not we will send commands
+PlayerState Intelligence::getState() const
 {
-    m_isSending = !m_isSending;
-    return m_isSending;
+    return m_playerState;
 }
-bool Intelligence::toggleSending(bool newState)//changes whether or not we will send commands
+void Intelligence::setState(PlayerState newState)
 {
-    m_isSending = newState;
-    return m_isSending;
-}
-bool Intelligence::isSending() const
-{
-    return m_isSending;
+    typedef std::vector<std::tr1::shared_ptr<leon::Panel> >::iterator type;
+    if(newState == PlayerState::Editing)/**the new state is editing**/
+    {
+ ///       for(type it = m_HUDspElements.begin(); it != m_HUDspElements.end(); ++it)
+///            (*it)->setState(newState);
+    }
+    else if(m_playerState == Editing)/**we must be going out of edit mode**/
+    {
+  ///      for(type it = m_HUDspElements.begin(); it != m_HUDspElements.end(); ++it)
+   ///         (*it)->setState(newState);
+    }
+
+    m_playerState = newState;
 }
 void Intelligence::f_forgetTarget()//done
 {

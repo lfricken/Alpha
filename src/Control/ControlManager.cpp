@@ -1,22 +1,16 @@
 #include "ControlManager.h"
 #include "globals.h"
+#include "Sort.h"
 
 using namespace std;
 
-ControlManager::ControlManager() : m_rUniverse(game.getGameUniverse()), m_rWindow(game.getGameWindow()), m_rGui(game.getGameOverlayManager().getGui())
+ControlManager::ControlManager() : m_rUniverse(game.getGameUniverse()), m_rWindow(game.getGameWindow()), m_rGui(game.getGameOverlayManager().getGui()), m_pDraggingWidget(nullptr)
 {
 
 }
 ControlManager::~ControlManager()
 {
     ///target->noController();
-}
-void ControlManager::add(const PlayerData& data)
-{
-    m_localPlayerList.push_back(tr1::shared_ptr<Player>(new Player(data)));
-    /**camera setup**/
-    m_localPlayerList.back()->getCamera().getView().setSize(static_cast<sf::Vector2f>(m_rWindow.getSize()));
-    m_localPlayerList.back()->getCamera().getView().setCenter(sf::Vector2f(0, 0));
 }
 void ControlManager::setupControl()
 {
@@ -32,6 +26,32 @@ void ControlManager::setupControl()
 
     ///LOOP OVER SI HERE
 }
+tgui::Widget::Ptr ControlManager::f_MouseOnWhichWidget(float x, float y, std::vector<tgui::Widget::Ptr>& widgets)
+{
+    for (std::vector<tgui::Widget::Ptr>::reverse_iterator it = widgets.rbegin(); it != widgets.rend(); ++it)
+        if (((*it)->isVisible()) && ((*it)->isEnabled()) && ((*it)->mouseOnWidget(x, y)))
+            return *it;
+
+    return nullptr;
+};
+
+
+
+/**=====ADD=====**/
+/**=================**/
+/**=================**/
+void ControlManager::add(std::tr1::shared_ptr<Player> spPlayer)
+{
+    InsertPtrVector(m_localPlayerList, &IOBase::getID, spPlayer);
+}
+/**=================**/
+/**=================**/
+/**=====ADD=====**/
+
+
+/**=====GET_TARGETS=====**/
+/**=================**/
+/**=================**/
 Player* ControlManager::getPlayer(const std::string& target)
 {
     for(vector<tr1::shared_ptr<Player> >::iterator it = m_localPlayerList.begin(); it != m_localPlayerList.end(); ++it)
@@ -42,6 +62,24 @@ Player* ControlManager::getPlayer(const std::string& target)
     cout << "\nThere was an error finding player \"" << target << "\".";
     return NULL;
 }
+Player* ControlManager::getPlayer(const unsigned long long int targetID)
+{
+    int location = BinarySearchPtrVector(m_localPlayerList, &Player::getID, targetID);//<std::tr1::shared_ptr<Chunk>, Chunk, unsigned int>
+
+    if(location == -1)
+        return NULL;//couldnt find the target! :(
+    else
+        return &(*m_localPlayerList[location]);
+}
+/**=================**/
+/**=================**/
+/**=====GET_TARGETS=====**/
+
+
+
+
+
+
 int ControlManager::pressedUpdate()
 {
     float mass, fX, fY;///TEMP
@@ -51,7 +89,7 @@ int ControlManager::pressedUpdate()
     for(vector<tr1::shared_ptr<Player> >::iterator it = m_localPlayerList.begin(); it != m_localPlayerList.end(); ++it)
     {
         m_pCPT = &**it;
-        if(m_pCPT->hasTarget() && m_pCPT->isSending())
+        if(m_pCPT->hasTarget() && (m_pCPT->getState() == PlayerState::Playing))
         {
 
             InputConfig& rInputConfig = m_pCPT->getInputConfig();///temp
@@ -117,8 +155,6 @@ int ControlManager::pressedUpdate()
 }
 int ControlManager::choiceUpdate(sf::Event& rEvent)
 {
-
-
     for(vector<tr1::shared_ptr<Player> >::iterator it = m_localPlayerList.begin(); it != m_localPlayerList.end(); ++it)
     {
         /**START OF PLAYER LOOP**/
@@ -132,9 +168,16 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
         }
         if (rEvent.type == sf::Event::KeyPressed)//on key press
         {
-            if (rEvent.key.code == sf::Keyboard::Tab)
+            if (rEvent.key.code == sf::Keyboard::F1)
             {
-                m_pCPT->toggleSending();
+                m_pCPT->setState(PlayerState::Editing);
+            }
+            if (rEvent.key.code == sf::Keyboard::Tilde)
+            {
+                if(m_pCPT->getState() == PlayerState::Playing)
+                    m_pCPT->setState(PlayerState::Interfacing);
+                else
+                    m_pCPT->setState(PlayerState::Playing);
             }
             if (rEvent.key.code == sf::Keyboard::Escape)
             {
@@ -145,9 +188,7 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
 
 
         /**THINGS THAT DEPEND WHAT MODE WE ARE IN**/
-        if(!m_pCPT->isSending())
-            m_rGui.handleEvent(rEvent);/**GUI EVENT HANDLER**/
-        else
+        if(m_pCPT->getState() == PlayerState::Playing)
         {
             if (rEvent.type == sf::Event::KeyPressed)//on key press
             {
@@ -190,6 +231,40 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
 
 
         }/**END OF PLAYER LOOP**/
+        else if(m_pCPT->getState() == PlayerState::Editing)
+        {
+            if (rEvent.type == sf::Event::MouseButtonPressed)
+            {
+                tgui::Widget::Ptr widget = f_MouseOnWhichWidget(rEvent.mouseButton.x, rEvent.mouseButton.y, m_rGui.getWidgets());
+                if(widget != nullptr)
+                {
+                    if(widget->getWidgetType() == tgui::WidgetTypes::Type_Panel)
+                    {
+                        if(f_MouseOnWhichWidget(rEvent.mouseButton.x, rEvent.mouseButton.y, tgui::Panel::Ptr(widget)->getWidgets()) == nullptr)
+                        {
+                            m_pDraggingWidget = widget;
+                            m_pDraggingPosition = sf::Vector2f(rEvent.mouseButton.x, rEvent.mouseButton.y);
+                        }
+                    }
+                }
+            }
+            else if (rEvent.type == sf::Event::MouseButtonReleased)
+            {
+                m_pDraggingWidget = nullptr;
+            }
+            else if (rEvent.type == sf::Event::MouseMoved)
+            {
+                if (m_pDraggingWidget != nullptr)
+                {
+                    m_pDraggingWidget->setPosition(m_pDraggingWidget->getPosition().x + rEvent.mouseMove.x - m_pDraggingPosition.x,
+                                                   m_pDraggingWidget->getPosition().y + rEvent.mouseMove.y - m_pDraggingPosition.y);
+
+                    m_pDraggingPosition = sf::Vector2f(rEvent.mouseMove.x, rEvent.mouseMove.y);
+                }
+            }
+        }
+        else if(m_pCPT->getState() == PlayerState::Interfacing)
+            m_rGui.handleEvent(rEvent);/**GUI EVENT HANDLER**/
     }
     ///LOOP OVER AI HERE??? what would we update?
     return 0;

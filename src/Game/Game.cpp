@@ -91,14 +91,8 @@ Game::Status Game::local()
 }
 Game::Status Game::run()
 {
+    /**LOAD THE GAME**/
     f_load("stuff");
-
-    leon::ButtonData buttonData;
-    buttonData.size = sf::Vector2f(100,50);
-    buttonData.buttonText = "Win";
-    buttonData.position = sf::Vector2f(20, 300);
-    leon::Button buttonInstance(m_spOverlayManager->getGui(), buttonData);///we need this button to  deleted so its temporarily in the main loop
-
 
     /**SIMULATION & RUNTIME**/
     Game::Status newState = Game::Local;
@@ -142,9 +136,9 @@ Game::Status Game::run()
         /**DRAW**/
         m_spWindow->clear();
         m_spControlManager->drawUpdate();
-
-        m_spWindow->setView(m_spWindow->getDefaultView());//draw stuff that is on hud
         m_spOverlayManager->draw();
+        m_spWindow->setView(m_spWindow->getDefaultView());///draw stuff that is on hud///this doesn't appear to do anything anymore
+
 
         m_spWindow->display();
 
@@ -182,6 +176,26 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     tab->add("Weapon");
     tab->add("Ammo");
     tab->add("Items");
+
+    leon::PanelData panelData;
+    panelData.configFile = config;
+    panelData.backgroundColor = sf::Color(255,255,255,10);
+    panelData.position = sf::Vector2f(200,200);
+    panelData.size = sf::Vector2f(200,200);
+    panelData.type = ClassType::PANEL;
+
+    tr1::shared_ptr<leon::Panel> panel(new leon::Panel(m_spOverlayManager->getGui(), panelData));
+    m_spOverlayManager->add(panel);
+
+    leon::ButtonData buttonData;
+    buttonData.size = sf::Vector2f(100,50);
+    buttonData.buttonText = "Win";
+    buttonData.position = sf::Vector2f(0, 0);
+    buttonData.type = ClassType::BUTTON;
+    tr1::shared_ptr<leon::WidgetBase> button(new leon::Button(*(panel->getPanel()), buttonData));
+    panel->add(button);
+
+
     /**TAB**/
 
 /**
@@ -440,7 +454,11 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     player1.keyConfig.primary = sf::Mouse::Left;
     player1.keyConfig.secondary = sf::Mouse::Right;
 
-    m_spControlManager->add(player1);
+    player1.cameraPos = sf::Vector2f(0, 0);
+    player1.cameraSize = (static_cast<sf::Vector2f>(m_spWindow->getSize()));
+
+    tr1::shared_ptr<Player> spPlayer(new Player(player1));
+    m_spControlManager->add(spPlayer);
     /**===========================PLAYER===========================**/
 ///==============================================================================
 ///==============================================================================

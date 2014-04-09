@@ -56,7 +56,6 @@
 			<Add directory="../../../Engines/SFML-2_recompile/lib" />
 			<Add directory="../../../Engines/TGUI-0.6.1/lib" />
 		</Linker>
-		<Unit filename="include/BinaryVectorSearch.h" />
 		<Unit filename="include/Control/Camera.h" />
 		<Unit filename="include/Control/ControlManager.h" />
 		<Unit filename="include/Control/Intelligence.h" />

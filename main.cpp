@@ -52,6 +52,7 @@ const std::string defaultTargetName = defaultName;
 const std::string defaultPlayerMode = "normal";
 const sf::Vector2f defaultCameraPos = sf::Vector2f(0, 0);
 const sf::Vector2f defaultCameraSize = sf::Vector2f(800, 600);
+const int defaultInitState = 0;
 /**CONTROLERS**/
 
 

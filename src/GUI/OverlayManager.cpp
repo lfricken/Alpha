@@ -1,5 +1,4 @@
 #include "OverlayManager.h"
-#include "BinaryVectorSearch.h"
 #include "Sort.h"
 
 using namespace std;

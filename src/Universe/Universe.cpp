@@ -1,6 +1,5 @@
 #include "Universe.h"
 #include "Types.h"
-#include "BinaryVectorSearch.h"
 #include "Sort.h"
 
 using namespace std;

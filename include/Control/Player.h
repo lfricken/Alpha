@@ -43,12 +43,14 @@ struct PlayerData : public IntelligenceData
         keyConfig(),
         playerMode(defaultPlayerMode),
         cameraPos(defaultCameraPos),
-        cameraSize(defaultCameraSize)
+        cameraSize(defaultCameraSize),
+        initState(static_cast<PlayerState>(defaultInitState))
     {}
     InputConfig keyConfig;
     std::string playerMode;
     sf::Vector2f cameraPos;
     sf::Vector2f cameraSize;
+    PlayerState initState;
 };
 
 class Player : public Intelligence

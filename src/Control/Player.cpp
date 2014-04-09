@@ -17,6 +17,8 @@ void Player::f_initialize(const PlayerData& data)
 {
     m_inputConfig = data.keyConfig;
     m_playerMode = data.playerMode;
+    m_camera.getView().setCenter(data.cameraPos);
+    m_camera.getView().setSize(data.cameraSize);
 }
 Camera& Player::getCamera()
 {

@@ -26,15 +26,6 @@ void ControlManager::setupControl()
 
     ///LOOP OVER SI HERE
 }
-tgui::Widget::Ptr ControlManager::f_MouseOnWhichWidget(float x, float y, std::vector<tgui::Widget::Ptr>& widgets)
-{
-    for (std::vector<tgui::Widget::Ptr>::reverse_iterator it = widgets.rbegin(); it != widgets.rend(); ++it)
-        if (((*it)->isVisible()) && ((*it)->isEnabled()) && ((*it)->mouseOnWidget(x, y)))
-            return *it;
-
-    return nullptr;
-};
-
 
 
 /**=====ADD=====**/
@@ -47,6 +38,9 @@ void ControlManager::add(std::tr1::shared_ptr<Player> spPlayer)
 /**=================**/
 /**=================**/
 /**=====ADD=====**/
+
+
+
 
 
 /**=====GET_TARGETS=====**/
@@ -79,7 +73,9 @@ Player* ControlManager::getPlayer(const unsigned long long int targetID)
 
 
 
-
+/**=====UPDATE=====**/
+/**=================**/
+/**=================**/
 int ControlManager::pressedUpdate()
 {
     float mass, fX, fY;///TEMP
@@ -317,3 +313,14 @@ void ControlManager::f_cheats(vector<tr1::shared_ptr<Player> >::iterator it, sf:
         }
     }
 }
+tgui::Widget::Ptr ControlManager::f_MouseOnWhichWidget(float x, float y, std::vector<tgui::Widget::Ptr>& widgets)
+{
+    for (std::vector<tgui::Widget::Ptr>::reverse_iterator it = widgets.rbegin(); it != widgets.rend(); ++it)
+        if (((*it)->isVisible()) && ((*it)->isEnabled()) && ((*it)->mouseOnWidget(x, y)))
+            return *it;
+
+    return nullptr;
+};
+/**=================**/
+/**=================**/
+/**=====UPDATE=====**/

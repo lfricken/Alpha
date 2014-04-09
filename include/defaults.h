@@ -53,6 +53,7 @@ extern const std::string defaultTargetName;
 extern const std::string defaultPlayerMode;
 extern const sf::Vector2f defaultCameraPos;
 extern const sf::Vector2f defaultCameraSize;
+extern const int defaultInitState;
 /**CONTROLERS**/
 
 

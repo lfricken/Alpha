@@ -6,18 +6,26 @@
 #include "Shape.h"
 #include "ClassType.h"
 
+namespace def
+{
+
 /**IOBASE**/
+namespace io
+{
 extern const ClassType defaultClassType;
 extern const bool defaultIsEnabled;
 extern const std::string defaultName;
-extern const unsigned int defaultID;
+extern const unsigned long long int defaultID;
 
 #define IOBaseReturn void
 #define IOBaseArgs sf::Packet& rInput
+}
 /**IOBASE**/
 
 
 /**PHYSICS**/
+namespace phys
+{
 extern const Shape defaultShape;
 extern const int defaultCollisionCategory;
 extern const int defaultMaskBits;
@@ -27,39 +35,48 @@ extern const b2Vec2 defaultHalfSize;
 extern const float defaultDensity;
 extern const float defaultFriction;
 extern const float defaultRestitution;
-extern const float defaultRotation;
+extern const float defaultRotation;//degrees CW
+}
 /**PHYSICS**/
 
 
 /**GRAPHICS**/
+namespace gfx
+{
 extern const std::string defaultTexName;
 extern const sf::Color defaultColor;
 extern const sf::Vector2f defaultTexTileSize;
 extern const sf::Vector2f defaultTexTile;
+}
 /**GRAPHICS**/
 
 
 /**CHUNK**/
+namespace cnk
+{
 extern const b2BodyType defaultBodyType;
 extern const b2Vec2 defaultPosition;
 extern const bool defaultIsBullet;
 extern const float defaultMaxZoom;
 extern const float defaultMinZoom;
+}
 /**CHUNK**/
 
 
 /**CONTROLERS**/
+namespace cntrl
+{
 extern const std::string defaultTargetName;
 extern const std::string defaultPlayerMode;
 extern const sf::Vector2f defaultCameraPos;
 extern const sf::Vector2f defaultCameraSize;
 extern const int defaultInitState;
+}
 /**CONTROLERS**/
 
 
-
 /**GUI**/
-namespace leon
+namespace gui
 {
 extern const sf::Color defaultBackgroundColor;
 extern const std::string defaultButtonText;
@@ -69,7 +86,11 @@ extern const sf::Vector2f defaultSize;
 }
 /**GUI**/
 
+}
+
+
 /**CONVERSIONS**/
+extern const float pi;
 extern const int scale;//use this when converting from Box2D coordinates, to sfml coordinates
 /**CONVERSIONS**/
 

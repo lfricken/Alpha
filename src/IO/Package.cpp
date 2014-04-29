@@ -11,7 +11,7 @@ Package::Package()
     tempParam << 0;
     reset("player_1", "default", tempParam, 0.0, Destination::UNIVERSE);
 }
-Package::Package(const std::string& target, const std::string& command, sf::Packet& parameter, float delay, Destination dest)
+Package::Package(const std::string& target, const std::string& command, const sf::Packet& parameter, float delay, Destination dest)
 {
     reset(target, command, parameter, delay, dest);
 }
@@ -19,7 +19,7 @@ Package::Package(const std::string& target, const std::string& command, sf::Pack
 Package::~Package()
 {
 }
-void Package::reset(const std::string& target, const std::string& command, sf::Packet& parameter, float delay, Destination dest)
+void Package::reset(const std::string& target, const std::string& command, const sf::Packet& parameter, float delay, Destination dest)
 {
     m_targetName = target;
     m_command = command;

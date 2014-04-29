@@ -9,7 +9,7 @@ struct ButtonData : public WidgetBaseData
 {
     ButtonData() :
         WidgetBaseData(),
-        buttonText(leon::defaultButtonText)
+        buttonText(def::gui::defaultButtonText)
     {}
 
     std::string buttonText;
@@ -29,8 +29,8 @@ public:
 
 protected:
     virtual void f_MouseEntered();
-    virtual void f_LeftMouseClicked();
     virtual void f_MouseLeft();
+    virtual void f_LeftMouseClicked();
 
 private:
     virtual void f_initialize(const ButtonData& data);

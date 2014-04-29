@@ -6,17 +6,23 @@
 /**================**/
 /**====DEFAULTS====**/
 /**================**/
-
+namespace def
+{
 
 /**IOBASE**/
+namespace io
+{
 const ClassType defaultClassType = ClassType::UNKNOWN;
 const bool defaultIsEnabled = true;
 const std::string defaultName = "defaultName";
-const unsigned int defaultID = 4294967295;//max value
+const unsigned long long int defaultID = -1;//max value
+}
 /**IOBASE**/
 
 
 /**PHYSICS**/
+namespace phys
+{
 const Shape defaultShape = Shape::BOX;
 const int defaultCollisionCategory = CollisionCategory::Projectile;
 const int defaultMaskBits = CollisionCategory::All;
@@ -26,38 +32,48 @@ const b2Vec2 defaultHalfSize = b2Vec2(0.25, 0.25);
 const float defaultDensity = 1.0;
 const float defaultFriction = 0.3;
 const float defaultRestitution = 0.3;
-const float defaultRotation = 0.0;
+const float defaultRotation = 0.0;//degrees CW
+}
 /**PHYSICS**/
 
 
 /**GRAPHICS**/
+namespace gfx
+{
 const std::string defaultTexName = "textures/dev_128x128.png";
 const sf::Color defaultColor = sf::Color::White;
 const sf::Vector2f defaultTexTileSize = sf::Vector2f(128, 128);
 const sf::Vector2f defaultTexTile = sf::Vector2f(0, 0);
+}
 /**GRAPHICS**/
 
 
 /**CHUNK**/
+namespace cnk
+{
 const b2BodyType defaultBodyType = b2BodyType::b2_dynamicBody;
 const b2Vec2 defaultPosition = b2Vec2(0,0);
 const bool defaultIsBullet = false;
 const float defaultMaxZoom = 16.0f;
 const float defaultMinZoom = 0.5f;
+}
 /**CHUNK**/
 
 
 /**CONTROLERS**/
-const std::string defaultTargetName = defaultName;
+namespace cntrl
+{
+const std::string defaultTargetName = io::defaultName;
 const std::string defaultPlayerMode = "normal";
 const sf::Vector2f defaultCameraPos = sf::Vector2f(0, 0);
 const sf::Vector2f defaultCameraSize = sf::Vector2f(800, 600);
 const int defaultInitState = 0;
+}
 /**CONTROLERS**/
 
 
 /**GUI**/
-namespace leon
+namespace gui
 {
 const sf::Color defaultBackgroundColor = sf::Color::White;
 const std::string defaultButtonText = "FixThis";
@@ -66,18 +82,17 @@ const sf::Vector2f defaultPosition = sf::Vector2f(10, 10);
 const sf::Vector2f defaultSize = sf::Vector2f(100, 50);
 }
 /**GUI**/
-
-
-/**CONVERSIONS**/
-const int scale = 128;//use this when converting from Box2D coordinates, to sfml coordinates
-/**CONVERSIONS**/
-
+}
 
 /**================**/
 /**====DEFAULTS====**/
 /**================**/
 
 
+/**CONVERSIONS**/
+extern const float pi = 3.14159;
+const int scale = 128;//use this when converting from Box2D coordinates, to sfml coordinates
+/**CONVERSIONS**/
 
 
 /**===============**/
@@ -87,8 +102,6 @@ Game game;//globals.h
 /**===============**/
 /**====GLOBALS====**/
 /**===============**/
-
-
 
 int main()
 {
@@ -103,7 +116,6 @@ int main()
             state = game.server();
     }
     std::cout << "Done\n\n";
-    //char j;
-    // std::cin >> j;
+
     return 0;
 }

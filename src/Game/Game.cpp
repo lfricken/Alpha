@@ -141,14 +141,9 @@ Game::Status Game::run()
 
 
         m_spWindow->display();
-
     }
     return newState;
 }
-
-
-
-
 void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING EXACTLY
 {
 
@@ -179,7 +174,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     leon::PanelData panelData;
     panelData.configFile = config;
-    panelData.backgroundColor = sf::Color(255,255,255,10);
+    panelData.backgroundColor = sf::Color(255,255,255,1);
     panelData.position = sf::Vector2f(200,200);
     panelData.size = sf::Vector2f(200,200);
     panelData.type = ClassType::PANEL;
@@ -192,6 +187,14 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     buttonData.buttonText = "Win";
     buttonData.position = sf::Vector2f(0, 0);
     buttonData.type = ClassType::BUTTON;
+
+    Courier* pCourier = new Courier();
+    sf::Packet pack;
+    pack << "packet data";
+    pCourier->condition.reset(Event::LeftMouseClicked, "", 0, 'd', true);
+    pCourier->package.reset("Static_Chunk_1", "input_1", pack, 0, Destination::UNIVERSE);
+
+    buttonData.spCourierList.push_back(tr1::shared_ptr<Courier>(pCourier));
     tr1::shared_ptr<leon::WidgetBase> button(new leon::Button(*(panel->getPanel()), buttonData));
     panel->add(button);
 
@@ -223,10 +226,10 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     solidFixtureData.spCourierList.push_back( tr1::shared_ptr<Courier>(new Courier()) );
     Courier& cor = *solidFixtureData.spCourierList.front();
-    sf::Packet pack;
-    pack << "testData";
-    cor.condition.reset(Health, "97", 97, '<', true);
-    cor.package.reset("Static_Chunk_1", "input_1", pack, 1, Destination::UNIVERSE);
+    sf::Packet packet;
+    packet << "testData";
+    cor.condition.reset(Event::Health, "97", 97, '<', true);
+    cor.package.reset("Static_Chunk_1", "input_1", packet, 1, Destination::UNIVERSE);
 
     solidFixtureData.isSensor = false;
     solidFixtureData.shape = Shape::OCTAGON;
@@ -236,7 +239,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     solidFixtureData.offset = b2Vec2(0, 0);
     solidFixtureData.pBody = NULL;//we dont know it yet
     solidFixtureData.restitution = 0.2f;
-    solidFixtureData.rotation = 0.0f;
+   // solidFixtureData.rotation = 0.0f;
     solidFixtureData.texName = "textures/tileset.png";
     solidFixtureData.texTile = sf::Vector2f(0, 0);
     solidFixtureData.color = sf::Color::Red;
@@ -278,7 +281,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     shipModuleData.offset = b2Vec2(0, 0);
     shipModuleData.pBody = NULL;//we dont know it yet
     shipModuleData.restitution = 0.2f;
-    shipModuleData.rotation = 0.0f;
+  //  shipModuleData.rotation = 0.0f;
     shipModuleData.texName = "textures/tileset.png";
     shipModuleData.texTile = sf::Vector2f(0, 0);
     shipModuleData.color = sf::Color::White;
@@ -291,7 +294,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     mdata.offset = b2Vec2(0, -5);
     mdata.pBody = NULL;//we dont know it yet
     mdata.restitution = 0.2f;
-    mdata.rotation = 0.0f;
+   // mdata.rotation = 0.0f;
 
     ///WE NEED TO GET A STANDARD SIZE??
     vector<tr1::shared_ptr<GModuleData> > moduleList1;
@@ -434,6 +437,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 ///==============================================================================
     /**===========================PLAYER===========================**/
 
+    /**PLAYER**/
     PlayerData player1;
     player1.name = "player_1";
     player1.type = ClassType::PLAYER;
@@ -459,14 +463,14 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     tr1::shared_ptr<Player> spPlayer(new Player(player1));
     m_spControlManager->add(spPlayer);
+    /**PLAYER**/
+
     /**===========================PLAYER===========================**/
 ///==============================================================================
 ///==============================================================================
 ///==============================================================================
-
-
-
     /**=================================FINALIZING LOADED STUFF===========================================**/
+
     /**CONTROLLER TARGETS**/
     m_spControlManager->setupControl();
     /**CONTROLLER TARGETS**/

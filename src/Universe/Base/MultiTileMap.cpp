@@ -3,10 +3,13 @@
 
 using namespace std;
 
+MultiTileMap::MultiTileMap()
+{
+}
 MultiTileMap::MultiTileMap(const MultiTileMap& old)
 {
     cout << "\nTileMap Copy Called...";
-    m_tileSize = old.getTileSize();
+    /*  m_tileSize = old.getTileSize();*/
     m_TexVertSPList = old.getTexVertList();
     setOrigin(old.getOrigin());
     cout << "Completed.";
@@ -15,15 +18,17 @@ MultiTileMap& MultiTileMap::operator= (const MultiTileMap& other)
 {
     if (this != &other)// protect against invalid self-assignment
     {
-        m_tileSize = other.getTileSize();
+        /* m_tileSize = other.getTileSize();*/
         m_TexVertSPList = other.getTexVertList();
         setOrigin(other.getOrigin());
     }
     return *this;
 }
-MultiTileMap::~MultiTileMap() {};
+MultiTileMap::~MultiTileMap()
+{
+}
 
-///We could take into account the display priority of a texture type
+///We COULD take into account the display priority of a texture type
 ///Then sort that texturedVert to be listed last, so it gets displayed last(on top)
 /** OLD OLD OLD
 1. Make count of how many of each texture type there is.
@@ -78,7 +83,7 @@ void MultiTileMap::add(vector<GraphicsBase*> gfxBaseList)
         pTexuredVertex->nextAccessed += 4;//+= the number of vertices in sf::Quads!!!
     }
 }
-  //  1 OLD OLD OLD
+//  1 OLD OLD OLD
 /*
     map<string, int> texTally;
     for(vector<GraphicsBase*>::const_iterator it = gfxBaseList.begin(); it != gfxBaseList.end(); ++it)
@@ -130,10 +135,12 @@ void MultiTileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
         target.draw((*it_texVert)->vertices, states);
     }
 }
+/*
 const sf::Vector2i& MultiTileMap::getTileSize() const
 {
     return m_tileSize;
 }
+*/
 const vector<tr1::shared_ptr<TexturedVertices> >& MultiTileMap::getTexVertList() const
 {
     return m_TexVertSPList;

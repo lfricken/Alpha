@@ -3,7 +3,7 @@ Enable	(none)
 Disable	(none)
 Die	(none)
 
-Set(Function) (modifyer, +, -, *, /, = num)
+Set(Function) (modifier, +, -, *, /, = num)
 
 
 =======================================================================================TRIGGERS
@@ -22,7 +22,7 @@ OnCount num
 
 
 ///Trigger_Base{sets up generic trigger like functions and variables}
-Trigger_Push {an entity that exerts a force on objects in itself}
+Trigger_Push {an entity that exerts a force on chunks in itself}
 Trigger_Control {switches control from the entity that entered it to the chunk it is a part of, can also restore control}
 Trigger_Teleport {teleports the chunk to the target point}
 
@@ -47,7 +47,7 @@ OnSpeed num
 ///Chunk_Base
 Chunk_Ship {}
 Chunk_Station {static chunk}
-Chunk_Creature {}
+Chunk_Actor {}
 Chunk_Debris {}
 Chunk_Bullet {collision with non sensor is set to do damage and die}
 Chunk_Wall {rectangular wall, can be visible or invisible}

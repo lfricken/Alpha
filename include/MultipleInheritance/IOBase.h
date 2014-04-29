@@ -21,9 +21,9 @@ class ActiveEventer;
 struct IOBaseData//initialized
 {
     IOBaseData () :
-        type(defaultClassType),
-        isEnabled(defaultIsEnabled),
-        name(defaultName)
+        type(def::io::defaultClassType),
+        isEnabled(def::io::defaultIsEnabled),
+        name(def::io::defaultName)
      ///  , ID(defaultID)
         {}
    /// unsigned long long int getID() const{return ID;}

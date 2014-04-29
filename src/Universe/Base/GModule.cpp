@@ -13,7 +13,7 @@ GModule::GModule():
 }
 GModule::GModule(const GModuleData& data) :
     PhysicsBase(static_cast<PhysicsBaseData>(data)),
-    GraphicsBase(static_cast<GraphicsBaseData>(data), data.halfSize, data.offset)
+    GraphicsBase(static_cast<GraphicsBaseData>(data), data.halfSize, data.offset, data.rotation)
 {
 
 }

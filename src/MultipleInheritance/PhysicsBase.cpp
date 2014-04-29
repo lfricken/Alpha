@@ -22,12 +22,12 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
     if (data.shape == Shape::BOX)
     {
         m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
-        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//set our shape
+        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, degToRad(data.rotation));//set our shape
     }
     else if((data.shape == Shape::OCTAGON) && (data.halfSize.x < data.halfSize.y))
     {
         m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
-        int32 num = 8;
+        unsigned int num = 8;
         float x = data.halfSize.x, y = data.halfSize.y;
         b2Vec2 vertices[num];
 
@@ -40,9 +40,9 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
         vertices[6].Set(x, y-x/2);
         vertices[7].Set(x/2, y);
 
-        for(int i = 0; i < num; ++i)
+        RotateCoordinatesDegs(vertices, num, data.rotation, FindCenter(vertices, num));
+        for(unsigned int i = 0; i < num; ++i)
         {
-            ///use rotation matrix??? to calculate rotation
             vertices[i] += data.offset;
         }
 
@@ -51,7 +51,7 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
     else if((data.shape == Shape::OCTAGON) && (data.halfSize.x >= data.halfSize.y))
     {
         m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
-        int32 num = 8;
+        unsigned int num = 8;
         float x = data.halfSize.x, y = data.halfSize.y;
         b2Vec2 vertices[num];
 
@@ -64,9 +64,9 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
         vertices[6].Set(x, y/2);
         vertices[7].Set(x/2, y);
 
-        for(int i = 0; i < num; ++i)
+        RotateCoordinatesDegs(vertices, num, data.rotation, FindCenter(vertices, num));
+        for(unsigned int i = 0; i < num; ++i)
         {
-            ///use rotation matrix??? to calculate rotation
             vertices[i] += data.offset;
         }
 
@@ -75,7 +75,7 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
     else if(data.shape == Shape::TRIANGLE)
     {
         m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
-        int32 num = 3;
+        unsigned int num = 3;
         float x = data.halfSize.x;
         float y = data.halfSize.y;
         b2Vec2 vertices[num];
@@ -84,9 +84,9 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
         vertices[1].Set(2*x, 0);// *2 because halfsize
         vertices[2].Set(0, 2*y);// *2 because halfsize
 
-        for(int i = 0; i < num; ++i)
+        RotateCoordinatesDegs(vertices, num, data.rotation, FindCenter(vertices, num));
+        for(unsigned int i = 0; i < num; ++i)
         {
-            ///use rotation matrix??? to calculate rotation
             vertices[i] += data.offset;
         }
 
@@ -98,25 +98,24 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
         b2CircleShape* temp = &*std::tr1::static_pointer_cast<b2CircleShape>(m_shape);
         temp->m_p.Set(data.offset.x, data.offset.y);
         temp->m_radius = data.halfSize.x;
-
     }
     else if((data.shape == Shape::POLYGON) && (data.vertices.size() > 2))
     {
         m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
-        b2Vec2 vertices[data.vertices.size()];
+        unsigned int num = data.vertices.size();
+        b2Vec2 vertices[num];
 
-        for(unsigned int i = 0; i < data.vertices.size(); ++i)
+        RotateCoordinatesDegs(vertices, data.vertices.size(), data.rotation, FindCenter(vertices, num));
+        for(unsigned int i = 0; i < num; ++i)
         {
-            ///use rotation matrix??? to calculate rotation
             vertices[i] += data.offset;
         }
-
         std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->Set(vertices, data.vertices.size());
     }
     else
     {
         m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
-        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//default
+        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, degToRad(data.rotation));//default
     }
 
     m_fixtureDef.isSensor = data.isSensor;

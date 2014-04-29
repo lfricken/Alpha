@@ -6,12 +6,12 @@ using namespace sf;
 TextureAllocator::TextureAllocator()
 {
     tr1::shared_ptr<Texture> spTempTex(new Texture);
-    if(!spTempTex->loadFromFile(defaultTexName))/**cant be loaded**/
+    if(!spTempTex->loadFromFile(def::gfx::defaultTexName))/**cant be loaded**/
     {
         ///ERROR LOG
-        cout << "\nThere was an error loading the texture [" << defaultTexName << "].";
+        cout << "\nThere was an error loading the texture [" << def::gfx::defaultTexName << "].";
     }
-    m_textures[defaultTexName] = spTempTex;
+    m_textures[def::gfx::defaultTexName] = spTempTex;
 }
 TextureAllocator::~TextureAllocator()
 {
@@ -30,7 +30,7 @@ Texture* TextureAllocator::request(const std::string& rFilePath)
         {
             ///ERROR LOG
             cout << "\nThere was an error loading the texture [" << rFilePath << "].";
-            return &*m_textures[defaultTexName];
+            return &*m_textures[def::gfx::defaultTexName];
         }
         m_textures[rFilePath] = spTempTex;
         return &*spTempTex;

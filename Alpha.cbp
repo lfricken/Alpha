@@ -51,6 +51,10 @@
 			<Add directory="include/Game" />
 			<Add directory="include/MultipleInheritance" />
 			<Add directory="include/GUI" />
+			<Add directory="include/Universe/Base" />
+			<Add directory="include/Headers" />
+			<Add directory="include/Universe/Chunks" />
+			<Add directory="include/Universe/Modules" />
 		</Compiler>
 		<Linker>
 			<Add directory="../../../Engines/SFML-2_recompile/lib" />
@@ -66,6 +70,12 @@
 		<Unit filename="include/GUI/WidgetBase.h" />
 		<Unit filename="include/Game/Game.h" />
 		<Unit filename="include/Game/TextureAllocator.h" />
+		<Unit filename="include/Headers/Angles.h" />
+		<Unit filename="include/Headers/Rotate.h" />
+		<Unit filename="include/Headers/Sort.h" />
+		<Unit filename="include/Headers/defaults.h" />
+		<Unit filename="include/Headers/globals.h" />
+		<Unit filename="include/Headers/stdafx.h" />
 		<Unit filename="include/IO/ActiveEventer.h" />
 		<Unit filename="include/IO/BaseFunctionFinder.h" />
 		<Unit filename="include/IO/Condition.h" />
@@ -77,24 +87,20 @@
 		<Unit filename="include/MultipleInheritance/GraphicsBase.h" />
 		<Unit filename="include/MultipleInheritance/IOBase.h" />
 		<Unit filename="include/MultipleInheritance/PhysicsBase.h" />
-		<Unit filename="include/Rotate.h" />
-		<Unit filename="include/Sort.h" />
-		<Unit filename="include/Universe/Chunk.h" />
-		<Unit filename="include/Universe/ClassType.h" />
-		<Unit filename="include/Universe/CollisionCategory.h" />
-		<Unit filename="include/Universe/DebugDraw.h" />
-		<Unit filename="include/Universe/ForceField.h" />
-		<Unit filename="include/Universe/GModule.h" />
-		<Unit filename="include/Universe/Module.h" />
-		<Unit filename="include/Universe/MultiTileMap.h" />
-		<Unit filename="include/Universe/Shape.h" />
-		<Unit filename="include/Universe/Ship.h" />
-		<Unit filename="include/Universe/UniversalContactListener.h" />
-		<Unit filename="include/Universe/UniversalQueryCallback.h" />
-		<Unit filename="include/Universe/Universe.h" />
-		<Unit filename="include/defaults.h" />
-		<Unit filename="include/globals.h" />
-		<Unit filename="include/stdafx.h" />
+		<Unit filename="include/Universe/Base/Chunk.h" />
+		<Unit filename="include/Universe/Base/ClassType.h" />
+		<Unit filename="include/Universe/Base/CollisionCategory.h" />
+		<Unit filename="include/Universe/Base/DebugDraw.h" />
+		<Unit filename="include/Universe/Base/GModule.h" />
+		<Unit filename="include/Universe/Base/Module.h" />
+		<Unit filename="include/Universe/Base/MultiTileMap.h" />
+		<Unit filename="include/Universe/Base/Shape.h" />
+		<Unit filename="include/Universe/Base/Types.h" />
+		<Unit filename="include/Universe/Base/UniversalContactListener.h" />
+		<Unit filename="include/Universe/Base/UniversalQueryCallback.h" />
+		<Unit filename="include/Universe/Base/Universe.h" />
+		<Unit filename="include/Universe/Chunks/Ship.h" />
+		<Unit filename="include/Universe/Modules/ForceField.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Control/Camera.cpp" />
 		<Unit filename="src/Control/ControlManager.cpp" />
@@ -114,16 +120,16 @@
 		<Unit filename="src/MultipleInheritance/GraphicsBase.cpp" />
 		<Unit filename="src/MultipleInheritance/IOBase.cpp" />
 		<Unit filename="src/MultipleInheritance/PhysicsBase.cpp" />
-		<Unit filename="src/Universe/Chunk.cpp" />
-		<Unit filename="src/Universe/DebugDraw.cpp" />
-		<Unit filename="src/Universe/ForceField.cpp" />
-		<Unit filename="src/Universe/GModule.cpp" />
-		<Unit filename="src/Universe/Module.cpp" />
-		<Unit filename="src/Universe/MultiTileMap.cpp" />
-		<Unit filename="src/Universe/Ship.cpp" />
-		<Unit filename="src/Universe/UniversalContactListener.cpp" />
-		<Unit filename="src/Universe/UniversalQueryCallback.cpp" />
-		<Unit filename="src/Universe/Universe.cpp" />
+		<Unit filename="src/Universe/Base/Chunk.cpp" />
+		<Unit filename="src/Universe/Base/DebugDraw.cpp" />
+		<Unit filename="src/Universe/Base/GModule.cpp" />
+		<Unit filename="src/Universe/Base/Module.cpp" />
+		<Unit filename="src/Universe/Base/MultiTileMap.cpp" />
+		<Unit filename="src/Universe/Base/UniversalContactListener.cpp" />
+		<Unit filename="src/Universe/Base/UniversalQueryCallback.cpp" />
+		<Unit filename="src/Universe/Base/Universe.cpp" />
+		<Unit filename="src/Universe/Chunks/Ship.cpp" />
+		<Unit filename="src/Universe/Modules/ForceField.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

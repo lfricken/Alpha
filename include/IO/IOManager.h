@@ -23,6 +23,7 @@ class IOManager
         IOBase* m_currentTarget;
         std::vector<Packagelet> m_packageletList;//list of packages to be sent
 
+        Game* m_pGame;
         Universe* m_pUniverse;
         OverlayManager* m_pOverlayManager;
 };

@@ -9,19 +9,18 @@ struct PhysicsBaseData : public IOBaseData//initialized
 {
     PhysicsBaseData() :
         IOBaseData(),
-        shape(defaultShape),
-        categoryBits(defaultCollisionCategory),
-        maskBits(defaultMaskBits),
-        isSensor(defaultIsSensor),
-        offset(defaultOffset),
-        halfSize(defaultHalfSize),
-        density(defaultDensity),
-        friction(defaultFriction),
-        restitution(defaultRestitution),
-        rotation(defaultRotation),
+        shape(def::phys::defaultShape),
+        categoryBits(def::phys::defaultCollisionCategory),
+        maskBits(def::phys::defaultMaskBits),
+        isSensor(def::phys::defaultIsSensor),
+        offset(def::phys::defaultOffset),
+        halfSize(def::phys::defaultHalfSize),
+        density(def::phys::defaultDensity),
+        friction(def::phys::defaultFriction),
+        restitution(def::phys::defaultRestitution),
+        rotation(def::phys::defaultRotation),
         pBody(NULL)
         {}
-
 
     Shape shape;
     int categoryBits;//what type of object we are
@@ -32,7 +31,7 @@ struct PhysicsBaseData : public IOBaseData//initialized
     float density;
     float friction;
     float restitution;
-    float rotation;//degrees
+    float rotation;//degrees CW
     b2Body* pBody;
     std::vector<b2Vec2> vertices;
 };

@@ -5,6 +5,7 @@ using namespace std;
 
 IOManager::IOManager(Game& game)
 {
+    m_pGame = m_pGame;
     m_pUniverse = &game.getGameUniverse();
     m_pOverlayManager = &game.getGameOverlayManager();
 }
@@ -27,7 +28,9 @@ void IOManager::update(const float timeChange)//unfinished, cause it got f'd up 
                 m_currentTarget = m_pUniverse->getTarget((it)->targetID);
             else if((it)->destination == Destination::OVERLAYMANAGER)
                 m_currentTarget = m_pOverlayManager->getTarget((it)->targetID);
-            ///ect...
+            else if((it)->destination == Destination::GAME)
+                m_currentTarget = m_pGame;
+                ///ect...
 
 
             if(m_currentTarget != NULL)

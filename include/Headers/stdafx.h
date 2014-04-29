@@ -20,8 +20,6 @@
 
 #include <Box2D/Box2D.h>
 
-#define PI 3.1415926
-
 #endif//STFAFX_H
 
 /** Coding Nomenclature and Standard Practices

@@ -41,10 +41,10 @@ struct PlayerData : public IntelligenceData
     PlayerData() :
         IntelligenceData(),
         keyConfig(),
-        playerMode(defaultPlayerMode),
-        cameraPos(defaultCameraPos),
-        cameraSize(defaultCameraSize),
-        initState(static_cast<PlayerState>(defaultInitState))
+        playerMode(def::cntrl::defaultPlayerMode),
+        cameraPos(def::cntrl::defaultCameraPos),
+        cameraSize(def::cntrl::defaultCameraSize),
+        initState(static_cast<PlayerState>(def::cntrl::defaultInitState))
     {}
     InputConfig keyConfig;
     std::string playerMode;

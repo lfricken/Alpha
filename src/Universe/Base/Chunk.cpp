@@ -5,6 +5,7 @@
 #include "GModule.h"
 #include "Module.h"
 #include "Sort.h"
+#include "Angles.h"
 
 using namespace std;
 
@@ -154,7 +155,7 @@ void Chunk::add(vector<tr1::shared_ptr<GModuleData> >& rDataList, vector<b2Vec2>
     m_tiles.add(gfxBasePList);
 
 
-    if(!rDataList.empty())/**Now, offset our origin by the appropriate amount indicated by the physData**/
+    if(!rDataList.empty())/**Now, offset our origin by half the width of a tile, so that its center is also the center of the box's**/
         m_tiles.setOrigin(rDataList[0]->halfSize.x * scale , rDataList[0]->halfSize.y * scale);
     else
     {
@@ -183,7 +184,7 @@ void Chunk::add(vector<tr1::shared_ptr<ModuleData> >& rDataList)
 void Chunk::draw()
 {
     m_tiles.setPosition(scale*m_pBody->GetPosition().x, scale*m_pBody->GetPosition().y);
-    m_tiles.setRotation(180.0*m_pBody->GetAngle()/PI);
+    m_tiles.setRotation(radToDeg(m_pBody->GetAngle()));
     m_rWindow.draw(m_tiles);
 }
 void Chunk::physUpdate()

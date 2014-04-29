@@ -15,11 +15,11 @@ struct ChunkData : public IOBaseData//initialized
 {
     ChunkData() :
         IOBaseData(),
-        bodyType(defaultBodyType),
-        position(defaultPosition),
-        isBullet(defaultIsBullet),
-        maxZoom(defaultMaxZoom),
-        minZoom(defaultMinZoom)
+        bodyType(def::cnk::defaultBodyType),
+        position(def::cnk::defaultPosition),
+        isBullet(def::cnk::defaultIsBullet),
+        maxZoom(def::cnk::defaultMaxZoom),
+        minZoom(def::cnk::defaultMinZoom)
         {}
 
     b2BodyType bodyType;

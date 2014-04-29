@@ -13,9 +13,9 @@ class Package
 {
 public:
     Package();
-    Package(const std::string& target, const std::string& command, sf::Packet& parameter, float delay, Destination dest);
+    Package(const std::string& target, const std::string& command, const sf::Packet& parameter, float delay, Destination dest);
     ~Package();
-    void reset(const std::string& target, const std::string& command, sf::Packet& parameter, float delay, Destination dest);
+    void reset(const std::string& target, const std::string& command, const sf::Packet& parameter, float delay, Destination dest);
 
   ///  void setTargetID(unsigned int targetID);
 

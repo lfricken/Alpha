@@ -1,6 +1,7 @@
 #include "ControlManager.h"
 #include "globals.h"
 #include "Sort.h"
+#include "Angles.h"
 
 using namespace std;
 
@@ -274,7 +275,7 @@ void ControlManager::drawUpdate()
             m_bodyTarget = (*it)->getTarget()->getBody();
 
             (*it)->getCamera().getView().setCenter(sf::Vector2f(scale*m_bodyTarget->GetPosition().x, scale*m_bodyTarget->GetPosition().y));
-            (*it)->getCamera().getView().setRotation(180.0*m_bodyTarget->GetAngle()/PI);
+            (*it)->getCamera().getView().setRotation(radToDeg(m_bodyTarget->GetAngle()));
         }
         m_rWindow.setView((*it)->getCamera().getView());
         m_rUniverse.draw();

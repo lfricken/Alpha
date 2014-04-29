@@ -10,7 +10,7 @@ struct PanelData : public WidgetBaseData
 {
     PanelData() :
         WidgetBaseData(),
-        backgroundColor(leon::defaultBackgroundColor)
+        backgroundColor(def::gui::defaultBackgroundColor)
     {}
     sf::Color backgroundColor;
 };

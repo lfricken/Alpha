@@ -10,9 +10,9 @@ struct WidgetBaseData : public IOBaseData
 {
     WidgetBaseData():
         IOBaseData(),
-        configFile(leon::defaultConfig),
-        position(leon::defaultPosition),
-        size(leon::defaultSize)
+        configFile(def::gui::defaultConfig),
+        position(def::gui::defaultPosition),
+        size(def::gui::defaultSize)
     {}
     std::string configFile;
     sf::Vector2f position;/**upper left corner**/

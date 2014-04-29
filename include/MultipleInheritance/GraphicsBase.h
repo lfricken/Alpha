@@ -9,10 +9,10 @@ struct TexturedVertices;
 struct GraphicsBaseData//initialized
 {
     GraphicsBaseData() :
-        texName(defaultTexName),
-        color(defaultColor),
-        texTileSize(defaultTexTileSize),
-        texTile(defaultTexTile)
+        texName(def::gfx::defaultTexName),
+        color(def::gfx::defaultColor),
+        texTileSize(def::gfx::defaultTexTileSize),
+        texTile(def::gfx::defaultTexTile)
         {}
 
     std::string texName;
@@ -27,7 +27,7 @@ class GraphicsBase///http://stackoverflow.com/questions/14399929/should-i-use-pu
 {
 public:
     GraphicsBase();
-    GraphicsBase(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset);
+    GraphicsBase(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset, const float rotation);
     virtual ~GraphicsBase();
 
     virtual void setTexName(const std::string& rTexName);
@@ -70,8 +70,9 @@ protected:
     TexturedVertices* m_pTextVertex;
     int m_textVertexIndex;
     std::string m_texName;
+    float m_netRotation;
 private:
-    virtual void f_initialize(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset);
+    virtual void f_initialize(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset, const float rotation);
 };
 
 #endif // GRAPHICSBASE_H

@@ -16,7 +16,7 @@ Button::Button(tgui::Container& container) : m_pButton(container)
     ButtonData data;
     f_initialize(data);
 }
-Button::Button(tgui::Container& container, const ButtonData& data) : WidgetBase(static_cast<WidgetBaseData>(data)), m_pButton(container, data.name)
+Button::Button(tgui::Container& container, const ButtonData& data = ButtonData()) : WidgetBase(static_cast<WidgetBaseData>(data)), m_pButton(container, data.name)
 {
     f_initialize(data);
 }
@@ -47,7 +47,6 @@ void Button::callback(const tgui::Callback& callback)
         f_MouseLeft();
     }
 }
-
 void Button::f_MouseEntered()
 {
     m_spEventer->event("", Event::MouseEntered);
@@ -60,4 +59,3 @@ void Button::f_MouseLeft()
 {
     m_spEventer->event("", Event::MouseLeft);
 }
-

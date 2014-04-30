@@ -113,34 +113,34 @@ Game::Status Game::run()
             cout << "\nFPS: " << fps;
 
         /**INPUT and PHYSICS**/
-
         while (m_spWindow->pollEvent(event))
         {
             if(m_spControlManager->choiceUpdate(event))//if we put this before physstep, the camera lags!
                 newState = Game::Quit;
         }
-        while(computeTime > 0 && i < 6)///should max iterations depend on how far we are behind?
+        for(i = 0; computeTime > 0 && i < 6; ++i)///should max iterations depend on how far we are behind?
         {
-            ++i;
             m_spControlManager->pressedUpdate();
             computeTime -= m_spUniverse->physStep();
         }
         remainder = computeTime;
-        i = 0;
+
         if(remainder > 0)
             cout << endl << remainder;
 
-
         m_spIOManager->update(timeForFrame);
+        /**INPUT and PHYSICS**/
+
+
 
         /**DRAW**/
         m_spWindow->clear();
         m_spControlManager->drawUpdate();
         m_spOverlayManager->draw();
-        m_spWindow->setView(m_spWindow->getDefaultView());///draw stuff that is on hud///this doesn't appear to do anything anymore
-
+        //m_spWindow->setView(m_spWindow->getDefaultView());///draw stuff that is on hud///this doesn't appear to do anything anymore
 
         m_spWindow->display();
+        /**DRAW**/
     }
     return newState;
 }

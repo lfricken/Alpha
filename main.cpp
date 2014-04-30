@@ -56,6 +56,7 @@ const b2Vec2 defaultPosition = b2Vec2(0,0);
 const bool defaultIsBullet = false;
 const float defaultMaxZoom = 16.0f;
 const float defaultMinZoom = 0.5f;
+const bool defaultCntrlEnabled = true;
 }
 /**CHUNK**/
 

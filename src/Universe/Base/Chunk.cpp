@@ -31,6 +31,7 @@ void Chunk::f_initialize(const ChunkData& data)
     m_bodyDef.bullet = data.isBullet;
     m_bodyDef.type = data.bodyType;
     m_bodyDef.position = data.position;
+    m_controlEnabled = data.controlEnabled;
 
     m_pBody = m_rPhysWorld.CreateBody(&m_bodyDef);
     m_pBody->SetUserData(this);
@@ -187,12 +188,31 @@ void Chunk::draw()
     m_tiles.setRotation(radToDeg(m_pBody->GetAngle()));
     m_rWindow.draw(m_tiles);
 }
-void Chunk::physUpdate()
+void Chunk::physUpdate()//loop over all the special physics objects
 {
     for(vector<PhysicsBase*>::iterator it = m_SpecialPhysPList.begin(); it != m_SpecialPhysPList.end(); ++it)
     {
         (*it)->physUpdate();
     }
+}
+void Chunk::sleep()
+{
+    m_oldPos = m_pBody->GetPosition();
+    m_oldAngle = m_pBody->GetAngle();
+    m_pBody->SetActive(false);
+    m_pBody->SetTransform(b2Vec2(-10000,-10000), 0);
+}
+void Chunk::wake()
+{
+    m_pBody->SetTransform(m_oldPos, m_oldAngle);
+    m_pBody->SetActive(true);
+}
+void Chunk::wake(const b2Vec2& newPos, const float angle, const b2Vec2& velocity, const float angVel)//box2d uses radians
+{
+    m_pBody->SetActive(true);
+    m_pBody->SetTransform(newPos, angle);//radians
+    m_pBody->SetLinearVelocity(velocity);
+    m_pBody->SetAngularVelocity(angVel);
 }
 b2Body* Chunk::getBody()
 {
@@ -235,7 +255,6 @@ void Chunk::up()
 {
     m_pBody->ApplyForceToCenter(b2Vec2(m_accel*m_pBody->GetMass()*sin(m_pBody->GetAngle()),-m_accel*m_pBody->GetMass()*cos(m_pBody->GetAngle())), true);
 }
-
 void Chunk::down()
 {
 
@@ -285,7 +304,6 @@ Intelligence* Chunk::getController() const//done
 {
     return m_pController;
 }
-
 bool Chunk::hasController() const//done
 {
     return m_hasController;
@@ -314,7 +332,6 @@ void Chunk::f_setController(Intelligence* controller)//done
     m_hasController = true;
 }
 /**END**/
-
 void Chunk::input_1(sf::Packet& rInput)
 {
     std::string n;

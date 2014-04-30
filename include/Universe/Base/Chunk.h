@@ -19,7 +19,8 @@ struct ChunkData : public IOBaseData//initialized
         position(def::cnk::defaultPosition),
         isBullet(def::cnk::defaultIsBullet),
         maxZoom(def::cnk::defaultMaxZoom),
-        minZoom(def::cnk::defaultMinZoom)
+        minZoom(def::cnk::defaultMinZoom),
+        controlEnabled(def::cnk::defaultCntrlEnabled)
         {}
 
     b2BodyType bodyType;
@@ -27,6 +28,7 @@ struct ChunkData : public IOBaseData//initialized
     bool isBullet;
     float maxZoom;
     float minZoom;
+    bool controlEnabled;
 };
 
 class Chunk : public IOBase
@@ -49,6 +51,14 @@ public:
 
     virtual void draw();
     virtual void physUpdate();
+
+    /**IO-SYSTEM**/
+    virtual void enableControl();//will or wont accept inputs from controllers
+    virtual void disableControl();
+
+    virtual void sleep();//sets body to sleep, sets all velocities to 0, and goes to coord args
+    virtual void wake();
+    virtual void wake(const b2Vec2& newPos, const float angle, const b2Vec2& velocity, const float angVel);
 
 
     /**INPUT**/
@@ -89,7 +99,7 @@ protected:
     sf::RenderWindow& m_rWindow;
     b2World& m_rPhysWorld;
 
-    float m_maxZoom;
+    float m_maxZoom;///used by controller to limit zoom levels maybe this should be somewhere else?
     float m_minZoom;
 
     b2Body* m_pBody;
@@ -98,7 +108,7 @@ protected:
 
     std::vector<std::tr1::shared_ptr<GModule> > m_GModuleSPList;
     std::vector<std::tr1::shared_ptr<Module> > m_ModuleSPList;
-    std::vector<PhysicsBase*> m_SpecialPhysPList;
+    std::vector<PhysicsBase*> m_SpecialPhysPList;//these are objects that need to do special physics operations every tick
 
     float m_accel, m_torque;///move these to a derivative of chunk
 
@@ -111,6 +121,10 @@ private:
     void f_setController(Intelligence* controller);
     Intelligence* m_pController;//this is a pointer to our controller
     bool m_hasController;
+    bool m_controlEnabled;
+
+    b2Vec2 m_oldPos;
+    float m_oldAngle;
 };
 
 #endif // DCHUNK_H

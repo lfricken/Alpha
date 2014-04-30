@@ -74,9 +74,9 @@ public:///MAYBE we shouldn't have this many functions!!!
     virtual int getHealth() const;
 
 protected:
-    HealthData m_health;
+    HealthData m_health;///this should not be here
 
-    std::tr1::shared_ptr<b2Shape> m_shape; ///HOLY BALLS MAN, NAKED??? BE CAREFUL, ITS BECAUSE WE WERE HAVING TROUBLE CASTING THIS
+    std::tr1::shared_ptr<b2Shape> m_shape;
     b2FixtureDef m_fixtureDef;
 
     b2Body* m_pBody;//pointer, no ownership

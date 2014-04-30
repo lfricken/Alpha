@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="include/Universe/Chunks" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -23,6 +24,7 @@
 				<Compiler>
 					<Add option="-pg" />
 					<Add option="-g" />
+					<Add directory="include/Universe/Chunks" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
@@ -99,6 +101,7 @@
 		<Unit filename="include/Universe/Base/UniversalContactListener.h" />
 		<Unit filename="include/Universe/Base/UniversalQueryCallback.h" />
 		<Unit filename="include/Universe/Base/Universe.h" />
+		<Unit filename="include/Universe/Chunks/Projectile.h" />
 		<Unit filename="include/Universe/Chunks/Ship.h" />
 		<Unit filename="include/Universe/Modules/ForceField.h" />
 		<Unit filename="main.cpp" />
@@ -128,6 +131,7 @@
 		<Unit filename="src/Universe/Base/UniversalContactListener.cpp" />
 		<Unit filename="src/Universe/Base/UniversalQueryCallback.cpp" />
 		<Unit filename="src/Universe/Base/Universe.cpp" />
+		<Unit filename="src/Universe/Chunks/Projectile.cpp" />
 		<Unit filename="src/Universe/Chunks/Ship.cpp" />
 		<Unit filename="src/Universe/Modules/ForceField.cpp" />
 		<Extensions>

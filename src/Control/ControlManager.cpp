@@ -86,7 +86,7 @@ int ControlManager::pressedUpdate()
     for(vector<tr1::shared_ptr<Player> >::iterator it = m_localPlayerList.begin(); it != m_localPlayerList.end(); ++it)
     {
         m_pCPT = &**it;
-        if(m_pCPT->hasTarget() && (m_pCPT->getState() == PlayerState::Playing))
+        if(m_pCPT->hasTarget() && (m_pCPT->getState() == PlayerState::Playing) && m_pCPT->getTarget()->)
         {
 
             InputConfig& rInputConfig = m_pCPT->getInputConfig();///temp

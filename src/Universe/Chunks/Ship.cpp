@@ -19,6 +19,9 @@ Ship::~Ship()
 }
 void Ship::f_initialize(const ShipData& sData)
 {
+
+
+    /**temporary**/
     ForceFieldData data;
     data.shape = Shape::CIRCLE;
     data.isSensor = true;

@@ -31,7 +31,7 @@ Trigger_Teleport {teleports the chunk to the target point}
 	Chunks are the bodies basically, they can be as large as you want, 
 	and can be created in seperate files, and loaded into the
 	editor, or created then and there. They can have a controller
-Enable: will take control
+Enable: will take control inputs
 Disable: won't accept control inputs
 Die: destroys this
 

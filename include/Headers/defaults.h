@@ -59,6 +59,7 @@ extern const b2Vec2 defaultPosition;
 extern const bool defaultIsBullet;
 extern const float defaultMaxZoom;
 extern const float defaultMinZoom;
+extern const bool defaultCntrlEnabled;
 }
 /**CHUNK**/
 

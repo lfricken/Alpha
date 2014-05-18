@@ -195,7 +195,25 @@ void Chunk::physUpdate()//loop over all the special physics objects
         (*it)->physUpdate();
     }
 }
-void Chunk::sleep()
+
+/**IO-SYSTEM**/
+void Chunk::enableControl()//will or wont accept inputs from controllers
+{
+    m_controlEnabled = true;
+}
+void Chunk::disableControl()
+{
+    m_controlEnabled = false;
+}
+void Chunk::toggleControlEnabled(bool state)
+{
+    m_controlEnabled = state;
+}
+bool Chunk::controlEnabled() const
+{
+    return m_controlEnabled;
+}
+void Chunk::sleep()///IN PROGRESS EMERGENCY
 {
     m_oldPos = m_pBody->GetPosition();
     m_oldAngle = m_pBody->GetAngle();
@@ -214,6 +232,8 @@ void Chunk::wake(const b2Vec2& newPos, const float angle, const b2Vec2& velocity
     m_pBody->SetLinearVelocity(velocity);
     m_pBody->SetAngularVelocity(angVel);
 }
+
+
 b2Body* Chunk::getBody()
 {
     return m_pBody;

@@ -65,10 +65,10 @@ const bool defaultCntrlEnabled = true;
 namespace cntrl
 {
 const std::string defaultTargetName = io::defaultName;
-const std::string defaultPlayerMode = "normal";
+const PlayerMode defaultPlayerMode = PlayerMode::God;
 const sf::Vector2f defaultCameraPos = sf::Vector2f(0, 0);
 const sf::Vector2f defaultCameraSize = sf::Vector2f(800, 600);
-const int defaultInitState = 0;
+const PlayerState defaultPlayerState = PlayerState::Playing;
 }
 /**CONTROLERS**/
 
@@ -106,6 +106,8 @@ Game game;//globals.h
 
 int main()
 {
+    ///we should load the defaults from a file, in which case they shouldn't be a const
+
     Game::Status state = Game::Local;
     while(state != Game::Quit)
     {

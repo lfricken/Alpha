@@ -44,10 +44,10 @@ struct PlayerData : public IntelligenceData
         playerMode(def::cntrl::defaultPlayerMode),
         cameraPos(def::cntrl::defaultCameraPos),
         cameraSize(def::cntrl::defaultCameraSize),
-        initState(static_cast<PlayerState>(def::cntrl::defaultInitState))
+        initState(def::cntrl::defaultPlayerState)
     {}
     InputConfig keyConfig;
-    std::string playerMode;
+    PlayerMode playerMode;
     sf::Vector2f cameraPos;
     sf::Vector2f cameraSize;
     PlayerState initState;
@@ -66,8 +66,8 @@ public:
     void setMouseCoords(const sf::Vector2i& screenCoords);
     const sf::Vector2i& getMouseCoords() const;
 
-    void setPlayerMode(const std::string& mode);
-    const std::string& getPlayerMode() const;
+    void setPlayerMode(const PlayerMode& mode);
+    const PlayerMode& getPlayerMode() const;
 
     void setInputConfig(const InputConfig& inputConfig);
     InputConfig& getInputConfig();
@@ -76,10 +76,10 @@ protected:
 private:
     virtual void f_initialize(const PlayerData& data);
 
-    sf::Vector2i m_mouseCoords;
+    sf::Vector2i m_mouseCoords;//where is the mouse of us
     Camera m_camera;
-    std::string m_playerMode;///STATE INSTEAD??
-    InputConfig m_inputConfig;
+    PlayerMode m_playerMode;//god mode or normal mode?
+    InputConfig m_inputConfig;//what keys do
 };
 
 #endif // PLAYER_H

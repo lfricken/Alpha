@@ -53,12 +53,9 @@ public:
     virtual void physUpdate();
 
     /**IO-SYSTEM**/
-    virtual void enableControl();//will or wont accept inputs from controllers
-    virtual void disableControl();
-
     virtual void sleep();//sets body to sleep, sets all velocities to 0, and goes to coord args
     virtual void wake();
-    virtual void wake(const b2Vec2& newPos, const float angle, const b2Vec2& velocity, const float angVel);
+    virtual void wake(const b2Vec2& newPos, float angle, const b2Vec2& velocity, float angVel);
 
 
     /**INPUT**/
@@ -85,12 +82,17 @@ public:
     void linkControl(Intelligence* controller);
     void breakControl();
 
+    void enableControl();//will or wont accept inputs from controllers
+    void disableControl();
+    void toggleControlEnabled(bool state);
+    bool controlEnabled() const;
+
     /**CONST OVERLOADS**/
-    virtual b2Body* getBody() const;
-    virtual const b2BodyDef& getBodyDef() const;
-    virtual const std::vector<std::tr1::shared_ptr<GModule> >& getGModuleSPList() const;
-    virtual const std::vector<std::tr1::shared_ptr<Module> >& getModuleSPList() const;
-    virtual const MultiTileMap& getTiles() const;
+    b2Body* getBody() const;
+    const b2BodyDef& getBodyDef() const;
+    const std::vector<std::tr1::shared_ptr<GModule> >& getGModuleSPList() const;
+    const std::vector<std::tr1::shared_ptr<Module> >& getModuleSPList() const;
+    const MultiTileMap& getTiles() const;
 
     /**OVERRIDE**/
     virtual void input_1(sf::Packet& rInput);

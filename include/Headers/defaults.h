@@ -5,6 +5,7 @@
 #include "CollisionCategory.h"
 #include "Shape.h"
 #include "ClassType.h"
+#include "PlayerMode.h"
 
 namespace def
 {
@@ -18,7 +19,7 @@ extern const std::string defaultName;
 extern const unsigned long long int defaultID;
 
 #define IOBaseReturn void
-#define IOBaseArgs sf::Packet& rInput
+#define IOBaseArgs sf::Packet& rInput//used to take headache out of changing them
 }
 /**IOBASE**/
 
@@ -68,10 +69,10 @@ extern const bool defaultCntrlEnabled;
 namespace cntrl
 {
 extern const std::string defaultTargetName;
-extern const std::string defaultPlayerMode;
+extern const PlayerMode defaultPlayerMode;
 extern const sf::Vector2f defaultCameraPos;
 extern const sf::Vector2f defaultCameraSize;
-extern const int defaultInitState;
+extern const PlayerState defaultPlayerState;
 }
 /**CONTROLERS**/
 

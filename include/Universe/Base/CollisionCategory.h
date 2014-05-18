@@ -3,7 +3,7 @@
 
 enum CollisionCategory///look at classtype.h
 {
-    None = 0x0000,
+    None = 0x0000,//we don't collide with anything
     Projectile = 0x0001,
     ShipModule = 0x0002,
     Sensor = 0x0004,

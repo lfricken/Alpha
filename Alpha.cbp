@@ -66,6 +66,7 @@
 		<Unit filename="include/Control/ControlManager.h" />
 		<Unit filename="include/Control/Intelligence.h" />
 		<Unit filename="include/Control/Player.h" />
+		<Unit filename="include/Control/PlayerMode.h" />
 		<Unit filename="include/GUI/Button.h" />
 		<Unit filename="include/GUI/OverlayManager.h" />
 		<Unit filename="include/GUI/Panel.h" />

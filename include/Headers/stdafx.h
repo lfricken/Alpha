@@ -20,11 +20,16 @@
 
 #include <Box2D/Box2D.h>
 
-#endif//STFAFX_H
+#endif // STFAFX_H
 
 /** Coding Nomenclature and Standard Practices
 
 ///help do we use protected or private for inheritance?
+DOCUMENTING:
+//minor addition
+/ ** significant information ** /
+///something that needs to be addressed
+
 INCLUDING:
 Always have an include guard.
 Never include .cpp files!

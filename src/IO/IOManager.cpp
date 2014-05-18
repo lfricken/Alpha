@@ -39,8 +39,8 @@ void IOManager::update(const float timeChange)//unfinished, cause it got f'd up 
             }
             else
             {
-                cout << "\nNull target.";
-                ///ERROR LOG, couldnt find a target
+                cout << "\nCouldn't find target[" << (it)->targetID << "].";
+                ///ERROR LOG, couldnt find a target may have been destroyed
             }
 
             m_packageletList.erase(it);//pointer

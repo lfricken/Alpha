@@ -86,64 +86,70 @@ int ControlManager::pressedUpdate()
     for(vector<tr1::shared_ptr<Player> >::iterator it = m_localPlayerList.begin(); it != m_localPlayerList.end(); ++it)
     {
         m_pCPT = &**it;
-        if(m_pCPT->hasTarget() && (m_pCPT->getState() == PlayerState::Playing) && m_pCPT->getTarget()->)
+        if((m_pCPT->getState() == PlayerState::Playing))//if the player is in the playing state
         {
+            if(m_pCPT->hasTarget())//if we have a target
+            {
+                m_chunkTarget = m_pCPT->getTarget();
+                if(m_chunkTarget->controlEnabled())
+                {
+                    InputConfig& rInputConfig = m_pCPT->getInputConfig();///temp
+                    mass = m_chunkTarget->getBody()->GetMass();///temp
+                    m_bodyTarget = m_chunkTarget->getBody();///temp
 
-            InputConfig& rInputConfig = m_pCPT->getInputConfig();///temp
-            mass = m_pCPT->getTarget()->getBody()->GetMass();///temp
-            m_bodyTarget = m_pCPT->getTarget()->getBody();///temp
-            m_chunkTarget = m_pCPT->getTarget();
 
-            if (sf::Mouse::isButtonPressed(rInputConfig.primary))
-            {
-                m_pCPT->setAim(m_rWindow.mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView() ));
-                m_pCPT->getTarget()->primary((*it)->getAim());
-            }
-            if (sf::Mouse::isButtonPressed(rInputConfig.secondary))
-            {
-                m_pCPT->setAim(m_rWindow.mapPixelToCoords((*it)->getMouseCoords(), m_pCPT->getCamera().getView() ));
-                m_pCPT->getTarget()->secondary((*it)->getAim());
-            }
-            if (sf::Keyboard::isKeyPressed(rInputConfig.up))
-            {
-                m_chunkTarget->up();
-            }
-            if (sf::Keyboard::isKeyPressed(rInputConfig.down))
-            {
-                m_chunkTarget->down();
+                    if (sf::Mouse::isButtonPressed(rInputConfig.primary))
+                    {
+                        m_pCPT->setAim(m_rWindow.mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView() ));
+                        m_chunkTarget->primary((*it)->getAim());
+                    }
+                    if (sf::Mouse::isButtonPressed(rInputConfig.secondary))
+                    {
+                        m_pCPT->setAim(m_rWindow.mapPixelToCoords((*it)->getMouseCoords(), m_pCPT->getCamera().getView() ));
+                        m_chunkTarget->secondary((*it)->getAim());
+                    }
+                    if (sf::Keyboard::isKeyPressed(rInputConfig.up))
+                    {
+                        m_chunkTarget->up();/**should be how each of these if's looks**/
+                    }
+                    if (sf::Keyboard::isKeyPressed(rInputConfig.down))
+                    {
+                        m_chunkTarget->down();
 
-                ///temp
-                fX = force*mass*sin(m_bodyTarget->GetAngle());
-                fY = force*mass*cos(m_bodyTarget->GetAngle());
-                m_bodyTarget->ApplyForceToCenter(b2Vec2(-fX, fY), true);
-            }
-            if (sf::Keyboard::isKeyPressed(rInputConfig.left))
-            {
-                m_chunkTarget->left();
-                ///temp
-                fX = force*mass*cos(m_bodyTarget->GetAngle());
-                fY = force*mass*sin(m_bodyTarget->GetAngle());
-                m_bodyTarget->ApplyForceToCenter(b2Vec2(-fX, -fY), true);
-            }
-            if (sf::Keyboard::isKeyPressed(rInputConfig.right))
-            {
-                m_chunkTarget->right();
-                ///temp
-                fX = force*mass*cos(m_bodyTarget->GetAngle());
-                fY = force*mass*sin(m_bodyTarget->GetAngle());
-                m_bodyTarget->ApplyForceToCenter(b2Vec2(fX, fY), true);
-            }
-            if (sf::Keyboard::isKeyPressed(rInputConfig.rollLeft))
-            {
-                m_chunkTarget->rollLeft();
-                ///temp
-                m_bodyTarget->ApplyTorque(-torque*mass, true);
-            }
-            if (sf::Keyboard::isKeyPressed(rInputConfig.rollRight))
-            {
-                m_chunkTarget->rollRight();
-                ///temp
-                m_bodyTarget->ApplyTorque(torque*mass, true);
+                        ///temp
+                        fX = force*mass*sin(m_bodyTarget->GetAngle());
+                        fY = force*mass*cos(m_bodyTarget->GetAngle());
+                        m_bodyTarget->ApplyForceToCenter(b2Vec2(-fX, fY), true);
+                    }
+                    if (sf::Keyboard::isKeyPressed(rInputConfig.left))
+                    {
+                        m_chunkTarget->left();
+                        ///temp
+                        fX = force*mass*cos(m_bodyTarget->GetAngle());
+                        fY = force*mass*sin(m_bodyTarget->GetAngle());
+                        m_bodyTarget->ApplyForceToCenter(b2Vec2(-fX, -fY), true);
+                    }
+                    if (sf::Keyboard::isKeyPressed(rInputConfig.right))
+                    {
+                        m_chunkTarget->right();
+                        ///temp
+                        fX = force*mass*cos(m_bodyTarget->GetAngle());
+                        fY = force*mass*sin(m_bodyTarget->GetAngle());
+                        m_bodyTarget->ApplyForceToCenter(b2Vec2(fX, fY), true);
+                    }
+                    if (sf::Keyboard::isKeyPressed(rInputConfig.rollLeft))
+                    {
+                        m_chunkTarget->rollLeft();
+                        ///temp
+                        m_bodyTarget->ApplyTorque(-torque*mass, true);
+                    }
+                    if (sf::Keyboard::isKeyPressed(rInputConfig.rollRight))
+                    {
+                        m_chunkTarget->rollRight();
+                        ///temp
+                        m_bodyTarget->ApplyTorque(torque*mass, true);
+                    }
+                }
             }
         }
     }
@@ -198,7 +204,7 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
                 if(m_pCPT->hasTarget())
                     m_pCPT->getTarget()->aim(m_pCPT->getAim());
             }
-            if (rEvent.type == sf::Event::MouseWheelMoved)//zoom
+            if (rEvent.type == sf::Event::MouseWheelMoved)//control zooming of camera for a player
             {
                 float zoomChange = rEvent.mouseWheel.delta;
                 if (zoomChange > 0)
@@ -222,7 +228,7 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
             }
 
 
-            if(m_pCPT->getPlayerMode() == "god")//cheats
+            if(m_pCPT->getPlayerMode() == PlayerMode::God)//cheats
                 f_cheats(it, rEvent);
 
 

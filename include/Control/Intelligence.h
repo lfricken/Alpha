@@ -6,13 +6,6 @@
 #include "defaults.h"
 #include "Panel.h"
 
-enum PlayerState
-{
-    Playing = 0,
-    Interfacing,
-    Editing,
-};
-
 struct IntelligenceData : public IOBaseData
 {
     IntelligenceData() :

@@ -36,11 +36,11 @@ const sf::Vector2i& Player::getMouseCoords() const
 {
     return m_mouseCoords;
 }
-void Player::setPlayerMode(const std::string& mode)
+void Player::setPlayerMode(const PlayerMode& mode)
 {
     m_playerMode = mode;
 }
-const std::string& Player::getPlayerMode() const
+const PlayerMode& Player::getPlayerMode() const
 {
     return m_playerMode;
 }

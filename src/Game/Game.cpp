@@ -165,7 +165,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     std::string config = "TGUI/widgets/Black.conf";
 
     /**TAB**/
-    tgui::Tab::Ptr tab(m_spOverlayManager->getGui());
+    tgui::Tab::Ptr tab(m_spOverlayManager->getGui());///TEMPORARY, JUST FOR LULZ, NEED TO MAKE MY OWN CONTAINER
     tab->load(config);
     tab->setPosition(10, 10);
     tab->add("Weapon");
@@ -395,7 +395,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     debrisData.bodyType = b2BodyType::b2_dynamicBody;
     debrisData.position.x = 50;
     debrisData.position.y = -50;
-    debrisData.isBullet = false;
+    debrisData.isBullet = true;
     debrisData.type = ClassType::CHUNK;
 
     Chunk* debrisChunk = new Chunk(debrisData);
@@ -405,12 +405,12 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     DebrisDataList.back()->texName = "textures/door_1.png";
     DebrisDataList.front()->texName = "textures/door_1.png";
 
-    for (int i=0, x=1, y=3, numBoxs = 1; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
+    for (int i=0, x=1, y=3, numBoxs = 100; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
         debrisData.position.x = x;
         debrisData.position.y = y;
         debrisChunk = new Chunk(debrisData);
-    debrisChunk->add(DebrisDataList, example);
+        debrisChunk->add(DebrisDataList, example);
         m_spUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
     }
     for (int i=0, x=3, y=3, numBoxs = 1; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
@@ -441,7 +441,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     PlayerData player1;
     player1.name = "player_1";
     player1.type = ClassType::PLAYER;
-    player1.playerMode = "god";
+    player1.playerMode = PlayerMode::God;
     player1.targetName = "ship_1";
 
     player1.keyConfig.up = sf::Keyboard::W;

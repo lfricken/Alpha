@@ -9,9 +9,9 @@ Universe::Universe() : IOBase(), m_physWorld(b2Vec2(0,0))
     m_normalDraw = true;
     m_notPaused = true;
 
-    m_velocityIterations = 4;///how should these be set?
-    m_positionIterations = 2;///how should these be set?
-    m_timeStep = 1.0f/120.0f;
+    m_velocityIterations = 1;///how should these be set?
+    m_positionIterations = 1;///how should these be set?
+    m_timeStep = 1.0f/60.0f;
     m_maxIterations = 6;
 
     m_physWorld.SetContactListener(&m_contactListener);
@@ -22,6 +22,7 @@ Universe::Universe() : IOBase(), m_physWorld(b2Vec2(0,0))
 
 Universe::~Universe()
 {
+
 }
 
 

@@ -1,7 +1,7 @@
-ALPHA
+Craig Fritz, join Github!
 =====
 
-Be Careful!
+or else
 -----------
 
 Its in Alpha state!

@@ -82,10 +82,8 @@ public:
     void linkControl(Intelligence* controller);
     void breakControl();
 
-    void enableControl();//will or wont accept inputs from controllers
-    void disableControl();
-    void toggleControlEnabled(bool state);
-    bool controlEnabled() const;
+    void toggleControl(bool state);//will or wont accept inputs from controllers
+    bool isControlEnabled() const;
 
     /**CONST OVERLOADS**/
     b2Body* getBody() const;

@@ -9,7 +9,7 @@ ActiveEventer::ActiveEventer()
 {
     m_pIOManager = &game.getGameIOManager();
 
-    if(m_pIOManager == NULL)///DEBUG
+    if(m_pIOManager == NULL)///DEBUG //sometimes we may not get created after GameIOManager so...
     {
         ///ERROR LOG
     }
@@ -23,22 +23,21 @@ void ActiveEventer::add(const std::tr1::shared_ptr<Courier> spCourier)
 }
 void ActiveEventer::event(const std::string& variable, Event variableName)
 {
-    std::map<Event, vec>::iterator it_map = m_spCourierMap.find(variableName);
+    std::map<Event, CourierVector>::iterator it_map = m_spCourierMap.find(variableName);
 
-    if(it_map != m_spCourierMap.end())
+    if(it_map != m_spCourierMap.end())//if we found the element...
     {
-        //element found
-        vec& rVector = m_spCourierMap[variableName];//vec is defined in class
+        CourierVector& rVector = m_spCourierMap[variableName];//CourierVector is defined in header of Active Eventer
 
-        for(vec::iterator it = rVector.begin(); it != rVector.end(); ++it)
+        for(CourierVector::iterator it = rVector.begin(); it != rVector.end(); ++it)
         {
             if((*it)->condition.evaluate(variable))//if the condition was met
             {
                 m_pIOManager->recieve((*it)->package);
-                if(!((*it)->condition.isRepeatable()))//and if its not repeatable, remove it from our list
+                if(!((*it)->condition.isRepeatable()))//and if the event isn't repeatable, remove it from our list
                 {
                     rVector.erase(it);//pointer
-                    --it;///MAJOR POINTER PROBLEM, WE WILL GET OUT OF SCOPE POSSIBLY?
+                    --it;///MAJOR POINTER PROBLEM, WE WILL GET OUT OF SCOPE POSSIBLY? NEEDS RESOLUTION
                 }
             }
         }

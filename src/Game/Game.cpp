@@ -32,12 +32,12 @@ Game::Game()
     m_spIOManager = std::tr1::shared_ptr<IOManager>(new IOManager(*this));//requires Universe and OverlayManager
     m_spControlManager = std::tr1::shared_ptr<ControlManager>(new ControlManager);//needs Window and Universe and GUI
 
-    m_spUniverse->resetEventer();/**these objects need to create an IOBase, and thus need active eventer, and thus need a pointer to IOManager**/
+    m_spUniverse->resetEventer();/**these objects need to create an IOBase, and thus need an active eventer, and thus need a pointer to IOManager**/
     m_spOverlayManager->resetEventer();/** ^ **/
     this->resetEventer();/** ^ **/
 
     bool loadedVsinc = true;
-    int loadedFrameRate = 60;///called that because we are supposed to load that
+    int loadedFrameRate = 60;///called that because we are supposed to load that info
     std::string loadedFont = "TGUI/fonts/DejaVuSans.ttf";
 
     m_spOverlayManager->getGui().setGlobalFont(loadedFont);
@@ -102,7 +102,7 @@ Game::Status Game::run()
     int i = 0;
 
     sf::Event event;
-    while (m_spWindow->isOpen() && newState != Game::Quit)
+    while(m_spWindow->isOpen() && newState != Game::Quit)
     {
         secondTime = clock.getElapsedTime().asSeconds();
         timeForFrame = secondTime - firstTime;
@@ -113,7 +113,7 @@ Game::Status Game::run()
             cout << "\nFPS: " << fps;
 
         /**INPUT and PHYSICS**/
-        while (m_spWindow->pollEvent(event))
+        while(m_spWindow->pollEvent(event))
         {
             if(m_spControlManager->choiceUpdate(event))//if we put this before physstep, the camera lags!
                 newState = Game::Quit;
@@ -165,7 +165,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     std::string config = "TGUI/widgets/Black.conf";
 
     /**TAB**/
-    tgui::Tab::Ptr tab(m_spOverlayManager->getGui());///TEMPORARY, JUST FOR LULZ, NEED TO MAKE MY OWN CONTAINER
+    tgui::Tab::Ptr tab(m_spOverlayManager->getGui());///TEMPORARY, JUST FOR TESTS, NEED TO MAKE MY OWN CONTAINER FOR THIS
     tab->load(config);
     tab->setPosition(10, 10);
     tab->add("Weapon");

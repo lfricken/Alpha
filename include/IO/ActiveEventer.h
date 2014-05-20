@@ -16,8 +16,8 @@ public:
     void event(const std::string& variable, Event variableName);
 
 protected:
-    typedef std::vector<std::tr1::shared_ptr<Courier> > vec;
-    std::map<Event, vec> m_spCourierMap;/**holds all the couriers for this object**/
+    typedef std::vector<std::tr1::shared_ptr<Courier> > CourierVector;
+    std::map<Event, CourierVector> m_spCourierMap;/**holds all the couriers for this object**/
     IOManager* m_pIOManager;//a reference to the world io manager
 private:
 };

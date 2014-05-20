@@ -91,7 +91,7 @@ int ControlManager::pressedUpdate()
             if(m_pCPT->hasTarget())//if we have a target
             {
                 m_chunkTarget = m_pCPT->getTarget();
-                if(m_chunkTarget->controlEnabled())
+                if(m_chunkTarget->isControlEnabled())
                 {
                     InputConfig& rInputConfig = m_pCPT->getInputConfig();///temp
                     mass = m_chunkTarget->getBody()->GetMass();///temp
@@ -191,7 +191,7 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
 
 
         /**THINGS THAT DEPEND WHAT MODE WE ARE IN**/
-        if(m_pCPT->getState() == PlayerState::Playing)
+        if(m_pCPT->getState() == PlayerState::Playing)//we are playing the game
         {
             if (rEvent.type == sf::Event::KeyPressed)//on key press
             {
@@ -233,8 +233,8 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
 
 
 
-        }/**END OF PLAYER LOOP**/
-        else if(m_pCPT->getState() == PlayerState::Editing)
+        }
+        else if(m_pCPT->getState() == PlayerState::Editing)//we are changing the positions of elements on screen
         {
             if (rEvent.type == sf::Event::MouseButtonPressed)
             {
@@ -266,9 +266,9 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
                 }
             }
         }
-        else if(m_pCPT->getState() == PlayerState::Interfacing)
+        else if(m_pCPT->getState() == PlayerState::Interfacing)//we are clicking buttons
             m_rGui.handleEvent(rEvent);/**GUI EVENT HANDLER**/
-    }
+    }/**END OF PLAYER LOOP**/
     ///LOOP OVER AI HERE??? what would we update?
     return 0;
 }
@@ -311,6 +311,18 @@ void ControlManager::f_cheats(vector<tr1::shared_ptr<Player> >::iterator it, sf:
         if (rEvent.key.code == sf::Keyboard::Delete)
         {
             m_rUniverse.removeBack();
+        }
+        if (rEvent.key.code == sf::Keyboard::K)
+        {
+            m_rUniverse.getBackwardPhys()->sleep();
+        }
+        if (rEvent.key.code == sf::Keyboard::J)
+        {
+            m_rUniverse.getBackwardPhys()->wake();
+        }
+        if (rEvent.key.code == sf::Keyboard::L)
+        {
+            cout << "\n" << m_rUniverse.getBackwardPhys()->getBody()->IsAwake();
         }
         if (rEvent.key.code == sf::Keyboard::Numpad8)
         {

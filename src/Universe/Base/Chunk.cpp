@@ -197,40 +197,51 @@ void Chunk::physUpdate()//loop over all the special physics objects
 }
 
 /**IO-SYSTEM**/
-void Chunk::enableControl()//will or wont accept inputs from controllers
-{
-    m_controlEnabled = true;
-}
-void Chunk::disableControl()
-{
-    m_controlEnabled = false;
-}
-void Chunk::toggleControlEnabled(bool state)
+void Chunk::toggleControl(bool state)//will or wont accept inputs from controllers
 {
     m_controlEnabled = state;
 }
-bool Chunk::controlEnabled() const
+bool Chunk::isControlEnabled() const
 {
     return m_controlEnabled;
 }
-void Chunk::sleep()///IN PROGRESS EMERGENCY
+void Chunk::sleep()///IN PROGRESS
 {
-    m_oldPos = m_pBody->GetPosition();
-    m_oldAngle = m_pBody->GetAngle();
-    m_pBody->SetActive(false);
-    m_pBody->SetTransform(b2Vec2(-10000,-10000), 0);
+    if(m_pBody->IsActive())//if we are inactive, we must already be asleep!!!
+    {
+        m_oldPos = m_pBody->GetPosition();//get our current data
+        m_oldAngle = m_pBody->GetAngle();//radians
+
+        m_pBody->SetActive(false);//remove from calculation
+        m_pBody->SetAwake(false);//remove from updating
+        toggleControl(false);
+
+        m_pBody->SetLinearVelocity(b2Vec2(0,0));//cancel any movement
+        m_pBody->SetAngularVelocity(0.0f);
+        m_pBody->SetTransform(b2Vec2(-10000,-10000), 0);//move us
+    }
 }
 void Chunk::wake()
 {
-    m_pBody->SetTransform(m_oldPos, m_oldAngle);
-    m_pBody->SetActive(true);
+    if(!m_pBody->IsActive())
+    {
+        cout << "\nWoken";
+        m_pBody->SetTransform(m_oldPos, m_oldAngle);//move us//radians
+
+        m_pBody->SetActive(true);
+        m_pBody->SetAwake(true);//remove from updating
+        toggleControl(true);
+    }
 }
 void Chunk::wake(const b2Vec2& newPos, const float angle, const b2Vec2& velocity, const float angVel)//box2d uses radians
 {
     m_pBody->SetActive(true);
+    m_pBody->SetAwake(true);
+
     m_pBody->SetTransform(newPos, angle);//radians
     m_pBody->SetLinearVelocity(velocity);
     m_pBody->SetAngularVelocity(angVel);
+    toggleControl(true);
 }
 
 
@@ -261,7 +272,7 @@ const MultiTileMap& Chunk::getTiles() const
 
 void Chunk::primary(sf::Vector2f coords)
 {
-
+    cout << "\nPrimary Fired at (" << coords.x << "," << coords.y << ").";
 }
 void Chunk::secondary(sf::Vector2f coords)
 {

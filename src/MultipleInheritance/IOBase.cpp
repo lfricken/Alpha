@@ -25,14 +25,14 @@ void IOBase::f_initialize(const IOBaseData& data)
     m_ID = Enumerate(m_name);
     addCouriers(data.spCourierList);
 }
-void IOBase::resetEventer()
+void IOBase::resetEventer()///wtf is this for?
 {
     m_spEventer.reset();
     m_spEventer = std::tr1::shared_ptr<ActiveEventer>(new ActiveEventer());
 }
 void IOBase::addCouriers(const std::vector<std::tr1::shared_ptr<Courier> >& spCourierList)
 {
-    if(!m_spEventer)
+    if(!m_spEventer)//if we don't have an active eventer(because that would mean m_spEventer returns false)
         m_spEventer = std::tr1::shared_ptr<ActiveEventer>(new ActiveEventer());
 
     for(std::vector<std::tr1::shared_ptr<Courier> >::const_iterator it = spCourierList.begin(); it != spCourierList.end(); ++it)

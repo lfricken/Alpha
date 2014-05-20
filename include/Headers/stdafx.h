@@ -41,7 +41,6 @@ COMMENTING:
 If you are creating, dereferencing, or otherwise interacting with pointers, put //pointer; right after it, plus anything else that needs to be described
 If there is something that needs to be created in the future, put ///code here
 If you are writing something for the purpose of debugging, put //debug after it!
-The term smart* means smart pointer.
 
 GENERAL STUFF:
 Only make functions virtual if you actually plan to override them.

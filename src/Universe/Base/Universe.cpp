@@ -65,6 +65,10 @@ Chunk* Universe::getPhysTarget(unsigned long long int targetID)
 {
     return NULL;
 }
+Chunk* Universe::getBackwardPhys()
+{
+    return &*m_physList.back();
+}
 /**=================**/
 /**=================**/
 /**=====GET_TARGETS=====**/

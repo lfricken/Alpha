@@ -110,7 +110,12 @@ Game::Status Game::run()
         fps = 1.0/timeForFrame;
         firstTime = clock.getElapsedTime().asSeconds();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
-            cout << "\nFPS: " << fps;
+        {
+            if(fps < 35.0f)
+                cout << "\n\tFPS: " << fps;
+            else
+                cout << "\nFPS: " << fps;
+        }
 
         /**INPUT and PHYSICS**/
         while(m_spWindow->pollEvent(event))
@@ -272,8 +277,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     GModuleData shipModuleData;
     shipModuleData.type = ClassType::GMODULE;
     shipModuleData.shape = Shape::BOX;
-    shipModuleData.categoryBits = CollisionCategory::ShipModule;
-    shipModuleData.maskBits = CollisionCategory::Projectile;
+    shipModuleData.categoryBits = collide::CollisionCategory::ShipModule;
+    shipModuleData.maskBits = collide::CollisionCategory::Projectile;
     shipModuleData.isSensor = false;
     shipModuleData.density = 1.0f;
     shipModuleData.friction = 0.4f;
@@ -364,8 +369,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     GModuleData debrisModuleData;
     debrisModuleData.type = ClassType::GMODULE;
     debrisModuleData.shape = Shape::BOX;
-    debrisModuleData.categoryBits = CollisionCategory::Projectile;
-    debrisModuleData.maskBits = CollisionCategory::ShipModule | CollisionCategory::Sensor;
+    debrisModuleData.categoryBits = collide::CollisionCategory::Projectile;
+    debrisModuleData.maskBits = collide::CollisionCategory::ShipModule | collide::CollisionCategory::Sensor;
     debrisModuleData.isSensor = false;
     debrisModuleData.density = 1.0f;
     debrisModuleData.friction = 0.4f;

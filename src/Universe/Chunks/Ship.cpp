@@ -28,8 +28,8 @@ void Ship::f_initialize(const ShipData& sData)
     data.halfSize = b2Vec2(8, 8);
     data.density = 0;
     data.pBody = m_pBody;
-    data.categoryBits = CollisionCategory::Sensor;
-    data.maskBits = CollisionCategory::Projectile | CollisionCategory::Sensor;
+    data.categoryBits = collide::CollisionCategory::Sensor;
+    data.maskBits = collide::CollisionCategory::Projectile | collide::CollisionCategory::Sensor;
 
     ForceField* tempPtr = new ForceField(data);
     m_ModuleSPList.push_back(tr1::shared_ptr<Module>(tempPtr));

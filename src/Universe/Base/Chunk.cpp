@@ -205,7 +205,7 @@ bool Chunk::isControlEnabled() const
 {
     return m_controlEnabled;
 }
-void Chunk::sleep()///IN PROGRESS
+void Chunk::sleep()
 {
     if(m_pBody->IsActive())//if we are inactive, we must already be asleep!!!
     {
@@ -221,6 +221,22 @@ void Chunk::sleep()///IN PROGRESS
         m_pBody->SetTransform(b2Vec2(-10000,-10000), 0);//move us
     }
 }
+void Chunk::sleep(const b2Vec2& pos)
+{
+    if(m_pBody->IsActive())//if we are inactive, we must already be asleep!!!
+    {
+        m_oldPos = m_pBody->GetPosition();//get our current data
+        m_oldAngle = m_pBody->GetAngle();//radians
+
+        m_pBody->SetActive(false);//remove from calculation
+        m_pBody->SetAwake(false);//remove from updating
+        toggleControl(false);
+
+        m_pBody->SetLinearVelocity(b2Vec2(0,0));//cancel any movement
+        m_pBody->SetAngularVelocity(0.0f);
+        m_pBody->SetTransform(pos, 0);//move us to a new location
+    }
+}
 void Chunk::wake()
 {
     if(!m_pBody->IsActive())
@@ -233,12 +249,12 @@ void Chunk::wake()
         toggleControl(true);
     }
 }
-void Chunk::wake(const b2Vec2& newPos, const float angle, const b2Vec2& velocity, const float angVel)//box2d uses radians
+void Chunk::wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, float angVel)//box2d uses radians
 {
     m_pBody->SetActive(true);
     m_pBody->SetAwake(true);
 
-    m_pBody->SetTransform(newPos, angle);//radians
+    m_pBody->SetTransform(pos, angle);//radians
     m_pBody->SetLinearVelocity(velocity);
     m_pBody->SetAngularVelocity(angVel);
     toggleControl(true);

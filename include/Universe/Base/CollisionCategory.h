@@ -1,6 +1,8 @@
 #ifndef COLLISIONCATEGORY_H
 #define COLLISIONCATEGORY_H
 
+namespace collide//used to differentiate between other enums and class names
+{
 enum CollisionCategory///look at classtype.h
 {
     None = 0x0000,//we don't collide with anything
@@ -12,5 +14,5 @@ enum CollisionCategory///look at classtype.h
     Item = 0x0020,
     All = 0xFFFF,
 };
-
+}
 #endif // COLLISIONCATEGORY_H

@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "Chunk.h"
+#include "Projectile.h"
 #include "UniversalContactListener.h"//END
 #include "UniversalQueryCallback.h"
 #include "DebugDraw.h"
@@ -60,8 +61,10 @@ private:
     float m_timeStep;
     int m_velocityIterations;
     int m_positionIterations;
+
     ///std::vector<tr1::shared_ptr<Whatever We Call This> > m_gfxList; //all the objects that have graphics but no physics
     std::vector<std::tr1::shared_ptr<Chunk> > m_physList;//all the objects that have physics, and maybe graphics
+    std::vector<std::tr1::shared_ptr<Projectile> > m_projectileList;///projectiles we need to somehow keep track of how many are active
 };
 
 #endif // UNIVERSE_H

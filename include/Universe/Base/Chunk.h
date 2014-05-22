@@ -53,9 +53,10 @@ public:
     virtual void physUpdate();
 
     /**IO-SYSTEM**/
-    virtual void sleep();//sets body to sleep, sets all velocities to 0, and goes to coord args
-    virtual void wake();
-    virtual void wake(const b2Vec2& newPos, float angle, const b2Vec2& velocity, float angVel);
+    void sleep();//sets body to sleep, sets all velocities to 0, and goes to coord args
+    void sleep(const b2Vec2& pos);
+    void wake();
+    void wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, float angVel);
 
 
     /**INPUT**/

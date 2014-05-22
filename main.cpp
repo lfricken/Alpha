@@ -24,8 +24,8 @@ const unsigned long long int defaultID = -1;//max value
 namespace phys
 {
 const Shape defaultShape = Shape::BOX;
-const int defaultCollisionCategory = CollisionCategory::Projectile;
-const int defaultMaskBits = CollisionCategory::All;
+const int defaultCollisionCategory = collide::CollisionCategory::Projectile;
+const int defaultMaskBits = collide::CollisionCategory::All;
 const bool defaultIsSensor = true;
 const b2Vec2 defaultOffset = b2Vec2(0, 0);
 const b2Vec2 defaultHalfSize = b2Vec2(0.25, 0.25);

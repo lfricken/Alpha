@@ -9,7 +9,7 @@ enum ClassType///look at COLLISIONCATEGORY.h, and classes.txt
     UNKNOWN = 0,
 
     /**UNIVERSE, GAME, GUI ect.**/
-    ROOTGAME,///<---whats this for???
+    //ROOTGAME,///<---whats this for???
     UNIVERSE,
     OVERLAYMANAGER,
     GAME,
@@ -47,6 +47,7 @@ enum ClassType///look at COLLISIONCATEGORY.h, and classes.txt
     CHUNK,
     STATION,
     SHIP,
+    PROJECTILE,
     ACTOR,
     ITEM,
 

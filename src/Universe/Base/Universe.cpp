@@ -1,11 +1,12 @@
 #include "Universe.h"
-#include "Types.h"
+#include "ClassType.h"
 #include "Sort.h"
 
 using namespace std;
 
-Universe::Universe() : IOBase(), m_physWorld(b2Vec2(0,0))
+Universe::Universe() : IOBase(), m_physWorld(b2Vec2(0,0)), m_projAlloc(&m_bedFinder)
 {
+
     m_normalDraw = true;
     m_notPaused = true;
 
@@ -24,10 +25,6 @@ Universe::~Universe()
 {
 
 }
-
-
-
-
 
 /**=====GET_TARGETS=====**/
 /**=================**/
@@ -74,11 +71,6 @@ Chunk* Universe::getBackwardPhys()
 /**=====GET_TARGETS=====**/
 
 
-
-
-
-
-
 /**=====ADD=====**/
 /**=================**/
 /**=================**/
@@ -93,10 +85,6 @@ void Universe::add(tr1::shared_ptr<Chunk> spChunk)
 /**=================**/
 /**=================**/
 /**=====ADD=====**/
-
-
-
-
 
 
 /**=====UPDATE=====**/
@@ -126,6 +114,7 @@ void Universe::draw()
         {
             (*it)->draw();
         }
+        m_projAlloc.draw();
         ///also draw graphics objects?? maybe we should have another section for that??
     }
     else
@@ -138,9 +127,6 @@ void Universe::toggleDebugDraw()
 /**=================**/
 /**=================**/
 /**=====UPDATE=====**/
-
-
-
 
 
 /**=================**/

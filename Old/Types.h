@@ -3,7 +3,8 @@
 
 #include "stdafx.h"
 
-enum ClassType///look at physbase.h
+/** actually defined in ClassType.h
+enum ClassType
 {
     UNKNOWN = 0,
     ROOTGAME,
@@ -21,5 +22,5 @@ enum ClassType///look at physbase.h
     PLAYER,
     SI,
 };
-
+**/
 #endif // CLASSTYPE_H

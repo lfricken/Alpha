@@ -20,8 +20,9 @@ struct ChunkData : public IOBaseData//initialized
         isBullet(def::cnk::defaultIsBullet),
         maxZoom(def::cnk::defaultMaxZoom),
         minZoom(def::cnk::defaultMinZoom),
-        controlEnabled(def::cnk::defaultCntrlEnabled)
-        {}
+        controlEnabled(def::cnk::defaultCntrlEnabled),
+        awake(true)///need a default state here
+        {type = ClassType::CHUNK;}
 
     b2BodyType bodyType;
     b2Vec2 position;
@@ -29,6 +30,7 @@ struct ChunkData : public IOBaseData//initialized
     float maxZoom;
     float minZoom;
     bool controlEnabled;
+    bool awake;
 };
 
 class Chunk : public IOBase
@@ -123,6 +125,7 @@ private:
     Intelligence* m_pController;//this is a pointer to our controller
     bool m_hasController;
     bool m_controlEnabled;
+    bool m_awake;
 
     b2Vec2 m_oldPos;
     float m_oldAngle;

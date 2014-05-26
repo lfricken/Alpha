@@ -15,5 +15,9 @@ Projectile::~Projectile()
 }
 void Projectile::f_initialize(const ProjectileData& data)
 {
-
+    //nothing new to do atm
+}
+ProjectileType Projectile::getProjType() const
+{
+    return m_projType;
 }

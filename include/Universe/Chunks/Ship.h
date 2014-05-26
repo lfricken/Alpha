@@ -7,7 +7,7 @@ struct ShipData : public ChunkData//initialized
 {
     ShipData() :
         ChunkData()
-        {}
+        {type = ClassType::SHIP;}
 };
 
 class Ship : public Chunk

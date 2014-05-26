@@ -383,12 +383,12 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     debrisModuleData.color = sf::Color::White;
 
     vector<tr1::shared_ptr<GModuleData> > DebrisDataList;
-    DebrisDataList.push_back(tr1::shared_ptr<GModuleData>( new GModuleData(debrisModuleData)));
+    DebrisDataList.push_back(tr1::shared_ptr<GModuleData>(new GModuleData(debrisModuleData)));//copy constructor
     DebrisDataList.back()->offset.x = 0;
     DebrisDataList.back()->offset.y = 0;
     DebrisDataList.back()->texTile.x = 0;
 
-    DebrisDataList.push_back(tr1::shared_ptr<GModuleData>( new GModuleData(debrisModuleData)));
+    DebrisDataList.push_back(tr1::shared_ptr<GModuleData>(new GModuleData(debrisModuleData)));
     DebrisDataList.back()->texTile.x = 1;
     DebrisDataList.back()->offset.x = offsetDelta;
     DebrisDataList.back()->offset.y = 0;

@@ -54,8 +54,61 @@ inline void RotateCoordinatesDegs(T coords[], unsigned int size, float angle, T 
     }
 }
 template<class T>
-inline T FindCenter(const T coords[], unsigned int size)///rotates about origin
+inline void RotateCoordinatesDegs(std::vector<T> coords, float angle, T rotationPoint)///rotates about origin
 {
+    unsigned int size = coords.size();
+    T backup;
+    for(unsigned int i = 0; i<size; ++i)/**center the coordinates on 0,0**/
+    {
+        coords[i] -= rotationPoint;
+    }
+    for(unsigned int i = 0; i<size; ++i)/**rotate them**/
+    {
+        backup = coords[i];
+        coords[i].x = cos(degToRad(-angle))*backup.x + sin(degToRad(-angle))*backup.y;
+        coords[i].y = -sin(degToRad(-angle))*backup.x + cos(degToRad(-angle))*backup.y;
+    }
+    for(unsigned int i = 0; i<size; ++i)/**move the coordinates back out**/
+    {
+        coords[i] += rotationPoint;
+    }
+}
+template<class T>
+inline T FindCenter(const T coords[], unsigned int size)/**we want to rotate about center because otherwise, strange things will happen**/
+{
+    if(size < 1)
+        return T(0, 0);
+
+    T topLeft = coords[0];
+    T bottomRight = coords[0];
+    T center = coords[0];
+    unsigned int i = 0;
+
+    for(i = 0; i < size; ++i)/**find top**/
+        if(coords[i].y < topLeft.y)
+            topLeft.y = coords[i].y;
+
+    for(i = 0; i < size; ++i)/**find left**/
+        if(coords[i].x < topLeft.x)
+            topLeft.x = coords[i].x;
+
+    for(i = 0; i < size; ++i)/**find bottom**/
+        if(coords[i].y > bottomRight.y)
+            bottomRight.y = coords[i].y;
+
+    for(i = 0; i < size; ++i)/**find right**/
+        if(coords[i].x > bottomRight.x)
+            bottomRight.x = coords[i].x;
+
+    /**compute center from topLeft and bottomRight**/
+    center.x = (topLeft.x + bottomRight.x)/2;
+    center.y = (topLeft.y + bottomRight.y)/2;
+    return center;
+}
+template<class T>
+inline T FindCenter(std::vector<T> coords)/**we want to rotate about center because otherwise, strange things will happen**/
+{
+    unsigned int size = coords.size();
     if(size < 1)
         return T(0, 0);
 

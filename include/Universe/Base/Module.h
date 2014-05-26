@@ -8,7 +8,7 @@ struct ModuleData : public PhysicsBaseData
 {
     ModuleData() :
         PhysicsBaseData()
-        {}
+        {type = ClassType::MODULE;}
 };
 
 

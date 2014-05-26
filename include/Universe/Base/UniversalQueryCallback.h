@@ -2,7 +2,7 @@
 #define UNIVERSALQUERYCALLBACK_H
 
 #include "stdafx.h"
-#include "Types.h"
+#include "ClassType.h"
 
 class UniversalQueryCallback : public b2QueryCallback
 {
@@ -19,7 +19,7 @@ class UniversalQueryCallback : public b2QueryCallback
     private:
         b2Body* m_parentBody;
         std::vector<b2Body*> m_bodyList;
-        ClassType m_typeFilter;///should make more advanced filters
+        ClassType m_typeFilter;///should make more advanced filters? //used to only look for this type of class
 };
 
 #endif // UNIVERSALQUERYCALLBACK_H

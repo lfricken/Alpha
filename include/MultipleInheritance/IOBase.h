@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "defaults.h"
 #include "ActiveEventer.h"
-#include "Types.h"
+#include "ClassType.h"
 
 /*HOW IO WORKS
 When some event happens, whether its a player pressing a button, or a condition being met, a signal needs to sent to the target to tell it what to do.

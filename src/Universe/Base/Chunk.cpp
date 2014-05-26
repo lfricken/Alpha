@@ -38,6 +38,11 @@ void Chunk::f_initialize(const ChunkData& data)
     m_pController = NULL;
     m_hasController = false;
 
+    m_awake = true;//regardless, set us to be awake
+    if(!data.awake)//if it should be asleep
+        sleep();//then cleanly put it to sleep
+
+
     ///TEMPORARY
     m_accel = 50;
     m_torque = 50;
@@ -184,9 +189,12 @@ void Chunk::add(vector<tr1::shared_ptr<ModuleData> >& rDataList)
 }
 void Chunk::draw()
 {
-    m_tiles.setPosition(scale*m_pBody->GetPosition().x, scale*m_pBody->GetPosition().y);
-    m_tiles.setRotation(radToDeg(m_pBody->GetAngle()));
-    m_rWindow.draw(m_tiles);
+    if(m_awake)
+    {
+        m_tiles.setPosition(scale*m_pBody->GetPosition().x, scale*m_pBody->GetPosition().y);
+        m_tiles.setRotation(radToDeg(m_pBody->GetAngle()));
+        m_rWindow.draw(m_tiles);
+    }
 }
 void Chunk::physUpdate()//loop over all the special physics objects
 {
@@ -207,7 +215,7 @@ bool Chunk::isControlEnabled() const
 }
 void Chunk::sleep()
 {
-    if(m_pBody->IsActive())//if we are inactive, we must already be asleep!!!
+    if(m_awake)//if we aren't already sleeping!
     {
         m_oldPos = m_pBody->GetPosition();//get our current data
         m_oldAngle = m_pBody->GetAngle();//radians
@@ -218,35 +226,34 @@ void Chunk::sleep()
 
         m_pBody->SetLinearVelocity(b2Vec2(0,0));//cancel any movement
         m_pBody->SetAngularVelocity(0.0f);
-        m_pBody->SetTransform(b2Vec2(-10000,-10000), 0);//move us
+        m_pBody->SetTransform(b2Vec2(-10000,-10000), 0);///request new position from bedFinder
+        m_awake = false;
     }
 }
 void Chunk::sleep(const b2Vec2& pos)
 {
-    if(m_pBody->IsActive())//if we are inactive, we must already be asleep!!!
-    {
-        m_oldPos = m_pBody->GetPosition();//get our current data
-        m_oldAngle = m_pBody->GetAngle();//radians
+    m_oldPos = m_pBody->GetPosition();//get our current data
+    m_oldAngle = m_pBody->GetAngle();//radians
 
-        m_pBody->SetActive(false);//remove from calculation
-        m_pBody->SetAwake(false);//remove from updating
-        toggleControl(false);
+    m_pBody->SetActive(false);//remove from calculation
+    m_pBody->SetAwake(false);//remove from updating
+    toggleControl(false);
 
-        m_pBody->SetLinearVelocity(b2Vec2(0,0));//cancel any movement
-        m_pBody->SetAngularVelocity(0.0f);
-        m_pBody->SetTransform(pos, 0);//move us to a new location
-    }
+    m_pBody->SetLinearVelocity(b2Vec2(0,0));//cancel any movement
+    m_pBody->SetAngularVelocity(0.0f);
+    m_pBody->SetTransform(pos, 0);//move us to a new location
+    m_awake = false;
 }
 void Chunk::wake()
 {
-    if(!m_pBody->IsActive())
+    if(!m_awake)//if we aren't awake
     {
-        cout << "\nWoken";
         m_pBody->SetTransform(m_oldPos, m_oldAngle);//move us//radians
 
         m_pBody->SetActive(true);
         m_pBody->SetAwake(true);//remove from updating
         toggleControl(true);
+        m_awake = true;
     }
 }
 void Chunk::wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, float angVel)//box2d uses radians
@@ -258,6 +265,7 @@ void Chunk::wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, float a
     m_pBody->SetLinearVelocity(velocity);
     m_pBody->SetAngularVelocity(angVel);
     toggleControl(true);
+    m_awake = true;
 }
 
 

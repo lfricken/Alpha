@@ -19,7 +19,12 @@ PhysicsBase::PhysicsBase(const PhysicsBaseData& data) :
 }
 void PhysicsBase::f_initialize(const PhysicsBaseData& data)
 {
-    if (data.shape == Shape::BOX)
+    if(!data.vertices.empty())//if we have some vertex data, use it
+    {
+        vector<b2Vec2> vertices = data.vertices;
+        RotateCoordinatesDegs(vertices, data.rotation, FindCenter(vertices));/**we want to rotate about center because otherwise, strange things will happen**/
+    }
+    else if (data.shape == Shape::BOX)
     {
         m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
         std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, degToRad(data.rotation));//set our shape

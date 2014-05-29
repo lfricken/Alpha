@@ -12,13 +12,13 @@ Universe::Universe() : IOBase(), m_physWorld(b2Vec2(0,0)), m_projAlloc(&m_bedFin
 
     m_velocityIterations = 1;///how should these be set?
     m_positionIterations = 1;///how should these be set?
-    m_timeStep = 1.0f/60.0f;
+    m_timeStep = 1.0f/60.0f;///LOAD FROM FILE
     m_maxIterations = 6;
 
     m_physWorld.SetContactListener(&m_contactListener);
 
     m_physWorld.SetDebugDraw(&m_debugDraw);
-    m_debugDraw.SetFlags(b2Draw::e_shapeBit);
+    m_debugDraw.SetFlags(b2Draw::e_shapeBit);///what does this do?
 }
 
 Universe::~Universe()
@@ -135,6 +135,14 @@ void Universe::toggleDebugDraw()
 b2World& Universe::getWorld()
 {
     return m_physWorld;
+}
+BedFinder& Universe::getBedFinder()
+{
+    return m_bedFinder;
+}
+ProjectileAllocator& Universe::getProjAlloc()
+{
+    return m_projAlloc;
 }
 void Universe::removeBack()
 {

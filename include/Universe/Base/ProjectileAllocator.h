@@ -23,27 +23,20 @@ public:
     void add(ProjectileType type);/**make a new projectile of the specified type**/
     void load();///load definitions from a file
 
+    void recoverProjectiles();//take our list of projectile* and re insert them
     void draw();
 protected:
 private:
     /**first list is ready, second is permanent holder list**/
     typedef std::vector<std::tr1::shared_ptr<Projectile> > ProjSPList;
-    typedef std::vector<Projectile*> ProjPList;
-    typedef std::vector<std::tuple<ProjPList, ProjSPList, ProjectileData> > ProjListPairing;
+    typedef std::vector<std::tuple<ProjSPList, unsigned int, std::tr1::shared_ptr<GModuleData>, ProjectileData> > ProjListPairing;
+    enum{spList = 0, freeIndex = 1, spGModData = 2, projData = 3,};
 
     void f_initialize(BedFinder* pBedFinder);
 
-    BedFinder* m_pBedFinder;/// WE DON'T NEED THIS, ALL CHUNKS HAVE ACCESS TO IT used to find our sleeping people a bed
-    Projectile* m_pTemp;
-    ProjectileData& m_data;
-
-    ProjListPairing m_projList;//projectiles, we keep different types in different vectors
-
-    /**used for speeding up loops, like draw**/
-    ProjListPairing::iterator it_groupEnd;
-    ProjListPairing::iterator it_group;
-    ProjPList::iterator it_activeEnd;
-    ProjPList::iterator it_active;
+    std::vector<Projectile*> m_recoverList;
+    ProjListPairing m_projList;//projectiles + other stuff, we keep different types in different tuples
+    std::vector<std::tr1::shared_ptr<GModuleData> > m_GModuleDataList;//used so we don't have to create this thing over and over!
 };
 
 #endif // PROJECTILEALLOCATOR_H

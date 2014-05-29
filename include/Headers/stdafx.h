@@ -43,6 +43,7 @@ If there is something that needs to be created in the future, put ///code here
 If you are writing something for the purpose of debugging, put //debug after it!
 
 GENERAL STUFF:
+Use auto for iterators and names that are stupidly long.
 Only make functions virtual if you actually plan to override them.
 Only make stuff protected if the class will actually have a child.
 Always inherit publicly.

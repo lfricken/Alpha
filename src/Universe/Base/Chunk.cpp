@@ -94,7 +94,7 @@ IOBase* Chunk::getIOBase(const std::string& targetName)
 1. OUR LIST: Create GModules in our GModuleList
 2. TILEMAP: Pass them to our MultiTileMap to be drawn later.
 **/
-void Chunk::add(vector<tr1::shared_ptr<GModuleData> >& rDataList, vector<b2Vec2>& vertices)
+void Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList, const vector<b2Vec2>& vertices)
 {
     ///THIS SHOULD BE DONE SOMEWHERE ELSE
     /**create our bounding box for large chunk collisions using vertices**/
@@ -125,13 +125,13 @@ void Chunk::add(vector<tr1::shared_ptr<GModuleData> >& rDataList, vector<b2Vec2>
     }
     else
     {
-        //create a module with ship collisions with those coordinates
+        //create a Module with ship collisions with those coordinates
     }
 
 
 
-
-    for(vector<tr1::shared_ptr<GModuleData> >::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
+    /**1**/
+    for(vector<tr1::shared_ptr<GModuleData> >::const_iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
         GModule* ptr;
         (*it_data)->pBody = m_pBody;
@@ -169,9 +169,9 @@ void Chunk::add(vector<tr1::shared_ptr<GModuleData> >& rDataList, vector<b2Vec2>
         ///ERROR LOG
     }
 }
-void Chunk::add(vector<tr1::shared_ptr<ModuleData> >& rDataList)
+void Chunk::add(const vector<tr1::shared_ptr<ModuleData> >& rDataList)
 {
-    for(vector<tr1::shared_ptr<ModuleData> >::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
+    for(vector<tr1::shared_ptr<ModuleData> >::const_iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
         Module* ptr;
         (*it_data)->pBody = m_pBody;
@@ -226,49 +226,44 @@ void Chunk::sleep()
 
         m_pBody->SetLinearVelocity(b2Vec2(0,0));//cancel any movement
         m_pBody->SetAngularVelocity(0.0f);
-        m_pBody->SetTransform(b2Vec2(-10000,-10000), 0);///request new position from bedFinder
+        m_pBody->SetTransform(game.getGameUniverse().getBedFinder().getSleepPosition(), 0);///request new position from bedFinder
         m_awake = false;
     }
-}
-void Chunk::sleep(const b2Vec2& pos)
-{
-    m_oldPos = m_pBody->GetPosition();//get our current data
-    m_oldAngle = m_pBody->GetAngle();//radians
-
-    m_pBody->SetActive(false);//remove from calculation
-    m_pBody->SetAwake(false);//remove from updating
-    toggleControl(false);
-
-    m_pBody->SetLinearVelocity(b2Vec2(0,0));//cancel any movement
-    m_pBody->SetAngularVelocity(0.0f);
-    m_pBody->SetTransform(pos, 0);//move us to a new location
-    m_awake = false;
 }
 void Chunk::wake()
 {
     if(!m_awake)//if we aren't awake
     {
-        m_pBody->SetTransform(m_oldPos, m_oldAngle);//move us//radians
+        game.getGameUniverse().getBedFinder().free(m_pBody->GetPosition());
 
         m_pBody->SetActive(true);
         m_pBody->SetAwake(true);//remove from updating
+
+        m_pBody->SetTransform(m_oldPos, m_oldAngle);//move us//radians
         toggleControl(true);
         m_awake = true;
     }
 }
 void Chunk::wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, float angVel)//box2d uses radians
 {
-    m_pBody->SetActive(true);
-    m_pBody->SetAwake(true);
+    if(!m_awake)//if we aren't awake
+    {
+        game.getGameUniverse().getBedFinder().free(m_pBody->GetPosition());
 
-    m_pBody->SetTransform(pos, angle);//radians
-    m_pBody->SetLinearVelocity(velocity);
-    m_pBody->SetAngularVelocity(angVel);
-    toggleControl(true);
-    m_awake = true;
+        m_pBody->SetActive(true);
+        m_pBody->SetAwake(true);
+
+        m_pBody->SetTransform(pos, angle);//radians
+        m_pBody->SetLinearVelocity(velocity);
+        m_pBody->SetAngularVelocity(angVel);
+        toggleControl(true);
+        m_awake = true;
+    }
 }
-
-
+bool Chunk::isAwake() const
+{
+    return m_awake;
+}
 b2Body* Chunk::getBody()
 {
     return m_pBody;
@@ -296,7 +291,16 @@ const MultiTileMap& Chunk::getTiles() const
 
 void Chunk::primary(sf::Vector2f coords)
 {
-    cout << "\nPrimary Fired at (" << coords.x << "," << coords.y << ").";
+    ///cout << "\nPrimary Fired at (" << coords.x << "," << coords.y << ").";
+    /**velocity is function of our pos and target coords**/
+    /**position = our position**/
+    /**0 angle**/
+    /**0 angle velocity**/
+    /**request projectile from projectile manager and wake it with those settings**/
+    b2Vec2 vel(10,10);
+    b2Vec2 offset(10,0);
+    Projectile* pBullet = game.getGameUniverse().getProjAlloc().getProjectile(0);
+    pBullet->wake(m_pBody->GetPosition()+offset, 0, b2Vec2(0,0), 0);
 }
 void Chunk::secondary(sf::Vector2f coords)
 {
@@ -393,7 +397,23 @@ void Chunk::input_1(sf::Packet& rInput)
     rInput >> n;
     std::cout << std::endl << m_name << " has " << m_GModuleSPList.front()->getHealth() << " health, also " << n;
 }
-
+int Chunk::startContact(void* other)
+{
+    cout << "\nChunk Start Contact Called.";
+    return 0;
+}
+int Chunk::endContact(void* other)
+{
+    return 0;
+}
+int Chunk::preSolveContact(void* other)
+{
+    return 0;
+}
+int Chunk::postSolveContact(void* other)
+{
+    return 0;
+}
 
 /*
 void Chunk::add(vector<tr1::shared_ptr<GModuleData> >& rDataList)

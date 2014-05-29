@@ -141,7 +141,10 @@ PhysicsBase::~PhysicsBase()
 }
 int PhysicsBase::startContact(void* other)
 {
-    //damage(1);
+    cout << "\nPhysicsBase Start Contact Called.";
+    Chunk* parent = static_cast<Chunk*>(m_pBody->GetUserData());
+    parent->startContact(other);
+
     return 0;
 }
 int PhysicsBase::endContact(void* other)

@@ -24,6 +24,7 @@ struct ChunkData : public IOBaseData//initialized
         awake(true)///need a default state here
         {type = ClassType::CHUNK;}
 
+    ///be able to add a texture here so we can have big space ships
     b2BodyType bodyType;
     b2Vec2 position;
     bool isBullet;
@@ -48,18 +49,22 @@ public:
     virtual IOBase* getIOBase(const std::string& targetName);
 
   ///  virtual void add(std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);
-    virtual void add(std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList, std::vector<b2Vec2>& vertices);//we only call this once!
-    virtual void add(std::vector<std::tr1::shared_ptr<ModuleData> >& data);//we only call this once!
+    virtual void add(const std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList, const std::vector<b2Vec2>& vertices = std::vector<b2Vec2>());//we only call this once!
+    virtual void add(const std::vector<std::tr1::shared_ptr<ModuleData> >& data);//we only call this once!
 
     virtual void draw();
     virtual void physUpdate();
 
     /**IO-SYSTEM**/
     void sleep();//sets body to sleep, sets all velocities to 0, and goes to coord args
-    void sleep(const b2Vec2& pos);
     void wake();
     void wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, float angVel);
+    bool isAwake() const;
 
+    virtual int startContact(void* other);
+    virtual int endContact(void* other);
+    virtual int preSolveContact(void* other);
+    virtual int postSolveContact(void* other);
 
     /**INPUT**/
     virtual void primary(sf::Vector2f coords);

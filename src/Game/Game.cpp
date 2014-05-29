@@ -96,7 +96,7 @@ Game::Status Game::run()
 
     /**SIMULATION & RUNTIME**/
     Game::Status newState = Game::Local;
-    sf::Clock clock;
+
     float fps = 0;
     float firstTime = 0, secondTime = 0, timeForFrame = 0, computeTime = 0, remainder = 0;
     int i = 0;
@@ -104,11 +104,11 @@ Game::Status Game::run()
     sf::Event event;
     while(m_spWindow->isOpen() && newState != Game::Quit)
     {
-        secondTime = clock.getElapsedTime().asSeconds();
+        secondTime = getTime();
         timeForFrame = secondTime - firstTime;
         computeTime = timeForFrame + remainder;
         fps = 1.0/timeForFrame;
-        firstTime = clock.getElapsedTime().asSeconds();
+        firstTime = getTime();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
         {
             if(fps < 35.0f)
@@ -148,6 +148,10 @@ Game::Status Game::run()
         /**DRAW**/
     }
     return newState;
+}
+float Game::getTime() const
+{
+    return m_clock.getElapsedTime().asSeconds();
 }
 void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING EXACTLY
 {

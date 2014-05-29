@@ -32,6 +32,8 @@ public:
     Status client();
     Status server();
 
+    float getTime() const;
+
     IOManager& getGameIOManager();
     sf::RenderWindow& getGameWindow();
     Universe& getGameUniverse();
@@ -51,6 +53,8 @@ private:
     /**needs access to previous ones**/
     std::tr1::shared_ptr<ControlManager> m_spControlManager;
     std::tr1::shared_ptr<IOManager> m_spIOManager;
+
+    sf::Clock m_clock;
 
     sf::Image m_icon;
     sf::ContextSettings m_settings;///how can we edit the settings of the window?

@@ -21,21 +21,12 @@ void ProjectileAllocator::f_initialize(BedFinder* pBedFinder)
 }
 void ProjectileAllocator::add(ProjectileType type)/**make a new projectile of the specified type**/
 {
-
-    /**clear our GModule list**/
-    m_GModuleDataList.clear();
-    /**add a single element to it of the correct type from tuple**/
-    m_GModuleDataList.push_back(get<spGModData>(m_projList[type]));
-    /**create a new projectile of the correct type with the data in tuple**/
-    Projectile* m_pProjTemp = new Projectile(get<projData>(m_projList[type]));
-    /**add our GModule List to it**/
-    m_pProjTemp->add(m_GModuleDataList);
-    /**tell the projectile what it's index is, and increment the new value**/
-    m_pProjTemp->setListPos(get<spList>(m_projList[type]).size()-1);
-
-
-    /**finally, add the new projectile**/
-    get<spList>(m_projList[type]).push_back(tr1::shared_ptr<Projectile>(m_pProjTemp));
+    m_GModuleDataList.clear();/**clear our GModule list**/
+    m_GModuleDataList.push_back(std::tr1::shared_ptr<GModuleData>(  new GModuleData(  get<gModData>(m_projList[type]  ))    ));/**add a single element to it of the correct type from tuple**/
+    Projectile* m_pProjTemp = new Projectile(get<projData>(m_projList[type]));/**create a new projectile of the correct type with the data in tuple**/
+    m_pProjTemp->add(m_GModuleDataList);/**add our GModule List to it**/
+    m_pProjTemp->setListPos(get<spList>(m_projList[type]).size());//since we WILL be at the end of the list    /**tell the projectile what it's index is, and increment the new value**/
+    get<spList>(m_projList[type]).push_back(tr1::shared_ptr<Projectile>(m_pProjTemp));    /**finally, add the new projectile**/
 }
 Projectile* ProjectileAllocator::getProjectile(ProjectileType type)
 {
@@ -48,35 +39,33 @@ Projectile* ProjectileAllocator::getProjectile(ProjectileType type)
 
 
     /**check if we have one available by comparing the free index to the size of our projectile list**/
-    if(get<spList>(m_projList[type]).size() <= get<freeIndex>(m_projList[type]))/**if not, create AT LEAST one**/
+    if(get<spList>(m_projList[type]).size() == get<freeIndex>(m_projList[type]))/**if not, create AT LEAST one**/
     {
-        cout << "\nHad to create one";
-        add(type);
-        ///how many should we create if we start running out???
+        cout << "\nAdd();";
+        add(type); ///how many should we create if we start running out??? //it will initially be sleeping
     }
 
-    /**either way, increase free index by 1, and give a pointer to this one**/
-    ++get<freeIndex>(m_projList[type]);
+    get<freeIndex>(m_projList[type]) += 1; /**either way, increase free index by 1, and give a pointer to this one**/
 
-    return static_cast<Projectile*>(get<spList>(m_projList[type]).back().get());
+    return static_cast<Projectile*>(get<spList>(m_projList[type])[get<freeIndex>(m_projList[type])-1].get());
 }
 void ProjectileAllocator::recieveProjectile(Projectile* pSleepy)
 {
     ///we can't do this during a timestep!!! mark it for later capture
 
-    cout << "\nProjectile Received!";
+    //cout << "\nProjectile Received!";
     m_recoverList.push_back(pSleepy);
 }
 void ProjectileAllocator::load()///load definitions of projectile types from a file
 {
     /**access first type START**/
-    m_projList.resize(1);
+    unsigned int type = 0;
+    m_projList.resize(type+1);
 
-    get<spList>(m_projList[0]).clear();
-    get<freeIndex>(m_projList[0]) = 0;
+    get<spList>(m_projList[type]).clear();
+    get<freeIndex>(m_projList[type]) = 0;
 
-    get<spGModData>(m_projList[0]) = tr1::shared_ptr<GModuleData>(new GModuleData());
-    GModuleData& data = *get<spGModData>(m_projList[0]);
+    GModuleData& data = get<gModData>(m_projList[type]);
     data.type = ClassType::GMODULE;
     data.shape = Shape::BOX;
     data.categoryBits = collide::CollisionCategory::Projectile;
@@ -92,7 +81,8 @@ void ProjectileAllocator::load()///load definitions of projectile types from a f
     data.texTile = sf::Vector2f(0, 0);
     data.color = sf::Color::White;
 
-    ProjectileData& rProjData = get<projData>(m_projList[0]);
+    ProjectileData& rProjData = get<projData>(m_projList[type]);
+    rProjData.projType = type;
     //do stuff
     /**access first type END**/
 
@@ -101,8 +91,6 @@ void ProjectileAllocator::load()///load definitions of projectile types from a f
 }
 void ProjectileAllocator::draw()
 {
-    recoverProjectiles();
-
     int i;
     int to;
     ProjSPList* pActiveList = NULL;
@@ -130,25 +118,33 @@ void ProjectileAllocator::recoverProjectiles()
 
     /**take this new pointer, find it's position, find the position of the highest (used element) (free index-1)**/
     /**set this one to sleep, swap their positions, update positions, reduce index by 1**/
+
     ProjSPList* pVec;
 
     auto it_end = m_recoverList.end();
     for(auto it = m_recoverList.begin(); it != it_end; ++it)
     {
-        if(!(*it)->isAwake())
+        if((*it)->isAwake())//make sure isn't asleep
         {
-            pVec = &get<spList>(m_projList[(*it)->getProjType()]);
-            std::swap( (*pVec)[ (*it)->getListPos() ], (*pVec)[ get<freeIndex>(m_projList[ (*it)->getProjType() ])-1 ]);
-            (*it)->swapListPos(*(*pVec)[(*it)->getListPos()]);//swap positions with what is now in our old spot
-            (*it)->sleep();
 
-            --get<freeIndex>(m_projList[ (*it)->getProjType() ]);
+            pVec = &get<spList>(m_projList[(*it)->getProjType()]);
+
+
+
+            std::swap( (*pVec)[ (*it)->getListPos() ], (*pVec)[ get<freeIndex>(m_projList[ (*it)->getProjType() ])-1 ]);//re insert it to the front
+
+            (*it)->swapListPos(*(*pVec)[(*it)->getListPos()]);//swap positions with what is now in our old spot
+
+            (*it)->sleep();//set us to sleep
+
+            get<freeIndex>(m_projList[ (*it)->getProjType() ]) -= 1;//move the free index back 1
         }
     }
+
+    m_recoverList.clear();
 
     // ProjSPList& vec = get<spList>(m_projList[pSleepy->getProjType()]);
     // std::swap(vec[ pSleepy->getListPos() ], vec[ get<freeIndex>(m_projList[pSleepy->getProjType()])-1 ]);
     // pSleepy->swapListPos(*vec[pSleepy->getListPos()]);//swap positions with what is now in our old spot
     //pSleepy->sleep();
-    //m_recoverList
 }

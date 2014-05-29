@@ -1,6 +1,8 @@
 #include "Projectile.h"
 #include "globals.h"
 
+using namespace std;
+
 Projectile::Projectile() : Chunk()
 {
     ProjectileData data;
@@ -16,7 +18,7 @@ Projectile::~Projectile()
 }
 void Projectile::f_initialize(const ProjectileData& data)
 {
-    //nothing new to do atm
+    m_projType = data.projType;
 }
 ProjectileType Projectile::getProjType() const
 {
@@ -43,6 +45,6 @@ void Projectile::swapListPos(Projectile& other)
 int Projectile::startContact(void* other)
 {
     /**do stuff**/
-    std::cout << "\nProjectile Start Contact Called.";
     endLife();
+    return 0;
 }

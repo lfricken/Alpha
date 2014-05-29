@@ -243,6 +243,11 @@ void Chunk::wake()
         toggleControl(true);
         m_awake = true;
     }
+    else
+    {
+        cout << "\nWake Failed";
+        ///error log
+    }
 }
 void Chunk::wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, float angVel)//box2d uses radians
 {
@@ -259,6 +264,12 @@ void Chunk::wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, float a
         toggleControl(true);
         m_awake = true;
     }
+    else
+    {
+        cout << "\nWake Failed";
+        ///error log
+    }
+
 }
 bool Chunk::isAwake() const
 {
@@ -399,7 +410,6 @@ void Chunk::input_1(sf::Packet& rInput)
 }
 int Chunk::startContact(void* other)
 {
-    cout << "\nChunk Start Contact Called.";
     return 0;
 }
 int Chunk::endContact(void* other)

@@ -99,6 +99,7 @@ float Universe::physStep()
             (*it)->physUpdate();
         }
         m_physWorld.Step(m_timeStep, m_velocityIterations, m_positionIterations);
+        m_projAlloc.recoverProjectiles();
     }
     return m_timeStep;
 }

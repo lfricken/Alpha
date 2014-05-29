@@ -141,7 +141,6 @@ PhysicsBase::~PhysicsBase()
 }
 int PhysicsBase::startContact(void* other)
 {
-    cout << "\nPhysicsBase Start Contact Called.";
     Chunk* parent = static_cast<Chunk*>(m_pBody->GetUserData());
     parent->startContact(other);
 

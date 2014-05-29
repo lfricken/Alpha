@@ -29,8 +29,8 @@ protected:
 private:
     /**first list is ready, second is permanent holder list**/
     typedef std::vector<std::tr1::shared_ptr<Projectile> > ProjSPList;
-    typedef std::vector<std::tuple<ProjSPList, unsigned int, std::tr1::shared_ptr<GModuleData>, ProjectileData> > ProjListPairing;
-    enum{spList = 0, freeIndex = 1, spGModData = 2, projData = 3,};
+    typedef std::vector<std::tuple<ProjSPList, unsigned int, GModuleData, ProjectileData> > ProjListPairing;
+    enum{spList = 0, freeIndex = 1, gModData = 2, projData = 3,};
 
     void f_initialize(BedFinder* pBedFinder);
 

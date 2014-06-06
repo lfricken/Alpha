@@ -42,9 +42,38 @@ void Projectile::swapListPos(Projectile& other)
     other.setListPos(m_listPosition);
     setListPos(temp);
 }
-int Projectile::startContact(void* other)
+float Projectile::getLifeTimeRemain() const
+{
+    return m_lifeTimeRemaining;
+}
+void Projectile::setLifeTimeRemain(float time)
+{
+    m_lifeTimeRemaining = time;
+}
+float Projectile::changeLifeTimeRemain(float change)
+{
+    return (m_lifeTimeRemaining += change);
+}
+int Projectile::startContact(PhysicsBase* other)
 {
     /**do stuff**/
-    endLife();
+    if(other->getButes().getBute(Butes::isSolid))
+    {
+        ///call the function to deliver some sort of package
+        endLife();///put this in the above function!!!
+    }
+
     return 0;
+}
+int Projectile::endContact(PhysicsBase* other)
+{
+    cout << "\nEnd Contact Called.";
+}
+void Projectile::enable()//no longer interacts with hull sensors, set to default collision state for a projectile
+{
+
+}
+void Projectile::disable()//disable all collision except with hull sensors
+{
+
 }

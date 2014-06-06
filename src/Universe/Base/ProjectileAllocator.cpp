@@ -41,7 +41,6 @@ Projectile* ProjectileAllocator::getProjectile(ProjectileType type)
     /**check if we have one available by comparing the free index to the size of our projectile list**/
     if(get<spList>(m_projList[type]).size() == get<freeIndex>(m_projList[type]))/**if not, create AT LEAST one**/
     {
-        cout << "\nAdd();";
         add(type); ///how many should we create if we start running out??? //it will initially be sleeping
     }
 
@@ -68,8 +67,8 @@ void ProjectileAllocator::load()///load definitions of projectile types from a f
     GModuleData& data = get<gModData>(m_projList[type]);
     data.type = ClassType::GMODULE;
     data.shape = Shape::BOX;
-    data.categoryBits = collide::CollisionCategory::Projectile;
-    data.maskBits = collide::CollisionCategory::ShipModule | collide::CollisionCategory::Sensor;
+    data.categoryBits = Category::Projectile;
+    data.maskBits = MaskBits::EnabledProjectile;
     data.isSensor = false;
     data.density = 1.0f;
     data.friction = 0.4f;
@@ -109,6 +108,22 @@ void ProjectileAllocator::draw()
 }
 void ProjectileAllocator::recoverProjectiles()
 {
+    /**Check if lifetimes of projectiles should expire**/
+
+    /**loop over the ProjListPairing, while looping over each ProjSPList inside of each element of ProjListPairing**/
+    float timeElapsed = m_timer.getTimeElapsed();
+
+    ProjSPList* pVec;
+    auto it_pairEnd = m_projList.end();
+    for(auto it_pair = m_projList.begin(); it_pair != it_pairEnd; ++it_pair)
+    {
+        pVec = &get<spList>(*it_pair);
+        for(auto it = pVec->begin(); it != pVec->end(); ++it)
+            if((*it)->changeLifeTimeRemain(-timeElapsed) <= 0)
+                (*it)->endLife();
+    }
+
+
     /**for each element in here
     ,make sure it isn't already asleep
     if it isn't put it to sleep
@@ -118,18 +133,12 @@ void ProjectileAllocator::recoverProjectiles()
 
     /**take this new pointer, find it's position, find the position of the highest (used element) (free index-1)**/
     /**set this one to sleep, swap their positions, update positions, reduce index by 1**/
-
-    ProjSPList* pVec;
-
     auto it_end = m_recoverList.end();
     for(auto it = m_recoverList.begin(); it != it_end; ++it)
     {
         if((*it)->isAwake())//make sure isn't asleep
         {
-
             pVec = &get<spList>(m_projList[(*it)->getProjType()]);
-
-
 
             std::swap( (*pVec)[ (*it)->getListPos() ], (*pVec)[ get<freeIndex>(m_projList[ (*it)->getProjType() ])-1 ]);//re insert it to the front
 

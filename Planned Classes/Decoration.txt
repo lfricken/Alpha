@@ -1,0 +1,5 @@
+A Type of Art class that only displays images and what not.
+It can decide it's "Layer" so it can appear "close" or "far" from the player
+as you move around(for distant objects)
+
+This will also be used for explosion art

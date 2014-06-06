@@ -8,7 +8,7 @@ enum Shape
     OCTAGON = 1,
     TRIANGLE = 2,
     CIRCLE = 3,
-    POLYGON = 4,
+    POLYGON = 4,//must be defined CCW in righthand coordinates, CW in screen type coords
 };
 
 

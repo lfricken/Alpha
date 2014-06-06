@@ -1,4 +1,4 @@
 There will always be three error logs. Look in Game::Constructor
 We have not gotten around to normalizing large angles.
-Make a fast sin cos tan table.
-Sound everything
+Make a fast sin cos tan table???
+Sounds Causes Seg Fault on exit because SFML

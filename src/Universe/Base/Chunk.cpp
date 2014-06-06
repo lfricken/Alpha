@@ -44,6 +44,7 @@ void Chunk::f_initialize(const ChunkData& data)
 
 
     ///TEMPORARY
+    m_fireTimer.setCountDown(0.1);
     m_accel = 50;
     m_torque = 50;
 }
@@ -171,13 +172,25 @@ void Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList, const ve
 }
 void Chunk::add(const vector<tr1::shared_ptr<ModuleData> >& rDataList)
 {
-    for(vector<tr1::shared_ptr<ModuleData> >::const_iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
+    for(auto it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
         Module* ptr;
         (*it_data)->pBody = m_pBody;
 
         if((*it_data)->type == ClassType::MODULE)
+        {
             ptr = new Module(**it_data);
+        }
+        else if((*it_data)->type == ClassType::HULL)
+        {
+            ptr = new Module(**it_data);
+
+            ModuleData hullSensorDat = **it_data;
+            hullSensorDat.isSensor = true;
+            hullSensorDat.categoryBits = Category::ShipHullSensor;
+            hullSensorDat.maskBits = MaskBits::ShipHullSensor;
+            InsertPtrVector(m_ModuleSPList, &IOBase::getID, tr1::shared_ptr<Module>(new Module(hullSensorDat)));
+        }
         else
         {
             ///ERROR LOG
@@ -192,7 +205,7 @@ void Chunk::draw()
     if(m_awake)
     {
         m_tiles.setPosition(scale*m_pBody->GetPosition().x, scale*m_pBody->GetPosition().y);
-        m_tiles.setRotation(radToDeg(m_pBody->GetAngle()));
+        m_tiles.setRotation(leon::radToDeg(m_pBody->GetAngle()));
         m_rWindow.draw(m_tiles);
     }
 }
@@ -299,66 +312,76 @@ const MultiTileMap& Chunk::getTiles() const
 {
     return m_tiles;
 }
-
 void Chunk::primary(sf::Vector2f coords)
 {
-    ///cout << "\nPrimary Fired at (" << coords.x << "," << coords.y << ").";
-    /**velocity is function of our pos and target coords**/
-    /**position = our position**/
-    /**0 angle**/
-    /**0 angle velocity**/
-    /**request projectile from projectile manager and wake it with those settings**/
-    b2Vec2 vel(10,10);
-    b2Vec2 offset(10,0);
-    Projectile* pBullet = game.getGameUniverse().getProjAlloc().getProjectile(0);
-    pBullet->wake(m_pBody->GetPosition()+offset, 0, b2Vec2(0,0), 0);
+    ///tell all our modules that we have primaried at those coords
+
+    ///get rid of this temporary stuff
+    if(m_fireTimer.isTimeUp())
+    {
+        cout << "\nBody: (" << m_pBody->GetWorldCenter().x << "," << m_pBody->GetWorldCenter().y << ")";
+
+        b2Vec2 difference(coords.x/scale - m_pBody->GetPosition().x, coords.y/scale - m_pBody->GetPosition().y);
+        float distance = sqrt(difference.x*difference.x + difference.y*difference.y);
+        b2Vec2 component(difference.x/distance, difference.y/distance);
+
+        float vel = 20;
+        float off = 10;
+        b2Vec2 velvec(vel*component.x, vel*component.y);
+        b2Vec2 offset(off*component.x, off*component.y);
+
+        Projectile* pBullet = game.getGameUniverse().getProjAlloc().getProjectile(0);
+        pBullet->setLifeTimeRemain(3);
+        pBullet->wake(m_pBody->GetPosition()+offset, atan(offset.y/offset.x), velvec+m_pBody->GetLinearVelocity(), m_pBody->GetAngularVelocity());//our position + some, no rotation, velocity +ours, our angular velocity
+    }
 }
 void Chunk::secondary(sf::Vector2f coords)
 {
-
+    ///tell all our modules that we have secondaired at coords
 }
 void Chunk::aim(sf::Vector2f coords)
 {
-
+///tell modules
 }
 void Chunk::up()
 {
+    ///tell modules
     m_pBody->ApplyForceToCenter(b2Vec2(m_accel*m_pBody->GetMass()*sin(m_pBody->GetAngle()),-m_accel*m_pBody->GetMass()*cos(m_pBody->GetAngle())), true);
 }
 void Chunk::down()
 {
-
+    ///tell modules
 }
 void Chunk::left()
 {
-
+    ///tell modules
 }
 void Chunk::right()
 {
-
+    ///tell modules
 }
 void Chunk::rollLeft()
 {
-
+    ///tell modules
 }
 void Chunk::rollRight()
 {
-
+    ///tell modules
 }
 void Chunk::special_1()
 {
-
+    ///tell modules
 }
 void Chunk::special_2()
 {
-
+    ///tell modules
 }
 void Chunk::special_3()
 {
-
+    ///tell modules
 }
 void Chunk::special_4()
-{
+{    ///tell modules
 
 }
 float Chunk::getMaxZoom() const
@@ -368,6 +391,18 @@ float Chunk::getMaxZoom() const
 float Chunk::getMinZoom() const
 {
     return m_minZoom;
+}
+void Chunk::setGroupIndex(int group)
+{
+    ///ERROR LOG
+    cout << "\nWtf are you doing??";
+    /**loop over fixtures**/
+    for (b2Fixture* fix = m_pBody->GetFixtureList(); fix; fix = fix->GetNext())
+    {
+        b2Filter filter = fix->GetFilterData();
+        filter.groupIndex = group;
+        fix->SetFilterData(filter);
+    }
 }
 /**CONTROL**/
 Intelligence* Chunk::getController() const//done
@@ -408,19 +443,19 @@ void Chunk::input_1(sf::Packet& rInput)
     rInput >> n;
     std::cout << std::endl << m_name << " has " << m_GModuleSPList.front()->getHealth() << " health, also " << n;
 }
-int Chunk::startContact(void* other)
+int Chunk::startContact(PhysicsBase* other)
 {
     return 0;
 }
-int Chunk::endContact(void* other)
+int Chunk::endContact(PhysicsBase* other)
 {
     return 0;
 }
-int Chunk::preSolveContact(void* other)
+int Chunk::preSolveContact(PhysicsBase* other)
 {
     return 0;
 }
-int Chunk::postSolveContact(void* other)
+int Chunk::postSolveContact(PhysicsBase* other)
 {
     return 0;
 }

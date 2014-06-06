@@ -2,6 +2,8 @@
 #include "defaults.h"
 #include "Game.h"
 
+#include "CollisionCategory.h"
+
 /**defaults must be defined first because they may be, and are, used in the creation of other things**/
 /**================**/
 /**====DEFAULTS====**/
@@ -24,9 +26,9 @@ const unsigned long long int defaultID = -1;//max value
 namespace phys
 {
 const Shape defaultShape = Shape::BOX;
-const int defaultCollisionCategory = collide::CollisionCategory::Projectile;
-const int defaultMaskBits = collide::CollisionCategory::All;
-const bool defaultIsSensor = true;
+const Category defaultCategory = Category::Projectile;
+const MaskBits defaultMaskBits = MaskBits::All;
+const bool defaultIsSensor = false;
 const b2Vec2 defaultOffset = b2Vec2(0, 0);
 const b2Vec2 defaultHalfSize = b2Vec2(0.25, 0.25);
 const float defaultDensity = 1.0;

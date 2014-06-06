@@ -18,8 +18,8 @@ extern const bool defaultIsEnabled;
 extern const std::string defaultName;
 extern const unsigned long long int defaultID;
 
-#define IOBaseReturn void
-#define IOBaseArgs sf::Packet& rInput//used to take headache out of changing them
+#define IOBaseReturn void//these defines are used to take headache out of changing them
+#define IOBaseArgs sf::Packet& rInput
 }
 /**IOBASE**/
 
@@ -28,8 +28,8 @@ extern const unsigned long long int defaultID;
 namespace phys
 {
 extern const Shape defaultShape;
-extern const int defaultCollisionCategory;
-extern const int defaultMaskBits;
+extern const Category defaultCategory;
+extern const MaskBits defaultMaskBits;
 extern const bool defaultIsSensor;
 extern const b2Vec2 defaultOffset;
 extern const b2Vec2 defaultHalfSize;

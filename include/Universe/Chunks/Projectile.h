@@ -42,11 +42,14 @@ public:
     void setListPos(unsigned int pos);
     void swapListPos(Projectile& other);
 
-    float getLifeTime() const;
-    void setLifeTime(float time);
-    float changeLifeTime(float change);
+    float getLifeTimeRemain() const;
+    void setLifeTimeRemain(float time);
+    float changeLifeTimeRemain(float change);
 
-    virtual int startContact(void* other);
+    virtual int startContact(PhysicsBase* other);
+    virtual int endContact(PhysicsBase* other);
+    virtual void enable();
+    virtual void disable();
 
 protected:
 private:
@@ -56,6 +59,7 @@ private:
 
     /**specific to interaction with ProjectileAllocator**/
     unsigned int m_listPosition;//position of us in list in ProjectileAllocator
+
     float m_lifeTimeRemaining;//the remaining lifetime
 };
 

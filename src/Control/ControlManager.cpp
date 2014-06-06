@@ -274,15 +274,27 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
 }
 void ControlManager::drawUpdate()
 {
+    sf::Vector2f center;
+    float rotation;//degrees
     for(vector<tr1::shared_ptr<Player> >::iterator it = m_localPlayerList.begin(); it != m_localPlayerList.end(); ++it)
     {
         if((*it)->getCamera().isTracking() && (*it)->hasTarget())
         {
             m_bodyTarget = (*it)->getTarget()->getBody();
 
-            (*it)->getCamera().getView().setCenter(sf::Vector2f(scale*m_bodyTarget->GetPosition().x, scale*m_bodyTarget->GetPosition().y));
-            (*it)->getCamera().getView().setRotation(radToDeg(m_bodyTarget->GetAngle()));
+            center.x = scale*m_bodyTarget->GetPosition().x;
+            center.y = scale*m_bodyTarget->GetPosition().y;
+            rotation = leon::radToDeg(m_bodyTarget->GetAngle());
+
+            (*it)->getCamera().getView().setCenter(center);
+            (*it)->getCamera().getView().setRotation(rotation);
         }
+
+        ///SOUND NOT DONE YET, WAITING FOR REPLY ON SPATIALIZATION POST
+        ///ALSO, THIS CODE CAUSES CRASH WHEN EXITING
+        //sf::Listener::setPosition((*it)->getCamera().getView().getCenter().x, (*it)->getCamera().getView().getCenter().y, 0);
+        //sf::Listener::setDirection(sin((*it)->getCamera().getView().getRotation()), 0.0f, -cos((*it)->getCamera().getView().getRotation()));
+
         m_rWindow.setView((*it)->getCamera().getView());
         m_rUniverse.draw();
     }

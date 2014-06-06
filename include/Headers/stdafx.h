@@ -22,6 +22,10 @@
 
 #endif // STFAFX_H
 
+
+
+/**I would have written less code, but I don't have the time.**/
+
 /** Coding Nomenclature and Standard Practices
 
 ///help do we use protected or private for inheritance?

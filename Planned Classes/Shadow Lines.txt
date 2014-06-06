@@ -1,0 +1,9 @@
+To cast shadows, no object will do it by default, instead, we want to create a point entity that can be linked
+to another point entity of the same type, thus creating a line. Using raycasting, we can cast shadows from this. To create a wall. You would have
+the wall tiles all in a line, then you would put a point at one end of the wall, behind it, and another at the other 
+end, also behind it. That way, the shadow would be cast behind the wall, so you could still see the wall.
+EXAMPLES:
+
+BEST http://www.redblobgames.com/articles/visibility/
+Second Best http://www.facepunch.com/threads/1011659
+Meh https://www.youtube.com/watch?v=5wGOTTq_lXA 	(read the big comment in comments section)

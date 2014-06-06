@@ -62,16 +62,20 @@ ClassType IOBase::getType() const
 {
     return m_type;
 }
+const Attributes& IOBase::getButes() const
+{
+    return m_attributes;
+}
 /**
 int IOBase::damage(int damage)
 {
     return 1;
 }
-**/
+
 int IOBase::getHealth() const
 {
     return 1;
-}
+}**/
 IOBaseReturn IOBase::input_1(IOBaseArgs) {}
 IOBaseReturn IOBase::input_2(IOBaseArgs) {}
 IOBaseReturn IOBase::input_3(IOBaseArgs) {}

@@ -32,19 +32,20 @@ enum ClassType///look at COLLISIONCATEGORY.h, and classes.txt
     COMBOBOX,
 
     /**MODULES**/
-    MODULE,
-    TRIGGER,
-    FORCE,
+    MODULE,//basic module type
+    HULL,//for ship-ship collision, and for telling our projectiles when they have left the firing ship
+    TRIGGER,//standard trigger
+    FORCE,//force field
 
     /**GMODULES**/
-    GMODULE,
+    GMODULE,//basic gModule type
     ARMOR,
     CAPACITOR,
     TURRET,
     FLOOR,
 
     /**CHUNKS**/
-    CHUNK,
+    CHUNK,//basic chunk type
     STATION,
     SHIP,
     PROJECTILE,

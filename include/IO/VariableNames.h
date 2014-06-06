@@ -22,81 +22,51 @@ enum Event
     /**GUI**/
 
     /**GRAPHICS**/
-    Texture,
+    Texture,///this may not work, what is this for anyway???
     TexCoords,
     /**GRAPHICS**/
 };
 
 /**ATTRIBUTE**/
-class Attribute
+template <typename T>
+class Variable
 {
 public:
-    Attribute(Event a) : eventName(a) {}
-    Event getEventType() const
-    {
-        return eventName;
-    }
+    Variable(Event eve, T val) : m_value(val), m_eventName(eve) {}
+
+    Event getEventType() const  {return m_eventName;}
+    T getValue() const  {return m_value;}
+    void setValue(T val)    {m_value = val;}
+protected:
+    T m_value;
 private:
-    Event eventName;
+    Event m_eventName;
 };
-
-
-
-/**VAR_TYPE ATTRIBUTE**/
-class Int_Attribute : public Attribute/**INT ATTRIBUTE**/
-{
-public:
-    Int_Attribute(Event a, int b) : Attribute(a), value(b) {}
-    int getValue() const
-    {
-        return value;
-    }
-    void setValue(int c)
-    {
-        value = c;
-    }
-protected:
-    int value;
-};
-class Float_Attribute : public Attribute/**FLOAT ATTRIBUTE**/
-{
-public:
-    Float_Attribute(Event a, float b) : Attribute(a), value(b) {}
-    float getValue() const
-    {
-        return value;
-    }
-    void setValue(float c)
-    {
-        value = c;
-    }
-protected:
-    float value;
-};
-
 
 
 /***********************/
 /**SPECIFIC ATTRIBUTES**/
 /***********************/
-class HealthData : public Int_Attribute
+#define HealthT int
+class HealthData : public Variable<HealthT>
 {
 public:
-    HealthData() : Int_Attribute(Health, 100), armor(0) {}
-    int takeDamage(int d)
+    HealthData() : Variable(Health, 100), m_armor(0) {}
+
+    HealthT takeDamage(HealthT d)
     {
-        if(d <= armor)
-            return value;
+        if(d <= m_armor)
+            return m_value;
         else
-            value -= d-armor;
-        return value;
+            m_value -= d-m_armor;
+        return m_value;
     }
-    void heal(int h)
-    {
-        value += h;
-    }
+    void heal(HealthT h)    {m_value += h;}
+    HealthT getArmor() const    {return m_armor;}
+    void setArmor(HealthT a)    {m_armor = a;}
 protected:
-    int armor;
+    HealthT m_armor;
 };
+#undef HealthT
 
 #endif // VARIABLE_H

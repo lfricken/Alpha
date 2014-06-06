@@ -10,7 +10,7 @@ struct PhysicsBaseData : public IOBaseData//initialized
     PhysicsBaseData() :
         IOBaseData(),
         shape(def::phys::defaultShape),
-        categoryBits(def::phys::defaultCollisionCategory),
+        categoryBits(def::phys::defaultCategory),
         maskBits(def::phys::defaultMaskBits),
         isSensor(def::phys::defaultIsSensor),
         offset(def::phys::defaultOffset),
@@ -23,8 +23,8 @@ struct PhysicsBaseData : public IOBaseData//initialized
         {}
 
     Shape shape;
-    int categoryBits;//what type of object we are
-    int maskBits;//what we will try and collide with
+    Category categoryBits;//what type of object we are
+    MaskBits maskBits;//what we will try and collide with
     bool isSensor;
     b2Vec2 offset;/**physics**///offset of the box from the center
     b2Vec2 halfSize;//half size of the box2dBox, also controls the tileSize in graphics
@@ -39,17 +39,17 @@ struct PhysicsBaseData : public IOBaseData//initialized
 
 class PhysicsBase : public IOBase
 {
-public:///MAYBE we shouldn't have this many functions!!!
+public:///MAYBE we shouldn't have this many functions???
     PhysicsBase();
     PhysicsBase(const PhysicsBaseData& data);
     virtual ~PhysicsBase();
 
-    virtual int startContact(void* other);
-    virtual int endContact(void* other);
-    virtual int preSolveContact(void* other);
-    virtual int postSolveContact(void* other);
+    virtual int startContact(PhysicsBase* other);
+    virtual int endContact(PhysicsBase* other);
+    virtual int preSolveContact(PhysicsBase* other);
+    virtual int postSolveContact(PhysicsBase* other);
 
-    virtual bool physUpdate();///OBSOLETE???
+    virtual bool physUpdate();///OBSOLETE??? no, ForceField uses it!!!
 
     virtual b2World& getWorld();
 

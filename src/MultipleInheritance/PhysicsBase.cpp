@@ -19,15 +19,15 @@ PhysicsBase::PhysicsBase(const PhysicsBaseData& data) :
 }
 void PhysicsBase::f_initialize(const PhysicsBaseData& data)
 {
-    if(!data.vertices.empty())//if we have some vertex data, use it
-    {
-        vector<b2Vec2> vertices = data.vertices;
-        RotateCoordinatesDegs(vertices, data.rotation, FindCenter(vertices));/**we want to rotate about center because otherwise, strange things will happen**/
-    }
-    else if (data.shape == Shape::BOX)
+    //if(!data.vertices.empty())//if we have some vertex data, use it
+   // {
+   //     vector<b2Vec2> vertices = data.vertices;
+    //    RotateCoordinatesDegs(vertices, data.rotation, FindCenter(vertices));/**we want to rotate about center because otherwise, strange things will happen**////MAYBE WE SHOULD JUST SAY THAT 0,0 IS CENTER, instead of finding it???
+   // }
+    if (data.shape == Shape::BOX)
     {
         m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
-        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, degToRad(data.rotation));//set our shape
+        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, leon::degToRad(data.rotation));//set our shape
     }
     else if((data.shape == Shape::OCTAGON) && (data.halfSize.x < data.halfSize.y))
     {
@@ -45,7 +45,7 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
         vertices[6].Set(x, y-x/2);
         vertices[7].Set(x/2, y);
 
-        RotateCoordinatesDegs(vertices, num, data.rotation, FindCenter(vertices, num));
+        RotateCoordinatesDegs(vertices, num, data.rotation, FindCenter(vertices, num));///MAYBE WE SHOULD JUST SAY THAT 0,0 IS CENTER, instead of finding it???
         for(unsigned int i = 0; i < num; ++i)
         {
             vertices[i] += data.offset;
@@ -69,7 +69,7 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
         vertices[6].Set(x, y/2);
         vertices[7].Set(x/2, y);
 
-        RotateCoordinatesDegs(vertices, num, data.rotation, FindCenter(vertices, num));
+        RotateCoordinatesDegs(vertices, num, data.rotation, FindCenter(vertices, num));///MAYBE WE SHOULD JUST SAY THAT 0,0 IS CENTER, instead of finding it???
         for(unsigned int i = 0; i < num; ++i)
         {
             vertices[i] += data.offset;
@@ -85,11 +85,11 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
         float y = data.halfSize.y;
         b2Vec2 vertices[num];
 
-        vertices[0].Set(0, 0);//define CCW, starting at right angle, then go left, then go up and left
-        vertices[1].Set(2*x, 0);// *2 because halfsize
-        vertices[2].Set(0, 2*y);// *2 because halfsize
+        vertices[0].Set(0-data.halfSize.x, 0-data.halfSize.y);//define CCW, starting at right angle, then go left, then go up and left
+        vertices[1].Set(2*x-data.halfSize.x, 0-data.halfSize.y);// *2 because halfsize
+        vertices[2].Set(0-data.halfSize.x, 2*y-data.halfSize.y);// *2 because halfsize
 
-        RotateCoordinatesDegs(vertices, num, data.rotation, FindCenter(vertices, num));
+        RotateCoordinatesDegs(vertices, num, data.rotation, FindCenter(vertices, num));///MAYBE WE SHOULD JUST SAY THAT 0,0 IS CENTER, instead of finding it???
         for(unsigned int i = 0; i < num; ++i)
         {
             vertices[i] += data.offset;
@@ -110,17 +110,22 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
         unsigned int num = data.vertices.size();
         b2Vec2 vertices[num];
 
-        RotateCoordinatesDegs(vertices, data.vertices.size(), data.rotation, FindCenter(vertices, num));
         for(unsigned int i = 0; i < num; ++i)
-        {
+            vertices[i] = data.vertices[i];
+
+        RotateCoordinatesDegs(vertices, num, data.rotation, FindCenter(vertices, num));///MAYBE WE SHOULD JUST SAY THAT 0,0 IS CENTER, instead of finding it???
+
+        for(unsigned int i = 0; i < num; ++i)
             vertices[i] += data.offset;
-        }
-        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->Set(vertices, data.vertices.size());
+
+        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->Set(vertices, num);
     }
     else
     {
+        cout << "\nType [" << data.shape << "] not found in PhysicsBase.";
+        ///ERROR LOG
         m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
-        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, degToRad(data.rotation));//default
+        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, leon::degToRad(data.rotation));//default
     }
 
     m_fixtureDef.isSensor = data.isSensor;
@@ -128,8 +133,8 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
     m_fixtureDef.density = data.density;
     m_fixtureDef.friction = data.friction;
     m_fixtureDef.restitution = data.restitution;//setting our fixture data
-    m_fixtureDef.filter.maskBits = data.maskBits;
-    m_fixtureDef.filter.categoryBits = data.categoryBits;
+    m_fixtureDef.filter.maskBits = static_cast<uint16>(data.maskBits);
+    m_fixtureDef.filter.categoryBits = static_cast<uint16>(data.categoryBits);
 
     m_pBody = data.pBody;
     m_pFixture = m_pBody->CreateFixture(&m_fixtureDef);
@@ -139,23 +144,29 @@ PhysicsBase::~PhysicsBase()
 {
 
 }
-int PhysicsBase::startContact(void* other)
+int PhysicsBase::startContact(PhysicsBase* other)
 {
     Chunk* parent = static_cast<Chunk*>(m_pBody->GetUserData());
     parent->startContact(other);
 
     return 0;
 }
-int PhysicsBase::endContact(void* other)
+int PhysicsBase::endContact(PhysicsBase* other)
 {
+    Chunk* parent = static_cast<Chunk*>(m_pBody->GetUserData());
+    parent->endContact(other);
     return 0;
 }
-int PhysicsBase::preSolveContact(void* other)
+int PhysicsBase::preSolveContact(PhysicsBase* other)
 {
+    Chunk* parent = static_cast<Chunk*>(m_pBody->GetUserData());
+    parent->preSolveContact(other);
     return 0;
 }
-int PhysicsBase::postSolveContact(void* other)
+int PhysicsBase::postSolveContact(PhysicsBase* other)
 {
+    Chunk* parent = static_cast<Chunk*>(m_pBody->GetUserData());
+    parent->postSolveContact(other);
     return 0;
 }
 

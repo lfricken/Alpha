@@ -210,14 +210,14 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     /**TAB**/
 
-/**
-    leon::ButtonData buttonData;
-    buttonData.size = sf::Vector2f(100,50);
-    buttonData.buttonText = "Win";
-    buttonData.position = sf::Vector2f(20, 300);
+    /**
+        leon::ButtonData buttonData;
+        buttonData.size = sf::Vector2f(100,50);
+        buttonData.buttonText = "Win";
+        buttonData.position = sf::Vector2f(20, 300);
 
-    leon::Button(*m_spGui, buttonData);///we need this button to be deleted so its temporarily in the main loop
-    **/
+        leon::Button(*m_spGui, buttonData);///we need this button to be deleted so its temporarily in the main loop
+        **/
 
 
     /**=============================================GUI=============================================**/
@@ -248,8 +248,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     solidFixtureData.offset = b2Vec2(0, 0);
     solidFixtureData.pBody = NULL;//we dont know it yet
     solidFixtureData.restitution = 0.2f;
-   // solidFixtureData.rotation = 0.0f;
-    solidFixtureData.texName = "textures/tileset.png";
+    // solidFixtureData.rotation = 0.0f;
+    solidFixtureData.texName = "textures/default.png";
     solidFixtureData.texTile = sf::Vector2f(0, 0);
     solidFixtureData.color = sf::Color::Red;
 
@@ -281,8 +281,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     GModuleData shipModuleData;
     shipModuleData.type = ClassType::GMODULE;
     shipModuleData.shape = Shape::BOX;
-    shipModuleData.categoryBits = collide::CollisionCategory::ShipModule;
-    shipModuleData.maskBits = collide::CollisionCategory::Projectile;
+    shipModuleData.categoryBits = Category::ShipModule;
+    shipModuleData.maskBits = MaskBits::ShipModule;
     shipModuleData.isSensor = false;
     shipModuleData.density = 1.0f;
     shipModuleData.friction = 0.4f;
@@ -290,24 +290,46 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     shipModuleData.offset = b2Vec2(0, 0);
     shipModuleData.pBody = NULL;//we dont know it yet
     shipModuleData.restitution = 0.2f;
-  //  shipModuleData.rotation = 0.0f;
-    shipModuleData.texName = "textures/tileset.png";
+    //  shipModuleData.rotation = 0.0f;
+    shipModuleData.texName = "textures/default.png";
     shipModuleData.texTile = sf::Vector2f(0, 0);
     shipModuleData.color = sf::Color::White;
 
     ModuleData mdata;
     mdata.type = ClassType::MODULE;
+    mdata.shape = Shape::TRIANGLE;
+    mdata.rotation = 0.0f;
+    mdata.categoryBits = Category::ShipModule;
+    mdata.maskBits = MaskBits::ShipModule;
     mdata.density = 1.0f;
     mdata.friction = 0.4f;
     mdata.halfSize = b2Vec2(0.25, 0.25);
     mdata.offset = b2Vec2(0, -5);
     mdata.pBody = NULL;//we dont know it yet
     mdata.restitution = 0.2f;
-   // mdata.rotation = 0.0f;
+
+    ModuleData hull;
+    hull.type = ClassType::HULL;
+    hull.shape = Shape::POLYGON;
+    hull.vertices.push_back(b2Vec2(5, 5));
+    hull.vertices.push_back(b2Vec2(-5, 5));
+    hull.vertices.push_back(b2Vec2(-3, -5));
+    hull.vertices.push_back(b2Vec2(0, -6));
+    hull.vertices.push_back(b2Vec2(3, -5));
+
+    hull.rotation = 0.0f;
+    hull.categoryBits = Category::ShipHull;
+    hull.maskBits = MaskBits::ShipHull;
+    hull.density = 0.0f;
+    hull.friction = 0.4f;
+    hull.halfSize = b2Vec2(4, 4);
+    hull.offset = b2Vec2(0, 0);
+    hull.pBody = NULL;//we dont know it yet
+    hull.restitution = 0.2f;
 
     ///WE NEED TO GET A STANDARD SIZE??
     vector<tr1::shared_ptr<GModuleData> > moduleList1;
-    vector<ModuleData> moduleList2;
+    vector<tr1::shared_ptr<ModuleData> > moduleList2;
     short int texTile = 0;
     float offsetDelta = 2*shipModuleData.halfSize.x;
     for (float i=0, x=-2, numBoxsX = 9; i<numBoxsX; ++i, x+=offsetDelta)//creates boxes in a line
@@ -322,10 +344,13 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
             moduleList1.push_back( tr1::shared_ptr<GModuleData>(new GModuleData(shipModuleData)) );
         }
     }
+    shipModuleData.rotation = 90;
+    shipModuleData.shape = Shape::TRIANGLE;
     shipModuleData.name = "GM01";
     shipModuleData.offset.y = 5;
     moduleList1.push_back(tr1::shared_ptr<GModuleData>(new GModuleData(shipModuleData)));
-    moduleList2.push_back(mdata);
+    moduleList2.push_back(tr1::shared_ptr<ModuleData>(&mdata));
+    moduleList2.push_back(tr1::shared_ptr<ModuleData>(&hull));
     ///SortPtrVector(moduleList1, &IOBaseData::getID);
 
     /**SHIP MODULES**/
@@ -347,7 +372,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     Chunk* chunk0 = new Chunk(largeChunkData);
     chunk0->setName("bigChunk_56");
     chunk0->add(moduleList1, example);
-    //chunk0->add(moduleList2);
+    chunk0->add(moduleList2);
     m_spUniverse->add(tr1::shared_ptr<Chunk>(chunk0));
 
     largeChunkData.position = b2Vec2(20, -20);
@@ -357,9 +382,10 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     m_spUniverse->add(tr1::shared_ptr<Chunk>(chunk1));
 
     shipDat.position = b2Vec2(-20, 20);
-    Chunk* ship1 = new Ship(shipDat);//WTF IS GOING ON (solved, the force field wasnt getting initialized properly)
+    Chunk* ship1 = new Ship(shipDat);
     ship1->setName("ship_1");
     ship1->add(moduleList1, example);
+    ship1->add(moduleList2);
     m_spUniverse->add(tr1::shared_ptr<Chunk>(ship1));
     /**SHIP CHUNKS**/
 
@@ -373,8 +399,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     GModuleData debrisModuleData;
     debrisModuleData.type = ClassType::GMODULE;
     debrisModuleData.shape = Shape::BOX;
-    debrisModuleData.categoryBits = collide::CollisionCategory::Projectile;
-    debrisModuleData.maskBits = collide::CollisionCategory::ShipModule | collide::CollisionCategory::Sensor;
+    debrisModuleData.categoryBits = Category::Projectile;
+    debrisModuleData.maskBits = MaskBits::EnabledProjectile;
     debrisModuleData.isSensor = false;
     debrisModuleData.density = 1.0f;
     debrisModuleData.friction = 0.4f;

@@ -4,6 +4,7 @@
 #include "BedFinder.h"
 #include "Projectile.h"
 #include "Chunk.h"
+#include "Timer.h"
 
 /**we hold our own chunks**/
 /**when a gun fires, it asks for a bullet from us through universe**/
@@ -21,7 +22,7 @@ public:
     Projectile* getProjectile(ProjectileType type);
     void recieveProjectile(Projectile* pSleepy);
     void add(ProjectileType type);/**make a new projectile of the specified type**/
-    void load();///load definitions from a file
+    void load();///load projectile definitions from a file
 
     void recoverProjectiles();//take our list of projectile* and re insert them
     void draw();
@@ -37,6 +38,8 @@ private:
     std::vector<Projectile*> m_recoverList;
     ProjListPairing m_projList;//projectiles + other stuff, we keep different types in different tuples
     std::vector<std::tr1::shared_ptr<GModuleData> > m_GModuleDataList;//used so we don't have to create this thing over and over!
+
+    Timer m_timer;
 };
 
 #endif // PROJECTILEALLOCATOR_H

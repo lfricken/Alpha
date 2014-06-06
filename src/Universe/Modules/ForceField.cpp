@@ -20,7 +20,7 @@ void ForceField::f_initialize(const ForceFieldData& data)
 {
     m_strength = 400;
 }
-int ForceField::startContact(void* other)
+int ForceField::startContact(PhysicsBase* other)
 {
     /**add to list**/
     m_targetBody = static_cast<PhysicsBase*>(other)->getBody();
@@ -28,7 +28,7 @@ int ForceField::startContact(void* other)
     ++m_targets[m_targetBody];
     return 0;
 }
-int ForceField::endContact(void* other)
+int ForceField::endContact(PhysicsBase* other)
 {
     /**remove from list**/
     m_targetBody = static_cast<PhysicsBase*>(other)->getBody();
@@ -71,4 +71,12 @@ bool ForceField::physUpdate()
         return m_hasContact;
     }
     return false;
+}
+void ForceField::enable()
+{
+    m_isEnabled = true;
+}
+void ForceField::disable()
+{
+    m_isEnabled = false;
 }

@@ -1,0 +1,34 @@
+LEARN AND DESIGN:	These are things that need thought.
+
+Create "Shadow Lines"
+Create sensors(triggers), how to filter what triggers?
+Implement the IO system
+Rule Of The Big Three APPLIED
+Inheritance Design needs more thought, particularly with chunks and modules.
+Where is input handled?
+Smart Pointers, should we be using Boost?
+Is it ok that we are using vectors of pointers?
+Code Profiler
+Enable Debug Compile Mode
+Text input boxes/more GUI, maybe another library?
+Decouple Code More?
+
+
+
+TODO:	These are things that need to be done and don't require much thought.
+
+Write = operator and constructor to switch between sf::Vector and b2Vec2.
+Write Shadow Lines class
+
+
+
+CLEAN UP:	These are things that we should do sometime and periodically
+
+Search for new and deletes to make sure things are getting cleaned up.
+Standardize the units we are using for tile size, ideally 1x1 typedef a new unit and make a function to convert it from and to its sfml and box2d types
+Replace numbers with variables.
+Review file structure.
+Review all variable and class names.
+Push more stuff out of game.cpp.
+Learn to use CONST and STATIC better
+How can we clean up our include heirarchy?

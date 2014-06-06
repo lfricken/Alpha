@@ -23,8 +23,8 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-O3" />
 					<Add option="-pg" />
-					<Add option="-g" />
 					<Add directory="include/Universe/Chunks" />
 					<Add directory="include/Universe/Base" />
 				</Compiler>
@@ -92,6 +92,7 @@
 		<Unit filename="include/MultipleInheritance/GraphicsBase.h" />
 		<Unit filename="include/MultipleInheritance/IOBase.h" />
 		<Unit filename="include/MultipleInheritance/PhysicsBase.h" />
+		<Unit filename="include/Universe/Base/Attributes.h" />
 		<Unit filename="include/Universe/Base/BedFinder.h" />
 		<Unit filename="include/Universe/Base/Chunk.h" />
 		<Unit filename="include/Universe/Base/ClassType.h" />
@@ -102,6 +103,7 @@
 		<Unit filename="include/Universe/Base/MultiTileMap.h" />
 		<Unit filename="include/Universe/Base/ProjectileAllocator.h" />
 		<Unit filename="include/Universe/Base/Shape.h" />
+		<Unit filename="include/Universe/Base/Timer.h" />
 		<Unit filename="include/Universe/Base/UniversalContactListener.h" />
 		<Unit filename="include/Universe/Base/UniversalQueryCallback.h" />
 		<Unit filename="include/Universe/Base/Universe.h" />
@@ -127,6 +129,7 @@
 		<Unit filename="src/MultipleInheritance/GraphicsBase.cpp" />
 		<Unit filename="src/MultipleInheritance/IOBase.cpp" />
 		<Unit filename="src/MultipleInheritance/PhysicsBase.cpp" />
+		<Unit filename="src/Universe/Base/Attributes.cpp" />
 		<Unit filename="src/Universe/Base/BedFinder.cpp" />
 		<Unit filename="src/Universe/Base/Chunk.cpp" />
 		<Unit filename="src/Universe/Base/DebugDraw.cpp" />
@@ -134,6 +137,7 @@
 		<Unit filename="src/Universe/Base/Module.cpp" />
 		<Unit filename="src/Universe/Base/MultiTileMap.cpp" />
 		<Unit filename="src/Universe/Base/ProjectileAllocator.cpp" />
+		<Unit filename="src/Universe/Base/Timer.cpp" />
 		<Unit filename="src/Universe/Base/UniversalContactListener.cpp" />
 		<Unit filename="src/Universe/Base/UniversalQueryCallback.cpp" />
 		<Unit filename="src/Universe/Base/Universe.cpp" />

@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "MultiTileMap.h"
 #include "ForceField.h"///dont need this??
+#include "Timer.h"
 
 class GModule;
 struct GModuleData;
@@ -61,10 +62,10 @@ public:
     void wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, float angVel);
     bool isAwake() const;
 
-    virtual int startContact(void* other);
-    virtual int endContact(void* other);
-    virtual int preSolveContact(void* other);
-    virtual int postSolveContact(void* other);
+    virtual int startContact(PhysicsBase* other);
+    virtual int endContact(PhysicsBase* other);
+    virtual int preSolveContact(PhysicsBase* other);
+    virtual int postSolveContact(PhysicsBase* other);
 
     /**INPUT**/
     virtual void primary(sf::Vector2f coords);
@@ -83,6 +84,9 @@ public:
 
     virtual float getMaxZoom() const;
     virtual float getMinZoom() const;
+
+    virtual void setGroupIndex(int group);
+
 
     /**CONTROL**/
     Intelligence* getController() const;
@@ -121,6 +125,9 @@ protected:
     float m_accel, m_torque;///move these to a derivative of chunk
 
 private:
+    Timer m_fireTimer;///these should be in turret
+
+
     float f_findRadius(std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);//finds the top/bottom left, bottom
     virtual void f_initialize(const ChunkData& data);
 

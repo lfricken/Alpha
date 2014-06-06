@@ -7,7 +7,8 @@ struct ForceFieldData : public ModuleData
 {
     ForceFieldData() :
         ModuleData()
-        {}
+        {type = ClassType::FORCE;}
+
 };
 
 class ForceField : public Module
@@ -17,8 +18,11 @@ public:
     ForceField(const ForceFieldData& data);
     virtual ~ForceField();
 
-    virtual int startContact(void* other);
-    virtual int endContact(void* other);
+    virtual int startContact(PhysicsBase* other);
+    virtual int endContact(PhysicsBase* other);
+
+    virtual void enable();
+    virtual void disable();
 
     virtual bool physUpdate();
 protected:

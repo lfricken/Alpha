@@ -5,7 +5,7 @@
 #include "defaults.h"
 class IOBase;
 
-typedef IOBaseReturn (IOBase::*TargetFunc)(IOBaseArgs);
+typedef IOBaseReturn (IOBase::*TargetFunc)(IOBaseArgs);//this look weird, but it defines TargetFunc, to be a function pointer that returns IOBaseReturn, and takes IOBaseArgs
 
 class BaseFunctionFinder
 {

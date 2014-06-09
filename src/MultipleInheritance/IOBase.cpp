@@ -19,6 +19,7 @@ IOBase::~IOBase()//unfinished
 }
 void IOBase::f_initialize(const IOBaseData& data)
 {
+    m_attributes = data.butes;
     m_name = data.name;
     m_type = data.type;
     m_isEnabled = data.isEnabled;
@@ -46,11 +47,11 @@ IOManager& IOBase::getIOManager()
 {
     return m_rIOManager;
 }
-void IOBase::setName(const std::string& name)//finished
+void IOBase::setName(const std::string& name)
 {
     m_name = name;
 }
-const std::string& IOBase::getName() const//finished
+const std::string& IOBase::getName() const
 {
     return m_name;
 }
@@ -66,16 +67,6 @@ const Attributes& IOBase::getButes() const
 {
     return m_attributes;
 }
-/**
-int IOBase::damage(int damage)
-{
-    return 1;
-}
-
-int IOBase::getHealth() const
-{
-    return 1;
-}**/
 IOBaseReturn IOBase::input_1(IOBaseArgs) {}
 IOBaseReturn IOBase::input_2(IOBaseArgs) {}
 IOBaseReturn IOBase::input_3(IOBaseArgs) {}
@@ -96,3 +87,27 @@ IOBaseReturn IOBase::input_17(IOBaseArgs) {}
 IOBaseReturn IOBase::input_18(IOBaseArgs) {}
 IOBaseReturn IOBase::input_19(IOBaseArgs) {}
 IOBaseReturn IOBase::input_20(IOBaseArgs) {}
+
+
+void IOBase::f_varEvent(std::string value, Event eventType)//takes a generic variable type, and sends the data to eventer
+{
+    m_spEventer->event(value, eventType);
+}
+void IOBase::f_varEvent(int value, Event eventType)
+{
+    std::ostringstream convert;
+    convert << value;
+    m_spEventer->event(convert.str(), eventType);
+}
+void IOBase::f_varEvent(float value, Event eventType)
+{
+    std::ostringstream convert;
+    convert << value;
+    m_spEventer->event(convert.str(), eventType);
+}
+void IOBase::f_varEvent(double value, Event eventType)
+{
+    std::ostringstream convert;
+    convert << value;
+    m_spEventer->event(convert.str(), eventType);
+}

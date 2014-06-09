@@ -19,7 +19,7 @@ using namespace std;
 Game::Game()
 {
     ///load window data into settings, and launch window with the settings
-    m_settings.antialiasingLevel = 4;
+    m_settings.antialiasingLevel = 0;
 
     sf::VideoMode mode = sf::VideoMode::getDesktopMode();
     mode = sf::VideoMode(1200, 700, 32);
@@ -282,7 +282,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     shipModuleData.type = ClassType::GMODULE;
     shipModuleData.shape = Shape::BOX;
     shipModuleData.categoryBits = Category::ShipModule;
-    shipModuleData.maskBits = MaskBits::ShipModule;
+    shipModuleData.maskBits = MaskBits::ShipModuleNorm;
     shipModuleData.isSensor = false;
     shipModuleData.density = 1.0f;
     shipModuleData.friction = 0.4f;
@@ -300,7 +300,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     mdata.shape = Shape::TRIANGLE;
     mdata.rotation = 0.0f;
     mdata.categoryBits = Category::ShipModule;
-    mdata.maskBits = MaskBits::ShipModule;
+    mdata.maskBits = MaskBits::ShipModuleNorm;
     mdata.density = 1.0f;
     mdata.friction = 0.4f;
     mdata.halfSize = b2Vec2(0.25, 0.25);
@@ -326,6 +326,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     hull.offset = b2Vec2(0, 0);
     hull.pBody = NULL;//we dont know it yet
     hull.restitution = 0.2f;
+    hull.butes.setBute(Butes::isDestructable, false);
+    hull.butes.setBute(Butes::isSolid, true);
 
     ///WE NEED TO GET A STANDARD SIZE??
     vector<tr1::shared_ptr<GModuleData> > moduleList1;
@@ -362,6 +364,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     largeChunkData.isEnabled = true;
     largeChunkData.bodyType = b2BodyType::b2_dynamicBody;
     largeChunkData.type = ClassType::CHUNK;
+
     ShipData shipDat;
     shipDat.isBullet = false;
     shipDat.isEnabled = true;
@@ -379,6 +382,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     Chunk* chunk1 = new Chunk(largeChunkData);
     chunk1->setName("bigChunk_2");
     chunk1->add(moduleList1, example);
+    chunk1->add(moduleList2);
     m_spUniverse->add(tr1::shared_ptr<Chunk>(chunk1));
 
     shipDat.position = b2Vec2(-20, 20);
@@ -400,7 +404,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     debrisModuleData.type = ClassType::GMODULE;
     debrisModuleData.shape = Shape::BOX;
     debrisModuleData.categoryBits = Category::Projectile;
-    debrisModuleData.maskBits = MaskBits::EnabledProjectile;
+    debrisModuleData.maskBits = MaskBits::ProjectileNorm;
     debrisModuleData.isSensor = false;
     debrisModuleData.density = 1.0f;
     debrisModuleData.friction = 0.4f;

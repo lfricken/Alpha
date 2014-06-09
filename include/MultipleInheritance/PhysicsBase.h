@@ -69,13 +69,7 @@ public:///MAYBE we shouldn't have this many functions???
     virtual b2Body* getBody() const;
     virtual const b2Shape& getShape() const;
 
-    /**OVERRIDE**/
-    virtual int damage(int damage);
-    virtual int getHealth() const;
-
 protected:
-    HealthData m_health;///this should not be here, it should be in more derived classes
-
     std::tr1::shared_ptr<b2Shape> m_shape;
     b2FixtureDef m_fixtureDef;
 

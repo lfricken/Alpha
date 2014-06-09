@@ -7,7 +7,11 @@ struct ForceFieldData : public ModuleData
 {
     ForceFieldData() :
         ModuleData()
-        {type = ClassType::FORCE;}
+    {
+        type = ClassType::FORCE;
+        butes.setBute(isSolid, false);
+        butes.setBute(isDestructable, false);
+    }
 
 };
 

@@ -66,11 +66,12 @@ void ProjectileAllocator::load()///load definitions of projectile types from a f
 
     GModuleData& data = get<gModData>(m_projList[type]);
     data.type = ClassType::GMODULE;
-    data.shape = Shape::BOX;
+    data.shape = Shape::CIRCLE;
+    data.texName = "textures/bullet.png";
     data.categoryBits = Category::Projectile;
-    data.maskBits = MaskBits::EnabledProjectile;
+    data.maskBits = MaskBits::ProjectileOff;
     data.isSensor = false;
-    data.density = 1.0f;
+    data.density = 0.1f;
     data.friction = 0.4f;
     data.halfSize = b2Vec2(0.25, 0.25);
     data.offset = b2Vec2(0, 0);

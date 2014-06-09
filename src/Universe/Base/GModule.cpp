@@ -2,9 +2,6 @@
 #include "globals.h"
 
 
-using namespace sf;
-
-
 GModule::GModule():
     PhysicsBase(),
     GraphicsBase()
@@ -24,11 +21,55 @@ GModule::~GModule()
 }
 void GModule::f_initialize(const GModuleData& data)
 {
-    m_attributes.setBute(Butes::isSolid, true);
+    m_attributes = data.butes;
+    m_isDestroyed = false;
 }
-int GModule::damage(int damage)
+IOBaseReturn GModule::input_1(IOBaseArgs)
 {
-    incTexTile();
-    return PhysicsBase::damage(damage);
+    T_Damage amount;
+    if(rInput >> amount)//successful
+    {
+        std::cout << "\nHealth Remaining: [" << damage(amount) << "].";
+    }
+    else
+    {
+        ///ERROR LOG
+        std::cout << "\nError, packet had [";
+        std::cout << amount << "].";
+    }
 }
+T_Health GModule::damage(T_Damage damage)
+{
+    m_health.takeDamage(damage);
+    f_varEvent(m_health.getValue(), m_health.getEventType());
 
+    if(m_health.getValue() <= 0)//if our health drops too low
+        destruct();
+
+    return m_health.getValue();
+}
+T_Health GModule::heal(T_Health health)
+{
+    m_health.heal(health);
+    f_varEvent(m_health.getValue(), m_health.getEventType());
+    return m_health.getValue();
+}
+T_Health GModule::getHealth() const
+{
+    return m_health.getValue();
+}
+void GModule::destruct()
+{
+    std::cout << "\nDestruct Called: " << m_attributes.getBute(Butes::isDestructable);
+    if(m_attributes.getBute(Butes::isDestructable)) ///DO DESTRUCTION STUFF HERE
+    {
+        ///SOMETHING COOL FOR NOW
+        b2Filter filter = m_pFixture->GetFilterData();
+        filter.maskBits = static_cast<uint16>(MaskBits::ShipModuleBroke);
+        m_pFixture->SetFilterData(filter);
+
+        m_isDestroyed = true;
+        setTexTile(sf::Vector2f(4, 0));
+        std::cout << "\nModule Destroyed.";
+    }
+}

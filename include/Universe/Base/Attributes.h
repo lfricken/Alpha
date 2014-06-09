@@ -3,10 +3,13 @@
 
 enum Butes//used to access elements of array
 {
-    isSolid = 0,
+    isSolid = 0,//used for array indexes, they automatically start counting up
+    isDestructable,
+
+    NUMBER_OF_ATTRIBUTES,
 };
 
-typedef int ButeList[1];
+typedef int ButeList[NUMBER_OF_ATTRIBUTES];
 
 class Attributes/**Bute stands for Attribute**/
 {
@@ -21,7 +24,7 @@ public:
 
 protected:
 private:
-    ButeList m_bute;
+    ButeList m_buteList;
 };
 
 #endif // ATTRIBUTES_H

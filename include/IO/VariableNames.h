@@ -47,13 +47,14 @@ private:
 /***********************/
 /**SPECIFIC ATTRIBUTES**/
 /***********************/
-#define HealthT int
-class HealthData : public Variable<HealthT>
+typedef int T_Health;
+typedef int T_Damage;
+class HealthData : public Variable<T_Health>
 {
 public:
     HealthData() : Variable(Health, 100), m_armor(0) {}
 
-    HealthT takeDamage(HealthT d)
+    T_Health takeDamage(T_Damage d)
     {
         if(d <= m_armor)
             return m_value;
@@ -61,12 +62,12 @@ public:
             m_value -= d-m_armor;
         return m_value;
     }
-    void heal(HealthT h)    {m_value += h;}
-    HealthT getArmor() const    {return m_armor;}
-    void setArmor(HealthT a)    {m_armor = a;}
+    void heal(T_Health h)    {m_value += h;}
+    T_Health getArmor() const    {return m_armor;}
+    void setArmor(T_Health a)    {m_armor = a;}
 protected:
-    HealthT m_armor;
+    T_Health m_armor;
 };
-#undef HealthT
+
 
 #endif // VARIABLE_H

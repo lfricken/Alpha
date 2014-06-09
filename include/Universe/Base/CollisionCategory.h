@@ -27,10 +27,12 @@ constexpr inline int operator &(Category a, Category b)
 enum class MaskBits
 {
     None = Category::None,
-    EnabledProjectile = Category::ShipModule | Category::ShipForceField,
-    DisabledProjectile = Category::ShipHullSensor,
+    ProjectileNorm = Category::ShipModule | Category::ShipForceField,
+    ProjectileOff = Category::ShipHullSensor,
 
-    ShipModule = Category::Projectile,
+    ShipModuleNorm = Category::Projectile,
+    ShipModuleBroke = Category::None,
+
     ShipForceField = Category::ShipForceField | Category::Projectile,
 
     ShipHull = Category::ShipHull,

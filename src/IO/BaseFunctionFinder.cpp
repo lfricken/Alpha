@@ -44,5 +44,6 @@ TargetFunc BaseFunctionFinder::getFunction(const std::string& alias)
 }
 void BaseFunctionFinder::load(const std::string& aliasTable)
 {
+    m_aliasMap.insert(std::pair<std::string, TargetFunc>("damage", &IOBase::input_1));
     ///load the stuff into map from file
 }

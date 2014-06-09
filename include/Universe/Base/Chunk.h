@@ -59,7 +59,7 @@ public:
     /**IO-SYSTEM**/
     void sleep();//sets body to sleep, sets all velocities to 0, and goes to coord args
     void wake();
-    void wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, float angVel);
+    virtual void wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, float angVel);
     bool isAwake() const;
 
     virtual int startContact(PhysicsBase* other);

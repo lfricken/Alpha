@@ -189,6 +189,8 @@ void Chunk::add(const vector<tr1::shared_ptr<ModuleData> >& rDataList)
             hullSensorDat.isSensor = true;
             hullSensorDat.categoryBits = Category::ShipHullSensor;
             hullSensorDat.maskBits = MaskBits::ShipHullSensor;
+            hullSensorDat.butes.setBute(Butes::isDestructable, false);
+            hullSensorDat.butes.setBute(Butes::isSolid, false);
             InsertPtrVector(m_ModuleSPList, &IOBase::getID, tr1::shared_ptr<Module>(new Module(hullSensorDat)));
         }
         else
@@ -319,20 +321,18 @@ void Chunk::primary(sf::Vector2f coords)
     ///get rid of this temporary stuff
     if(m_fireTimer.isTimeUp())
     {
-        cout << "\nBody: (" << m_pBody->GetWorldCenter().x << "," << m_pBody->GetWorldCenter().y << ")";
-
         b2Vec2 difference(coords.x/scale - m_pBody->GetPosition().x, coords.y/scale - m_pBody->GetPosition().y);
         float distance = sqrt(difference.x*difference.x + difference.y*difference.y);
         b2Vec2 component(difference.x/distance, difference.y/distance);
 
         float vel = 20;
-        float off = 10;
+        float off = 0;
         b2Vec2 velvec(vel*component.x, vel*component.y);
         b2Vec2 offset(off*component.x, off*component.y);
 
         Projectile* pBullet = game.getGameUniverse().getProjAlloc().getProjectile(0);
         pBullet->setLifeTimeRemain(3);
-        pBullet->wake(m_pBody->GetPosition()+offset, atan(offset.y/offset.x), velvec+m_pBody->GetLinearVelocity(), m_pBody->GetAngularVelocity());//our position + some, no rotation, velocity +ours, our angular velocity
+        pBullet->wake(m_pBody->GetPosition()+offset, atan(component.y/component.x), velvec+m_pBody->GetLinearVelocity(), m_pBody->GetAngularVelocity());//our position + some, no rotation, velocity +ours, our angular velocity
     }
 }
 void Chunk::secondary(sf::Vector2f coords)
@@ -381,7 +381,8 @@ void Chunk::special_3()
     ///tell modules
 }
 void Chunk::special_4()
-{    ///tell modules
+{
+    ///tell modules
 
 }
 float Chunk::getMaxZoom() const

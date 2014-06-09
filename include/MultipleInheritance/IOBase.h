@@ -26,11 +26,15 @@ struct IOBaseData//initialized
         type(def::io::defaultClassType),
         isEnabled(def::io::defaultIsEnabled),
         name(def::io::defaultName)/**ID is calculated with a name**/
-     //  , ID(defaultID) old
-        {}
-   // unsigned long long int getID() const{return ID;} old
+        //  , ID(defaultID) old
+    {
+        butes.setBute(Butes::isSolid, false);
+        butes.setBute(Butes::isDestructable, false);
+    }
+    // unsigned long long int getID() const{return ID;} old
 
     ClassType type;
+    Attributes butes;
     bool isEnabled;
     std::string name;
     //unsigned long long int ID; old
@@ -79,6 +83,12 @@ public:
     virtual IOBaseReturn input_20(IOBaseArgs);
 
 protected:
+    void f_varEvent(std::string value, Event eventType);//takes a generic variable type, and sends the data to eventer
+    void f_varEvent(int value, Event eventType);
+    void f_varEvent(float value, Event eventType);
+    void f_varEvent(double value, Event eventType);
+
+
     ClassType m_type;//type of object that we are
     Attributes m_attributes;
 

@@ -3,24 +3,8 @@
 
 Attributes::Attributes()
 {
-    m_bute[Butes::isSolid] = false;
-
-
-
-
-
-}
-Attributes::Attributes(int a)
-{
-    m_bute[Butes::isSolid] = a;
-
-
-
-
-
-
-
-
+    for(unsigned int i = 0; i < Butes::NUMBER_OF_ATTRIBUTES; ++i)
+        m_buteList[i] = -1;
 }
 Attributes::~Attributes()
 {
@@ -30,9 +14,9 @@ Attributes::~Attributes()
 
 void Attributes::setBute(Butes index, int val)
 {
-    m_bute[index] = val;
+    m_buteList[index] = val;
 }
 int Attributes::getBute(Butes index) const
 {
-    return m_bute[index];
+    return m_buteList[index];
 }

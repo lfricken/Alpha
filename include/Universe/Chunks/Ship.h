@@ -7,19 +7,21 @@ struct ShipData : public ChunkData//initialized
 {
     ShipData() :
         ChunkData()
-        {type = ClassType::SHIP;}
+    {
+        type = ClassType::SHIP;
+    }
 };
 
 class Ship : public Chunk
 {
-    public:
-        Ship();
-        Ship(const ShipData& data);
-        virtual ~Ship();
+public:
+    Ship();
+    Ship(const ShipData& data);
+    virtual ~Ship();
 
-    protected:
-    private:
-        virtual void f_initialize(const ShipData& data);
+protected:
+private:
+    virtual void f_initialize(const ShipData& data);
 
 };
 

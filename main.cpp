@@ -109,6 +109,11 @@ Game game;//globals.h
 int main()
 {
     ///we should load the defaults from a file, in which case they shouldn't be a const
+    sf::Texture tex;
+    std::cout << "\nMax Texture Size: [" << tex.getMaximumSize() << "].";
+    tex.loadFromFile("textures/default.png");
+    std::cout << "\nTexture Size: [" << tex.getSize().x << "].";
+
 
     Game::Status state = Game::Local;
     while(state != Game::Quit)

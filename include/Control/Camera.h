@@ -26,5 +26,4 @@ class Camera
         ///and which one are we?
         sf::View m_view;
 };
-
 #endif // CAMERA_H

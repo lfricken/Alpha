@@ -6,13 +6,15 @@
 struct ForceFieldData : public ModuleData
 {
     ForceFieldData() :
-        ModuleData()
+        ModuleData(),
+        forceStrength(400)
     {
         type = ClassType::FORCE;
         butes.setBute(isSolid, false);
         butes.setBute(isDestructable, false);
     }
 
+    float forceStrength;
 };
 
 class ForceField : public Module

@@ -325,7 +325,7 @@ void Chunk::primary(sf::Vector2f coords)
         float distance = sqrt(difference.x*difference.x + difference.y*difference.y);
         b2Vec2 component(difference.x/distance, difference.y/distance);
 
-        float vel = 20;
+        float vel = 50;
         float off = 0;
         b2Vec2 velvec(vel*component.x, vel*component.y);
         b2Vec2 offset(off*component.x, off*component.y);
@@ -438,10 +438,14 @@ void Chunk::f_setController(Intelligence* controller)//done
     m_hasController = true;
 }
 /**END**/
-void Chunk::input_1(sf::Packet& rInput)
+IOBaseReturn Chunk::input_1(IOBaseArgs)
 {
     std::string n;
-    rInput >> n;
+    if(!(rInput >> n))
+    {
+        cout << "\nExtraction Fail.";
+        ///ERROR LOG
+    }
     std::cout << std::endl << m_name << " has " << m_GModuleSPList.front()->getHealth() << " health, also " << n;
 }
 int Chunk::startContact(PhysicsBase* other)

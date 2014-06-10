@@ -1,6 +1,6 @@
 #include "GModule.h"
 #include "globals.h"
-
+#include "PacketMod.hpp"
 
 GModule::GModule():
     PhysicsBase(),
@@ -21,7 +21,9 @@ GModule::~GModule()
 }
 void GModule::f_initialize(const GModuleData& data)
 {
-    m_attributes = data.butes;
+    m_health.setArmor(data.armor);
+    m_health.setValue(data.health);
+
     m_isDestroyed = false;
 }
 IOBaseReturn GModule::input_1(IOBaseArgs)
@@ -35,7 +37,7 @@ IOBaseReturn GModule::input_1(IOBaseArgs)
     {
         ///ERROR LOG
         std::cout << "\nError, packet had [";
-        std::cout << amount << "].";
+        std::cout << std::get<DamageMod::Generic>(amount) << "].";
     }
 }
 T_Health GModule::damage(T_Damage damage)
@@ -48,9 +50,9 @@ T_Health GModule::damage(T_Damage damage)
 
     return m_health.getValue();
 }
-T_Health GModule::heal(T_Health health)
+T_Health GModule::heal(T_Health h)
 {
-    m_health.heal(health);
+    m_health.heal(h);
     f_varEvent(m_health.getValue(), m_health.getEventType());
     return m_health.getValue();
 }
@@ -60,7 +62,6 @@ T_Health GModule::getHealth() const
 }
 void GModule::destruct()
 {
-    std::cout << "\nDestruct Called: " << m_attributes.getBute(Butes::isDestructable);
     if(m_attributes.getBute(Butes::isDestructable)) ///DO DESTRUCTION STUFF HERE
     {
         ///SOMETHING COOL FOR NOW
@@ -70,6 +71,5 @@ void GModule::destruct()
 
         m_isDestroyed = true;
         setTexTile(sf::Vector2f(4, 0));
-        std::cout << "\nModule Destroyed.";
     }
 }

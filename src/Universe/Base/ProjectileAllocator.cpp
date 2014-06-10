@@ -73,16 +73,18 @@ void ProjectileAllocator::load()///load definitions of projectile types from a f
     data.isSensor = false;
     data.density = 0.1f;
     data.friction = 0.4f;
-    data.halfSize = b2Vec2(0.25, 0.25);
+    data.halfSize = b2Vec2(0.0625, 0.0625);
     data.offset = b2Vec2(0, 0);
     data.pBody = NULL;//we dont know it yet
     data.restitution = 0.2f;
     data.rotation = 0.0f;
     data.texTile = sf::Vector2f(0, 0);
+    data.texTileSize = sf::Vector2f(32, 32);
     data.color = sf::Color::White;
 
     ProjectileData& rProjData = get<projData>(m_projList[type]);
     rProjData.projType = type;
+    rProjData.damage = T_Damage(500, 0);
     //do stuff
     /**access first type END**/
 

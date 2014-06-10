@@ -18,7 +18,7 @@ ForceField::~ForceField()
 }
 void ForceField::f_initialize(const ForceFieldData& data)
 {
-    m_strength = 400;
+    m_strength = data.forceStrength;
 }
 int ForceField::startContact(PhysicsBase* other)
 {

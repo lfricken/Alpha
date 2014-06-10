@@ -60,7 +60,6 @@ float Projectile::changeLifeTimeRemain(float change)
 {
     return (m_lifeTimeRemaining += change);
 }
-
 void Projectile::wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, float angVel)//box2d uses radians
 {
     Chunk::wake(pos, angle, velocity, angVel);
@@ -69,8 +68,6 @@ void Projectile::wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, fl
 int Projectile::startContact(PhysicsBase* other)
 {
     /**do stuff**/
-    cout << "\nType: " << other->getType();
-    cout << "\nIs Solid: " << other->getButes().getBute(Butes::isSolid);
     if(other->getButes().getBute(Butes::isSolid))
     {
         sf::Packet damagePacket;

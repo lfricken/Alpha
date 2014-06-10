@@ -19,8 +19,9 @@ struct ProjectileData : public ChunkData
 {
     ProjectileData() :
         ChunkData(),
-        projType(0),
-        damage(20)
+        damage(0, 0),
+        projType(0)
+
     {
         type = ClassType::PROJECTILE;
         isBullet = true;
@@ -28,6 +29,7 @@ struct ProjectileData : public ChunkData
     }
     T_Damage damage;
     ProjectileType projType;
+
 };
 
 class Projectile : public Chunk

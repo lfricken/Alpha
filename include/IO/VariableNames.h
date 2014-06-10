@@ -48,7 +48,14 @@ private:
 /**SPECIFIC ATTRIBUTES**/
 /***********************/
 typedef int T_Health;
-typedef int T_Damage;
+typedef T_Health T_Armor;
+typedef std::tuple<T_Health, T_Armor> T_Damage;
+enum DamageMod
+{
+    Generic = 0,
+    Pierce,
+};
+
 class HealthData : public Variable<T_Health>
 {
 public:
@@ -56,17 +63,22 @@ public:
 
     T_Health takeDamage(T_Damage d)
     {
-        if(d <= m_armor)
+        T_Armor armor = m_armor;
+        armor -= std::get<Pierce>(d);
+        if(armor < 0)
+            armor = 0;
+
+        if(std::get<Generic>(d) <= armor)
             return m_value;
         else
-            m_value -= d-m_armor;
+            m_value -= std::get<Generic>(d)-armor;
         return m_value;
     }
     void heal(T_Health h)    {m_value += h;}
-    T_Health getArmor() const    {return m_armor;}
-    void setArmor(T_Health a)    {m_armor = a;}
+    T_Armor getArmor() const    {return m_armor;}
+    void setArmor(T_Armor a)    {m_armor = a;}
 protected:
-    T_Health m_armor;
+    T_Armor m_armor;
 };
 
 

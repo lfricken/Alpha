@@ -48,6 +48,19 @@ Game::Game()
     ///if(!icon.loadFromFile("textures/tileset.png"))
     /// cout << "\nIcon Load Error";///texture allocator
     ///m_spWindow.setIcon(32, 32, icon.getPixelsPtr());
+
+    if (sf::Shader::isAvailable())
+        cout << "\nCan use post effects.";
+    else
+        cout << "\nCan NOT use post effects.";
+
+    sf::Shader effect;
+    string effectName = "colorize.sfx";
+    if (!effect.loadFromFile(effectName, sf::Shader::Fragment))
+        cout << "\nFailed to load [" << effectName << "].";
+    else
+        cout << "\nLoaded [" << effectName << "].";
+
 }
 Game::~Game()//unfinished
 {
@@ -93,13 +106,13 @@ Game::Status Game::run()
 {
     /**LOAD THE GAME**/
     f_load("stuff");
-
     /**SIMULATION & RUNTIME**/
     Game::Status newState = Game::Local;
 
     float fps = 0;
     float firstTime = 0, secondTime = 0, timeForFrame = 0, computeTime = 0, remainder = 0;
     int i = 0;
+
 
     sf::Event event;
     while(m_spWindow->isOpen() && newState != Game::Quit)
@@ -139,7 +152,7 @@ Game::Status Game::run()
 
 
         /**DRAW**/
-        m_spWindow->clear();
+        m_spWindow->clear(sf::Color(0,0,0,0));
         m_spControlManager->drawUpdate();
         m_spOverlayManager->draw();
         //m_spWindow->setView(m_spWindow->getDefaultView());///draw stuff that is on hud///this doesn't appear to do anything anymore
@@ -153,9 +166,8 @@ float Game::getTime() const
 {
     return m_clock.getElapsedTime().asSeconds();
 }
-void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING EXACTLY
+void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING EXACTLY, defaults states?, maps?, screen items?
 {
-
     ///Go through file sections
     ///Intelligences
     ///Universe Entities
@@ -275,10 +287,16 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 ///==============================================================================
     /**=============================================SHIPS=============================================**/
 
-
-
     /**SHIP MODULES**/
+    Courier* pModuleCourier = new Courier();
+    sf::Packet modPack;
+    modPack << "eventing works!";
+    pModuleCourier->condition.reset(Event::Health, "50", 50, '<', true);
+    pModuleCourier->package.reset("Static_Chunk_1", "input_1", modPack, 0, Destination::UNIVERSE);
+
     GModuleData shipModuleData;
+    shipModuleData.spCourierList.push_back(tr1::shared_ptr<Courier>(pModuleCourier));
+
     shipModuleData.type = ClassType::GMODULE;
     shipModuleData.shape = Shape::BOX;
     shipModuleData.categoryBits = Category::ShipModule;

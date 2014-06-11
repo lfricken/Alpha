@@ -27,8 +27,8 @@ public:
     virtual int startContact(PhysicsBase* other);
     virtual int endContact(PhysicsBase* other);
 
-    virtual void enable();
-    virtual void disable();
+    virtual void enable();///SHOULD ALSO BE IN OTHER BASER CLASSES
+    virtual void disable();///SHOULD ALSO BE IN OTHER BASER CLASSES
 
     virtual bool physUpdate();
 protected:

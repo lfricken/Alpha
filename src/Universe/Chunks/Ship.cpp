@@ -20,19 +20,4 @@ Ship::~Ship()
 void Ship::f_initialize(const ShipData& sData)
 {
 
-
-    /**temporary**/
-    ForceFieldData data;
-    data.shape = Shape::CIRCLE;
-    data.isSensor = true;
-    data.halfSize = b2Vec2(8, 8);
-    data.density = 0;
-    data.pBody = m_pBody;
-    data.categoryBits = Category::ShipForceField;
-    data.maskBits = MaskBits::ShipForceField;
-
-    ForceField* tempPtr = new ForceField(data);
-    m_ModuleSPList.push_back(tr1::shared_ptr<Module>(tempPtr));
-    m_SpecialPhysPList.push_back(tempPtr);
-    tempPtr->disable();
 }

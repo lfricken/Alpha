@@ -14,16 +14,19 @@
 #include "ControlManager.h"
 #include "BaseFunctionFinder.h"
 
+#include "Armor.h"
+#include "ForceFieldCore.h"
+
 using namespace std;
 
 Game::Game()
 {
     ///load window data into settings, and launch window with the settings
-    m_settings.antialiasingLevel = 0;
+    m_settings.antialiasingLevel = 4;
 
     sf::VideoMode mode = sf::VideoMode::getDesktopMode();
     mode = sf::VideoMode(1200, 700, 32);
-    m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(800, 600, 32), "SFML Box2D Test Environment", sf::Style::Default, m_settings));
+    m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(mode, "SFML Box2D Test Environment", sf::Style::Default, m_settings));
     m_spFunctionFinder = std::tr1::shared_ptr<BaseFunctionFinder>(new BaseFunctionFinder);//independent
     m_spTexAlloc = std::tr1::shared_ptr<TextureAllocator>(new TextureAllocator());//independent
     m_spUniverse = std::tr1::shared_ptr<Universe>(new Universe());//independent
@@ -49,17 +52,19 @@ Game::Game()
     /// cout << "\nIcon Load Error";///texture allocator
     ///m_spWindow.setIcon(32, 32, icon.getPixelsPtr());
 
-    if (sf::Shader::isAvailable())
-        cout << "\nCan use post effects.";
-    else
-        cout << "\nCan NOT use post effects.";
+///FIGURE OUT HOW TO USE POST EFFECTS
+    /**
+        if (sf::Shader::isAvailable())
+            cout << "\nCan use post effects.";
+        else
+            cout << "\nCan NOT use post effects.";
 
-    sf::Shader effect;
-    string effectName = "colorize.sfx";
-    if (!effect.loadFromFile(effectName, sf::Shader::Fragment))
-        cout << "\nFailed to load [" << effectName << "].";
-    else
-        cout << "\nLoaded [" << effectName << "].";
+        sf::Shader effect;
+        string effectName = "colorize.sfx";
+        if (!effect.loadFromFile(effectName, sf::Shader::Fragment))
+            cout << "\nFailed to load [" << effectName << "].";
+        else
+            cout << "\nLoaded [" << effectName << "].";**/
 
 }
 Game::~Game()//unfinished
@@ -113,6 +118,7 @@ Game::Status Game::run()
     float firstTime = 0, secondTime = 0, timeForFrame = 0, computeTime = 0, remainder = 0;
     int i = 0;
 
+    int gray = 60;
 
     sf::Event event;
     while(m_spWindow->isOpen() && newState != Game::Quit)
@@ -152,7 +158,8 @@ Game::Status Game::run()
 
 
         /**DRAW**/
-        m_spWindow->clear(sf::Color(0,0,0,0));
+
+        m_spWindow->clear(sf::Color(gray,gray,gray,255));
         m_spControlManager->drawUpdate();
         m_spOverlayManager->draw();
         //m_spWindow->setView(m_spWindow->getDefaultView());///draw stuff that is on hud///this doesn't appear to do anything anymore
@@ -188,7 +195,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     /**TAB**/
     tgui::Tab::Ptr tab(m_spOverlayManager->getGui());///TEMPORARY, JUST FOR TESTS, NEED TO MAKE MY OWN CONTAINER FOR THIS
     tab->load(config);
-    tab->setPosition(10, 10);
+    tab->setPosition(300, 10);
     tab->add("Weapon");
     tab->add("Ammo");
     tab->add("Items");
@@ -196,7 +203,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     leon::PanelData panelData;
     panelData.configFile = config;
     panelData.backgroundColor = sf::Color(255,255,255,1);
-    panelData.position = sf::Vector2f(200,200);
+    panelData.position = sf::Vector2f(0, 0);
     panelData.size = sf::Vector2f(200,200);
     panelData.type = ClassType::PANEL;
 
@@ -205,7 +212,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     leon::ButtonData buttonData;
     buttonData.size = sf::Vector2f(100,50);
-    buttonData.buttonText = "Win";
+    buttonData.buttonText = "Exit";
     buttonData.position = sf::Vector2f(0, 0);
     buttonData.type = ClassType::BUTTON;
 
@@ -329,8 +336,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     ModuleData hull;
     hull.type = ClassType::HULL;
     hull.shape = Shape::POLYGON;
-    hull.vertices.push_back(b2Vec2(5, 5));
-    hull.vertices.push_back(b2Vec2(-5, 5));
+    hull.vertices.push_back(b2Vec2(3, 5));
+    hull.vertices.push_back(b2Vec2(-3, 5));
     hull.vertices.push_back(b2Vec2(-3, -5));
     hull.vertices.push_back(b2Vec2(0, -6));
     hull.vertices.push_back(b2Vec2(3, -5));
@@ -352,18 +359,88 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     vector<tr1::shared_ptr<ModuleData> > moduleList2;
     short int texTile = 0;
     float offsetDelta = 2*shipModuleData.halfSize.x;
-    for (float i=0, x=-2, numBoxsX = 9; i<numBoxsX; ++i, x+=offsetDelta)//creates boxes in a line
+    for (float i=0, x=-1.5, numBoxsX = 7; i<numBoxsX; ++i, x+=offsetDelta)//creates boxes in a line
     {
-        for (float c=0, y=-4.5, numBoxsY = 19; c<numBoxsY; ++c, y+=offsetDelta, ++texTile)
+        for (float c=0, y=-4.0, numBoxsY = 17; c<numBoxsY; ++c, y+=offsetDelta)
         {
-            if (texTile == 4)
-                texTile = 0;
-            shipModuleData.offset.x = x;
-            shipModuleData.offset.y = y;
-            shipModuleData.texTile.x = texTile;
-            moduleList1.push_back( tr1::shared_ptr<GModuleData>(new GModuleData(shipModuleData)) );
+            if((x!=0) || (y!=0))
+            {
+                shipModuleData.offset.x = x;
+                shipModuleData.offset.y = y;
+                //shipModuleData.texTile.x = texTile;
+                moduleList1.push_back( tr1::shared_ptr<GModuleData>(new GModuleData(shipModuleData)) );
+            }
         }
     }
+
+    ArmorData armorData;
+    //armorData.spCourierList.push_back(tr1::shared_ptr<Courier>(pModuleCourier));
+
+    armorData.type = ClassType::GMODULE;
+    armorData.shape = Shape::BOX;
+    armorData.categoryBits = Category::ShipModule;
+    armorData.maskBits = MaskBits::ShipModuleNorm;
+    armorData.isSensor = false;
+    armorData.density = 1.0f;
+    armorData.friction = 0.4f;
+    armorData.halfSize = b2Vec2(0.25, 0.25);
+    armorData.offset = b2Vec2(0, 0);
+    armorData.pBody = NULL;//we dont know it yet
+    armorData.restitution = 0.2f;
+    //armorData.rotation = 0.0f;
+    armorData.texName = "textures/default.png";
+    armorData.texTile = sf::Vector2f(3, 0);
+    armorData.color = sf::Color::White;
+    for (float i=0, x=-4, y=-9, numBoxsX = 19; i<numBoxsX; ++i, ++y)//creates boxes in a line
+    {
+        armorData.offset.x = x*2*armorData.halfSize.x;
+        armorData.offset.y = y*2*armorData.halfSize.y;
+        //shipModuleData.texTile.x = texTile;
+        moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ArmorData(armorData)) );
+    }
+    for (float i=0, x=4, y=-9, numBoxsX = 19; i<numBoxsX; ++i, ++y)//creates boxes in a line
+    {
+        armorData.offset.x = x*2*armorData.halfSize.x;
+        armorData.offset.y = y*2*armorData.halfSize.y;
+        //shipModuleData.texTile.x = texTile;
+        moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ArmorData(armorData)) );
+    }
+    for (float i=0, x=-2, y=-9, numBoxsX = 5; i<numBoxsX; ++i, ++x)//creates boxes in a line
+    {
+        armorData.offset.x = x*2*armorData.halfSize.x;
+        armorData.offset.y = y*2*armorData.halfSize.y;
+        //shipModuleData.texTile.x = texTile;
+        moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ArmorData(armorData)) );
+    }
+    for (float i=0, x=-2, y=9, numBoxsX = 5; i<numBoxsX; ++i, ++x)//creates boxes in a line
+    {
+        armorData.offset.x = x*2*armorData.halfSize.x;
+        armorData.offset.y = y*2*armorData.halfSize.y;
+        //shipModuleData.texTile.x = texTile;
+        moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ArmorData(armorData)) );
+    }
+
+    ForceFieldCoreData fieldCoreData;
+    //armorData.spCourierList.push_back(tr1::shared_ptr<Courier>(pModuleCourier));
+
+    fieldCoreData.type = ClassType::FORCE;
+    fieldCoreData.shape = Shape::BOX;
+    fieldCoreData.categoryBits = Category::ShipModule;
+    fieldCoreData.maskBits = MaskBits::ShipModuleNorm;
+    fieldCoreData.isSensor = false;
+    fieldCoreData.density = 1.0f;
+    fieldCoreData.friction = 0.4f;
+    fieldCoreData.halfSize = b2Vec2(0.25, 0.25);
+    fieldCoreData.offset = b2Vec2(0, 0);
+    fieldCoreData.pBody = NULL;//we dont know it yet
+    fieldCoreData.restitution = 0.2f;
+    //fieldCoreData.rotation = 0.0f;
+    fieldCoreData.texName = "textures/default.png";
+    fieldCoreData.texTile = sf::Vector2f(1, 0);
+    fieldCoreData.color = sf::Color::White;
+    moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ForceFieldCoreData(fieldCoreData)) );
+
+
     shipModuleData.rotation = 90;
     shipModuleData.shape = Shape::TRIANGLE;
     shipModuleData.name = "GM01";
@@ -389,15 +466,15 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     shipDat.bodyType = b2BodyType::b2_dynamicBody;
     shipDat.type = ClassType::SHIP;
 
-    largeChunkData.position = b2Vec2(-5, -5);
-    Chunk* chunk0 = new Chunk(largeChunkData);
+    shipDat.position = b2Vec2(-5, -5);
+    Chunk* chunk0 = new Ship(shipDat);
     chunk0->setName("bigChunk_56");
     chunk0->add(moduleList1, example);
     chunk0->add(moduleList2);
     m_spUniverse->add(tr1::shared_ptr<Chunk>(chunk0));
 
-    largeChunkData.position = b2Vec2(20, -20);
-    Chunk* chunk1 = new Chunk(largeChunkData);
+    shipDat.position = b2Vec2(20, -20);
+    Chunk* chunk1 = new Ship(shipDat);
     chunk1->setName("bigChunk_2");
     chunk1->add(moduleList1, example);
     chunk1->add(moduleList2);

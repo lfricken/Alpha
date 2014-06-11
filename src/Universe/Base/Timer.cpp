@@ -3,7 +3,9 @@
 
 Timer::Timer()
 {
-    m_lastCountDownTime = m_lastElapsedTime = game.getTime();
+    m_lastElapsedTime = game.getTime();
+
+    m_lastCountDownTime = game.getTime();
     m_countDownTime = 1.0f;
     m_countDownTimeRemain = m_countDownTime;
 }

@@ -3,14 +3,15 @@
 
 #include "GModule.h"
 
-/*
 struct ArmorData : public GModuleData
 {
     ArmorData() :
         GModuleData()
     {
         type = ClassType::ARMOR;
+        armor = 500;
     }
+
 };
 
 class Armor : public GModule
@@ -23,6 +24,7 @@ public:
 protected:
 private:
     void f_initialize(const ArmorData& data);
+
 };
-*/
+
 #endif // ARMOR_H

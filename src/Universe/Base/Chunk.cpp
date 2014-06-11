@@ -2,10 +2,15 @@
 #include "globals.h"
 
 #include "Intelligence.h"
-#include "GModule.h"
-#include "Module.h"
 #include "Sort.h"
 #include "Angles.h"
+
+#include "GModule.h"
+#include "Module.h"
+
+#include "Armor.h"
+#include "ForceField.h"
+#include "ForceFieldCore.h"
 
 using namespace std;
 
@@ -135,19 +140,52 @@ void Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList, const ve
     for(vector<tr1::shared_ptr<GModuleData> >::const_iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
         GModule* ptr;
-        (*it_data)->pBody = m_pBody;
+        (**it_data).pBody = m_pBody;
 
-        if((*it_data)->type == ClassType::GMODULE)
-            ptr = new GModule(**it_data);
+        if((**it_data).type == ClassType::GMODULE)
+        {
+            ptr = static_cast<GModule*>(new GModule(static_cast<GModuleData>(**it_data)));
+        }
+        else if((**it_data).type == ClassType::ARMOR)
+        {
+            GModuleData* pData = &(**it_data);
+            ArmorData* pArmor = static_cast<ArmorData*>(pData);
+            ptr = static_cast<GModule*>(new Armor(*pArmor));
+        }
+        else if((*it_data)->type == ClassType::FORCE)
+        {
+            GModuleData* pData = &(**it_data);
+            ForceFieldCoreData* pFFCD = static_cast<ForceFieldCoreData*>(pData);
 
-        ///list all types of modules here
+            ForceFieldData data;
+            data.shape = Shape::CIRCLE;
+            data.isSensor = true;
+            data.halfSize = b2Vec2(8, 8);
+            data.density = 0;
+            data.pBody = m_pBody;
+            data.categoryBits = Category::ShipForceField;
+            data.maskBits = MaskBits::ShipForceField;
+
+            ForceField* tempPtr = new ForceField(data);
+            m_ModuleSPList.push_back(tr1::shared_ptr<Module>(tempPtr));
+            m_SpecialPhysPList.push_back(tempPtr);
+
+            pFFCD->pForceField = tempPtr;
+
+            ptr = static_cast<GModule*>(new ForceFieldCore(*pFFCD));
+            ///GET FORCE FIELD DATA FROM THE FORCE FIELD CORE DATA
+
+
+            //tempPtr->disable();
+        }
+        ///list all types of GModules derivatives here
 
 
         else
         {
-            cout << "\nModule of type " << (*it_data)->type << " with name " << (*it_data)->name <<  " was not found.";
+            cout << "\nModule of type " << (**it_data).type << " with name " << (**it_data).name <<  " was not found.";
             ///ERROR LOG
-            ptr = new GModule(**it_data);
+            ptr = static_cast<GModule*>(new GModule(*dynamic_pointer_cast<GModuleData>(*it_data)));
         }
         InsertPtrVector(m_GModuleSPList, &IOBase::getID, tr1::shared_ptr<GModule>(ptr));
     }
@@ -325,7 +363,7 @@ void Chunk::primary(sf::Vector2f coords)
         float distance = sqrt(difference.x*difference.x + difference.y*difference.y);
         b2Vec2 component(difference.x/distance, difference.y/distance);
 
-        float vel = 50;
+        float vel = 25;
         float off = 0;
         b2Vec2 velvec(vel*component.x, vel*component.y);
         b2Vec2 offset(off*component.x, off*component.y);
@@ -338,6 +376,21 @@ void Chunk::primary(sf::Vector2f coords)
 void Chunk::secondary(sf::Vector2f coords)
 {
     ///tell all our modules that we have secondaired at coords
+    if(m_fireTimer.isTimeUp())
+    {
+        b2Vec2 difference(coords.x/scale - m_pBody->GetPosition().x, coords.y/scale - m_pBody->GetPosition().y);
+        float distance = sqrt(difference.x*difference.x + difference.y*difference.y);
+        b2Vec2 component(difference.x/distance, difference.y/distance);
+
+        float vel = 50;
+        float off = 0;
+        b2Vec2 velvec(vel*component.x, vel*component.y);
+        b2Vec2 offset(off*component.x, off*component.y);
+
+        Projectile* pBullet = game.getGameUniverse().getProjAlloc().getProjectile(1);
+        pBullet->setLifeTimeRemain(3);
+        pBullet->wake(m_pBody->GetPosition()+offset, atan(component.y/component.x), velvec+m_pBody->GetLinearVelocity(), m_pBody->GetAngularVelocity());//our position + some, no rotation, velocity +ours, our angular velocity
+    }
 }
 void Chunk::aim(sf::Vector2f coords)
 {

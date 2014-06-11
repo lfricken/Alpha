@@ -58,35 +58,68 @@ void ProjectileAllocator::recieveProjectile(Projectile* pSleepy)
 void ProjectileAllocator::load()///load definitions of projectile types from a file
 {
     /**access first type START**/
-    unsigned int type = 0;
-    m_projList.resize(type+1);
+    GModuleData* data;
+    ProjectileData* rProjData;
+    unsigned int type;
+    m_projList.resize(2);
+
+
+
+    type = 0;
 
     get<spList>(m_projList[type]).clear();
     get<freeIndex>(m_projList[type]) = 0;
 
-    GModuleData& data = get<gModData>(m_projList[type]);
-    data.type = ClassType::GMODULE;
-    data.shape = Shape::CIRCLE;
-    data.texName = "textures/bullet.png";
-    data.categoryBits = Category::Projectile;
-    data.maskBits = MaskBits::ProjectileOff;
-    data.isSensor = false;
-    data.density = 0.1f;
-    data.friction = 0.4f;
-    data.halfSize = b2Vec2(0.0625, 0.0625);
-    data.offset = b2Vec2(0, 0);
-    data.pBody = NULL;//we dont know it yet
-    data.restitution = 0.2f;
-    data.rotation = 0.0f;
-    data.texTile = sf::Vector2f(0, 0);
-    data.texTileSize = sf::Vector2f(32, 32);
-    data.color = sf::Color::White;
+    data = &get<gModData>(m_projList[type]);
+    (*data).type = ClassType::GMODULE;
+    (*data).shape = Shape::CIRCLE;
+    (*data).texName = "textures/bullet_white_64.png";
+    (*data).categoryBits = Category::Projectile;
+    (*data).maskBits = MaskBits::ProjectileOff;
+    (*data).isSensor = false;
+    (*data).density = 0.1f;
+    (*data).friction = 0.4f;
+    (*data).halfSize = b2Vec2(0.0625, 0.0625);
+    (*data).offset = b2Vec2(0, 0);
+    (*data).pBody = NULL;//we dont know it yet
+    (*data).restitution = 0.2f;
+    (*data).rotation = 0.0f;
+    (*data).texTile = sf::Vector2f(0, 0);
+    (*data).texTileSize = sf::Vector2f(32, 32);
+    (*data).color = sf::Color::White;
 
-    ProjectileData& rProjData = get<projData>(m_projList[type]);
-    rProjData.projType = type;
-    rProjData.damage = T_Damage(500, 0);
+    rProjData = &get<projData>(m_projList[type]);
+    (*rProjData).projType = type;
+    (*rProjData).damage = T_Damage(100, 500);
     //do stuff
     /**access first type END**/
+
+    type = 1;
+
+    get<spList>(m_projList[type]).clear();
+    get<freeIndex>(m_projList[type]) = 0;
+
+    data = &get<gModData>(m_projList[type]);
+    (*data).type = ClassType::GMODULE;
+    (*data).shape = Shape::CIRCLE;
+    (*data).texName = "textures/bullet_green_64.png";
+    (*data).categoryBits = Category::Projectile;
+    (*data).maskBits = MaskBits::ProjectileOff;
+    (*data).isSensor = false;
+    (*data).density = 0.1f;
+    (*data).friction = 0.4f;
+    (*data).halfSize = b2Vec2(0.125, 0.125);
+    (*data).offset = b2Vec2(0, 0);
+    (*data).pBody = NULL;//we dont know it yet
+    (*data).restitution = 0.2f;
+    (*data).rotation = 0.0f;
+    (*data).texTile = sf::Vector2f(0, 0);
+    (*data).texTileSize = sf::Vector2f(64, 64);
+    (*data).color = sf::Color::White;
+
+    rProjData = &get<projData>(m_projList[type]);
+    (*rProjData).projType = type;
+    (*rProjData).damage = T_Damage(500, 0);
 
     ///until we actually have the technology to load from a file, just do this...
     ///m_data

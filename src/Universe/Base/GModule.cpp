@@ -23,6 +23,7 @@ void GModule::f_initialize(const GModuleData& data)
 {
     m_health.setArmor(data.armor);
     m_health.setValue(data.health);
+    m_health.setMaxValue(data.health);
 
     m_isDestroyed = false;
 }
@@ -44,6 +45,9 @@ T_Health GModule::damage(T_Damage damage)
 {
     m_health.takeDamage(damage);
     f_varEvent(m_health.getValue(), m_health.getEventType());
+
+    if(m_health.getValuePercent() < 50.0f)
+        getAnimation().setState(AnimationState::Damaged);
 
     if(m_health.getValue() <= 0)//if our health drops too low
         destruct();
@@ -70,6 +74,7 @@ void GModule::destruct()
         m_pFixture->SetFilterData(filter);
 
         m_isDestroyed = true;
-        setTexTile(sf::Vector2f(4, 0));
+        getAnimation().setState(AnimationState::Destroyed);
+        //setTexTile(sf::Vector2f(4, 0));
     }
 }

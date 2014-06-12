@@ -20,6 +20,8 @@ GraphicsBase::~GraphicsBase()
 ///    : m_color(rData.color), m_tileSize(rHalfSize.x*2, rHalfSize.y*2), m_tilePos(rOffset.x, rOffset.y)
 void GraphicsBase::f_initialize(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset, const float rotation)
 {
+    m_animControl.setState(rData.animState);
+
     m_color = rData.color;
     m_tileSize = sf::Vector2f(rHalfSize.x*2, rHalfSize.y*2);
     m_tilePos = sf::Vector2f(rOffset.x, rOffset.y);///IS M_TILEPOS CORRECTLY SET?
@@ -67,14 +69,10 @@ int GraphicsBase::getTextVertexIndex() const
 {
     return m_textVertexIndex;
 }
-
-
-
-
 void GraphicsBase::setTilePos(const sf::Vector2f& rTilePos)/**///THIS IS GOING WRONG SOMEHOW, or is it?
 {
     m_tilePos = rTilePos;//pointer
-        ///make this use the tex vert pointer
+    ///make this use the tex vert pointer
     m_pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
 
     sf::Vector2f vertices[4];
@@ -105,7 +103,7 @@ void GraphicsBase::incTexTile()///for testing???
 void GraphicsBase::setTexTile(const sf::Vector2f& rTexTile)/**set texture tile in our loaded graphic**/
 {
     m_texTile = rTexTile;//pointer
-        ///make this use the tex vert pointer
+    ///make this use the tex vert pointer
     m_pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
     m_pVertex[0].texCoords = sf::Vector2f(m_texTileSize.x*(m_texTile.x), m_texTileSize.y*(m_texTile.y));
     m_pVertex[1].texCoords = sf::Vector2f(m_texTileSize.x*(m_texTile.x+1), m_texTileSize.y*(m_texTile.y));
@@ -142,14 +140,11 @@ const sf::Color& GraphicsBase::getColor()
     m_pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
     return m_pVertex[0].color;//pointer
 }
-/*
-void GraphicsBase::setDispPri(const int dispPri)
+void GraphicsBase::animate()
 {
-    m_dispPri = dispPri;
+    setTexTile(m_animControl.getTile());
 }
-const int GraphicsBase::getDispPri() const
+AnimationController& GraphicsBase::getAnimation()
 {
-    return m_dispPri;
+    return m_animControl;
 }
-*/
-/**Const Overloads**/

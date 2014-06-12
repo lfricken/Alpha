@@ -1,6 +1,12 @@
 #include "Timer.h"
 #include "globals.h"
 
+
+///make animation work
+///fix force field collision with eachother
+
+
+
 Timer::Timer()
 {
     m_lastElapsedTime = game.getTime();
@@ -11,7 +17,7 @@ Timer::Timer()
 }
 Timer::~Timer()
 {
-    //dtor
+
 }
 float Timer::getTime() const//time elapsed as seconds since game was initialized
 {

@@ -32,13 +32,18 @@ template <typename T>
 class Variable
 {
 public:
-    Variable(Event eve, T val) : m_value(val), m_eventName(eve) {}
+    Variable(Event eve, T val) : m_value(val), m_maxValue(val), m_eventName(eve) {}
 
-    Event getEventType() const  {return m_eventName;}
-    T getValue() const  {return m_value;}
-    void setValue(T val)    {m_value = val;}
+    Event getEventType() const {return m_eventName;}
+    T getValue() const {return m_value;}
+    float getValuePercent() const {return  (static_cast<float>(m_value)/static_cast<float>(m_maxValue)) *100;}
+    void setValue(T val) {m_value = val;}
+
+    T getMaxValue() const {return m_maxValue;}
+    void setMaxValue(T maxVal) {m_maxValue = maxVal;}
 protected:
     T m_value;
+    T m_maxValue;
 private:
     Event m_eventName;
 };
@@ -74,9 +79,14 @@ public:
             m_value -= std::get<Generic>(d)-armor;
         return m_value;
     }
-    void heal(T_Health h)    {m_value += h;}
-    T_Armor getArmor() const    {return m_armor;}
-    void setArmor(T_Armor a)    {m_armor = a;}
+    void heal(T_Health h)
+    {
+        m_value += h;
+        if(m_value > m_maxValue)
+            m_value = m_maxValue;
+    }
+    T_Armor getArmor() const {return m_armor;}
+    void setArmor(T_Armor a) {m_armor = a;}
 protected:
     T_Armor m_armor;
 };

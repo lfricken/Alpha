@@ -244,6 +244,12 @@ void Chunk::draw()
 {
     if(m_awake)
     {
+        std::vector<std::tr1::shared_ptr<GModule> >::iterator it_end = m_GModuleSPList.end();
+        for(std::vector<std::tr1::shared_ptr<GModule> >::iterator it = m_GModuleSPList.begin(); it != it_end; ++it)
+        {
+            (**it).animate();
+        }
+
         m_tiles.setPosition(scale*m_pBody->GetPosition().x, scale*m_pBody->GetPosition().y);
         m_tiles.setRotation(leon::radToDeg(m_pBody->GetAngle()));
         m_rWindow.draw(m_tiles);

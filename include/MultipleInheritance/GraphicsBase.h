@@ -3,6 +3,8 @@
 
 #include "stdafx.h"
 #include "IOBase.h"
+#include "AnimationController.h"
+#include "AnimationState.h"
 
 struct TexturedVertices;
 
@@ -12,9 +14,11 @@ struct GraphicsBaseData//initialized
         texName(def::gfx::defaultTexName),
         color(def::gfx::defaultColor),
         texTileSize(def::gfx::defaultTexTileSize),
-        texTile(def::gfx::defaultTexTile)
+        texTile(def::gfx::defaultTexTile),
+        animState(AnimationState::Default)
         {}
 
+    AnimationState animState;//sets animation to start initially or not
     std::string texName;
     sf::Color color;//color mask
     sf::Vector2f texTileSize;//size of the texture rectangle
@@ -40,23 +44,23 @@ public:
     virtual const TexturedVertices* getTextVertex() const;
     int getTextVertexIndex() const;
 
-    virtual void setTilePos(const sf::Vector2f& rTilePos);
+    virtual void setTilePos(const sf::Vector2f& rTilePos);//position of tile in game
     virtual const sf::Vector2f& getTilePosition() const;
 
-    virtual void incTexTile();
+    virtual void incTexTile();//depreciated
 
-    virtual void setTexTile(const sf::Vector2f& rTexTile);
-    virtual const sf::Vector2f& getTexTile() const;
+    virtual void setTexTile(const sf::Vector2f& rTexTile);//depreciated
+    virtual const sf::Vector2f& getTexTile() const;//depreciated
 
     virtual void setTileSize(const sf::Vector2f& rTileSize);
     virtual const sf::Vector2f& getTileSize() const;
 
     virtual void setColor(const sf::Color& rColor);
     virtual const sf::Color& getColor();
-/*
-    virtual void setDispPri(const int dispPri);
-    virtual const int getDispPri() const;
-    */
+
+    AnimationController& getAnimation();
+
+    virtual void animate();
 protected:
     sf::Color m_color;//color modifier for the vertices
     sf::Vector2f m_tileSize;//size of pos coords
@@ -73,6 +77,8 @@ protected:
     float m_netRotation;
 private:
     virtual void f_initialize(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset, const float rotation);
+
+    AnimationController m_animControl;
 };
 
 #endif // GRAPHICSBASE_H

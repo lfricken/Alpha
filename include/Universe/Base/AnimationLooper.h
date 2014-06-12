@@ -4,15 +4,20 @@
 #include "stdafx.h"
 #include "Timer.h"
 
+//used by animation controler to
 class AnimationLooper
 {
+    typedef std::vector<sf::Vector2f>::const_iterator const_it;
+
     public:
         AnimationLooper();
         virtual ~AnimationLooper();
 
+        void runOnce(bool once);
+
         void restart();//starts from beginning
-        bool start();//starts the animation loop, returns true if it was in stop mode
-        bool stop();//stops the animation loop, returns true if it wasn't already stopped
+        void start();//starts the animation loop
+        void stop();//stops the animation loop
 
         void setDelay(float delay);//delay to set the timer
         void setSequence(const std::vector<sf::Vector2f>& sequence);//sequence of tiles to loop through
@@ -20,14 +25,18 @@ class AnimationLooper
 
     protected:
     private:
+        const_it f_getNext();
+
         Timer m_timer;//helps control time delay between each animation frame
 
-        float m_lastSwitchTime;//stores the last time we changed our texture tile
+        float m_delay;
         float m_accumulatedTime;//stores residual time left over from a switch, like 0.01 seconds.
         bool m_stopped;
+        bool m_runOnce;
 
         std::vector<sf::Vector2f> m_sequence;//a sequence of tile coordinates to loop through
-        std::vector<sf::Vector2f>::const_iterator m_it;//our current position in the sequence, it is what we should display when we are asked for something
+        const_it m_it;//our current position in the sequence, it is what we should display when we are asked for something
+        const_it m_itLast;//used if we don't need the next one
 };
 
 #endif // ANIMATIONLOOPER_H

@@ -75,6 +75,7 @@
 		<Unit filename="include/Game/Game.h" />
 		<Unit filename="include/Game/TextureAllocator.h" />
 		<Unit filename="include/Headers/Angles.h" />
+		<Unit filename="include/Headers/AnimationState.h" />
 		<Unit filename="include/Headers/PacketMod.hpp" />
 		<Unit filename="include/Headers/Rotate.h" />
 		<Unit filename="include/Headers/Sort.h" />
@@ -92,6 +93,7 @@
 		<Unit filename="include/MultipleInheritance/GraphicsBase.h" />
 		<Unit filename="include/MultipleInheritance/IOBase.h" />
 		<Unit filename="include/MultipleInheritance/PhysicsBase.h" />
+		<Unit filename="include/Universe/Base/AnimationController.h" />
 		<Unit filename="include/Universe/Base/AnimationLooper.h" />
 		<Unit filename="include/Universe/Base/Attributes.h" />
 		<Unit filename="include/Universe/Base/BedFinder.h" />
@@ -132,6 +134,7 @@
 		<Unit filename="src/MultipleInheritance/GraphicsBase.cpp" />
 		<Unit filename="src/MultipleInheritance/IOBase.cpp" />
 		<Unit filename="src/MultipleInheritance/PhysicsBase.cpp" />
+		<Unit filename="src/Universe/Base/AnimationController.cpp" />
 		<Unit filename="src/Universe/Base/AnimationLooper.cpp" />
 		<Unit filename="src/Universe/Base/Attributes.cpp" />
 		<Unit filename="src/Universe/Base/BedFinder.cpp" />

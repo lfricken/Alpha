@@ -16,6 +16,7 @@
 
 #include "Armor.h"
 #include "ForceFieldCore.h"
+#include "AnimationLooper.h"
 
 using namespace std;
 
@@ -135,7 +136,6 @@ Game::Status Game::run()
             else
                 cout << "\nFPS: " << fps;
         }
-
         /**INPUT and PHYSICS**/
         while(m_spWindow->pollEvent(event))
         {

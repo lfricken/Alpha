@@ -109,7 +109,6 @@ void AnimationController::setState(AnimationState stat)
 
         break;
     case AnimationState::Damaged:
-        std::cout << "\nHere.";
         m_animLoop.setSequence(m_damaged);
         m_animLoop.runOnce(false);
         m_animLoop.setDelay(0.5);

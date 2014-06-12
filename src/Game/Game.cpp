@@ -227,6 +227,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     panel->add(button);
 
 
+
     /**TAB**/
 
     /**
@@ -387,8 +388,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     armorData.offset = b2Vec2(0, 0);
     armorData.pBody = NULL;//we dont know it yet
     armorData.restitution = 0.2f;
-    //armorData.rotation = 0.0f;
-    armorData.texName = "textures/default.png";
+
+    armorData.texName = "textures/armor/armor.png";
     armorData.texTile = sf::Vector2f(3, 0);
     armorData.color = sf::Color::White;
     for (float i=0, x=-4, y=-9, numBoxsX = 19; i<numBoxsX; ++i, ++y)//creates boxes in a line
@@ -446,8 +447,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     shipModuleData.name = "GM01";
     shipModuleData.offset.y = 5;
     moduleList1.push_back(tr1::shared_ptr<GModuleData>(new GModuleData(shipModuleData)));
-    moduleList2.push_back(tr1::shared_ptr<ModuleData>(&mdata));
-    moduleList2.push_back(tr1::shared_ptr<ModuleData>(&hull));
+    moduleList2.push_back(tr1::shared_ptr<ModuleData>(new ModuleData(mdata)));
+    moduleList2.push_back(tr1::shared_ptr<ModuleData>(new ModuleData(hull)));
     ///SortPtrVector(moduleList1, &IOBaseData::getID);
 
     /**SHIP MODULES**/

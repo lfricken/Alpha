@@ -16,12 +16,12 @@ struct ChunkData : public IOBaseData//initialized
 {
     ChunkData() :
         IOBaseData(),
-        bodyType(def::cnk::defaultBodyType),
-        position(def::cnk::defaultPosition),
-        isBullet(def::cnk::defaultIsBullet),
-        maxZoom(def::cnk::defaultMaxZoom),
-        minZoom(def::cnk::defaultMinZoom),
-        controlEnabled(def::cnk::defaultCntrlEnabled),
+        bodyType(def::cnk::bodyType),
+        position(def::cnk::position),
+        isBullet(def::cnk::isBullet),
+        maxZoom(def::cnk::maxZoom),
+        minZoom(def::cnk::minZoom),
+        controlEnabled(def::cnk::controlEnabled),
         awake(true)///need a default state here
         {type = ClassType::CHUNK;}
 
@@ -50,7 +50,7 @@ public:
     virtual IOBase* getIOBase(const std::string& targetName);
 
   ///  virtual void add(std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);
-    virtual void add(const std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList, const std::vector<b2Vec2>& vertices = std::vector<b2Vec2>());//we only call this once!
+    virtual void add(const std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);//we only call this once!
     virtual void add(const std::vector<std::tr1::shared_ptr<ModuleData> >& data);//we only call this once!
 
     virtual void draw();

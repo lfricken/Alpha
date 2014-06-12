@@ -14,6 +14,8 @@ struct GModuleData : public PhysicsBaseData, public GraphicsBaseData
         health(1000)
     {
         type = ClassType::GMODULE;
+        categoryBits = Category::ShipModule;
+        maskBits = Mask::ShipModuleNorm;
         butes.setBute(isSolid, true);
         butes.setBute(isDestructable, true);
     }

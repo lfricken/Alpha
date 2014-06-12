@@ -31,6 +31,9 @@ enum ClassType///look at COLLISIONCATEGORY.h, and classes.txt
     LISTBOX,
     COMBOBOX,
 
+    /**Decoration**/
+    DECORATION,
+
     /**MODULES**/
     MODULE,//basic module type
     HULL,//for ship-ship collision, and for telling our projectiles when they have left the firing ship

@@ -20,7 +20,7 @@ struct InputConfig
         special_4(sf::Keyboard::X),
         primary(sf::Mouse::Left),
         secondary(sf::Mouse::Right)
-        {}
+    {}
 
     sf::Keyboard::Key up;
     sf::Keyboard::Key down;
@@ -41,11 +41,12 @@ struct PlayerData : public IntelligenceData
     PlayerData() :
         IntelligenceData(),
         keyConfig(),
-        playerMode(def::cntrl::defaultPlayerMode),
-        cameraPos(def::cntrl::defaultCameraPos),
-        cameraSize(def::cntrl::defaultCameraSize),
-        initState(def::cntrl::defaultPlayerState)
+        playerMode(def::cntrl::playerMode),
+        cameraPos(def::cntrl::cameraPos),
+        cameraSize(def::cntrl::cameraSize),
+        initState(def::cntrl::playerState)
     {}
+
     InputConfig keyConfig;
     PlayerMode playerMode;
     sf::Vector2f cameraPos;

@@ -13,10 +13,10 @@ namespace def
 /**IOBASE**/
 namespace io
 {
-extern const ClassType defaultClassType;
-extern const bool defaultIsEnabled;
-extern const std::string defaultName;
-extern const unsigned long long int defaultID;
+extern const ClassType classType;
+extern const bool isEnabled;
+extern const std::string name;
+extern const unsigned long long int ID;
 
 #define IOBaseReturn void//these defines are used to take headache out of changing them
 #define IOBaseArgs sf::Packet& rInput
@@ -27,16 +27,16 @@ extern const unsigned long long int defaultID;
 /**PHYSICS**/
 namespace phys
 {
-extern const Shape defaultShape;
-extern const Category defaultCategory;
-extern const MaskBits defaultMaskBits;
-extern const bool defaultIsSensor;
-extern const b2Vec2 defaultOffset;
-extern const b2Vec2 defaultHalfSize;
-extern const float defaultDensity;
-extern const float defaultFriction;
-extern const float defaultRestitution;
-extern const float defaultRotation;//degrees CW
+extern const Shape shape;
+extern const Category category;
+extern const Mask mask;
+extern const bool isSensor;
+extern const b2Vec2 offset;
+extern const b2Vec2 halfSize;
+extern const float density;
+extern const float friction;
+extern const float restitution;
+extern const float rotation;//degrees CW
 }
 /**PHYSICS**/
 
@@ -44,10 +44,14 @@ extern const float defaultRotation;//degrees CW
 /**GRAPHICS**/
 namespace gfx
 {
-extern const std::string defaultTexName;
-extern const sf::Color defaultColor;
-extern const sf::Vector2f defaultTexTileSize;
-extern const sf::Vector2f defaultTexTile;
+extern const float rotation;
+extern const std::string texName;
+extern const sf::Color color;
+extern const sf::Vector2f texTileSize;
+extern const sf::Vector2f texTile;
+
+extern const sf::Vector2f position;
+extern const sf::Vector2f scale;
 }
 /**GRAPHICS**/
 
@@ -55,12 +59,12 @@ extern const sf::Vector2f defaultTexTile;
 /**CHUNK**/
 namespace cnk
 {
-extern const b2BodyType defaultBodyType;
-extern const b2Vec2 defaultPosition;
-extern const bool defaultIsBullet;
-extern const float defaultMaxZoom;
-extern const float defaultMinZoom;
-extern const bool defaultCntrlEnabled;
+extern const b2BodyType bodyType;
+extern const b2Vec2 position;
+extern const bool isBullet;
+extern const float maxZoom;
+extern const float minZoom;
+extern const bool controlEnabled;
 }
 /**CHUNK**/
 
@@ -68,11 +72,11 @@ extern const bool defaultCntrlEnabled;
 /**CONTROLERS**/
 namespace cntrl
 {
-extern const std::string defaultTargetName;
-extern const PlayerMode defaultPlayerMode;
-extern const sf::Vector2f defaultCameraPos;
-extern const sf::Vector2f defaultCameraSize;
-extern const PlayerState defaultPlayerState;
+extern const std::string targetName;
+extern const PlayerMode playerMode;
+extern const sf::Vector2f cameraPos;
+extern const sf::Vector2f cameraSize;
+extern const PlayerState playerState;
 }
 /**CONTROLERS**/
 
@@ -80,11 +84,11 @@ extern const PlayerState defaultPlayerState;
 /**GUI**/
 namespace gui
 {
-extern const sf::Color defaultBackgroundColor;
-extern const std::string defaultButtonText;
-extern const std::string defaultConfig;
-extern const sf::Vector2f defaultPosition;
-extern const sf::Vector2f defaultSize;
+extern const sf::Color backgroundColor;
+extern const std::string buttonText;
+extern const std::string config;
+extern const sf::Vector2f position;
+extern const sf::Vector2f size;
 }
 /**GUI**/
 

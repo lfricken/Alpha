@@ -9,7 +9,7 @@ struct ButtonData : public WidgetBaseData
 {
     ButtonData() :
         WidgetBaseData(),
-        buttonText(def::gui::defaultButtonText)
+        buttonText(def::gui::buttonText)
     {}
 
     std::string buttonText;

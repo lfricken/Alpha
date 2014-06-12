@@ -12,7 +12,9 @@ struct ForceFieldCoreData : public GModuleData
         fieldData()
     {
         type = ClassType::FORCE;
-        texTile = sf::Vector2f(1,0);
+        categoryBits = Category::ShipModule;
+        maskBits = Mask::ShipModuleNorm;
+        texName = "textures/force_field_core/force_field_core_1.png";
     }
 
     ForceField* pForceField;

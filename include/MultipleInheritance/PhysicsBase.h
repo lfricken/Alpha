@@ -9,22 +9,22 @@ struct PhysicsBaseData : public IOBaseData//initialized
 {
     PhysicsBaseData() :
         IOBaseData(),
-        shape(def::phys::defaultShape),
-        categoryBits(def::phys::defaultCategory),
-        maskBits(def::phys::defaultMaskBits),
-        isSensor(def::phys::defaultIsSensor),
-        offset(def::phys::defaultOffset),
-        halfSize(def::phys::defaultHalfSize),
-        density(def::phys::defaultDensity),
-        friction(def::phys::defaultFriction),
-        restitution(def::phys::defaultRestitution),
-        rotation(def::phys::defaultRotation),
+        shape(def::phys::shape),
+        categoryBits(def::phys::category),
+        maskBits(def::phys::mask),
+        isSensor(def::phys::isSensor),
+        offset(def::phys::offset),
+        halfSize(def::phys::halfSize),
+        density(def::phys::density),
+        friction(def::phys::friction),
+        restitution(def::phys::restitution),
+        rotation(def::phys::rotation),
         pBody(NULL)
         {}
 
     Shape shape;
     Category categoryBits;//what type of object we are
-    MaskBits maskBits;//what we will try and collide with
+    Mask maskBits;//what we will try and collide with
     bool isSensor;
     b2Vec2 offset;/**physics**///offset of the box from the center
     b2Vec2 halfSize;//half size of the box2dBox, also controls the tileSize in graphics

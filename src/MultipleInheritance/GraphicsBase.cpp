@@ -8,7 +8,7 @@ GraphicsBase::GraphicsBase()
 {
     GraphicsBaseData data;
 
-    f_initialize(data, def::phys::defaultHalfSize, def::phys::defaultOffset, def::phys::defaultRotation);
+    f_initialize(data, def::phys::halfSize, def::phys::offset, def::phys::rotation);
 }
 GraphicsBase::GraphicsBase(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset, const float rotation)
 {
@@ -28,7 +28,6 @@ void GraphicsBase::f_initialize(const GraphicsBaseData& rData, const b2Vec2& rHa
 
     m_pVertex = NULL;
     m_texTileSize = rData.texTileSize;
-    m_texTile = rData.texTile;
     m_texName = rData.texName;
     m_netRotation = rotation;
 }

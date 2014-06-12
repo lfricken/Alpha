@@ -67,6 +67,7 @@ AnimationController::AnimationController()
         m_destroyed.push_back(sf::Vector2f(6, 5));
         m_destroyed.push_back(sf::Vector2f(7, 5));
         */
+        setState(AnimationState::Default);
 }
 AnimationController::~AnimationController()
 {

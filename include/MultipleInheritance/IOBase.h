@@ -23,9 +23,9 @@ class ActiveEventer;
 struct IOBaseData//initialized
 {
     IOBaseData () :
-        type(def::io::defaultClassType),
-        isEnabled(def::io::defaultIsEnabled),
-        name(def::io::defaultName)/**ID is calculated with a name**/
+        type(def::io::classType),
+        isEnabled(def::io::isEnabled),
+        name(def::io::name)/**ID is calculated with a name**/
         //  , ID(defaultID) old
     {
         butes.setBute(Butes::isSolid, false);
@@ -37,7 +37,6 @@ struct IOBaseData//initialized
     Attributes butes;
     bool isEnabled;
     std::string name;
-    //unsigned long long int ID; old
 
     std::vector<std::tr1::shared_ptr<Courier> > spCourierList;
 };

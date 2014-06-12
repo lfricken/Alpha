@@ -24,6 +24,7 @@ struct ProjectileData : public ChunkData
 
     {
         type = ClassType::PROJECTILE;
+        bodyType = b2BodyType::b2_dynamicBody;
         isBullet = true;
         awake = false;
     }

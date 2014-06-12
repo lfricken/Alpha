@@ -10,7 +10,7 @@ struct IntelligenceData : public IOBaseData
 {
     IntelligenceData() :
         IOBaseData(),
-        targetName(def::cntrl::defaultTargetName)
+        targetName(def::cntrl::targetName)
     {}
     std::string targetName;
     std::vector<std::tr1::shared_ptr<leon::Panel> > hudSPelements;

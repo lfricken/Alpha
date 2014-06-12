@@ -75,7 +75,7 @@ void ProjectileAllocator::load()///load definitions of projectile types from a f
     (*data).shape = Shape::CIRCLE;
     (*data).texName = "textures/bullet_white_32.png";
     (*data).categoryBits = Category::Projectile;
-    (*data).maskBits = MaskBits::ProjectileOff;
+    (*data).maskBits = Mask::ProjectileOff;
     (*data).isSensor = false;
     (*data).density = 0.1f;
     (*data).friction = 0.4f;
@@ -84,7 +84,6 @@ void ProjectileAllocator::load()///load definitions of projectile types from a f
     (*data).pBody = NULL;//we dont know it yet
     (*data).restitution = 0.2f;
     (*data).rotation = 0.0f;
-    (*data).texTile = sf::Vector2f(0, 0);
     (*data).texTileSize = sf::Vector2f(32, 32);
     (*data).color = sf::Color::White;
 
@@ -104,7 +103,7 @@ void ProjectileAllocator::load()///load definitions of projectile types from a f
     (*data).shape = Shape::CIRCLE;
     (*data).texName = "textures/bullet_green_64.png";
     (*data).categoryBits = Category::Projectile;
-    (*data).maskBits = MaskBits::ProjectileOff;
+    (*data).maskBits = Mask::ProjectileOff;
     (*data).isSensor = false;
     (*data).density = 0.1f;
     (*data).friction = 0.4f;
@@ -113,7 +112,6 @@ void ProjectileAllocator::load()///load definitions of projectile types from a f
     (*data).pBody = NULL;//we dont know it yet
     (*data).restitution = 0.2f;
     (*data).rotation = 0.0f;
-    (*data).texTile = sf::Vector2f(0, 0);
     (*data).texTileSize = sf::Vector2f(64, 64);
     (*data).color = sf::Color::White;
 

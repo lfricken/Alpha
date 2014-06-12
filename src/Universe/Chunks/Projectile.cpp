@@ -82,13 +82,15 @@ int Projectile::endContact(PhysicsBase* other)
 {
     if(other->getType() == ClassType::HULL)
         enable();
+
+    return 0;
 }
 void Projectile::enable()//no longer interacts with hull sensors, set to default collision state for a projectile
 {
     for (b2Fixture* fix = m_pBody->GetFixtureList(); fix; fix = fix->GetNext())
     {
         b2Filter filter = fix->GetFilterData();
-        filter.maskBits = static_cast<uint16>(MaskBits::ProjectileNorm);
+        filter.maskBits = static_cast<uint16>(Mask::ProjectileNorm);
         fix->SetFilterData(filter);
     }
 }
@@ -97,7 +99,7 @@ void Projectile::disable()//disable all collision except with hull sensors
     for (b2Fixture* fix = m_pBody->GetFixtureList(); fix; fix = fix->GetNext())
     {
         b2Filter filter = fix->GetFilterData();
-        filter.maskBits = static_cast<uint16>(MaskBits::ProjectileOff);
+        filter.maskBits = static_cast<uint16>(Mask::ProjectileOff);
         fix->SetFilterData(filter);
     }
 }

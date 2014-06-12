@@ -9,7 +9,10 @@ struct ArmorData : public GModuleData
         GModuleData()
     {
         type = ClassType::ARMOR;
+        categoryBits = Category::ShipModule;
+        maskBits = Mask::ShipModuleNorm;
         armor = 500;
+        texName = "textures/armor/armor.png";
     }
 
 };

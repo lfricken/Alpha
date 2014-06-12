@@ -70,7 +70,7 @@ void GModule::destruct()
     {
         ///SOMETHING COOL FOR NOW
         b2Filter filter = m_pFixture->GetFilterData();
-        filter.maskBits = static_cast<uint16>(MaskBits::ShipModuleBroke);
+        filter.maskBits = static_cast<uint16>(Mask::ShipModuleBroke);
         m_pFixture->SetFilterData(filter);
 
         m_isDestroyed = true;

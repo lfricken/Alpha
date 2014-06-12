@@ -11,18 +11,16 @@ struct TexturedVertices;
 struct GraphicsBaseData//initialized
 {
     GraphicsBaseData() :
-        texName(def::gfx::defaultTexName),
-        color(def::gfx::defaultColor),
-        texTileSize(def::gfx::defaultTexTileSize),
-        texTile(def::gfx::defaultTexTile),
+        texName(def::gfx::texName),
+        color(def::gfx::color),
+        texTileSize(def::gfx::texTileSize),
         animState(AnimationState::Default)
         {}
 
-    AnimationState animState;//sets animation to start initially or not
     std::string texName;
     sf::Color color;//color mask
     sf::Vector2f texTileSize;//size of the texture rectangle
-    sf::Vector2f texTile;//texture tile that needs to be displayed
+    AnimationState animState;//sets animation to start initially or not
 };
 
 ///Maybe we shouldn't have so many setters, getters are ok

@@ -9,6 +9,7 @@ struct ShipData : public ChunkData//initialized
         ChunkData()
     {
         type = ClassType::SHIP;
+        bodyType = b2BodyType::b2_dynamicBody;
     }
 };
 

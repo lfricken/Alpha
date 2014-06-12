@@ -24,7 +24,7 @@ constexpr inline int operator &(Category a, Category b)
 }
 
 /**what things should collide with**/
-enum class MaskBits
+enum class Mask
 {
     None = Category::None,
     ProjectileNorm = Category::ShipModule | Category::ShipForceField,
@@ -33,7 +33,7 @@ enum class MaskBits
     ShipModuleNorm = Category::Projectile,
     ShipModuleBroke = Category::None,
 
-    ShipForceField = Category::ShipForceField | Category::Projectile,
+    ShipForceField = Category::Projectile,
 
     ShipHull = Category::ShipHull,
     ShipHullSensor = Category::Projectile,

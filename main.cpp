@@ -11,13 +11,14 @@
 namespace def
 {
 
+
 /**IOBASE**/
 namespace io
 {
-const ClassType defaultClassType = ClassType::UNKNOWN;
-const bool defaultIsEnabled = true;
-const std::string defaultName = "defaultName";
-const unsigned long long int defaultID = -1;//max value
+const ClassType classType = ClassType::UNKNOWN;
+const bool isEnabled = true;
+const std::string name = "defaultName";
+const unsigned long long int ID = -1;//max value
 }
 /**IOBASE**/
 
@@ -25,16 +26,16 @@ const unsigned long long int defaultID = -1;//max value
 /**PHYSICS**/
 namespace phys
 {
-const Shape defaultShape = Shape::BOX;
-const Category defaultCategory = Category::Projectile;
-const MaskBits defaultMaskBits = MaskBits::All;
-const bool defaultIsSensor = false;
-const b2Vec2 defaultOffset = b2Vec2(0, 0);
-const b2Vec2 defaultHalfSize = b2Vec2(0.25, 0.25);
-const float defaultDensity = 1.0;
-const float defaultFriction = 0.3;
-const float defaultRestitution = 0.3;
-const float defaultRotation = 0.0;//degrees CW
+const Shape shape = Shape::BOX;
+const Category category = Category::None;
+const Mask mask = Mask::None;
+const bool isSensor = false;
+const b2Vec2 offset = b2Vec2(0, 0);
+const b2Vec2 halfSize = b2Vec2(0.25, 0.25);
+const float density = 1.0;
+const float friction = 0.3;
+const float restitution = 0.2;
+const float rotation = 0.0;//degrees CW
 }
 /**PHYSICS**/
 
@@ -42,10 +43,14 @@ const float defaultRotation = 0.0;//degrees CW
 /**GRAPHICS**/
 namespace gfx
 {
-const std::string defaultTexName = "textures/dev_128x128.png";
-const sf::Color defaultColor = sf::Color::White;
-const sf::Vector2f defaultTexTileSize = sf::Vector2f(128, 128);
-const sf::Vector2f defaultTexTile = sf::Vector2f(0, 0);
+const float rotation = 0;
+const std::string texName = "textures/default.png";
+const sf::Color color = sf::Color::White;
+const sf::Vector2f texTileSize = sf::Vector2f(128, 128);
+const sf::Vector2f texTile = sf::Vector2f(0, 0);///deprecated
+
+extern const sf::Vector2f position = sf::Vector2f(0, 0);
+extern const sf::Vector2f scale = sf::Vector2f(128, 128);
 }
 /**GRAPHICS**/
 
@@ -53,12 +58,12 @@ const sf::Vector2f defaultTexTile = sf::Vector2f(0, 0);
 /**CHUNK**/
 namespace cnk
 {
-const b2BodyType defaultBodyType = b2BodyType::b2_dynamicBody;
-const b2Vec2 defaultPosition = b2Vec2(0,0);
-const bool defaultIsBullet = false;
-const float defaultMaxZoom = 16.0f;
-const float defaultMinZoom = 0.5f;
-const bool defaultCntrlEnabled = true;
+const b2BodyType bodyType = b2BodyType::b2_staticBody;
+const b2Vec2 position = b2Vec2(0,0);
+const bool isBullet = false;
+const float maxZoom = 16.0f;
+const float minZoom = 0.5f;
+const bool controlEnabled = true;
 }
 /**CHUNK**/
 
@@ -66,11 +71,11 @@ const bool defaultCntrlEnabled = true;
 /**CONTROLERS**/
 namespace cntrl
 {
-const std::string defaultTargetName = io::defaultName;
-const PlayerMode defaultPlayerMode = PlayerMode::God;
-const sf::Vector2f defaultCameraPos = sf::Vector2f(0, 0);
-const sf::Vector2f defaultCameraSize = sf::Vector2f(800, 600);
-const PlayerState defaultPlayerState = PlayerState::Playing;
+const std::string targetName = io::name;
+const PlayerMode playerMode = PlayerMode::God;
+const sf::Vector2f cameraPos = sf::Vector2f(0, 0);
+const sf::Vector2f cameraSize = sf::Vector2f(800, 600);
+const PlayerState playerState = PlayerState::Playing;
 }
 /**CONTROLERS**/
 
@@ -78,11 +83,11 @@ const PlayerState defaultPlayerState = PlayerState::Playing;
 /**GUI**/
 namespace gui
 {
-const sf::Color defaultBackgroundColor = sf::Color::White;
-const std::string defaultButtonText = "FixThis";
-const std::string defaultConfig = "TGUI/widgets/Black.conf";
-const sf::Vector2f defaultPosition = sf::Vector2f(10, 10);
-const sf::Vector2f defaultSize = sf::Vector2f(100, 50);
+const sf::Color backgroundColor = sf::Color::White;
+const std::string buttonText = "FixThis";
+const std::string config = "TGUI/widgets/Black.conf";
+const sf::Vector2f position = sf::Vector2f(10, 10);
+const sf::Vector2f size = sf::Vector2f(100, 50);
 }
 /**GUI**/
 }

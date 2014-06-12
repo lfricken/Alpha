@@ -16,6 +16,7 @@
 					<Add directory="include/Universe/Chunks" />
 					<Add directory="include/Universe/Base" />
 					<Add directory="include/Universe/Modules" />
+					<Add directory="include/MultipleInheritance" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -24,10 +25,10 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-g" />
 					<Add directory="include/Universe/Chunks" />
 					<Add directory="include/Universe/Base" />
 					<Add directory="include/Universe/Modules" />
+					<Add directory="include/MultipleInheritance" />
 				</Compiler>
 				<Linker>
 					<Add option="-lsfml-network-s" />
@@ -43,6 +44,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-std=c++11" />
+			<Add option="-Wextra" />
 			<Add option="-Wall" />
 			<Add option="-DSFML_STATIC" />
 			<Add directory="../../../Engines/SFML-2_recompile/include" />
@@ -92,6 +94,7 @@
 		<Unit filename="include/IO/Package.h" />
 		<Unit filename="include/IO/VariableNames.h" />
 		<Unit filename="include/MultipleInheritance/GraphicsBase.h" />
+		<Unit filename="include/MultipleInheritance/GraphicsComponent.h" />
 		<Unit filename="include/MultipleInheritance/IOBase.h" />
 		<Unit filename="include/MultipleInheritance/PhysicsBase.h" />
 		<Unit filename="include/Universe/Base/AnimationController.h" />
@@ -102,6 +105,7 @@
 		<Unit filename="include/Universe/Base/ClassType.h" />
 		<Unit filename="include/Universe/Base/CollisionCategory.h" />
 		<Unit filename="include/Universe/Base/DebugDraw.h" />
+		<Unit filename="include/Universe/Base/Decoration.h" />
 		<Unit filename="include/Universe/Base/GModule.h" />
 		<Unit filename="include/Universe/Base/Module.h" />
 		<Unit filename="include/Universe/Base/MultiTileMap.h" />
@@ -133,6 +137,7 @@
 		<Unit filename="src/IO/IOManager.cpp" />
 		<Unit filename="src/IO/Package.cpp" />
 		<Unit filename="src/MultipleInheritance/GraphicsBase.cpp" />
+		<Unit filename="src/MultipleInheritance/GraphicsComponent.cpp" />
 		<Unit filename="src/MultipleInheritance/IOBase.cpp" />
 		<Unit filename="src/MultipleInheritance/PhysicsBase.cpp" />
 		<Unit filename="src/Universe/Base/AnimationController.cpp" />
@@ -141,6 +146,7 @@
 		<Unit filename="src/Universe/Base/BedFinder.cpp" />
 		<Unit filename="src/Universe/Base/Chunk.cpp" />
 		<Unit filename="src/Universe/Base/DebugDraw.cpp" />
+		<Unit filename="src/Universe/Base/Decoration.cpp" />
 		<Unit filename="src/Universe/Base/GModule.cpp" />
 		<Unit filename="src/Universe/Base/Module.cpp" />
 		<Unit filename="src/Universe/Base/MultiTileMap.cpp" />

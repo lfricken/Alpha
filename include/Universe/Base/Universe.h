@@ -10,6 +10,8 @@
 #include "BedFinder.h"
 #include "ProjectileAllocator.h"
 
+#include "Decoration.h"
+
 class Universe : public IOBase//everything that would be considered to be "real" such as a box, or a star in the background is in the Universe, everything else like HUD and menus are in OverlayManager
 {
 public:
@@ -66,7 +68,7 @@ private:
     int m_velocityIterations;
     int m_positionIterations;
 
-    ///std::vector<tr1::shared_ptr<Whatever We Call This> > m_gfxList; //all the objects that have graphics but no physics
+    std::vector<std::tr1::shared_ptr<Decoration> > m_gfxList; //all the objects that have only graphics
     std::vector<std::tr1::shared_ptr<Chunk> > m_physList;//all the objects that have physics, and maybe graphics
 };
 

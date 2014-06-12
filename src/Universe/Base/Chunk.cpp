@@ -100,42 +100,8 @@ IOBase* Chunk::getIOBase(const std::string& targetName)
 1. OUR LIST: Create GModules in our GModuleList
 2. TILEMAP: Pass them to our MultiTileMap to be drawn later.
 **/
-void Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList, const vector<b2Vec2>& vertices)
+void Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList)
 {
-    ///THIS SHOULD BE DONE SOMEWHERE ELSE
-    /**create our bounding box for large chunk collisions using vertices**/
-
-    if(vertices.empty())
-    {
-        //don't create anything
-    }
-    else if(vertices.size() < 3)
-    {
-        //create a circle module with ship collision using f_findRadius
-
-        /**
-        float radius = f_findRadius(rDataList);
-        m_shape = tr1::shared_ptr<b2Shape>(new b2CircleShape());
-        std::static_pointer_cast<b2CircleShape>(m_shape)->m_p.Set(0, 0);
-        std::static_pointer_cast<b2CircleShape>(m_shape)->m_radius = radius;
-            m_shape.SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, data.rotation);//default
-            m_fixtureDef.shape = &m_shape;//give our shape to our fixture definition
-            m_fixtureDef.density = data.density;
-            m_fixtureDef.friction = data.friction;
-            m_fixtureDef.restitution = data.restitution;//setting our fixture data
-            m_pBody = data.pBody;
-
-            m_pFixture = m_pBody->CreateFixture(&m_fixtureDef);**/
-
-        /**Take our list of gmodule data and make real modules with it! rDataList**/
-    }
-    else
-    {
-        //create a Module with ship collisions with those coordinates
-    }
-
-
-
     /**1**/
     for(vector<tr1::shared_ptr<GModuleData> >::const_iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
@@ -164,7 +130,7 @@ void Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList, const ve
             data.density = 0;
             data.pBody = m_pBody;
             data.categoryBits = Category::ShipForceField;
-            data.maskBits = MaskBits::ShipForceField;
+            data.maskBits = Mask::ShipForceField;
 
             ForceField* tempPtr = new ForceField(data);
             m_ModuleSPList.push_back(tr1::shared_ptr<Module>(tempPtr));
@@ -226,7 +192,7 @@ void Chunk::add(const vector<tr1::shared_ptr<ModuleData> >& rDataList)
             ModuleData hullSensorDat = **it_data;
             hullSensorDat.isSensor = true;
             hullSensorDat.categoryBits = Category::ShipHullSensor;
-            hullSensorDat.maskBits = MaskBits::ShipHullSensor;
+            hullSensorDat.maskBits = Mask::ShipHullSensor;
             hullSensorDat.butes.setBute(Butes::isDestructable, false);
             hullSensorDat.butes.setBute(Butes::isSolid, false);
             InsertPtrVector(m_ModuleSPList, &IOBase::getID, tr1::shared_ptr<Module>(new Module(hullSensorDat)));

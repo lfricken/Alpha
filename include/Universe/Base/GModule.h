@@ -31,11 +31,11 @@ public:
     GModule(const GModuleData& data);
     virtual ~GModule();
 
-    IOBaseReturn input_1(IOBaseArgs) final;//damage function implemented
+    IOBaseReturn input(IOBaseArgs);//damage function implemented
+
     T_Health damage(T_Damage damage);
     T_Health heal(T_Health h);
     T_Health getHealth() const;
-
     virtual void destruct();//if our health drops too low, try and "destruct"
 
 protected:

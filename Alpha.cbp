@@ -46,7 +46,6 @@
 			<Add option="-std=c++11" />
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
-			<Add option="-DSFML_STATIC" />
 			<Add directory="../../../Engines/SFML-2_recompile/include" />
 			<Add directory="../../../Engines/TGUI-0.6.1/include" />
 			<Add directory="../../../Engines/Box2D" />
@@ -86,7 +85,6 @@
 		<Unit filename="include/Headers/globals.h" />
 		<Unit filename="include/Headers/stdafx.h" />
 		<Unit filename="include/IO/ActiveEventer.h" />
-		<Unit filename="include/IO/BaseFunctionFinder.h" />
 		<Unit filename="include/IO/Condition.h" />
 		<Unit filename="include/IO/Courier.h" />
 		<Unit filename="include/IO/Enumerate.h" />
@@ -96,6 +94,7 @@
 		<Unit filename="include/MultipleInheritance/GraphicsBase.h" />
 		<Unit filename="include/MultipleInheritance/GraphicsComponent.h" />
 		<Unit filename="include/MultipleInheritance/IOBase.h" />
+		<Unit filename="include/MultipleInheritance/IOComponent.h" />
 		<Unit filename="include/MultipleInheritance/PhysicsBase.h" />
 		<Unit filename="include/Universe/Base/AnimationController.h" />
 		<Unit filename="include/Universe/Base/AnimationLooper.h" />
@@ -132,13 +131,13 @@
 		<Unit filename="src/Game/Game.cpp" />
 		<Unit filename="src/Game/TextureAllocator.cpp" />
 		<Unit filename="src/IO/ActiveEventer.cpp" />
-		<Unit filename="src/IO/BaseFunctionFinder.cpp" />
 		<Unit filename="src/IO/Condition.cpp" />
 		<Unit filename="src/IO/IOManager.cpp" />
 		<Unit filename="src/IO/Package.cpp" />
 		<Unit filename="src/MultipleInheritance/GraphicsBase.cpp" />
 		<Unit filename="src/MultipleInheritance/GraphicsComponent.cpp" />
 		<Unit filename="src/MultipleInheritance/IOBase.cpp" />
+		<Unit filename="src/MultipleInheritance/IOComponent.cpp" />
 		<Unit filename="src/MultipleInheritance/PhysicsBase.cpp" />
 		<Unit filename="src/Universe/Base/AnimationController.cpp" />
 		<Unit filename="src/Universe/Base/AnimationLooper.cpp" />

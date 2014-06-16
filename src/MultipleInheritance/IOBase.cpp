@@ -1,5 +1,6 @@
 #include "IOBase.h"
 #include "globals.h"
+#include "IOManager.h"
 
 #include "Enumerate.h"
 
@@ -19,46 +20,33 @@ IOBase::~IOBase()//unfinished
 }
 void IOBase::f_initialize(const IOBaseData& data)
 {
+    m_pIOComponent = m_rIOManager.createIOComponent(data.name);
+    m_pIOComponent->setOwner(this);
+    m_pIOComponent->getEventer()->addList(data.spCourierList);
+
     m_attributes = data.butes;
-    m_name = data.name;
+
     m_type = data.type;
     m_isEnabled = data.isEnabled;
-    m_ID = Enumerate(m_name);
-    addCouriers(data.spCourierList);
 }
-void IOBase::resetEventer()///wtf is this for?
-{
-    m_spEventer.reset();
-    m_spEventer = std::tr1::shared_ptr<ActiveEventer>(new ActiveEventer());
-}
-void IOBase::addCouriers(const std::vector<std::tr1::shared_ptr<Courier> >& spCourierList)
-{
-    if(!m_spEventer)//if we don't have an active eventer(because that would mean m_spEventer returns false)
-        m_spEventer = std::tr1::shared_ptr<ActiveEventer>(new ActiveEventer());
 
-    for(std::vector<std::tr1::shared_ptr<Courier> >::const_iterator it = spCourierList.begin(); it != spCourierList.end(); ++it)
-        m_spEventer->add(*it);
-}
-std::tr1::shared_ptr<ActiveEventer> IOBase::getEventer()
+const IOComponent& IOBase::getIOComponent() const
 {
-    return m_spEventer;
+    return *m_pIOComponent;
 }
-IOManager& IOBase::getIOManager()
+unsigned int IOBase::getID() const
 {
-    return m_rIOManager;
-}
-void IOBase::setName(const std::string& name)
-{
-    m_name = name;
+    return m_pIOComponent->getID();
 }
 const std::string& IOBase::getName() const
 {
-    return m_name;
+    return m_pIOComponent->getName();
 }
-unsigned long long int IOBase::getID() const
+/*IOManager& IOBase::getIOManager()
 {
-    return m_ID;
-}
+    return m_rIOManager;
+}*/
+
 ClassType IOBase::getType() const
 {
     return m_type;
@@ -67,47 +55,41 @@ const Attributes& IOBase::getButes() const
 {
     return m_attributes;
 }
-IOBaseReturn IOBase::input_1(IOBaseArgs) {}
-IOBaseReturn IOBase::input_2(IOBaseArgs) {}
-IOBaseReturn IOBase::input_3(IOBaseArgs) {}
-IOBaseReturn IOBase::input_4(IOBaseArgs) {}
-IOBaseReturn IOBase::input_5(IOBaseArgs) {}
-IOBaseReturn IOBase::input_6(IOBaseArgs) {}
-IOBaseReturn IOBase::input_7(IOBaseArgs) {}
-IOBaseReturn IOBase::input_8(IOBaseArgs) {}
-IOBaseReturn IOBase::input_9(IOBaseArgs) {}
-IOBaseReturn IOBase::input_10(IOBaseArgs) {}
-IOBaseReturn IOBase::input_11(IOBaseArgs) {}
-IOBaseReturn IOBase::input_12(IOBaseArgs) {}
-IOBaseReturn IOBase::input_13(IOBaseArgs) {}
-IOBaseReturn IOBase::input_14(IOBaseArgs) {}
-IOBaseReturn IOBase::input_15(IOBaseArgs) {}
-IOBaseReturn IOBase::input_16(IOBaseArgs) {}
-IOBaseReturn IOBase::input_17(IOBaseArgs) {}
-IOBaseReturn IOBase::input_18(IOBaseArgs) {}
-IOBaseReturn IOBase::input_19(IOBaseArgs) {}
-IOBaseReturn IOBase::input_20(IOBaseArgs) {}
+
+
+IOBaseReturn IOBase::input(IOBaseArgs)
+{
+
+}
+void IOBase::enable()
+{
+
+}
+void IOBase::disable()
+{
+
+}
 
 
 void IOBase::f_varEvent(std::string value, Event eventType)//takes a generic variable type, and sends the data to eventer
 {
-    m_spEventer->event(value, eventType);
+    m_pIOComponent->getEventer()->event(value, eventType);
 }
 void IOBase::f_varEvent(int value, Event eventType)
 {
     std::ostringstream convert;
     convert << value;
-    m_spEventer->event(convert.str(), eventType);
+    m_pIOComponent->getEventer()->event(convert.str(), eventType);
 }
 void IOBase::f_varEvent(float value, Event eventType)
 {
     std::ostringstream convert;
     convert << value;
-    m_spEventer->event(convert.str(), eventType);
+    m_pIOComponent->getEventer()->event(convert.str(), eventType);
 }
 void IOBase::f_varEvent(double value, Event eventType)
 {
     std::ostringstream convert;
     convert << value;
-    m_spEventer->event(convert.str(), eventType);
+    m_pIOComponent->getEventer()->event(convert.str(), eventType);
 }

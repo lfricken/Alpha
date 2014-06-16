@@ -57,7 +57,7 @@ Player* ControlManager::getPlayer(const std::string& target)
     cout << "\nThere was an error finding player \"" << target << "\".";
     return NULL;
 }
-Player* ControlManager::getPlayer(const unsigned long long int targetID)
+Player* ControlManager::getPlayer(unsigned int targetID)
 {
     int location = BinarySearchPtrVector(m_localPlayerList, &Player::getID, targetID);//<std::tr1::shared_ptr<Chunk>, Chunk, unsigned int>
 
@@ -292,8 +292,8 @@ void ControlManager::drawUpdate()
 
         ///SOUND NOT DONE YET, WAITING FOR REPLY ON SPATIALIZATION POST
         ///ALSO, THIS CODE CAUSES CRASH WHEN EXITING
-        //sf::Listener::setPosition((*it)->getCamera().getView().getCenter().x, (*it)->getCamera().getView().getCenter().y, 0);
-        //sf::Listener::setDirection(sin((*it)->getCamera().getView().getRotation()), 0.0f, -cos((*it)->getCamera().getView().getRotation()));
+        sf::Listener::setPosition((*it)->getCamera().getView().getCenter().x, (*it)->getCamera().getView().getCenter().y, 0);
+        sf::Listener::setDirection(sin((*it)->getCamera().getView().getRotation()), 0.0f, -cos((*it)->getCamera().getView().getRotation()));
 
         m_rWindow.setView((*it)->getCamera().getView());
         m_rUniverse.draw();

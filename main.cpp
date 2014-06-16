@@ -50,7 +50,8 @@ const sf::Vector2f texTileSize = sf::Vector2f(128, 128);
 const sf::Vector2f texTile = sf::Vector2f(0, 0);///deprecated
 
 extern const sf::Vector2f position = sf::Vector2f(0, 0);
-extern const sf::Vector2f scale = sf::Vector2f(128, 128);
+extern const sf::Vector2f scale = sf::Vector2f(1, 1);
+extern const AnimationState animState = AnimationState::Default;
 }
 /**GRAPHICS**/
 

@@ -1,5 +1,6 @@
 #include "Projectile.h"
 #include "globals.h"
+#include "IOManager.h"
 
 using namespace std;
 
@@ -18,13 +19,19 @@ Projectile::~Projectile()
 }
 void Projectile::f_initialize(const ProjectileData& data)
 {
-    m_damage = data.damage;
     m_projType = data.projType;
-    m_pDamageFunc = game.getGameFunctionFinder().getFunction("damage");
+
+    //Damage Package:
+    sf::Packet damagePacket;
+    T_Damage damage = data.damage;
+    damagePacket << damage;
+    m_damagePackage.reset("", "damage", damagePacket, 0.0f, Destination::UNIVERSE);
 }
 void Projectile::setDamage(T_Damage damage)//set the damage this projectile will deal
 {
-    m_damage = damage;
+    sf::Packet damagePacket;
+    damagePacket << damage;
+    m_damagePackage.setParameter(damagePacket);
 }
 ProjectileType Projectile::getProjType() const
 {
@@ -70,9 +77,9 @@ int Projectile::startContact(PhysicsBase* other)
     /**do stuff**/
     if(other->getButes().getBute(Butes::isSolid))
     {
-        sf::Packet damagePacket;
-        damagePacket << m_damage;
-        (*other.*m_pDamageFunc)(damagePacket);
+        m_damagePackage.setTargetName(other->getName());
+        m_damagePackage.setTargetID(other->getID());
+        m_rIOManager.recieve(m_damagePackage);
         endLife();///put this in the above function!!! what?
     }
 

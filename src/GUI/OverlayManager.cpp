@@ -36,7 +36,7 @@ leon::Panel* OverlayManager::getTarget(const std::string& target)
     }
     return NULL;
 }
-leon::Panel* OverlayManager::getTarget(unsigned long long int targetID)
+leon::Panel* OverlayManager::getTarget(unsigned int targetID)
 {
     int location = BinarySearchPtrVector(m_panelList, &leon::Panel::getID, targetID);//<std::tr1::shared_ptr<Chunk>, Chunk, unsigned int>
 

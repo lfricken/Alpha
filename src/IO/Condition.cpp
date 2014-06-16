@@ -6,21 +6,21 @@ Condition::Condition()
     ///this shouldn't be the defualt condition
     m_eventName = Event::Health;
     m_stringValue = "99";
-    m_floatValue = 99.0;
+    m_intValue = 99;
     m_comparison = '<';
     m_isRepeatable = true;
-    f_setComparisonFunction('<');
+    f_setComparisonFunction(m_comparison);
 }
-Condition::Condition(Event eventName, const std::string& stringVar, float floatVar, char comparison, bool repeatable)
+Condition::Condition(Event eventName, const std::string& stringVar, int intVar, char comparison, bool repeatable)
 {
-    reset(eventName, stringVar, floatVar, comparison, repeatable);
+    reset(eventName, stringVar, intVar, comparison, repeatable);
 }
 Condition::~Condition() {}
-void Condition::reset(Event eventName, const std::string& stringValue, float floatValue, char comparison, bool repeatable)
+void Condition::reset(Event eventName, const std::string& stringValue, int intValue, char comparison, bool repeatable)
 {
     m_eventName = eventName;
     m_stringValue = stringValue;
-    m_floatValue = floatValue;
+    m_intValue = intValue;
     m_comparison = comparison;
     m_isRepeatable = repeatable;
     f_setComparisonFunction(comparison);
@@ -41,15 +41,15 @@ bool Condition::isRepeatable() const
 /**=====PRIVATE=====**/
 bool Condition::f_greaterThan(const std::string& input) const
 {
-    return (atof(input.c_str()) > m_floatValue);
+    return (atoi(input.c_str()) > m_intValue);
 }
 bool Condition::f_lessThan(const std::string& input) const
 {
-    return (atof(input.c_str()) < m_floatValue);
+    return (atoi(input.c_str()) < m_intValue);
 }
 bool Condition::f_equals(const std::string& input) const
 {
-    if(atof(input.c_str()) == m_floatValue)
+    if(atoi(input.c_str()) == m_intValue)
         return true;
     else if (input == m_stringValue)
         return true;
@@ -58,7 +58,7 @@ bool Condition::f_equals(const std::string& input) const
 }
 bool Condition::f_notEquals(const std::string& input) const
 {
-    if(atof(input.c_str()) == m_floatValue)
+    if(atoi(input.c_str()) == m_intValue)//check if they are equal
         return false;
     else if (input == m_stringValue)
         return false;

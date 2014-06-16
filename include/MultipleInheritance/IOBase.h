@@ -8,6 +8,8 @@
 #include "ClassType.h"
 #include "Attributes.h"
 
+#include "IOComponent.h"
+
 /*HOW IO WORKS
 When some event happens, whether its a player pressing a button, or a condition being met, a signal needs to sent to the target to tell it what to do.
 All messages, regardless of their origin are sent to IOManager, so any object that wants to ever send a message needs to know about the IOManager. IOManager needs to know
@@ -16,9 +18,7 @@ In addition, Universe and OverlayManager need to have the input function so butt
 */
 
 class IOManager;
-class IOBase;
 struct Courier;
-class ActiveEventer;
 
 struct IOBaseData//initialized
 {
@@ -47,39 +47,16 @@ public:
     IOBase(const IOBaseData& data);
     virtual ~IOBase();
 
+    const IOComponent& getIOComponent() const;
+    unsigned int getID() const;
+    const std::string& getName() const;
 
-    void addCouriers(const std::vector<std::tr1::shared_ptr<Courier> >& spCourierList);
-    std::tr1::shared_ptr<ActiveEventer> getEventer();
-
-    virtual void resetEventer();//used in Game::Game() to reset some pointers that otherwise get messed up
-    virtual IOManager& getIOManager();
-    void setName(const std::string& name);//sets the name of this entity
-    const std::string& getName() const;//gets the name of this entity
-    unsigned long long int getID() const;//gets the name of this entity
     ClassType getType() const;
     const Attributes& getButes() const;
 
-    //virtual int getHealth() const;
-    virtual IOBaseReturn input_1(IOBaseArgs);/**ENABLE**////where should these be named??
-    virtual IOBaseReturn input_2(IOBaseArgs);/**DISABLE**/
-    virtual IOBaseReturn input_3(IOBaseArgs);/**DIE**/
-    virtual IOBaseReturn input_4(IOBaseArgs);
-    virtual IOBaseReturn input_5(IOBaseArgs);
-    virtual IOBaseReturn input_6(IOBaseArgs);
-    virtual IOBaseReturn input_7(IOBaseArgs);
-    virtual IOBaseReturn input_8(IOBaseArgs);
-    virtual IOBaseReturn input_9(IOBaseArgs);
-    virtual IOBaseReturn input_10(IOBaseArgs);
-    virtual IOBaseReturn input_11(IOBaseArgs);
-    virtual IOBaseReturn input_12(IOBaseArgs);
-    virtual IOBaseReturn input_13(IOBaseArgs);
-    virtual IOBaseReturn input_14(IOBaseArgs);
-    virtual IOBaseReturn input_15(IOBaseArgs);
-    virtual IOBaseReturn input_16(IOBaseArgs);
-    virtual IOBaseReturn input_17(IOBaseArgs);
-    virtual IOBaseReturn input_18(IOBaseArgs);
-    virtual IOBaseReturn input_19(IOBaseArgs);
-    virtual IOBaseReturn input_20(IOBaseArgs);
+    virtual IOBaseReturn input(IOBaseArgs);//called for any input
+    virtual void enable();
+    virtual void disable();
 
 protected:
     void f_varEvent(std::string value, Event eventType);//takes a generic variable type, and sends the data to eventer
@@ -87,16 +64,13 @@ protected:
     void f_varEvent(float value, Event eventType);
     void f_varEvent(double value, Event eventType);
 
+    IOComponent* m_pIOComponent;
+    IOManager& m_rIOManager;
 
     ClassType m_type;//type of object that we are
     Attributes m_attributes;
 
     bool m_isEnabled;
-    std::string m_name;//used by IO manager to locate specific named objects
-    unsigned long long int m_ID;
-
-    std::tr1::shared_ptr<ActiveEventer> m_spEventer;
-    IOManager& m_rIOManager;
 private:
     virtual void f_initialize(const IOBaseData& data);
 };

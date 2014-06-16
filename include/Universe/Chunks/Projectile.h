@@ -2,7 +2,6 @@
 #define PROJECTILE_H
 
 #include "Chunk.h"
-#include "BaseFunctionFinder.h"
 
 typedef unsigned int ProjectileType;
 /**
@@ -63,8 +62,9 @@ protected:
 private:
     virtual void f_initialize(const ProjectileData& data);
 
-    T_Damage m_damage;
-    TargetFunc m_pDamageFunc;
+    Package m_damagePackage;
+
+
     ProjectileType m_projType;
 
     /**specific to interaction with ProjectileAllocator**/

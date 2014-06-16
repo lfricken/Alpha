@@ -73,7 +73,7 @@ GModule* Chunk::getGModule(const std::string& targetName)
         if((*it)->getName() == targetName)
             return &(**it);
     }
-    cout << "\nTarget " << targetName << " not found in chunk \"" << m_name << "\":[" << m_ID << "]";
+    cout << "\nTarget " << targetName << " not found in chunk \"" << m_pIOComponent->getName() << "\":[" << m_pIOComponent->getID() << "]";
     ///ERROR LOG
     return NULL;
 }
@@ -84,7 +84,7 @@ Module* Chunk::getModule(const std::string& targetName)
         if((*it)->getName() == targetName)
             return &(**it);
     }
-    cout << "\nTarget " << targetName << " not found in chunk \"" << m_name << "\":[" << m_ID << "]";
+    cout << "\nTarget " << targetName << " not found in chunk \"" << m_pIOComponent->getName() << "\":[" << m_pIOComponent->getID() << "]";
     ///ERROR LOG
     return NULL;
 }
@@ -463,7 +463,7 @@ void Chunk::f_setController(Intelligence* controller)//done
     m_hasController = true;
 }
 /**END**/
-IOBaseReturn Chunk::input_1(IOBaseArgs)
+IOBaseReturn Chunk::input(IOBaseArgs)
 {
     std::string n;
     if(!(rInput >> n))
@@ -471,7 +471,7 @@ IOBaseReturn Chunk::input_1(IOBaseArgs)
         cout << "\nExtraction Fail.";
         ///ERROR LOG
     }
-    std::cout << std::endl << m_name << " has " << m_GModuleSPList.front()->getHealth() << " health, also " << n;
+    std::cout << std::endl << m_pIOComponent->getName() << " has " << m_GModuleSPList.front()->getHealth() << " health, also " << n;
 }
 int Chunk::startContact(PhysicsBase* other)
 {

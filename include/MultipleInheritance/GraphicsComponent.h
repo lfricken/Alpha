@@ -11,6 +11,7 @@
 struct GraphicsComponentData
 {
     GraphicsComponentData() :
+        animState(def::gfx::animState),
         position(def::gfx::position),
         rotation(def::gfx::rotation),
         scale(def::gfx::scale),
@@ -18,6 +19,7 @@ struct GraphicsComponentData
         color(def::gfx::color),
         texName(def::gfx::texName) {}
 
+    AnimationState animState;
     sf::Vector2f position;
     float rotation;
     sf::Vector2f scale;
@@ -43,10 +45,13 @@ public:
     void setRotation(float r);
     void rotate(float r);
 
+    void setAnimState(AnimationState state);
+
+    void update();
 protected:
 private:
     virtual void f_init(const GraphicsComponentData& rData);
-    virtual void f_update();
+
 
     sf::Vector2f m_texTileSize;
 

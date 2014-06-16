@@ -10,6 +10,11 @@ AnimationController::AnimationController()
 
     m_damaged.push_back(sf::Vector2f(1, 0));
 
+    m_activated.push_back(sf::Vector2f(0, 0));
+    m_activated.push_back(sf::Vector2f(1, 0));
+    m_activated.push_back(sf::Vector2f(2, 0));
+    m_activated.push_back(sf::Vector2f(3, 0));
+
     m_destroyed.push_back(sf::Vector2f(2, 0));
     m_destroyed.push_back(sf::Vector2f(3, 0));
     /*
@@ -101,7 +106,10 @@ void AnimationController::setState(AnimationState stat)
         m_animLoop.restart();
         break;
     case AnimationState::Activated:
-
+        m_animLoop.setSequence(m_activated);
+        m_animLoop.runOnce(false);
+        m_animLoop.setDelay(0.25);
+        m_animLoop.restart();
         break;
     case AnimationState::Enabled:
 

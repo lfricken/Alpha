@@ -8,7 +8,7 @@ enum ClassType///look at COLLISIONCATEGORY.h, and classes.txt
     /**default**/
     UNKNOWN = 0,
 
-    /**UNIVERSE, GAME, GUI ect.**/
+    /**UNIVERSE, GAME, GUI, DESTINATION ect.**/
     //ROOTGAME,///<---whats this for???
     UNIVERSE,
     OVERLAYMANAGER,

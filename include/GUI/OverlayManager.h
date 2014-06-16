@@ -20,7 +20,7 @@ class OverlayManager : public IOBase//Overlay Manager holds overlays. Each overl
 
         void add(std::tr1::shared_ptr<leon::Panel> panel);
         leon::Panel* getTarget(const std::string& target);//returns base pointer to target
-        leon::Panel* getTarget(unsigned long long int targetID);
+        leon::Panel* getTarget(unsigned int targetID);
 
         tgui::Gui& getGui();
 

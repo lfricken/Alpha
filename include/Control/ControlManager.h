@@ -12,9 +12,9 @@ public:
     virtual ~ControlManager();
 
     Intelligence* getIntelligence(const std::string& target);
-    Intelligence* getIntelligence(const unsigned long long int targetID);
+    Intelligence* getIntelligence(unsigned int targetID);
     Player* getPlayer(const std::string& target);
-    Player* getPlayer(const unsigned long long int targetID);
+    Player* getPlayer(unsigned int targetID);
     ///also get SI;
 
     void add(std::tr1::shared_ptr<Player> spPlayer);

@@ -7,11 +7,10 @@
 #include "TextureAllocator.h"//ends
 #include "Universe.h"
 
-class BaseFunctionFinder;
 class IOManager;
 class ControlManager;
 
-class Game : public IOBase//holds a universe, OverlayManager, and IOManager, and other stuff
+class Game// : public IOBase//holds a universe, OverlayManager, and IOManager, and other stuff
 {
 public:
     Game();
@@ -39,20 +38,20 @@ public:
     Universe& getGameUniverse();
     OverlayManager& getGameOverlayManager();
     TextureAllocator& getTextureAllocator();
-    BaseFunctionFinder& getGameFunctionFinder();
     tgui::Gui& getGameGui();
 
 protected:
 private:
     /**created first**/
     std::tr1::shared_ptr<sf::RenderWindow> m_spWindow;
-    std::tr1::shared_ptr<BaseFunctionFinder> m_spFunctionFinder;
-    std::tr1::shared_ptr<TextureAllocator> m_spTexAlloc;
-    std::tr1::shared_ptr<OverlayManager> m_spOverlayManager;///obsolete
-    std::tr1::shared_ptr<Universe> m_spUniverse;
-    /**needs access to previous ones**/
-    std::tr1::shared_ptr<ControlManager> m_spControlManager;
+
     std::tr1::shared_ptr<IOManager> m_spIOManager;
+    std::tr1::shared_ptr<TextureAllocator> m_spTexAlloc;
+    std::tr1::shared_ptr<Universe> m_spUniverse;
+
+    /**needs access to previous ones**/
+    std::tr1::shared_ptr<OverlayManager> m_spOverlayManager;
+    std::tr1::shared_ptr<ControlManager> m_spControlManager;
 
     sf::Clock m_clock;
 

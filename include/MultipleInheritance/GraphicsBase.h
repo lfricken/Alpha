@@ -14,7 +14,7 @@ struct GraphicsBaseData//initialized
         texName(def::gfx::texName),
         color(def::gfx::color),
         texTileSize(def::gfx::texTileSize),
-        animState(AnimationState::Default)
+        animState(def::gfx::animState)
         {}
 
     std::string texName;

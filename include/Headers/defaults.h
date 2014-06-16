@@ -6,6 +6,7 @@
 #include "Shape.h"
 #include "ClassType.h"
 #include "PlayerMode.h"
+#include "AnimationState.h"
 
 namespace def
 {
@@ -19,7 +20,7 @@ extern const std::string name;
 extern const unsigned long long int ID;
 
 #define IOBaseReturn void//these defines are used to take headache out of changing them
-#define IOBaseArgs sf::Packet& rInput
+#define IOBaseArgs sf::Packet& rInput, const std::string& rCommand
 }
 /**IOBASE**/
 
@@ -52,6 +53,7 @@ extern const sf::Vector2f texTile;
 
 extern const sf::Vector2f position;
 extern const sf::Vector2f scale;
+extern const AnimationState animState;
 }
 /**GRAPHICS**/
 

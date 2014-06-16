@@ -34,6 +34,7 @@ private:
     ///what we need is std::vector<AnimationSetting> m_animationSettings;
     std::vector<sf::Vector2f> m_default;
     std::vector<sf::Vector2f> m_damaged;
+    std::vector<sf::Vector2f> m_activated;
     std::vector<sf::Vector2f> m_destroyed;
 
     AnimationLooper m_animLoop;

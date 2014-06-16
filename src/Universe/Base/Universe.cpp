@@ -1,10 +1,11 @@
 #include "Universe.h"
 #include "ClassType.h"
 #include "Sort.h"
+#include "globals.h"
 
 using namespace std;
 
-Universe::Universe() : IOBase(), m_physWorld(b2Vec2(0,0)), m_projAlloc(&m_bedFinder)
+Universe::Universe() : IOBase(), m_physWorld(b2Vec2(0,0)), m_projAlloc(&m_bedFinder), m_rWindow(game.getGameWindow())
 {
 
     m_normalDraw = true;
@@ -29,39 +30,71 @@ Universe::~Universe()
 /**=====GET_TARGETS=====**/
 /**=================**/
 /**=================**/
-IOBase* Universe::getTarget(const string& target)///unfinished
+IOBase* Universe::getTarget(const string& targetName)///unfinished
 {
-    /**Loop through everything and find the target**/
-    for(vector<std::tr1::shared_ptr<Chunk> >::iterator it = m_physList.begin(); it != m_physList.end(); ++it)
-    {
-        if((*it)->getName() == target)
-            return &(**it);
-    }
-    return NULL;
-}
-IOBase* Universe::getTarget(unsigned long long int targetID)
-{
-    ///first search non physlist stuff
-    int location = BinarySearchPtrVector(m_physList, &Chunk::getID, targetID);//<std::tr1::shared_ptr<Chunk>, Chunk, unsigned int>
+    IOBase* pTarget = NULL;
 
-    if(location == -1)
-        return NULL;//couldnt find the target! :(
-    else
-        return &(*m_physList[location]);
+    pTarget = getPhysTarget(targetName);
+    if(pTarget != NULL)
+        return pTarget;
+
+    pTarget = getGfxTarget(targetName);
+    return pTarget;
 }
-Chunk* Universe::getPhysTarget(const std::string& target)
+IOBase* Universe::getTarget(unsigned int targetID)
 {
+    IOBase* pTarget = NULL;
+
+    pTarget = getPhysTarget(targetID);
+    if(pTarget != NULL)
+        return pTarget;
+
+    pTarget = getGfxTarget(targetID);
+    return pTarget;
+}
+Chunk* Universe::getPhysTarget(const std::string& targetName)
+{
+    Chunk* pTarget = NULL;
+
     for(vector<std::tr1::shared_ptr<Chunk> >::iterator it = m_physList.begin(); it != m_physList.end(); ++it)
-    {
-        if((*it)->getName() == target)
-            return &(**it);
-    }
-    return NULL;
+        if((*it)->getName() == targetName)
+            pTarget = &(**it);
+
+    return pTarget;
 }
-Chunk* Universe::getPhysTarget(unsigned long long int targetID)
+Chunk* Universe::getPhysTarget(unsigned int targetID)
 {
-    return NULL;
+    Chunk* pTarget = NULL;
+
+    int location = BinarySearchPtrVector(m_physList, &Chunk::getID, targetID);
+    if(location != -1)
+        pTarget = &(*m_physList[location]);
+
+    return pTarget;
 }
+Decoration* Universe::getGfxTarget(const std::string& targetName)
+{
+    Decoration* pTarget = NULL;
+
+    for(vector<std::tr1::shared_ptr<Decoration> >::iterator it = m_gfxList.begin(); it != m_gfxList.end(); ++it)
+        if((*it)->getName() == targetName)
+            pTarget = &(**it);
+
+    return pTarget;
+}
+Decoration* Universe::getGfxTarget(unsigned int targetID)
+{
+    Decoration* pTarget = NULL;
+
+    int location = BinarySearchPtrVector(m_gfxList, &Decoration::getID, targetID);
+    if(location != -1)
+        pTarget = &(*m_gfxList[location]);
+
+    return pTarget;
+}
+
+
+
 Chunk* Universe::getBackwardPhys()
 {
     return &*m_physList.back();
@@ -78,9 +111,14 @@ void Universe::add(Chunk* pChunk)
 {
     InsertPtrVector(m_physList, &IOBase::getID, tr1::shared_ptr<Chunk>(pChunk));
 }
+/*deprecated
 void Universe::add(tr1::shared_ptr<Chunk> spChunk)
 {
     InsertPtrVector(m_physList, &IOBase::getID, spChunk);
+}*/
+void Universe::add(Decoration* pDecor)
+{
+    InsertPtrVector(m_gfxList, &IOBase::getID, tr1::shared_ptr<Decoration>(pDecor));
 }
 /**=================**/
 /**=================**/
@@ -111,6 +149,11 @@ void Universe::draw()
 {
     if(m_normalDraw)
     {
+        for(vector<tr1::shared_ptr<Decoration> >::iterator it = m_gfxList.begin(); it != m_gfxList.end(); ++it)
+        {
+            (*it)->update();
+            m_rWindow.draw((*it)->getGfxComp().getSprite());
+        }
         for(vector<tr1::shared_ptr<Chunk> >::iterator it = m_physList.begin(); it != m_physList.end(); ++it)
         {
             (*it)->draw();

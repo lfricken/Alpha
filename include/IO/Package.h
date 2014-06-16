@@ -8,7 +8,6 @@ class IOBase;
 
 typedef ClassType Destination;
 
-typedef void (IOBase::*CommandFunction)(sf::Packet&);
 class Package
 {
 public:
@@ -17,12 +16,18 @@ public:
     ~Package();
     void reset(const std::string& target, const std::string& command, const sf::Packet& parameter, float delay, Destination dest);
 
-  ///  void setTargetID(unsigned int targetID);
 
-    const std::string& getTargetName();
+    /**SETTERS**/
+    void setTargetID(unsigned int targetID);
+    void setTargetName(const std::string& targetName);
+    void setParameter(const sf::Packet& parameter);
+
+
+    /**GETTERS**/
+    const std::string& getTargetName() const;
+    const std::string& getCommand() const;
     float getDelay() const;
-    unsigned long long int getTargetID() const;
-    CommandFunction getComFunc() const;
+    unsigned int getTargetID() const;
     Destination getDestination() const;
     sf::Packet& getParameter();
 
@@ -34,35 +39,35 @@ private:
     Destination m_destination;
 
     /**INITIALIZED AFTER CREATION**/
-    unsigned long long int m_targetID;//used to do binary search for object, after everything is loaded into mem, have someone do setTargetIDs()
-    CommandFunction m_commandFunction;
+    unsigned int m_targetID;//used to do binary search for object, after everything is loaded into mem, have someone do setTargetIDs()
+    std::string m_commandFunction;
 };
 
-struct Packagelet///WTF IS THIS???
+struct Packagelet//used inside IOManager for storing the package data till it's ready to be sent
 {
     Packagelet() {}
-    Packagelet(float time, unsigned long long int target, CommandFunction command, Destination dest, sf::Packet& param)
-        : timeRemaining(time), targetID(target), commandFunction(command), destination(dest),parameter(param) {}
-        /**
+    Packagelet(float time, unsigned int target, std::string inCommand, Destination dest, sf::Packet& param)
+        : timeRemaining(time), targetID(target), command(inCommand), destination(dest),parameter(param) {}
+    /**
     Packagelet(const Packagelet& old)
     {
-        timeRemaining = old.timeRemaining;
-        targetID = old.targetID;
-        commandFunction = old.commandFunction;
-        parameter = old.parameter;
+    timeRemaining = old.timeRemaining;
+    targetID = old.targetID;
+    commandFunction = old.commandFunction;
+    parameter = old.parameter;
     }
     Packagelet& operator= (const Packagelet& old)
     {
-        timeRemaining = old.timeRemaining;
-        targetID = old.targetID;
-        commandFunction = old.commandFunction;
-        parameter = old.parameter;
-        return *this;
+    timeRemaining = old.timeRemaining;
+    targetID = old.targetID;
+    commandFunction = old.commandFunction;
+    parameter = old.parameter;
+    return *this;
     }
-**/
+    **/
     float timeRemaining;
-    unsigned long long int targetID;
-    CommandFunction commandFunction;
+    unsigned int targetID;
+    std::string command;
     Destination destination;
     sf::Packet parameter;
 };

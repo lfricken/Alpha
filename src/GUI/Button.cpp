@@ -49,13 +49,13 @@ void Button::callback(const tgui::Callback& callback)
 }
 void Button::f_MouseEntered()
 {
-    m_spEventer->event("", Event::MouseEntered);
+    f_varEvent("", Event::MouseEntered);
 }
 void Button::f_LeftMouseClicked()
 {
-    m_spEventer->event("", Event::LeftMouseClicked);
+    f_varEvent("", Event::LeftMouseClicked);
 }
 void Button::f_MouseLeft()
 {
-    m_spEventer->event("", Event::MouseLeft);
+    f_varEvent("", Event::MouseLeft);
 }

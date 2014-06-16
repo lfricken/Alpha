@@ -53,19 +53,23 @@ public:
     virtual void add(const std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);//we only call this once!
     virtual void add(const std::vector<std::tr1::shared_ptr<ModuleData> >& data);//we only call this once!
 
-    virtual void draw();
-    virtual void physUpdate();
 
     /**IO-SYSTEM**/
+    virtual IOBaseReturn input(IOBaseArgs);
+
+
+    /**PHYSICS**/
+    virtual int startContact(PhysicsBase* other);
+    virtual int endContact(PhysicsBase* other);
+    virtual int preSolveContact(PhysicsBase* other);
+    virtual int postSolveContact(PhysicsBase* other);
+    virtual void setGroupIndex(int group);
+
     void sleep();//sets body to sleep, sets all velocities to 0, and goes to coord args
     void wake();
     virtual void wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, float angVel);
     bool isAwake() const;
 
-    virtual int startContact(PhysicsBase* other);
-    virtual int endContact(PhysicsBase* other);
-    virtual int preSolveContact(PhysicsBase* other);
-    virtual int postSolveContact(PhysicsBase* other);
 
     /**INPUT**/
     virtual void primary(sf::Vector2f coords);
@@ -82,11 +86,6 @@ public:
     virtual void special_3();
     virtual void special_4();
 
-    virtual float getMaxZoom() const;
-    virtual float getMinZoom() const;
-
-    virtual void setGroupIndex(int group);
-
 
     /**CONTROL**/
     Intelligence* getController() const;
@@ -97,6 +96,10 @@ public:
     void toggleControl(bool state);//will or wont accept inputs from controllers
     bool isControlEnabled() const;
 
+    virtual float getMaxZoom() const;
+    virtual float getMinZoom() const;
+
+
     /**CONST OVERLOADS**/
     b2Body* getBody() const;
     const b2BodyDef& getBodyDef() const;
@@ -104,8 +107,10 @@ public:
     const std::vector<std::tr1::shared_ptr<Module> >& getModuleSPList() const;
     const MultiTileMap& getTiles() const;
 
-    /**OVERRIDE**/
-    virtual void input_1(sf::Packet& rInput);
+
+    /**UPDATE**/
+    virtual void draw();
+    virtual void physUpdate();
 
 protected:
     sf::RenderWindow& m_rWindow;

@@ -27,18 +27,25 @@ void GModule::f_initialize(const GModuleData& data)
 
     m_isDestroyed = false;
 }
-IOBaseReturn GModule::input_1(IOBaseArgs)
+IOBaseReturn GModule::input(IOBaseArgs)
 {
-    T_Damage amount;
-    if(rInput >> amount)//successful
+    if(rCommand == "damage")
     {
-        std::cout << "\nHealth Remaining: [" << damage(amount) << "].";
+        T_Damage amount;
+        if(rInput >> amount)
+            damage(amount);
+        else
+        {
+            std::cout << "\nError in data extraction in input in Gmodule.";
+            ///ERROR LOG
+        }
     }
+    else if(rCommand == "destruct")
+        destruct();
     else
     {
+        std::cout << "\nError: [" << rCommand << "] was not recognized as a command.";
         ///ERROR LOG
-        std::cout << "\nError, packet had [";
-        std::cout << std::get<DamageMod::Generic>(amount) << "].";
     }
 }
 T_Health GModule::damage(T_Damage damage)

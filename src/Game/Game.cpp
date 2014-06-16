@@ -12,11 +12,12 @@
 #include "globals.h"
 #include "IOManager.h"
 #include "ControlManager.h"
-#include "BaseFunctionFinder.h"
 
 #include "Armor.h"
 #include "ForceFieldCore.h"
 #include "AnimationLooper.h"
+
+#include "Decoration.h"
 
 using namespace std;
 
@@ -28,17 +29,16 @@ Game::Game()
     sf::VideoMode mode = sf::VideoMode::getDesktopMode();
     mode = sf::VideoMode(1200, 700, 32);
     m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(mode, "SFML Box2D Test Environment", sf::Style::Default, m_settings));
-    m_spFunctionFinder = std::tr1::shared_ptr<BaseFunctionFinder>(new BaseFunctionFinder);//independent
+
+    m_spIOManager = std::tr1::shared_ptr<IOManager>(new IOManager());//independent
     m_spTexAlloc = std::tr1::shared_ptr<TextureAllocator>(new TextureAllocator());//independent
     m_spUniverse = std::tr1::shared_ptr<Universe>(new Universe());//independent
-    /**created last**/
-    m_spOverlayManager = std::tr1::shared_ptr<OverlayManager>(new OverlayManager(*m_spWindow));//independent
-    m_spIOManager = std::tr1::shared_ptr<IOManager>(new IOManager(*this));//requires Universe and OverlayManager
-    m_spControlManager = std::tr1::shared_ptr<ControlManager>(new ControlManager);//needs Window and Universe and GUI
 
-    m_spUniverse->resetEventer();/**these objects need to create an IOBase, and thus need an active eventer, and thus need a pointer to IOManager**/
-    m_spOverlayManager->resetEventer();/** ^ **/
-    this->resetEventer();/** ^ **/
+    /**created last**/
+    m_spOverlayManager = std::tr1::shared_ptr<OverlayManager>(new OverlayManager(*m_spWindow));//needs Window
+    m_spControlManager = std::tr1::shared_ptr<ControlManager>(new ControlManager());//needs Window and Universe and GUI
+
+
 
     bool loadedVsinc = true;
     int loadedFrameRate = 60;///called that because we are supposed to load that info
@@ -47,7 +47,6 @@ Game::Game()
     m_spOverlayManager->getGui().setGlobalFont(loadedFont);
     m_spWindow->setVerticalSyncEnabled(loadedVsinc);
     m_spWindow->setFramerateLimit(loadedFrameRate);
-    m_spFunctionFinder->load("functionTable.tbl");
     ///This code won't work! WTF?
     ///if(!icon.loadFromFile("textures/tileset.png"))
     /// cout << "\nIcon Load Error";///texture allocator
@@ -92,10 +91,6 @@ OverlayManager& Game::getGameOverlayManager()
 {
     return *m_spOverlayManager;
 }
-BaseFunctionFinder& Game::getGameFunctionFinder()
-{
-    return *m_spFunctionFinder;
-}
 Game::Status Game::client()
 {
     return run();
@@ -112,18 +107,21 @@ Game::Status Game::run()
 {
     /**LOAD THE GAME**/
     f_load("stuff");
+
+
     /**SIMULATION & RUNTIME**/
     Game::Status newState = Game::Local;
 
     float fps = 0;
     float firstTime = 0, secondTime = 0, timeForFrame = 0, computeTime = 0, remainder = 0;
     int i = 0;
-
     int gray = 60;
+    /**SIMULATION & RUNTIME**/
 
     sf::Event event;
     while(m_spWindow->isOpen() && newState != Game::Quit)
     {
+        /**FPS**/
         secondTime = getTime();
         timeForFrame = secondTime - firstTime;
         computeTime = timeForFrame + remainder;
@@ -136,6 +134,9 @@ Game::Status Game::run()
             else
                 cout << "\nFPS: " << fps;
         }
+        /**FPS**/
+
+
         /**INPUT and PHYSICS**/
         while(m_spWindow->pollEvent(event))
         {
@@ -156,13 +157,11 @@ Game::Status Game::run()
         /**INPUT and PHYSICS**/
 
 
-
         /**DRAW**/
-
         m_spWindow->clear(sf::Color(gray,gray,gray,255));
+
         m_spControlManager->drawUpdate();
-        m_spOverlayManager->draw();
-        //m_spWindow->setView(m_spWindow->getDefaultView());///draw stuff that is on hud///this doesn't appear to do anything anymore
+        m_spOverlayManager->draw();// \n m_spWindow->setView(m_spWindow->getDefaultView());///draw stuff that is on hud///this doesn't appear to do anything anymore
 
         m_spWindow->display();
         /**DRAW**/
@@ -244,7 +243,19 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 ///==============================================================================
 ///==============================================================================
 ///==============================================================================
-    /**=============================================STATIC=============================================**/
+    /**=============================================DECORATIONS=============================================**/
+    DecorationData decorDat;
+    decorDat.name = "art";
+    decorDat.gfxCompData.animState = AnimationState::Activated;
+    decorDat.gfxCompData.position = sf::Vector2f(20, 10);
+    Decoration* pDecor = new Decoration(decorDat);
+    m_spUniverse->add(pDecor);
+
+    /**=============================================DECORATIONS=============================================**/
+///==============================================================================
+///==============================================================================
+///==============================================================================
+    /**=============================================STATIC CHUNKS=============================================**/
     /**STATIC MODULES**/
     vector<tr1::shared_ptr<GModuleData> > staticGModuleDataList;
     GModuleData solidFixtureData;
@@ -269,12 +280,12 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     staticChunkData.bodyType = b2BodyType::b2_staticBody;
     staticChunkData.name = "Static_Chunk_1";
 
-    Chunk* staticChunk = new Chunk(staticChunkData);
-    staticChunk->add(staticGModuleDataList);
-    m_spUniverse->add(tr1::shared_ptr<Chunk>(staticChunk));
+    Chunk* pStaticChunk = new Chunk(staticChunkData);
+    pStaticChunk->add(staticGModuleDataList);
+    m_spUniverse->add(pStaticChunk);
     /**STATIC CHUNK**/
 
-    /**=============================================STATIC=============================================**/
+    /**=============================================STATIC CHUNKS=============================================**/
 ///==============================================================================
 ///==============================================================================
 ///==============================================================================
@@ -304,6 +315,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     hull.categoryBits = Category::ShipHull;
     hull.maskBits = Mask::ShipHull;
     hull.halfSize = b2Vec2(4, 4);
+    hull.density = 0.0f;
     hull.butes.setBute(Butes::isDestructable, false);
     hull.butes.setBute(Butes::isSolid, true);
 
@@ -378,25 +390,25 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     shipDat.type = ClassType::SHIP;
 
     shipDat.position = b2Vec2(-5, -5);
-    Chunk* chunk0 = new Ship(shipDat);
-    chunk0->setName("bigChunk_56");
-    chunk0->add(moduleList1);
-    chunk0->add(moduleList2);
-    m_spUniverse->add(tr1::shared_ptr<Chunk>(chunk0));
+    shipDat.name = "bigChunk_56";
+    Chunk* pChunk0 = new Ship(shipDat);
+    pChunk0->add(moduleList1);
+    pChunk0->add(moduleList2);
+    m_spUniverse->add(pChunk0);
 
     shipDat.position = b2Vec2(20, -20);
-    Chunk* chunk1 = new Ship(shipDat);
-    chunk1->setName("bigChunk_2");
-    chunk1->add(moduleList1);
-    chunk1->add(moduleList2);
-    m_spUniverse->add(tr1::shared_ptr<Chunk>(chunk1));
+    shipDat.name = "bigChunk_2";
+    Chunk* pChunk1 = new Ship(shipDat);
+    pChunk1->add(moduleList1);
+    pChunk1->add(moduleList2);
+    m_spUniverse->add(pChunk1);
 
     shipDat.position = b2Vec2(-20, 20);
-    Chunk* ship1 = new Ship(shipDat);
-    ship1->setName("ship_1");
-    ship1->add(moduleList1);
-    ship1->add(moduleList2);
-    m_spUniverse->add(tr1::shared_ptr<Chunk>(ship1));
+    shipDat.name = "ship_1";
+    Chunk* pShip1 = new Ship(shipDat);
+    pShip1->add(moduleList1);
+    pShip1->add(moduleList2);
+    m_spUniverse->add(pShip1);
     /**SHIP CHUNKS**/
 
     /**=============================================SHIPS=============================================**/
@@ -429,34 +441,34 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     debrisData.isBullet = true;
     debrisData.type = ClassType::CHUNK;
 
-    Chunk* debrisChunk = new Chunk(debrisData);
-    debrisChunk->add(DebrisDataList);
-    m_spUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
+    Chunk* pDebrisChunk = new Chunk(debrisData);
+    pDebrisChunk->add(DebrisDataList);
+    m_spUniverse->add(pDebrisChunk);
 
 
     for (int i=0, x=1, y=3, numBoxs = 20; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
         debrisData.position.x = x;
         debrisData.position.y = y;
-        debrisChunk = new Chunk(debrisData);
-        debrisChunk->add(DebrisDataList);
-        m_spUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
+        pDebrisChunk = new Chunk(debrisData);
+        pDebrisChunk->add(DebrisDataList);
+        m_spUniverse->add(pDebrisChunk);
     }
     for (int i=0, x=3, y=3, numBoxs = 1; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
         debrisData.position.x = x;
         debrisData.position.y = y;
-        debrisChunk = new Chunk(debrisData);
-        debrisChunk->add(DebrisDataList);
-        m_spUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
+        pDebrisChunk = new Chunk(debrisData);
+        pDebrisChunk->add(DebrisDataList);
+        m_spUniverse->add(pDebrisChunk);
     }
     for (int i=0, x=5, y=3, numBoxs = 1; i<numBoxs; i++, x+=2, y+=2)//creates boxes in a line
     {
         debrisData.position.x = x;
         debrisData.position.y = y;
-        debrisChunk = new Chunk(debrisData);
-        debrisChunk->add(DebrisDataList);
-        m_spUniverse->add(tr1::shared_ptr<Chunk>(debrisChunk));
+        pDebrisChunk = new Chunk(debrisData);
+        pDebrisChunk->add(DebrisDataList);
+        m_spUniverse->add(pDebrisChunk);
     }
     /**DEBRIS CHUNKS**/
 

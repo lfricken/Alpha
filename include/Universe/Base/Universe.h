@@ -18,15 +18,16 @@ public:
     Universe();
     ~Universe();
 
-    IOBase* getTarget(const std::string& target);
-    IOBase* getTarget(unsigned long long int targetID);
-    Chunk* getPhysTarget(const std::string& target);
-    Chunk* getPhysTarget(unsigned long long int targetID);
-    ///same with graphics
+    IOBase* getTarget(const std::string& targetName);
+    IOBase* getTarget(unsigned int targetID);
+    Chunk* getPhysTarget(const std::string& targetName);
+    Chunk* getPhysTarget(unsigned int targetID);
+    Decoration* getGfxTarget(const std::string& targetName);
+    Decoration* getGfxTarget(unsigned int targetID);
 
 
-    Chunk* getForwardPhys();///gets the next chunk element
-    Chunk* getBackwardPhys();///gets the next backward chunk element
+    Chunk* getForwardPhys();//gets the next chunk element
+    Chunk* getBackwardPhys();//gets the next backward chunk element
 
 
     b2World& getWorld();
@@ -35,11 +36,11 @@ public:
 
 
     void add(Chunk* pChunk);
-    void add(std::tr1::shared_ptr<Chunk> spChunk);
+    void add(Decoration* pDecor);
+
+
     void removeBack();
     bool removeTarget(std::string target);
-    ///void add(stuff);//overloaded so we can add things that are different
-    ///should be a part of projectileAlloc Projectile* generateProjectile(const b2Vec2& from, const b2Vec2 destination, float angle);///not done
 
 
     float physStep();
@@ -56,10 +57,10 @@ private:
     b2World m_physWorld;
     BedFinder m_bedFinder;
     ProjectileAllocator m_projAlloc;
+    sf::RenderWindow& m_rWindow;
 
     bool m_notPaused;
     bool m_normalDraw;
-    ///phased out due to new ID stuff unsigned int m_currentIDCount;//used to assign id's to things
 
     int m_iterations;
     int m_maxIterations;

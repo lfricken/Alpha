@@ -24,7 +24,9 @@ void GraphicsComponent::f_init(const GraphicsComponentData& rData)
 
     m_sprite.setScale(rData.scale);
     m_sprite.setColor(rData.color);
-    m_sprite.setPosition(rData.position);
+    m_sprite.setPosition(rData.position.x*scale, rData.position.y*scale);
+
+    m_animControl.setState(rData.animState);
 }
 void GraphicsComponent::load(const std::string& sheet)
 {
@@ -54,7 +56,11 @@ void GraphicsComponent::rotate(float r)
 {
     m_sprite.rotate(r);
 }
-void GraphicsComponent::f_update()
+void GraphicsComponent::setAnimState(AnimationState state)
+{
+    m_animControl.setState(state);
+}
+void GraphicsComponent::update()
 {
     sf::Vector2f topLeftCoord = m_animControl.getTile();
     sf::IntRect texRect(topLeftCoord.x*m_texTileSize.x, topLeftCoord.y*m_texTileSize.y, m_texTileSize.x, m_texTileSize.y);//left most, right most, width, height

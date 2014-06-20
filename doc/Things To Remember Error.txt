@@ -1,2 +1,4 @@
 Initializing stuff with a reference may not always work. When we would try to call push_back on that vector, it would crash
 , and then we found out it was because m_vectorObject was never initialized.
+
+Iterators can be invalidated very easily. If you have an iterator, and you pass into a new scope, when you come back, it may not be valid, because that other scope may have invalidated it.

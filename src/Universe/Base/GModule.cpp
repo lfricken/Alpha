@@ -2,6 +2,8 @@
 #include "globals.h"
 #include "PacketMod.hpp"
 
+using namespace std;
+
 GModule::GModule():
     PhysicsBase(),
     GraphicsBase()
@@ -36,7 +38,7 @@ IOBaseReturn GModule::input(IOBaseArgs)
             damage(amount);
         else
         {
-            std::cout << "\nError in data extraction in input in Gmodule.";
+            std::cout << "\nError in data extraction in input in GModule." << FILELINE;
             ///ERROR LOG
         }
     }
@@ -44,7 +46,7 @@ IOBaseReturn GModule::input(IOBaseArgs)
         destruct();
     else
     {
-        std::cout << "\nError: [" << rCommand << "] was not recognized as a command.";
+        std::cout << "\nError: [" << rCommand << "] was not recognized as a command." << FILELINE;
         ///ERROR LOG
     }
 }
@@ -73,15 +75,28 @@ T_Health GModule::getHealth() const
 }
 void GModule::destruct()
 {
-    if(m_attributes.getBute(Butes::isDestructable)) ///DO DESTRUCTION STUFF HERE
+    if(m_attributes.getBute(Butes::isDestructable))
     {
-        ///SOMETHING COOL FOR NOW
         b2Filter filter = m_pFixture->GetFilterData();
         filter.maskBits = static_cast<uint16>(Mask::ShipModuleBroke);
         m_pFixture->SetFilterData(filter);
 
         m_isDestroyed = true;
+        m_isEnabled = false;
         getAnimation().setState(AnimationState::Destroyed);
-        //setTexTile(sf::Vector2f(4, 0));
     }
 }
+void GModule::primary(sf::Vector2f coords) {}
+
+void GModule::secondary(sf::Vector2f coords) {}
+void GModule::aim(sf::Vector2f coords) {}
+void GModule::up() {}
+void GModule::down() {}
+void GModule::left() {}
+void GModule::right() {}
+void GModule::rollLeft() {}
+void GModule::rollRight() {}
+void GModule::special_1() {}
+void GModule::special_2() {}
+void GModule::special_3() {}
+void GModule::special_4() {}

@@ -8,34 +8,42 @@ IOManager::IOManager()
 }
 IOManager::~IOManager()//unfinished
 {
-    //dtor
+    //dtor input_1
 }
 void IOManager::recieve(Package& rPackage)//finished
 {
+    // cout << FILELINE;
+   // cout << "\nCommand: " << rPackage.getCommand();
+  //  cout << "\nID: " << rPackage.getTargetID();
     m_packageletList.push_back(Packagelet(rPackage.getDelay(), rPackage.getTargetID(), rPackage.getCommand(), rPackage.getDestination(), rPackage.getParameter()));
 }
 void IOManager::update(float timeChange)//unfinished, cause it got f'd up by adding the address to the package USE THIS CODE FOR GAME::setAddresses!!!!@@@@
 {
-    for(std::vector<Packagelet>::iterator it = m_packageletList.begin(); it != m_packageletList.end(); ++it)
+    //cout << "\nStart IOMan update.";
+    for(unsigned int i = 0; i < m_packageletList.size(); ++i)
     {
-        it->timeRemaining -= timeChange;
-        if(it->timeRemaining <= 0)
+        m_packageletList[i].timeRemaining -= timeChange;
+        if(m_packageletList[i].timeRemaining <= 0)
         {
             /**go to the appropriate element in our IOComponentList**/
-            if(it->targetID < m_IOComponentList.size())
+            if(m_packageletList[i].targetID < m_IOComponentList.size())
             {
-                m_IOComponentList[it->targetID]->input(it->parameter, it->command);
+                m_IOComponentList[m_packageletList[i].targetID]->input(m_packageletList[i].parameter, m_packageletList[i].command);
             }
             else
             {
-                cout << "\nCouldn't find target[" << (it)->targetID << "] with command [" << it->command << "].";
+                cout << "\nCouldn't find target[" << m_packageletList[i].targetID << "] with command [" << m_packageletList[i].command << "].";
                 ///ERROR LOG, couldnt find a target may have been destroyed
             }
-
-            m_packageletList.erase(it);//pointer
-            --it;
+            m_packageletList.erase(m_packageletList.begin() + i);
+            --i;
         }
     }
+    /**go back over the packagelets and erase the ones that are done**/
+
+    // m_packageletList.clear();///just delete everything for now.
+    //cout << "\nEnd IOMan update.";
+
 }
 IOComponent* IOManager::createIOComponent(const std::string& name)
 {
@@ -54,9 +62,41 @@ IOComponent* IOManager::createIOComponent(const std::string& name)
     /**set its data and return a pointer to it**/
 
     pIOComp->setName(name);
+    m_nameIDMap[name] = pIOComp->getID();
     return pIOComp;
 }
 void IOManager::setTargets()
 {
     /**loop over all Couriers, which are in the IOComponents, and set their target ID's with the map**/
+    std::map<Event, CourierVector>* pMap = NULL;
+    CourierVector* pVec = NULL;
+    Package* pPac = NULL;
+    std::string targetName;
+    std::map<std::string, unsigned int>::iterator it_name;
+
+    for(auto it_io = m_IOComponentList.begin(); it_io != m_IOComponentList.end(); ++it_io)//for each map in the IOComponents
+    {
+        pMap = &(*it_io)->getEventer()->getCourierMap();
+        for(auto it_map = pMap->begin(); it_map != pMap->end(); ++it_map)//for each vector in the maps
+        {
+            pVec = &it_map->second;
+            for(auto it_vec = pVec->begin(); it_vec != pVec->end(); ++it_vec)//for each courier in the vectors
+            {
+                pPac = &(*it_vec)->package;
+                targetName = pPac->getTargetName();
+
+                it_name = m_nameIDMap.find(targetName);
+                if(it_name != m_nameIDMap.end())
+                {
+                    pPac->setTargetID(it_name->second);
+                }
+                else
+                {
+                    cout << "\nCould not find target [" << targetName << "]" << FILELINE;
+                    pPac->setTargetID(0);
+                    ///ERROR LOG
+                }
+            }
+        }
+    }
 }

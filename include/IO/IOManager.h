@@ -25,6 +25,7 @@ class IOManager
         std::vector<unsigned int> m_IOCFreeList;//holds free elements of m_IOComponentList
         std::vector<std::tr1::shared_ptr<IOComponent> > m_IOComponentList;//list of all IOComponents
 
+        std::map<std::string, unsigned int> m_nameIDMap;
 };
 
 #endif // IOMANAGER_H

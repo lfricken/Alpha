@@ -48,3 +48,7 @@ void ActiveEventer::event(const std::string& variable, Event variableName)
         }
     }
 }
+std::map<Event, CourierVector>& ActiveEventer::getCourierMap()
+{
+    return m_spCourierMap;
+}

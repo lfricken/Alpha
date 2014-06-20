@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Universe::Universe() : IOBase(), m_physWorld(b2Vec2(0,0)), m_projAlloc(&m_bedFinder), m_rWindow(game.getGameWindow())
+Universe::Universe() : IOBase(), m_physWorld(b2Vec2(0,0)), m_projAlloc(), m_rWindow(game.getGameWindow())
 {
 
     m_normalDraw = true;
@@ -13,7 +13,7 @@ Universe::Universe() : IOBase(), m_physWorld(b2Vec2(0,0)), m_projAlloc(&m_bedFin
 
     m_velocityIterations = 1;///how should these be set?
     m_positionIterations = 1;///how should these be set?
-    m_timeStep = 1.0f/60.0f;///LOAD FROM FILE
+    m_timeStep = 1.0f/120.0f;///LOAD FROM FILE
     m_maxIterations = 6;
 
     m_physWorld.SetContactListener(&m_contactListener);

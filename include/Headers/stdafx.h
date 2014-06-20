@@ -22,7 +22,7 @@
 
 #endif // STFAFX_H
 
-
+#define FILELINE "{"<<__FILE__<<"}{"<<__LINE__<<"}"
 
 /**I would have written less code, but I don't have the time.**/
 

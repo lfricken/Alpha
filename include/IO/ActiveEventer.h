@@ -5,6 +5,8 @@
 
 class IOManager;
 
+typedef std::vector<std::tr1::shared_ptr<Courier> > CourierVector;
+
 class ActiveEventer
 {
 public:
@@ -15,8 +17,9 @@ public:
     void addList(const std::vector<std::tr1::shared_ptr<Courier> >& spCourierList);
     void event(const std::string& variable, Event variableName);
 
+    std::map<Event, CourierVector>& getCourierMap();
+
 protected:
-    typedef std::vector<std::tr1::shared_ptr<Courier> > CourierVector;
     std::map<Event, CourierVector> m_spCourierMap;/**holds all the couriers for this object**/
     IOManager* m_pIOManager;//a pointer to the world io manager
 private:

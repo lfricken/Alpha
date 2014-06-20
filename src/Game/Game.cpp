@@ -15,7 +15,8 @@
 
 #include "Armor.h"
 #include "ForceFieldCore.h"
-#include "AnimationLooper.h"
+#include "Thruster.h"
+//#include "AnimationLooper.h"
 
 #include "Decoration.h"
 
@@ -127,6 +128,9 @@ Game::Status Game::run()
         computeTime = timeForFrame + remainder;
         fps = 1.0/timeForFrame;
         firstTime = getTime();
+
+        if(fps < 40)
+            cout << "\nFPS: " << fps;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
         {
             if(fps < 35.0f)
@@ -219,9 +223,9 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     sf::Packet pack;
     pack << "packet data";
     pCourier->condition.reset(Event::LeftMouseClicked, "", 0, 'd', true);
-    pCourier->package.reset("Static_Chunk_1", "input_1", pack, 0, Destination::UNIVERSE);
-
+    pCourier->package.reset("Static_Chunk_1", "message", pack, 0, Destination::UNIVERSE);
     buttonData.spCourierList.push_back(tr1::shared_ptr<Courier>(pCourier));
+
     tr1::shared_ptr<leon::WidgetBase> button(new leon::Button(*(panel->getPanel()), buttonData));
     panel->add(button);
 
@@ -261,12 +265,12 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     GModuleData solidFixtureData;
     solidFixtureData.type = ClassType::GMODULE;
 
-    solidFixtureData.spCourierList.push_back( tr1::shared_ptr<Courier>(new Courier()) );
-    Courier& cor = *solidFixtureData.spCourierList.front();
-    sf::Packet packet;
-    packet << "testData";
-    cor.condition.reset(Event::Health, "97", 97, '<', true);
-    cor.package.reset("Static_Chunk_1", "input_1", packet, 1, Destination::UNIVERSE);
+    ///solidFixtureData.spCourierList.push_back( tr1::shared_ptr<Courier>(new Courier()) );
+    ///Courier& cor = *solidFixtureData.spCourierList.front();
+    ///sf::Packet packet;
+    ///packet << "testData";
+    ///cor.condition.reset(Event::Health, "97", 97, '<', true);
+    ///cor.package.reset("Static_Chunk_1", "input_1", packet, 1, Destination::UNIVERSE);
 
     solidFixtureData.shape = Shape::OCTAGON;
     solidFixtureData.halfSize = b2Vec2(2, 5);
@@ -293,10 +297,10 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     /**SHIP MODULES**/
     Courier* pModuleCourier = new Courier();
-    sf::Packet modPack;
-    modPack << "eventing works!";
+    sf::Packet modulePack;
+    modulePack << "module health < 50";
     pModuleCourier->condition.reset(Event::Health, "50", 50, '<', true);
-    pModuleCourier->package.reset("Static_Chunk_1", "input_1", modPack, 0, Destination::UNIVERSE);
+    pModuleCourier->package.reset("Static_Chunk_1", "message", modulePack, 0, Destination::UNIVERSE);
 
 
 
@@ -324,11 +328,20 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     vector<tr1::shared_ptr<ModuleData> > moduleList2;
 
     float offsetDelta = 2*shipModuleData.halfSize.x;
-    for (float i=0, x=-1.5, numBoxsX = 7; i<numBoxsX; ++i, x+=offsetDelta)//creates boxes in a line
+    float numBoxsX = 5, numBoxsY = 13;
+    for (float i=0, x=-((numBoxsX-1)/4); i<numBoxsX; ++i, x+=offsetDelta)//creates boxes in a line
     {
-        for (float c=0, y=-4.0, numBoxsY = 17; c<numBoxsY; ++c, y+=offsetDelta)
+        for (float c=0, y=-((numBoxsY-1)/4); c<numBoxsY; ++c, y+=offsetDelta)
         {
-            if((x!=0) || (y!=0))
+            if((x==0) && (y==0))
+            {
+
+            }
+            else if((x==0) && (y==0.5))
+            {
+
+            }
+            else
             {
                 shipModuleData.offset.x = x;
                 shipModuleData.offset.y = y;
@@ -337,6 +350,11 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
             }
         }
     }
+
+
+
+
+
 
     ArmorData armorData;
 
@@ -377,8 +395,13 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     ForceFieldCoreData fieldCoreData;
     fieldCoreData.type = ClassType::FORCE;
     fieldCoreData.offset = b2Vec2(0, 0);
-    fieldCoreData.color = sf::Color::White;
 
+    ThrusterData thrustDat;
+    thrustDat.type = ClassType::THRUSTER;
+    thrustDat.offset = b2Vec2(0, 0.5);
+    thrustDat.force = 500;
+
+    moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ThrusterData(thrustDat)) );
     moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ForceFieldCoreData(fieldCoreData)) );
     moduleList2.push_back(tr1::shared_ptr<ModuleData>(new ModuleData(hull)));
     /**SHIP MODULES**/
@@ -390,14 +413,14 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     shipDat.type = ClassType::SHIP;
 
     shipDat.position = b2Vec2(-5, -5);
-    shipDat.name = "bigChunk_56";
+    shipDat.name = "ship_3";
     Chunk* pChunk0 = new Ship(shipDat);
     pChunk0->add(moduleList1);
     pChunk0->add(moduleList2);
     m_spUniverse->add(pChunk0);
 
     shipDat.position = b2Vec2(20, -20);
-    shipDat.name = "bigChunk_2";
+    shipDat.name = "ship_2";
     Chunk* pChunk1 = new Ship(shipDat);
     pChunk1->add(moduleList1);
     pChunk1->add(moduleList2);
@@ -485,16 +508,6 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     player1.playerMode = PlayerMode::God;
     player1.targetName = "ship_1";
 
-    player1.keyConfig.up = sf::Keyboard::W;
-    player1.keyConfig.down = sf::Keyboard::S;
-    player1.keyConfig.left = sf::Keyboard::Q;
-    player1.keyConfig.right = sf::Keyboard::E;
-    player1.keyConfig.rollLeft = sf::Keyboard::A;
-    player1.keyConfig.rollRight = sf::Keyboard::D;
-    player1.keyConfig.special_1 = sf::Keyboard::R;
-    player1.keyConfig.special_2 = sf::Keyboard::F;
-    player1.keyConfig.special_3 = sf::Keyboard::C;
-    player1.keyConfig.special_4 = sf::Keyboard::X;
 
     player1.keyConfig.primary = sf::Mouse::Left;
     player1.keyConfig.secondary = sf::Mouse::Right;
@@ -515,6 +528,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     /**CONTROLLER TARGETS**/
     m_spControlManager->setupControl();
     /**CONTROLLER TARGETS**/
+    m_spIOManager->setTargets();//set IO targets
 
     /**=================================FINALIZING LOADED STUFF===========================================**/
 }

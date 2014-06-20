@@ -74,6 +74,7 @@ void Projectile::wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, fl
 }
 int Projectile::startContact(PhysicsBase* other)
 {
+    //std::cout << "\nStart Projectile Contact";
     /**do stuff**/
     if(other->getButes().getBute(Butes::isSolid))
     {
@@ -82,7 +83,7 @@ int Projectile::startContact(PhysicsBase* other)
         m_rIOManager.recieve(m_damagePackage);
         endLife();///put this in the above function!!! what?
     }
-
+    //std::cout << "\nEnd Projectile Contact";
     return 0;
 }
 int Projectile::endContact(PhysicsBase* other)

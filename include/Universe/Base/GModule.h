@@ -33,6 +33,20 @@ public:
 
     IOBaseReturn input(IOBaseArgs);//damage function implemented
 
+    virtual void primary(sf::Vector2f coords);
+    virtual void secondary(sf::Vector2f coords);
+    virtual void aim(sf::Vector2f coords);
+    virtual void up();
+    virtual void down();
+    virtual void left();
+    virtual void right();
+    virtual void rollLeft();
+    virtual void rollRight();
+    virtual void special_1();
+    virtual void special_2();
+    virtual void special_3();
+    virtual void special_4();
+
     T_Health damage(T_Damage damage);
     T_Health heal(T_Health h);
     T_Health getHealth() const;

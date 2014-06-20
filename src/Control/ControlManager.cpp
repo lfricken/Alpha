@@ -79,10 +79,6 @@ Player* ControlManager::getPlayer(unsigned int targetID)
 /**=================**/
 int ControlManager::pressedUpdate()
 {
-    float mass, fX, fY;///TEMP
-    float force = 50;///TEMP
-    float torque = 20;///TEMP
-
     for(vector<tr1::shared_ptr<Player> >::iterator it = m_localPlayerList.begin(); it != m_localPlayerList.end(); ++it)
     {
         m_pCPT = &**it;
@@ -93,10 +89,7 @@ int ControlManager::pressedUpdate()
                 m_chunkTarget = m_pCPT->getTarget();
                 if(m_chunkTarget->isControlEnabled())
                 {
-                    InputConfig& rInputConfig = m_pCPT->getInputConfig();///temp
-                    mass = m_chunkTarget->getBody()->GetMass();///temp
-                    m_bodyTarget = m_chunkTarget->getBody();///temp
-
+                    InputConfig& rInputConfig = m_pCPT->getInputConfig();
 
                     if (sf::Mouse::isButtonPressed(rInputConfig.primary))
                     {
@@ -115,39 +108,22 @@ int ControlManager::pressedUpdate()
                     if (sf::Keyboard::isKeyPressed(rInputConfig.down))
                     {
                         m_chunkTarget->down();
-
-                        ///temp
-                        fX = force*mass*sin(m_bodyTarget->GetAngle());
-                        fY = force*mass*cos(m_bodyTarget->GetAngle());
-                        m_bodyTarget->ApplyForceToCenter(b2Vec2(-fX, fY), true);
                     }
                     if (sf::Keyboard::isKeyPressed(rInputConfig.left))
                     {
                         m_chunkTarget->left();
-                        ///temp
-                        fX = force*mass*cos(m_bodyTarget->GetAngle());
-                        fY = force*mass*sin(m_bodyTarget->GetAngle());
-                        m_bodyTarget->ApplyForceToCenter(b2Vec2(-fX, -fY), true);
                     }
                     if (sf::Keyboard::isKeyPressed(rInputConfig.right))
                     {
                         m_chunkTarget->right();
-                        ///temp
-                        fX = force*mass*cos(m_bodyTarget->GetAngle());
-                        fY = force*mass*sin(m_bodyTarget->GetAngle());
-                        m_bodyTarget->ApplyForceToCenter(b2Vec2(fX, fY), true);
                     }
                     if (sf::Keyboard::isKeyPressed(rInputConfig.rollLeft))
                     {
                         m_chunkTarget->rollLeft();
-                        ///temp
-                        m_bodyTarget->ApplyTorque(-torque*mass, true);
                     }
                     if (sf::Keyboard::isKeyPressed(rInputConfig.rollRight))
                     {
                         m_chunkTarget->rollRight();
-                        ///temp
-                        m_bodyTarget->ApplyTorque(torque*mass, true);
                     }
                 }
             }
@@ -287,7 +263,7 @@ void ControlManager::drawUpdate()
             rotation = leon::radToDeg(m_bodyTarget->GetAngle());
 
             (*it)->getCamera().getView().setCenter(center);
-            (*it)->getCamera().getView().setRotation(rotation);
+            //(*it)->getCamera().getView().setRotation(rotation);
         }
 
         ///SOUND NOT DONE YET, WAITING FOR REPLY ON SPATIALIZATION POST
@@ -338,10 +314,13 @@ void ControlManager::f_cheats(vector<tr1::shared_ptr<Player> >::iterator it, sf:
         }
         if (rEvent.key.code == sf::Keyboard::Numpad8)
         {
-            string target = "ship_2";
+            string target;
+            cin >> target;
             cout << "\nControlling \"" << target << "\"";
             (*it)->linkControl(m_rUniverse.getPhysTarget(target));
         }
+
+
     }
 }
 tgui::Widget::Ptr ControlManager::f_MouseOnWhichWidget(float x, float y, std::vector<tgui::Widget::Ptr>& widgets)

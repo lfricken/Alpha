@@ -47,29 +47,14 @@ struct Packagelet//used inside IOManager for storing the package data till it's 
 {
     Packagelet() {}
     Packagelet(float time, unsigned int target, std::string inCommand, Destination dest, sf::Packet& param)
-        : timeRemaining(time), targetID(target), command(inCommand), destination(dest),parameter(param) {}
-    /**
-    Packagelet(const Packagelet& old)
-    {
-    timeRemaining = old.timeRemaining;
-    targetID = old.targetID;
-    commandFunction = old.commandFunction;
-    parameter = old.parameter;
-    }
-    Packagelet& operator= (const Packagelet& old)
-    {
-    timeRemaining = old.timeRemaining;
-    targetID = old.targetID;
-    commandFunction = old.commandFunction;
-    parameter = old.parameter;
-    return *this;
-    }
-    **/
+        : timeRemaining(time), targetID(target), command(inCommand), destination(dest), parameter(param), done(false) {}
+
     float timeRemaining;
     unsigned int targetID;
     std::string command;
     Destination destination;
     sf::Packet parameter;
+    bool done;
 };
 
 #endif // PACKAGE_H

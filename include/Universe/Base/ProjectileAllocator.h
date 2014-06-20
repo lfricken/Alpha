@@ -16,7 +16,6 @@ class ProjectileAllocator
 {
 public:
     ProjectileAllocator();
-    ProjectileAllocator(BedFinder* pBedFinder);
     virtual ~ProjectileAllocator();
 
     Projectile* getProjectile(ProjectileType type);
@@ -28,12 +27,12 @@ public:
     void draw();
 protected:
 private:
+    void f_initialize();
+
     /**first list is ready, second is permanent holder list**/
     typedef std::vector<std::tr1::shared_ptr<Projectile> > ProjSPList;
     typedef std::vector<std::tuple<ProjSPList, unsigned int, GModuleData, ProjectileData> > ProjListPairing;
     enum{spList = 0, freeIndex = 1, gModData = 2, projData = 3,};
-
-    void f_initialize(BedFinder* pBedFinder);
 
     std::vector<Projectile*> m_recoverList;
     ProjListPairing m_projList;//projectiles + other stuff, we keep different types in different tuples

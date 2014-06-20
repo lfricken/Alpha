@@ -55,7 +55,7 @@ void Intelligence::setState(PlayerState newState)
  ///       for(type it = m_HUDspElements.begin(); it != m_HUDspElements.end(); ++it)
 ///            (*it)->setState(newState);
     }
-    else if(m_playerState == Editing)/**we must be going out of edit mode**/
+    else if(m_playerState == PlayerState::Editing)/**we must be going out of edit mode**/
     {
   ///      for(type it = m_HUDspElements.begin(); it != m_HUDspElements.end(); ++it)
    ///         (*it)->setState(newState);

@@ -119,6 +119,7 @@
 		<Unit filename="include/Universe/Modules/Armor.h" />
 		<Unit filename="include/Universe/Modules/ForceField.h" />
 		<Unit filename="include/Universe/Modules/ForceFieldCore.h" />
+		<Unit filename="include/Universe/Modules/Thruster.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Control/Camera.cpp" />
 		<Unit filename="src/Control/ControlManager.cpp" />
@@ -159,6 +160,7 @@
 		<Unit filename="src/Universe/Modules/Armor.cpp" />
 		<Unit filename="src/Universe/Modules/ForceField.cpp" />
 		<Unit filename="src/Universe/Modules/ForceFieldCore.cpp" />
+		<Unit filename="src/Universe/Modules/Thruster.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

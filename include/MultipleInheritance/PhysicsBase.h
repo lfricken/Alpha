@@ -49,7 +49,7 @@ public:///MAYBE we shouldn't have this many functions???
     virtual int preSolveContact(PhysicsBase* other);
     virtual int postSolveContact(PhysicsBase* other);
 
-    virtual bool physUpdate();///OBSOLETE??? no, ForceField uses it!!!
+    virtual bool physUpdate();//used to implement special physical forces and stuff
 
     virtual b2World& getWorld();
 

@@ -11,6 +11,7 @@
 #include "Armor.h"
 #include "ForceField.h"
 #include "ForceFieldCore.h"
+#include "Thruster.h"
 
 using namespace std;
 
@@ -118,6 +119,12 @@ void Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList)
             ArmorData* pArmor = static_cast<ArmorData*>(pData);
             ptr = static_cast<GModule*>(new Armor(*pArmor));
         }
+        else if((**it_data).type == ClassType::THRUSTER)
+        {
+            GModuleData* pData = &(**it_data);
+            ThrusterData* pThruster = static_cast<ThrusterData*>(pData);
+            ptr = static_cast<GModule*>(new Thruster(*pThruster));
+        }
         else if((*it_data)->type == ClassType::FORCE)
         {
             GModuleData* pData = &(**it_data);
@@ -210,10 +217,10 @@ void Chunk::draw()
 {
     if(m_awake)
     {
-        std::vector<std::tr1::shared_ptr<GModule> >::iterator it_end = m_GModuleSPList.end();
-        for(std::vector<std::tr1::shared_ptr<GModule> >::iterator it = m_GModuleSPList.begin(); it != it_end; ++it)
+        auto it_end = m_GModuleSPList.end();
+        for(auto it = m_GModuleSPList.begin(); it != it_end; ++it)
         {
-            (**it).animate();
+            (*it)->animate();
         }
 
         m_tiles.setPosition(scale*m_pBody->GetPosition().x, scale*m_pBody->GetPosition().y);
@@ -251,7 +258,7 @@ void Chunk::sleep()
 
         m_pBody->SetLinearVelocity(b2Vec2(0,0));//cancel any movement
         m_pBody->SetAngularVelocity(0.0f);
-        m_pBody->SetTransform(game.getGameUniverse().getBedFinder().getSleepPosition(), 0);///request new position from bedFinder
+        m_pBody->SetTransform(game.getGameUniverse().getBedFinder().getSleepPosition(), 0);//request new position from bedFinder
         m_awake = false;
     }
 }
@@ -354,7 +361,7 @@ void Chunk::secondary(sf::Vector2f coords)
         float distance = sqrt(difference.x*difference.x + difference.y*difference.y);
         b2Vec2 component(difference.x/distance, difference.y/distance);
 
-        float vel = 50;
+        float vel = 240;
         float off = 0;
         b2Vec2 velvec(vel*component.x, vel*component.y);
         b2Vec2 offset(off*component.x, off*component.y);
@@ -370,28 +377,46 @@ void Chunk::aim(sf::Vector2f coords)
 }
 void Chunk::up()
 {
-    ///tell modules
-    m_pBody->ApplyForceToCenter(b2Vec2(m_accel*m_pBody->GetMass()*sin(m_pBody->GetAngle()),-m_accel*m_pBody->GetMass()*cos(m_pBody->GetAngle())), true);
+    for(auto it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
+    {
+        (*it)->up();
+    }
+    //m_pBody->ApplyForceToCenter(b2Vec2(m_accel*m_pBody->GetMass()*sin(m_pBody->GetAngle()),-m_accel*m_pBody->GetMass()*cos(m_pBody->GetAngle())), true);
 }
 void Chunk::down()
 {
-    ///tell modules
+    for(auto it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
+    {
+        (*it)->down();
+    }
 }
 void Chunk::left()
 {
-    ///tell modules
+    for(auto it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
+    {
+        (*it)->left();
+    }
 }
 void Chunk::right()
 {
-    ///tell modules
+    for(auto it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
+    {
+        (*it)->right();
+    }
 }
 void Chunk::rollLeft()
 {
-    ///tell modules
+    for(auto it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
+    {
+        (*it)->rollLeft();
+    }
 }
 void Chunk::rollRight()
 {
-    ///tell modules
+    for(auto it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
+    {
+        (*it)->rollRight();
+    }
 }
 void Chunk::special_1()
 {
@@ -465,13 +490,22 @@ void Chunk::f_setController(Intelligence* controller)//done
 /**END**/
 IOBaseReturn Chunk::input(IOBaseArgs)
 {
-    std::string n;
-    if(!(rInput >> n))
+    if(rCommand == "message")
     {
-        cout << "\nExtraction Fail.";
+        std::string message;
+        if(rInput >> message)
+            std::cout << std::endl << m_pIOComponent->getName() << " has " << m_GModuleSPList.front()->getHealth() << " health, and received message: [" << message << "].";
+        else
+        {
+            std::cout << "\nError in data extraction in input in GModule." << FILELINE;
+            ///ERROR LOG
+        }
+    }
+    else
+    {
+        std::cout << "\nError: [" << rCommand << "] was not recognized as a command." << FILELINE;
         ///ERROR LOG
     }
-    std::cout << std::endl << m_pIOComponent->getName() << " has " << m_GModuleSPList.front()->getHealth() << " health, also " << n;
 }
 int Chunk::startContact(PhysicsBase* other)
 {

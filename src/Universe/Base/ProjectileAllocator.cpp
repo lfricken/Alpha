@@ -4,17 +4,13 @@ using namespace std;
 
 ProjectileAllocator::ProjectileAllocator()
 {
-    //f_initialize(NULL);
-}
-ProjectileAllocator::ProjectileAllocator(BedFinder* pBedFinder)
-{
-    f_initialize(pBedFinder);
+    f_initialize();
 }
 ProjectileAllocator::~ProjectileAllocator()
 {
 
 }
-void ProjectileAllocator::f_initialize(BedFinder* pBedFinder)
+void ProjectileAllocator::f_initialize()
 {
     load();
 
@@ -50,8 +46,7 @@ Projectile* ProjectileAllocator::getProjectile(ProjectileType type)
 }
 void ProjectileAllocator::recieveProjectile(Projectile* pSleepy)
 {
-    ///we can't do this during a timestep!!! mark it for later capture
-
+    //we can't do this during a timestep!!! mark it for later capture
     //cout << "\nProjectile Received!";
     m_recoverList.push_back(pSleepy);
 }

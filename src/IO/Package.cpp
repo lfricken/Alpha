@@ -25,6 +25,7 @@ void Package::reset(const std::string& target, const std::string& command, const
     m_parameter = parameter;
     m_delay = delay;
     m_destination = dest;
+    m_targetID = 0;//default until assigned
 }
 /**SETTERS**/
 void Package::setTargetID(unsigned int targetID)

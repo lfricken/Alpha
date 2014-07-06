@@ -25,6 +25,10 @@ void Condition::reset(Event eventName, const std::string& stringValue, int intVa
     m_isRepeatable = repeatable;
     f_setComparisonFunction(comparison);
 }
+char Condition::getComparison() const
+{
+    return m_comparison;
+}
 Event Condition::getEventName() const
 {
     return m_eventName;
@@ -80,6 +84,8 @@ void Condition::f_setComparisonFunction(char op)
     else if (op == '!')
         m_evaluationFunction = &Condition::f_notEquals;
     else if (op == 'd')
+        m_evaluationFunction = &Condition::f_change;
+    else if (op == 'v')
         m_evaluationFunction = &Condition::f_change;
     else
     {

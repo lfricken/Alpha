@@ -11,11 +11,11 @@ public:
     IOComponent(unsigned int id, IOManager& manager);
     virtual ~IOComponent();
 
-    IOBaseReturn input(IOBaseArgs);//called for any input
+    void free();
     void setOwner(IOBase* pOwner);
+    IOBase* getOwner();
 
     unsigned int getID() const;
-    //void setID(unsigned int id);
 
     const std::string& getName() const;
     void setName(const std::string& name);
@@ -25,6 +25,8 @@ public:
     void resetEventer();//used in Game::Game() to reset some pointers that otherwise get messed up
 
     IOManager& getIOManager();
+
+    IOBaseReturn input(IOBaseArgs);//called for any input
 protected:
 private:
     IOManager& m_rIOManager;

@@ -11,7 +11,9 @@ struct PanelData : public WidgetBaseData
     PanelData() :
         WidgetBaseData(),
         backgroundColor(def::gui::backgroundColor)
-    {}
+    {
+    type = ClassType::PANEL;
+    }
     sf::Color backgroundColor;
 };
 
@@ -24,16 +26,16 @@ public:
     Panel(tgui::Container& container, const PanelData& data);
     ~Panel();
 
-    void toggleActive(const std::string& target);/**enable disable**///takes input
-    void toggleShow(const std::string& target);/**sleep wake**///visible or invisible
-
-    WidgetBase* getTarget(const std::string& target);
-    tgui::Panel::Ptr getPanel() const;
-
+    /**GENERIC**/
+    WidgetBase* getTarget(const std::string& targetName);
+    tgui::Panel::Ptr getPanelPtr() const;
     void add(std::tr1::shared_ptr<WidgetBase> sp_widget);
+    void setState(PlayerState state);
 
+    /**IO**/
+    virtual IOBaseReturn input(IOBaseArgs);
 protected:
-    virtual void callback(const tgui::Callback& callback);
+    virtual void f_callback(const tgui::Callback& callback);
 
 private:
     virtual void f_initialize(const PanelData& data);

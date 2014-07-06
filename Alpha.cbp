@@ -17,6 +17,7 @@
 					<Add directory="include/Universe/Base" />
 					<Add directory="include/Universe/Modules" />
 					<Add directory="include/MultipleInheritance" />
+					<Add directory="include/GUI" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -25,12 +26,15 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-pg" />
 					<Add directory="include/Universe/Chunks" />
 					<Add directory="include/Universe/Base" />
 					<Add directory="include/Universe/Modules" />
 					<Add directory="include/MultipleInheritance" />
+					<Add directory="include/GUI" />
 				</Compiler>
 				<Linker>
+					<Add option="-pg -lgmon" />
 					<Add option="-lsfml-network-s" />
 					<Add option="-lsfml-audio-s" />
 					<Add option="-lsfml-graphics-s" />
@@ -71,6 +75,7 @@
 		<Unit filename="include/Control/Player.h" />
 		<Unit filename="include/Control/PlayerMode.h" />
 		<Unit filename="include/GUI/Button.h" />
+		<Unit filename="include/GUI/EditBox.h" />
 		<Unit filename="include/GUI/OverlayManager.h" />
 		<Unit filename="include/GUI/Panel.h" />
 		<Unit filename="include/GUI/WidgetBase.h" />
@@ -120,12 +125,14 @@
 		<Unit filename="include/Universe/Modules/ForceField.h" />
 		<Unit filename="include/Universe/Modules/ForceFieldCore.h" />
 		<Unit filename="include/Universe/Modules/Thruster.h" />
+		<Unit filename="include/Universe/Modules/Trigger.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Control/Camera.cpp" />
 		<Unit filename="src/Control/ControlManager.cpp" />
 		<Unit filename="src/Control/Intelligence.cpp" />
 		<Unit filename="src/Control/Player.cpp" />
 		<Unit filename="src/GUI/Button.cpp" />
+		<Unit filename="src/GUI/EditBox.cpp" />
 		<Unit filename="src/GUI/OverlayManager.cpp" />
 		<Unit filename="src/GUI/Panel.cpp" />
 		<Unit filename="src/GUI/WidgetBase.cpp" />
@@ -161,6 +168,7 @@
 		<Unit filename="src/Universe/Modules/ForceField.cpp" />
 		<Unit filename="src/Universe/Modules/ForceFieldCore.cpp" />
 		<Unit filename="src/Universe/Modules/Thruster.cpp" />
+		<Unit filename="src/Universe/Modules/Trigger.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

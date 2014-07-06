@@ -3,7 +3,6 @@
 
 #include "IOBase.h"
 
-
 namespace leon
 {
 struct WidgetBaseData : public IOBaseData
@@ -19,7 +18,6 @@ struct WidgetBaseData : public IOBaseData
     sf::Vector2f size;
 };
 
-
 class WidgetBase : public IOBase
 {
 public:
@@ -27,9 +25,10 @@ public:
     WidgetBase(const WidgetBaseData& data);
     virtual ~WidgetBase();
 
-    virtual void callback(const tgui::Callback& callback);
-
+    /**IO**/
+    virtual IOBaseReturn input(IOBaseArgs);
 protected:
+    virtual void f_callback(const tgui::Callback& callback);
     void f_MouseEntered();
     void f_LeftMouseClicked();
     void f_MouseLeft();

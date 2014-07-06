@@ -132,7 +132,6 @@ void Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList)
 
             ForceFieldData data;
             data.shape = Shape::CIRCLE;
-            data.isSensor = true;
             data.halfSize = b2Vec2(8, 8);
             data.density = 0;
             data.pBody = m_pBody;

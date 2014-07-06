@@ -2,6 +2,7 @@
 
 #include "defaults.h"
 #include "IOBase.h"
+#include "IOManager.h"
 
 IOComponent::IOComponent(unsigned int id, IOManager& manager) : m_rIOManager(manager)
 {
@@ -13,28 +14,22 @@ IOComponent::IOComponent(unsigned int id, IOManager& manager) : m_rIOManager(man
 IOComponent::~IOComponent()
 {
 }
-
-
-IOBaseReturn IOComponent::input(IOBaseArgs)//called for any input
+void IOComponent::free()
 {
-    if(m_pOwner != NULL)
-        m_pOwner->input(rInput, rCommand);
+    m_rIOManager.f_free(m_ID);
 }
 void IOComponent::setOwner(IOBase* pOwner)
 {
     m_pOwner = pOwner;
 }
-
+IOBase* IOComponent::getOwner()
+{
+    return m_pOwner;
+}
 unsigned int IOComponent::getID() const
 {
     return m_ID;
 }
-/*void IOComponent::setID(unsigned int id)
-{
-    m_ID = id;
-}*/
-
-
 const std::string& IOComponent::getName() const
 {
     return m_name;
@@ -43,7 +38,6 @@ void IOComponent::setName(const std::string& name)
 {
     m_name = name;
 }
-
 void IOComponent::addCouriers(const std::vector<std::tr1::shared_ptr<Courier> >& spCourierList)
 {
     if(!m_spEventer)//if we don't have an active eventer(because that would mean m_spEventer returns false)
@@ -61,6 +55,8 @@ void IOComponent::resetEventer()
     m_spEventer.reset();
     m_spEventer = std::tr1::shared_ptr<ActiveEventer>(new ActiveEventer());
 }
-
-
-
+IOBaseReturn IOComponent::input(IOBaseArgs)//called for any input
+{
+    if(m_pOwner != NULL)
+        m_pOwner->input(rInput, rCommand);
+}

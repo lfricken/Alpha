@@ -13,19 +13,21 @@ class OverlayManager : public IOBase//Overlay Manager holds overlays. Each overl
         OverlayManager(sf::RenderWindow& window);
         ~OverlayManager();
 
-        void deactivateAll();//deactivate all Overlays
-        void activateAll();
+        /**GENERIC**/
+        void enableAll();
+        void disableAll();
         void showAll();
         void hideAll();
 
         void add(std::tr1::shared_ptr<leon::Panel> panel);
         leon::Panel* getTarget(const std::string& target);//returns base pointer to target
         leon::Panel* getTarget(unsigned int targetID);
-
         tgui::Gui& getGui();
 
         void draw();//draws everything thats active, just calls gui draw
 
+        /**IO**/
+        virtual IOBaseReturn input(IOBaseArgs);
     protected:
 
     private:

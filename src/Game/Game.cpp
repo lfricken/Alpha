@@ -16,6 +16,9 @@
 #include "Armor.h"
 #include "ForceFieldCore.h"
 #include "Thruster.h"
+
+#include "EditBox.h"
+
 //#include "AnimationLooper.h"
 
 #include "Decoration.h"
@@ -41,7 +44,7 @@ Game::Game()
 
 
 
-    bool loadedVsinc = true;
+    bool loadedVsinc = false;
     int loadedFrameRate = 60;///called that because we are supposed to load that info
     std::string loadedFont = "TGUI/fonts/DejaVuSans.ttf";
 
@@ -203,22 +206,21 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     tab->add("Ammo");
     tab->add("Items");
 
+
     leon::PanelData panelData;
     panelData.configFile = config;
     panelData.backgroundColor = sf::Color(255,255,255,1);
     panelData.position = sf::Vector2f(0, 0);
-    panelData.size = sf::Vector2f(200,200);
+    panelData.size = sf::Vector2f(500,500);
     panelData.type = ClassType::PANEL;
 
-    tr1::shared_ptr<leon::Panel> panel(new leon::Panel(m_spOverlayManager->getGui(), panelData));
-    m_spOverlayManager->add(panel);
+    leon::Panel* panel = new leon::Panel(m_spOverlayManager->getGui(), panelData);
 
     leon::ButtonData buttonData;
     buttonData.size = sf::Vector2f(100,50);
     buttonData.buttonText = "Exit";
     buttonData.position = sf::Vector2f(0, 0);
     buttonData.type = ClassType::BUTTON;
-
     Courier* pCourier = new Courier();
     sf::Packet pack;
     pack << "packet data";
@@ -226,9 +228,23 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     pCourier->package.reset("Static_Chunk_1", "message", pack, 0, Destination::UNIVERSE);
     buttonData.spCourierList.push_back(tr1::shared_ptr<Courier>(pCourier));
 
-    tr1::shared_ptr<leon::WidgetBase> button(new leon::Button(*(panel->getPanel()), buttonData));
-    panel->add(button);
+    leon::EditBoxData editboxData;
+    editboxData.startingText = "This is Here";
+    editboxData.size = sf::Vector2f(400, 50);
+    editboxData.position = sf::Vector2f(100,100);
+    pCourier = new Courier();
+    sf::Packet editBoxOutput;
+    editBoxOutput << "ship_2";
+    pCourier->condition.reset(Event::ReturnKeyPressed, "", 0, 'v', true);
+    pCourier->package.reset("player_1", "switchLink", editBoxOutput, 0, Destination::UNIVERSE);
+    editboxData.spCourierList.push_back(tr1::shared_ptr<Courier>(pCourier));
 
+
+    leon::WidgetBase* pEditBox = new leon::EditBox(*panel->getPanelPtr(), editboxData);
+    leon::WidgetBase* pButton = new leon::Button(*panel->getPanelPtr(), buttonData);
+    panel->add(tr1::shared_ptr<leon::WidgetBase>(pButton));
+    panel->add(tr1::shared_ptr<leon::WidgetBase>(pEditBox));
+    m_spOverlayManager->add(tr1::shared_ptr<leon::Panel>(panel));
 
 
     /**TAB**/
@@ -507,7 +523,6 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     player1.type = ClassType::PLAYER;
     player1.playerMode = PlayerMode::God;
     player1.targetName = "ship_1";
-
 
     player1.keyConfig.primary = sf::Mouse::Left;
     player1.keyConfig.secondary = sf::Mouse::Right;

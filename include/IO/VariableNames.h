@@ -3,11 +3,13 @@
 
 #include "stdafx.h"
 
-enum Event
+enum class Event
 {
     /**GENERIC**/
     State,
     Count,
+    Triggered,
+    Enabled,
     /**GENERIC**/
 
     /**UNIVERSE**/
@@ -19,6 +21,8 @@ enum Event
     MouseLeft,
     MouseEntered,
     LeftMouseClicked,
+    TextChanged,
+    ReturnKeyPressed,
     /**GUI**/
 
     /**GRAPHICS**/
@@ -64,7 +68,7 @@ enum DamageMod
 class HealthData : public Variable<T_Health>
 {
 public:
-    HealthData() : Variable(Health, 100), m_armor(0) {}
+    HealthData() : Variable(Event::Health, 100), m_armor(0) {}
 
     T_Health takeDamage(T_Damage d)
     {

@@ -50,7 +50,7 @@ unsigned int Package::getTargetID() const
 {
     return m_targetID;
 }
-sf::Packet& Package::getParameter()
+const sf::Packet& Package::getParameter() const
 {
     return m_parameter;
 }

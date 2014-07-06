@@ -30,9 +30,22 @@ void Button::f_initialize(const ButtonData& data)
     m_pButton->setPosition(data.position);
     m_pButton->setText(data.buttonText);
     m_pButton->setSize(data.size.x, data.size.y);
-    m_pButton->bindCallbackEx(&Button::callback, this, tgui::Button::AllButtonCallbacks);
+
+    m_pButton->bindCallbackEx(&Button::f_callback, this, tgui::Button::AllButtonCallbacks);
 }
-void Button::callback(const tgui::Callback& callback)
+
+
+/**IO**/
+IOBaseReturn Button::input(IOBaseArgs)
+{
+    WidgetBase::input(rInput, rCommand);
+}
+
+
+
+
+/**PRIVATE**/
+void Button::f_callback(const tgui::Callback& callback)
 {
     if(callback.trigger == tgui::Button::MouseEntered)
     {

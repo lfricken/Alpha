@@ -11,6 +11,7 @@ public:
     virtual ~Condition();
     void reset(Event varName, const std::string& stringValue, int intValue, char comparison, bool repeatable);
 
+    char getComparison() const;
     Event getEventName() const;
     bool evaluate(const std::string& input) const;
     bool isRepeatable() const;

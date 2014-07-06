@@ -1,5 +1,3 @@
 There will always be three error logs. Look in Game::Constructor
 We have not gotten around to normalizing large angles.
-Make a fast sin cos tan table???
-Sounds Causes Seg Fault on exit because SFML
-Define states for textures, like normal will be 0,0, broken will be 7,0
+Define states for textures in a material sort of file that defines the states of objects

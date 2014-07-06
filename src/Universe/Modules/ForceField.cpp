@@ -7,31 +7,31 @@ ForceField::ForceField() : Module()
     ForceFieldData data;
     f_initialize(data);
 }
-ForceField::ForceField(const ForceFieldData& data) : Module(static_cast<ModuleData>(data))
+ForceField::ForceField(const ForceFieldData& rData) : Module(static_cast<ModuleData>(rData))
 {
-    f_initialize(data);
+    f_initialize(rData);
 }
 
 ForceField::~ForceField()
 {
 
 }
-void ForceField::f_initialize(const ForceFieldData& data)
+void ForceField::f_initialize(const ForceFieldData& rData)
 {
-    m_strength = data.forceStrength;
+    m_strength = rData.forceStrength;
 }
-int ForceField::startContact(PhysicsBase* other)
+int ForceField::startContact(PhysicsBase* pOther)
 {
     /**add to list**/
-    m_targetBody = static_cast<PhysicsBase*>(other)->getBody();
+    m_targetBody = static_cast<PhysicsBase*>(pOther)->getBody();
 
     ++m_targets[m_targetBody];
     return 0;
 }
-int ForceField::endContact(PhysicsBase* other)
+int ForceField::endContact(PhysicsBase* pOther)
 {
     /**remove from list**/
-    m_targetBody = static_cast<PhysicsBase*>(other)->getBody();
+    m_targetBody = static_cast<PhysicsBase*>(pOther)->getBody();
 
     --m_targets[m_targetBody];
     if(m_targets[m_targetBody] == 0)
@@ -71,12 +71,4 @@ bool ForceField::physUpdate()
         return m_hasContact;
     }
     return false;
-}
-void ForceField::enable()
-{
-    m_isEnabled = true;
-}
-void ForceField::disable()
-{
-    m_isEnabled = false;
 }

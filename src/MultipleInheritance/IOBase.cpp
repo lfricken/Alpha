@@ -15,8 +15,9 @@ IOBase::IOBase(const IOBaseData& data) : m_rIOManager(game.getGameIOManager())
 {
     f_initialize(data);
 }
-IOBase::~IOBase()//unfinished
+IOBase::~IOBase()
 {
+    m_pIOComponent->free();
 }
 void IOBase::f_initialize(const IOBaseData& data)
 {
@@ -30,6 +31,8 @@ void IOBase::f_initialize(const IOBaseData& data)
     m_isEnabled = data.isEnabled;
 }
 
+
+/**GENERIC**/
 const IOComponent& IOBase::getIOComponent() const
 {
     return *m_pIOComponent;
@@ -42,11 +45,6 @@ const std::string& IOBase::getName() const
 {
     return m_pIOComponent->getName();
 }
-/*IOManager& IOBase::getIOManager()
-{
-    return m_rIOManager;
-}*/
-
 ClassType IOBase::getType() const
 {
     return m_type;
@@ -57,20 +55,39 @@ const Attributes& IOBase::getButes() const
 }
 
 
+/**IO**/
 IOBaseReturn IOBase::input(IOBaseArgs)
 {
-
+    if(rCommand == "enable")
+        enable();
+    else if(rCommand == "disable")
+        disable();
+    else if(rCommand == "trigger")
+        trigger();
+    else
+    {
+        ///ERROR LOG
+        std::cout << "\nCommand [" << rCommand << "] was never found.";
+    }
 }
 void IOBase::enable()
 {
-
+    m_isEnabled = true;
+    f_varEvent(m_isEnabled, Event::Enabled);
 }
 void IOBase::disable()
 {
-
+    m_isEnabled = false;
+    f_varEvent(m_isEnabled, Event::Enabled);
+}
+void IOBase::trigger()
+{
+    f_varEvent("", Event::Triggered);
 }
 
 
+
+/**PRIVATE**/
 void IOBase::f_varEvent(std::string value, Event eventType)//takes a generic variable type, and sends the data to eventer
 {
     m_pIOComponent->getEventer()->event(value, eventType);

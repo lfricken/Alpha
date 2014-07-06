@@ -31,6 +31,8 @@ public:
     PlayerState getState() const;
     void setState(PlayerState newState);
 
+    virtual IOBaseReturn input(IOBaseArgs);
+
     void setAim(const sf::Vector2f& newAim);
     const sf::Vector2f& getAim() const;
 

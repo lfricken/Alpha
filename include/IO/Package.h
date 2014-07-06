@@ -6,7 +6,7 @@
 
 class IOBase;
 
-typedef ClassType Destination;
+typedef ClassType Destination;///ISNT USED FOR ANYTHING AT THE MOMENT
 
 class Package
 {
@@ -29,7 +29,7 @@ public:
     float getDelay() const;
     unsigned int getTargetID() const;
     Destination getDestination() const;
-    sf::Packet& getParameter();
+    const sf::Packet& getParameter() const;
 
 private:
     std::string m_targetName;//used initially to get targetID
@@ -46,7 +46,7 @@ private:
 struct Packagelet//used inside IOManager for storing the package data till it's ready to be sent
 {
     Packagelet() {}
-    Packagelet(float time, unsigned int target, std::string inCommand, Destination dest, sf::Packet& param)
+    Packagelet(float time, unsigned int target, const std::string& inCommand, Destination dest, const sf::Packet& param)
         : timeRemaining(time), targetID(target), command(inCommand), destination(dest), parameter(param), done(false) {}
 
     float timeRemaining;

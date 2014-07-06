@@ -15,13 +15,23 @@ WidgetBase::~WidgetBase()
 {
 
 }
-void WidgetBase::callback(const tgui::Callback& callback)
-{
-    //override and callbacks here
-}
 void WidgetBase::f_initialize(const WidgetBaseData& data)
 {
     //initialize data
+}
+
+
+/**IO**/
+IOBaseReturn WidgetBase::input(IOBaseArgs)
+{
+    IOBase::input(rInput, rCommand);
+}
+
+
+/**PRIVATE**/
+void WidgetBase::f_callback(const tgui::Callback& callback)
+{
+    //override and callbacks here
 }
 void WidgetBase::f_MouseEntered()
 {

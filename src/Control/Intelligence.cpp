@@ -1,4 +1,5 @@
 #include "Intelligence.h"
+#include "globals.h"
 
 Intelligence::Intelligence()
 {
@@ -49,19 +50,38 @@ PlayerState Intelligence::getState() const
 }
 void Intelligence::setState(PlayerState newState)
 {
-    typedef std::vector<std::tr1::shared_ptr<leon::Panel> >::iterator type;
-    if(newState == PlayerState::Editing)/**the new state is editing**/
-    {
- ///       for(type it = m_HUDspElements.begin(); it != m_HUDspElements.end(); ++it)
-///            (*it)->setState(newState);
-    }
-    else if(m_playerState == PlayerState::Editing)/**we must be going out of edit mode**/
-    {
-  ///      for(type it = m_HUDspElements.begin(); it != m_HUDspElements.end(); ++it)
-   ///         (*it)->setState(newState);
-    }
+    for(auto it = m_HUDspElements.begin(); it != m_HUDspElements.end(); ++it)
+        (*it)->setState(newState);
 
     m_playerState = newState;
+}
+IOBaseReturn Intelligence::input(IOBaseArgs)
+{
+    if(rCommand == "enable")
+        enable();
+    else if(rCommand == "disable")
+        disable();
+    else if(rCommand == "switchLink")
+    {
+        std::string targetName;
+        rInput >> targetName;
+        Chunk* pTarget = game.getGameUniverse().getPhysTarget(targetName);
+        if(pTarget != NULL)
+        {
+            linkControl(pTarget);
+        }
+        else
+        {
+            std::cout << "\nERROR in switchLink";
+            ///ERROR LOG
+        }
+
+    }
+    else
+    {
+        ///ERROR LOG
+        std::cout << "\nCommand [" << rCommand << "] was never found.";
+    }
 }
 void Intelligence::f_forgetTarget()//done
 {

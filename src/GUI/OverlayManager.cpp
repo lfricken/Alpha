@@ -8,25 +8,39 @@ OverlayManager::OverlayManager(sf::RenderWindow& window) : m_gui(window)
 }
 OverlayManager::~OverlayManager()
 {
-    //dtor
-}
-void OverlayManager::deactivateAll()
-{
 
 }
 
 
 
-/**===========**/
-/**====GET====**/
-/**===========**/
-tgui::Gui& OverlayManager::getGui()
+/**GENERIC**/
+void OverlayManager::enableAll()
 {
-    return m_gui;
+    for(auto it = m_panelList.begin(); it != m_panelList.end(); ++it)
+        (*it)->getPanelPtr()->enable();
+}
+void OverlayManager::disableAll()
+{
+    for(auto it = m_panelList.begin(); it != m_panelList.end(); ++it)
+        (*it)->getPanelPtr()->disable();
+}
+void OverlayManager::showAll()
+{
+    for(auto it = m_panelList.begin(); it != m_panelList.end(); ++it)
+        (*it)->getPanelPtr()->show();
+}
+void OverlayManager::hideAll()
+{
+    for(auto it = m_panelList.begin(); it != m_panelList.end(); ++it)
+        (*it)->getPanelPtr()->hide();
+}
+void OverlayManager::add(std::tr1::shared_ptr<leon::Panel> panel)
+{
+    InsertPtrVector(m_panelList, &IOBase::getID, panel);
 }
 leon::Panel* OverlayManager::getTarget(const std::string& target)
 {
-    for(vector<std::tr1::shared_ptr<leon::Panel> >::const_iterator it = m_panelList.begin(); it != m_panelList.end(); ++it)
+    for(auto it = m_panelList.cbegin(); it != m_panelList.cend(); ++it)
     {
         if((*it)->getName() == target)
         {
@@ -45,26 +59,20 @@ leon::Panel* OverlayManager::getTarget(unsigned int targetID)
     else
         return &(*m_panelList[location]);
 }
-/**===========**/
-/**====GET====**/
-/**===========**/
-
-
-
-
-/**===========**/
-/**====ADD====**/
-/**===========**/
-void OverlayManager::add(std::tr1::shared_ptr<leon::Panel> panel)
+tgui::Gui& OverlayManager::getGui()
 {
-    InsertPtrVector(m_panelList, &IOBase::getID, panel);
+    return m_gui;
 }
-/**===========**/
-/**====ADD====**/
-/**===========**/
-
-
 void OverlayManager::draw()
 {
     m_gui.draw();
+}
+
+
+
+
+/**IO**/
+IOBaseReturn OverlayManager::input(IOBaseArgs)
+{
+    IOBase::input(rInput, rCommand);
 }

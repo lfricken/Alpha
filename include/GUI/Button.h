@@ -10,7 +10,9 @@ struct ButtonData : public WidgetBaseData
     ButtonData() :
         WidgetBaseData(),
         buttonText(def::gui::buttonText)
-    {}
+    {
+        type = ClassType::BUTTON;
+    }
 
     std::string buttonText;
 };
@@ -25,15 +27,17 @@ public:
     Button(tgui::Container& container, const ButtonData& data);
     virtual ~Button();
 
-    virtual void callback(const tgui::Callback& callback);
-
+    /**IO**/
+    virtual IOBaseReturn input(IOBaseArgs);
 protected:
+    virtual void f_callback(const tgui::Callback& callback);
     virtual void f_MouseEntered();
     virtual void f_MouseLeft();
     virtual void f_LeftMouseClicked();
 
 private:
     virtual void f_initialize(const ButtonData& data);
+
     tgui::Button::Ptr m_pButton;
 };
 }

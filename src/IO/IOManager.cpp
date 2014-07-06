@@ -1,5 +1,7 @@
 #include "IOManager.h"
 
+#include "IOComponent.h"
+
 using namespace std;
 
 IOManager::IOManager()
@@ -10,11 +12,11 @@ IOManager::~IOManager()//unfinished
 {
     //dtor input_1
 }
-void IOManager::recieve(Package& rPackage)//finished
+void IOManager::recieve(const Package& rPackage)//finished
 {
     // cout << FILELINE;
-   // cout << "\nCommand: " << rPackage.getCommand();
-  //  cout << "\nID: " << rPackage.getTargetID();
+    // cout << "\nCommand: " << rPackage.getCommand();
+    //  cout << "\nID: " << rPackage.getTargetID();
     m_packageletList.push_back(Packagelet(rPackage.getDelay(), rPackage.getTargetID(), rPackage.getCommand(), rPackage.getDestination(), rPackage.getParameter()));
 }
 void IOManager::update(float timeChange)//unfinished, cause it got f'd up by adding the address to the package USE THIS CODE FOR GAME::setAddresses!!!!@@@@
@@ -99,4 +101,21 @@ void IOManager::setTargets()
             }
         }
     }
+}
+IOBase* IOManager::getTarget(const std::string targetName)
+{
+    auto it_name = m_nameIDMap.find(targetName);
+    unsigned int id = it_name->second;
+    return getTarget(id);
+}
+IOBase* IOManager::getTarget(unsigned int targetID)
+{
+    if(targetID < m_IOComponentList.size())
+        return m_IOComponentList[targetID]->getOwner();
+    else
+        return NULL;
+}
+void IOManager::f_free(unsigned int id)
+{
+    m_IOCFreeList.push_back(id);
 }

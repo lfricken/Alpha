@@ -47,16 +47,18 @@ public:
     IOBase(const IOBaseData& data);
     virtual ~IOBase();
 
+    /**GENERIC**/
     const IOComponent& getIOComponent() const;
     unsigned int getID() const;
     const std::string& getName() const;
-
     ClassType getType() const;
     const Attributes& getButes() const;
 
-    virtual IOBaseReturn input(IOBaseArgs);//called for any input
+    /**IO**/
+    virtual IOBaseReturn input(IOBaseArgs);
     virtual void enable();
     virtual void disable();
+    virtual void trigger();
 
 protected:
     void f_varEvent(std::string value, Event eventType);//takes a generic variable type, and sends the data to eventer

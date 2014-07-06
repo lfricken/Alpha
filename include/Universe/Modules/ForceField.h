@@ -10,6 +10,7 @@ struct ForceFieldData : public ModuleData
         forceStrength(400)
     {
         type = ClassType::FORCE;
+        isSensor = true;
         butes.setBute(isSolid, false);
         butes.setBute(isDestructable, false);
     }
@@ -24,11 +25,8 @@ public:
     ForceField(const ForceFieldData& data);
     virtual ~ForceField();
 
-    virtual int startContact(PhysicsBase* other);
-    virtual int endContact(PhysicsBase* other);
-
-    virtual void enable();///SHOULD ALSO BE IN OTHER BASER CLASSES
-    virtual void disable();///SHOULD ALSO BE IN OTHER BASER CLASSES
+    virtual int startContact(PhysicsBase* pOther);
+    virtual int endContact(PhysicsBase* pOther);
 
     virtual bool physUpdate();
 protected:

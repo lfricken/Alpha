@@ -8,23 +8,25 @@ Package::Package()
 {
     sf::Packet tempParam;
     tempParam << 0;
-    reset("player_1", "default", tempParam, 0.0, Destination::UNIVERSE);
+    reset("player_1", "default", tempParam, 0.0, Destination::UNIVERSE, false);
 }
-Package::Package(const std::string& target, const std::string& command, const sf::Packet& parameter, float delay, Destination dest)
+Package::Package(const std::string& target, const std::string& command, const sf::Packet& parameter, float delay, Destination dest, int sendValue)
 {
-    reset(target, command, parameter, delay, dest);
+    reset(target, command, parameter, delay, dest, sendValue);
 }
 
 Package::~Package()
 {
 }
-void Package::reset(const std::string& target, const std::string& command, const sf::Packet& parameter, float delay, Destination dest)
+void Package::reset(const std::string& target, const std::string& command, const sf::Packet& parameter, float delay, Destination dest, int sendValue)
 {
     m_targetName = target;
     m_command = command;
     m_parameter = parameter;
     m_delay = delay;
     m_destination = dest;
+    m_sendValue = sendValue;
+
     m_targetID = 0;//default until assigned
 }
 /**SETTERS**/
@@ -65,5 +67,9 @@ const std::string& Package::getCommand() const
 Destination Package::getDestination() const
 {
     return m_destination;
+}
+int Package::shouldSendValue() const
+{
+    return m_sendValue;
 }
 /**GETTERS**/

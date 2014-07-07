@@ -225,7 +225,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     sf::Packet pack;
     pack << "packet data";
     pCourier->condition.reset(Event::LeftMouseClicked, "", 0, 'd', true);
-    pCourier->package.reset("Static_Chunk_1", "message", pack, 0, Destination::UNIVERSE);
+    pCourier->package.reset("Static_Chunk_1", "message", pack, 0, Destination::UNIVERSE, false);
     buttonData.spCourierList.push_back(tr1::shared_ptr<Courier>(pCourier));
 
     leon::EditBoxData editboxData;
@@ -235,8 +235,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     pCourier = new Courier();
     sf::Packet editBoxOutput;
     editBoxOutput << "ship_2";
-    pCourier->condition.reset(Event::ReturnKeyPressed, "", 0, 'v', true);
-    pCourier->package.reset("player_1", "switchLink", editBoxOutput, 0, Destination::UNIVERSE);
+    pCourier->condition.reset(Event::ReturnKeyPressed, "", 0, 'd', true);
+    pCourier->package.reset("player_1", "switchLink", editBoxOutput, 0, Destination::UNIVERSE, true);
     editboxData.spCourierList.push_back(tr1::shared_ptr<Courier>(pCourier));
 
 
@@ -316,7 +316,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     sf::Packet modulePack;
     modulePack << "module health < 50";
     pModuleCourier->condition.reset(Event::Health, "50", 50, '<', true);
-    pModuleCourier->package.reset("Static_Chunk_1", "message", modulePack, 0, Destination::UNIVERSE);
+    pModuleCourier->package.reset("Static_Chunk_1", "message", modulePack, 0, Destination::UNIVERSE, false);
 
 
 

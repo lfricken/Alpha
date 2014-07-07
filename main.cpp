@@ -121,6 +121,13 @@ int main()
     std::cout << "\nTexture Size: [" << tex.getSize().x << "].";
 
 
+    std::string str;
+    str = __FILE__;
+    std::stringstream stream;
+    stream << __LINE__;
+    str += ", line: " + stream.str();
+
+
     Game::Status state = Game::Local;
     while(state != Game::Quit)
     {

@@ -97,6 +97,24 @@ IOBase* Chunk::getIOBase(const std::string& targetName)
 
     return getModule(targetName);
 }
+/*
+IOBase* Chunk::getIOBase(unsigned int id)
+{
+    for(vector<tr1::shared_ptr<Module> >::const_iterator it = m_ModuleSPList.begin(); it != m_ModuleSPList.end(); ++it)
+    {
+        if((*it)->getID() == targetName)
+            return &(**it);
+    }
+    cout << "\nTarget " << targetName << " not found in chunk \"" << m_pIOComponent->getName() << "\":[" << m_pIOComponent->getID() << "]";
+    ///ERROR LOG
+
+
+
+    return NULL;
+}*/
+
+
+
 /**
 1. OUR LIST: Create GModules in our GModuleList
 2. TILEMAP: Pass them to our MultiTileMap to be drawn later.

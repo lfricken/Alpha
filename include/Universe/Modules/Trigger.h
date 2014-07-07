@@ -8,7 +8,9 @@ struct TriggerData : public ModuleData
     TriggerData() :
         ModuleData()
     {
-
+        isSensor = true;
+        butes.setBute(isSolid, false);
+        butes.setBute(isDestructable, false);
     }
 };
 

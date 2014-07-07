@@ -33,20 +33,17 @@ protected:
 private:
     virtual void f_initialize(const ForceFieldData& data);
 
-    b2Body* m_targetBody;
+    b2Vec2 f_direction_absolute(const b2Vec2& direction) const;
+    b2Vec2 f_direction_centroid(const b2Vec2& direction) const;//direction is either away from or towards(negative) centroid of b2Body
+
+
+    float f_magnitude_constant(float magnitude) const;
+    float f_magnitude_linear(float magnitude) const;
+    float f_magnitude_quadratic(float magnitude) const;
 
     float m_strength;
-    bool m_hasContact;
 
-    std::map<b2Body*, int>::iterator m_it;
-    b2Vec2 m_force;
-    b2Vec2 m_ourCoords;
-    b2Vec2 m_theirCoords;
-    float m_distance;
-    float m_theirMass;
-    b2Vec2 m_direction;
-
-    std::map<b2Body*, int> m_targets;
+    std::vector<PhysicsBase*> m_guests;
 };
 
 #endif // FORCEFIELD_H

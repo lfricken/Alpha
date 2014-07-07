@@ -23,52 +23,57 @@ void ForceField::f_initialize(const ForceFieldData& rData)
 int ForceField::startContact(PhysicsBase* pOther)
 {
     /**add to list**/
-    m_targetBody = static_cast<PhysicsBase*>(pOther)->getBody();
-
-    ++m_targets[m_targetBody];
+    m_guests.push_back(pOther);
     return 0;
 }
 int ForceField::endContact(PhysicsBase* pOther)
 {
     /**remove from list**/
-    m_targetBody = static_cast<PhysicsBase*>(pOther)->getBody();
-
-    --m_targets[m_targetBody];
-    if(m_targets[m_targetBody] == 0)
-        m_targets.erase(m_targetBody);
-
+    bool error = true;
+    for(unsigned int i = 0; i<m_guests.size(); ++i)
+    {
+        if(pOther == m_guests[i])
+        {
+            m_guests.erase(m_guests.begin()+i);
+            error = false;
+            break;
+        }
+    }
+    if(error)
+        cout << "\nMAJOR WTF MOMENt";
     return 0;
 }
 bool ForceField::physUpdate()
 {
+    bool hasContact = false;
+
     if(m_isEnabled)
     {
-        m_hasContact = false;
-        m_ourCoords = m_pBody->GetWorldCenter();
-
-        for(m_it = m_targets.begin(); m_it != m_targets.end(); ++m_it)
+        for(auto it = m_guests.begin(); it != m_guests.end(); ++it)
         {
-            m_targetBody = (m_it->first);
+            float distanceMagnitude;
+            b2Vec2 force;
+            b2Vec2 difference;
+            b2Vec2 direction;
+            b2Vec2 ourCoords = m_pBody->GetWorldCenter();
+            PhysicsBase* targetPhysBase = *it;
+            b2Vec2 theirCoords = targetPhysBase->getFixture()->GetBody()->GetWorldCenter();
+            float theirMass = targetPhysBase->getFixture()->GetBody()->GetMass();
 
-            m_theirCoords = m_targetBody->GetWorldCenter();
-            m_theirMass = m_targetBody->GetMass();
+            difference = theirCoords-ourCoords;
+            distanceMagnitude = difference.Length();
+            direction = difference;
+            direction.Normalize();
 
-            m_direction.x = m_theirCoords.x-m_ourCoords.x;
-            m_direction.y = m_theirCoords.y-m_ourCoords.y;
-            m_distance = sqrt(m_direction.x*m_direction.x + m_direction.y*m_direction.y);
 
-            m_direction.x = m_direction.x/m_distance;
-            m_direction.y = m_direction.y/m_distance;
+            force.x = direction.x*theirMass*m_strength*1/distanceMagnitude;
+            force.y = direction.y*theirMass*m_strength*1/distanceMagnitude;
 
-            m_force.x = m_direction.x*m_theirMass*m_strength*1/m_distance;
-            m_force.y = m_direction.y*m_theirMass*m_strength*1/m_distance;
+            targetPhysBase->getFixture()->GetBody()->ApplyForceToCenter(force, true);
+            m_pBody->ApplyForceToCenter(-force, true);
 
-            m_targetBody->ApplyForceToCenter(m_force, true);
-            m_pBody->ApplyForceToCenter(-m_force, true);
-
-            m_hasContact = true;
+            hasContact = true;
         }
-        return m_hasContact;
     }
-    return false;
+    return hasContact;
 }

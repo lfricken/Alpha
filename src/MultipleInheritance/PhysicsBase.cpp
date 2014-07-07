@@ -226,3 +226,7 @@ void PhysicsBase::setBody(b2Body* pBody)
 {
     m_pBody = pBody;
 }
+float PhysicsBase::getAproximateMass() const
+{
+    return 1;//4*m_pFixture->GetAABB(0).GetExtents().x*m_pFixture->GetAABB(0).GetExtents().y*m_pFixture->GetDensity();
+}

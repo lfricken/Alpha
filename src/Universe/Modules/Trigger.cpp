@@ -35,11 +35,7 @@ int Trigger::endContact(PhysicsBase* pOther)
 }
 IOBaseReturn Trigger::input(IOBaseArgs)
 {
-    if(rCommand == "enable")
-        enable();
-    else if(rCommand == "disable")
-        disable();
-    else if(rCommand == "trigger")
+    if(rCommand == "trigger")
         trigger();
     else if(rCommand == "sendFriends")
     {
@@ -48,10 +44,7 @@ IOBaseReturn Trigger::input(IOBaseArgs)
         sendFriends(temp);
     }
     else
-    {
-        ///ERROR LOG
-        std::cout << "\nCommand [" << rCommand << "] was never found.";
-    }
+        Module::input(rInput, rCommand);
 }
 void Trigger::trigger()
 {
@@ -64,6 +57,6 @@ void Trigger::sendFriends(const std::string& targetName)//send a list of IDs tha
     for(auto it = m_targetIDs.begin(); it != m_targetIDs.end(); ++it)
         packet << *it;
 
-    Package pack(targetName, "receiveFriends", packet, 0.0f, Destination::UNIVERSE);
+    Package pack(targetName, "receiveFriends", packet, 0.0f, Destination::UNIVERSE, false);
     m_rIOManager.recieve(pack);
 }

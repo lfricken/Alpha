@@ -16,6 +16,7 @@ ActiveEventer::ActiveEventer()
 }
 ActiveEventer::~ActiveEventer()
 {
+
 }
 void ActiveEventer::add(const std::tr1::shared_ptr<Courier> spCourier)
 {
@@ -38,7 +39,7 @@ void ActiveEventer::event(const std::string& rVariable, Event variableName)
         {
             if(rVector[i]->condition.evaluate(rVariable))//if the condition was met
             {
-                if(rVector[i]->condition.getComparison() == 'v')//if we should be sending the current data
+                if(rVector[i]->package.shouldSendValue())//if we should be sending the current data
                 {
                     sf::Packet temp;
                     temp << rVariable;

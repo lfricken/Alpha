@@ -45,9 +45,10 @@ public:
 
     virtual b2Body* getBody();
 
-    virtual GModule* getGModule(const std::string& targetName);
-    virtual Module* getModule(const std::string& targetName);
-    virtual IOBase* getIOBase(const std::string& targetName);
+    GModule* getGModule(const std::string& targetName);
+    Module* getModule(const std::string& targetName);
+    IOBase* getIOBase(const std::string& targetName);
+    IOBase* getIOBase(unsigned int id);
 
   ///  virtual void add(std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);
     virtual void add(const std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);//we only call this once!

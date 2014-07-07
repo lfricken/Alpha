@@ -25,7 +25,7 @@ void Projectile::f_initialize(const ProjectileData& data)
     sf::Packet damagePacket;
     T_Damage damage = data.damage;
     damagePacket << damage;
-    m_damagePackage.reset("", "damage", damagePacket, 0.0f, Destination::UNIVERSE);
+    m_damagePackage.reset("", "damage", damagePacket, 0.0f, Destination::UNIVERSE, false);
 }
 void Projectile::setDamage(T_Damage damage)//set the damage this projectile will deal
 {

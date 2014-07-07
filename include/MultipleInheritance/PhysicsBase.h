@@ -68,6 +68,7 @@ public:///MAYBE we shouldn't have this many functions???
     virtual b2Fixture* getFixture() const;
     virtual b2Body* getBody() const;
     virtual const b2Shape& getShape() const;
+    float getAproximateMass() const;
 
 protected:
     std::tr1::shared_ptr<b2Shape> m_shape;
@@ -75,7 +76,6 @@ protected:
 
     b2Body* m_pBody;//pointer, no ownership
     b2Fixture* m_pFixture;//pointer, no ownership
-
 
     b2World& m_rPhysWorld;
 

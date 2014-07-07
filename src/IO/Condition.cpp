@@ -85,10 +85,9 @@ void Condition::f_setComparisonFunction(char op)
         m_evaluationFunction = &Condition::f_notEquals;
     else if (op == 'd')
         m_evaluationFunction = &Condition::f_change;
-    else if (op == 'v')
-        m_evaluationFunction = &Condition::f_change;
     else
     {
+        std::cout << "\nERROR: " << FILELINE;
         m_evaluationFunction = &Condition::f_equals;//default to equals
         ///ERROR LOG
     }

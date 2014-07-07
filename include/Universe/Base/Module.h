@@ -10,6 +10,8 @@ struct ModuleData : public PhysicsBaseData
         PhysicsBaseData()
     {
         type = ClassType::MODULE;
+        categoryBits = Category::ShipModule;
+        maskBits = Mask::ShipModuleNorm;
         butes.setBute(isSolid, true);
         butes.setBute(isDestructable, false);
     }

@@ -1,6 +1,7 @@
 #ifndef COLLISIONCATEGORY_H
 #define COLLISIONCATEGORY_H
 
+/**what are we?**/
 enum class Category///look at classtype.h
 {
     None = 0x0000,//we don't collide with anything
@@ -35,10 +36,8 @@ enum class Mask
 
     ShipForceField = Category::Projectile,
 
-    ShipHull = Category::ShipHull,
+    ShipHull = Category::ShipHull,//ship hulls should collide with other ship hulls
     ShipHullSensor = Category::Projectile,
-
-
 
 
     All = 0xFFFF,

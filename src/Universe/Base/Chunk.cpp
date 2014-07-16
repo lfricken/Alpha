@@ -49,10 +49,7 @@ void Chunk::f_initialize(const ChunkData& data)
         sleep();//then cleanly put it to sleep
 
 
-    ///TEMPORARY
-    m_fireTimer.setCountDown(0.1);
-    m_accel = 50;
-    m_torque = 50;
+    m_fireTimer.setCountDown(0.1);///TEMPORARY
 }
 float Chunk::f_findRadius(std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList)
 {
@@ -121,6 +118,8 @@ IOBase* Chunk::getIOBase(unsigned int id)
 **/
 void Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList)
 {
+    ///should implement double dispatch so we don't have to check what we are creating.
+
     /**1**/
     for(vector<tr1::shared_ptr<GModuleData> >::const_iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
@@ -148,27 +147,16 @@ void Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList)
             GModuleData* pData = &(**it_data);
             ForceFieldCoreData* pFFCD = static_cast<ForceFieldCoreData*>(pData);
 
-            ForceFieldData data;
-            data.shape = Shape::CIRCLE;
-            data.halfSize = b2Vec2(8, 8);
-            data.density = 0;
-            data.pBody = m_pBody;
-            data.categoryBits = Category::ShipForceField;
-            data.maskBits = Mask::ShipForceField;
-
-            ForceField* tempPtr = new ForceField(data);
+            pFFCD->fieldData.pBody = m_pBody;
+            ForceField* tempPtr = new ForceField(pFFCD->fieldData);
             m_ModuleSPList.push_back(tr1::shared_ptr<Module>(tempPtr));
             m_SpecialPhysPList.push_back(tempPtr);
 
             pFFCD->pForceField = tempPtr;
 
             ptr = static_cast<GModule*>(new ForceFieldCore(*pFFCD));
-            ///GET FORCE FIELD DATA FROM THE FORCE FIELD CORE DATA
-
-
-            //tempPtr->disable();
         }
-        ///list all types of GModules derivatives here
+
 
 
         else

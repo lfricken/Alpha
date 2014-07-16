@@ -245,13 +245,13 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
         else if(m_pCPT->getState() == PlayerState::Interfacing)//we are clicking buttons
             m_rGui.handleEvent(rEvent);/**GUI EVENT HANDLER**/
     }/**END OF PLAYER LOOP**/
-    ///LOOP OVER AI HERE??? what would we update?
+    ///LOOP OVER AI HERE??? what would we update exactly?
     return 0;
 }
 void ControlManager::drawUpdate()
 {
     sf::Vector2f center;
-    float rotation;//degrees
+    float rotation;///degrees
     for(vector<tr1::shared_ptr<Player> >::iterator it = m_localPlayerList.begin(); it != m_localPlayerList.end(); ++it)
     {
         if((*it)->getCamera().isTracking() && (*it)->hasTarget())
@@ -263,7 +263,7 @@ void ControlManager::drawUpdate()
             rotation = leon::radToDeg(m_bodyTarget->GetAngle());
 
             (*it)->getCamera().getView().setCenter(center);
-            //(*it)->getCamera().getView().setRotation(rotation);
+            ///(*it)->getCamera().getView().setRotation(rotation);
         }
 
         ///SOUND NOT DONE YET, WAITING FOR REPLY ON SPATIALIZATION POST

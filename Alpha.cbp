@@ -27,6 +27,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-pg" />
+					<Add option="-g" />
 					<Add directory="include/Universe/Chunks" />
 					<Add directory="include/Universe/Base" />
 					<Add directory="include/Universe/Modules" />
@@ -101,6 +102,7 @@
 		<Unit filename="include/MultipleInheritance/IOBase.h" />
 		<Unit filename="include/MultipleInheritance/IOComponent.h" />
 		<Unit filename="include/MultipleInheritance/PhysicsBase.h" />
+		<Unit filename="include/MultipleInheritance/PhysicsBodyComponent.h" />
 		<Unit filename="include/Universe/Base/AnimationController.h" />
 		<Unit filename="include/Universe/Base/AnimationLooper.h" />
 		<Unit filename="include/Universe/Base/Attributes.h" />
@@ -110,6 +112,7 @@
 		<Unit filename="include/Universe/Base/CollisionCategory.h" />
 		<Unit filename="include/Universe/Base/DebugDraw.h" />
 		<Unit filename="include/Universe/Base/Decoration.h" />
+		<Unit filename="include/Universe/Base/Filter.h" />
 		<Unit filename="include/Universe/Base/GModule.h" />
 		<Unit filename="include/Universe/Base/Module.h" />
 		<Unit filename="include/Universe/Base/MultiTileMap.h" />
@@ -147,6 +150,7 @@
 		<Unit filename="src/MultipleInheritance/IOBase.cpp" />
 		<Unit filename="src/MultipleInheritance/IOComponent.cpp" />
 		<Unit filename="src/MultipleInheritance/PhysicsBase.cpp" />
+		<Unit filename="src/MultipleInheritance/PhysicsBodyComponent.cpp" />
 		<Unit filename="src/Universe/Base/AnimationController.cpp" />
 		<Unit filename="src/Universe/Base/AnimationLooper.cpp" />
 		<Unit filename="src/Universe/Base/Attributes.cpp" />
@@ -154,6 +158,7 @@
 		<Unit filename="src/Universe/Base/Chunk.cpp" />
 		<Unit filename="src/Universe/Base/DebugDraw.cpp" />
 		<Unit filename="src/Universe/Base/Decoration.cpp" />
+		<Unit filename="src/Universe/Base/Filter.cpp" />
 		<Unit filename="src/Universe/Base/GModule.cpp" />
 		<Unit filename="src/Universe/Base/Module.cpp" />
 		<Unit filename="src/Universe/Base/MultiTileMap.cpp" />

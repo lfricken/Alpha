@@ -31,7 +31,8 @@ Game::Game()
     m_settings.antialiasingLevel = 4;
 
     sf::VideoMode mode = sf::VideoMode::getDesktopMode();
-    mode = sf::VideoMode(1200, 700, 32);
+    mode = sf::VideoMode(1200, 800, 32);
+    //mode =
     m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(mode, "SFML Box2D Test Environment", sf::Style::Default, m_settings));
 
     m_spIOManager = std::tr1::shared_ptr<IOManager>(new IOManager());//independent
@@ -411,6 +412,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     ForceFieldCoreData fieldCoreData;
     fieldCoreData.type = ClassType::FORCE;
     fieldCoreData.offset = b2Vec2(0, 0);
+    fieldCoreData.fieldData.filterData.defaultsTrue = false;
 
     ThrusterData thrustDat;
     thrustDat.type = ClassType::THRUSTER;

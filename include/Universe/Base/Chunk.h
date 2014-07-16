@@ -128,8 +128,6 @@ protected:
     std::vector<std::tr1::shared_ptr<Module> > m_ModuleSPList;
     std::vector<PhysicsBase*> m_SpecialPhysPList;//these are objects that need to do special physics operations every tick
 
-    float m_accel, m_torque;///move these to a derivative of chunk
-
 private:
     Timer m_fireTimer;///these should be in turret
 

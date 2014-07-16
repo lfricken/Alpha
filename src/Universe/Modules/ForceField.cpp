@@ -2,16 +2,15 @@
 
 using namespace std;
 
-ForceField::ForceField() : Module()
+ForceField::ForceField() : Trigger()
 {
     ForceFieldData data;
     f_initialize(data);
 }
-ForceField::ForceField(const ForceFieldData& rData) : Module(static_cast<ModuleData>(rData))
+ForceField::ForceField(const ForceFieldData& rData) : Trigger(static_cast<TriggerData>(rData))
 {
     f_initialize(rData);
 }
-
 ForceField::~ForceField()
 {
 
@@ -20,31 +19,11 @@ void ForceField::f_initialize(const ForceFieldData& rData)
 {
     m_strength = rData.forceStrength;
 }
-int ForceField::startContact(PhysicsBase* pOther)
-{
-    /**add to list**/
-    m_guests.push_back(pOther);
-    return 0;
-}
-int ForceField::endContact(PhysicsBase* pOther)
-{
-    /**remove from list**/
-    bool error = true;
-    for(unsigned int i = 0; i<m_guests.size(); ++i)
-    {
-        if(pOther == m_guests[i])
-        {
-            m_guests.erase(m_guests.begin()+i);
-            error = false;
-            break;
-        }
-    }
-    if(error)
-        cout << "\nMAJOR WTF MOMENt";
-    return 0;
-}
 bool ForceField::physUpdate()
 {
+   // std::cout << "\nGuest Count: [" << m_guests.size() << "].";
+
+
     bool hasContact = false;
 
     if(m_isEnabled)

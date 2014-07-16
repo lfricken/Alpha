@@ -29,6 +29,9 @@ enum class Event
     Texture,///this may not work, what is this for anyway???
     TexCoords,
     /**GRAPHICS**/
+
+    /**AreaTriggers**/
+    OnLeft,
 };
 
 /**ATTRIBUTE**/

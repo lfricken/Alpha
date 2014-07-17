@@ -21,6 +21,7 @@ void Trigger::f_initialize(const TriggerData& rData)
 }
 int Trigger::startContact(PhysicsBase* pOther)
 {
+    std::cout << "\nStartContact.";
     if(passesFilter(pOther));
     {
         m_guests.push_back(pOther);

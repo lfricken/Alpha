@@ -33,7 +33,7 @@ bool Filter::passes(ClassType type, const std::string& rName) const
     else
         passedName = it_name->second;
 
-    std::cout << std::endl << m_default << passedName << passedType;
+    //std::cout << std::endl << m_default << passedName << passedType;
 
     if(m_mustPassAll)
         return (passedType && passedName);

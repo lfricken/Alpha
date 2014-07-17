@@ -279,6 +279,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     /**=============================================STATIC CHUNKS=============================================**/
     /**STATIC MODULES**/
     vector<tr1::shared_ptr<GModuleData> > staticGModuleDataList;
+    vector<tr1::shared_ptr<ModuleData> > staticModuleDataList;
     GModuleData solidFixtureData;
     solidFixtureData.type = ClassType::GMODULE;
 
@@ -293,6 +294,22 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     solidFixtureData.halfSize = b2Vec2(2, 5);
     solidFixtureData.color = sf::Color::Red;
     staticGModuleDataList.push_back(tr1::shared_ptr<GModuleData>(new GModuleData(solidFixtureData)));
+
+
+    TriggerData trigDat;
+    trigDat.type = ClassType::TRIGGER;
+    trigDat.offset = b2Vec2(-20, 0);
+
+
+    Courier* pTriggerCourier = new Courier();
+    sf::Packet triggerPack;
+    triggerPack << "triggered";
+    pTriggerCourier->condition.reset(Event::Triggered, "50", 50, '<', true);
+    pTriggerCourier->package.reset("Static_Chunk_1", "message", triggerPack, 0, Destination::UNIVERSE, false);
+    trigDat.spCourierList.push_back(std::tr1::shared_ptr<Courier>(pTriggerCourier));
+    staticModuleDataList.push_back( tr1::shared_ptr<ModuleData>(new TriggerData(trigDat)) );
+
+
     /**STATIC MODULES**/
 
     /**STATIC CHUNK**/
@@ -303,6 +320,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     Chunk* pStaticChunk = new Chunk(staticChunkData);
     pStaticChunk->add(staticGModuleDataList);
+    pStaticChunk->add(staticModuleDataList);
     m_spUniverse->add(pStaticChunk);
     /**STATIC CHUNK**/
 
@@ -419,9 +437,13 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     thrustDat.offset = b2Vec2(0, 0.5);
     thrustDat.force = 500;
 
+
+
+
     moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ThrusterData(thrustDat)) );
     moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ForceFieldCoreData(fieldCoreData)) );
-    moduleList2.push_back(tr1::shared_ptr<ModuleData>(new ModuleData(hull)));
+    moduleList2.push_back( tr1::shared_ptr<ModuleData>(new ModuleData(hull)) );
+
     /**SHIP MODULES**/
 
 
@@ -450,6 +472,29 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     pShip1->add(moduleList1);
     pShip1->add(moduleList2);
     m_spUniverse->add(pShip1);
+
+
+   /* vector<tr1::shared_ptr<GModuleData> > moduleListAdditive1;
+    for (float i=0, x=-2, y=9, numBoxsX = 1; i<numBoxsX; ++i, ++x)//creates boxes in a line
+    {
+        armorData.offset.x = x*2*armorData.halfSize.x;
+        armorData.offset.y = y*2*armorData.halfSize.y;
+        //shipModuleData.texTile.x = texTile;
+        moduleListAdditive1.push_back( tr1::shared_ptr<GModuleData>(new ArmorData(armorData)) );
+    }
+    vector<tr1::shared_ptr<GModuleData> > moduleListAdditive2;*/
+   /* for (float i=0, x=-2, y=10, numBoxsX = 5; i<numBoxsX; ++i, ++x)//creates boxes in a line
+    {
+        armorData.offset.x = x*2*armorData.halfSize.x;
+        armorData.offset.y = y*2*armorData.halfSize.y;
+        //shipModuleData.texTile.x = texTile;
+        moduleListAdditive2.push_back( tr1::shared_ptr<GModuleData>(new ArmorData(armorData)) );
+    }
+    cout << "\nAdditive.";
+    pChunk1->add(moduleListAdditive1);
+    cout << "\nEndAdditive.";
+    pChunk1->add(moduleListAdditive2);*/
+
     /**SHIP CHUNKS**/
 
     /**=============================================SHIPS=============================================**/

@@ -9,6 +9,10 @@ struct ForceFieldData : public TriggerData
         TriggerData(),
         forceStrength(400)
     {
+        shape = Shape::CIRCLE;
+        categoryBits = Category::ShipForceField;
+        maskBits = Mask::ShipForceField;
+        type = ClassType::TRIGGER;
     }
 
     float forceStrength;

@@ -115,10 +115,14 @@ IOBase* Chunk::getIOBase(unsigned int id)
 /**
 1. OUR LIST: Create GModules in our GModuleList
 2. TILEMAP: Pass them to our MultiTileMap to be drawn later.
-**/
+**////BUT ONLY THE ONES WE JUST ADDED
 void Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList)
 {
     ///should implement double dispatch so we don't have to check what we are creating.
+    ///Make a Generate(this) function for each "Blank"Data,
+    ///it creates the object and returns a base pointer to it
+
+    ///for data that creates other modules, it calls add again on the this pointer, and passes the data needed (lol recursion)
 
     /**1**/
     for(vector<tr1::shared_ptr<GModuleData> >::const_iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
@@ -169,7 +173,7 @@ void Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList)
     }
 
 
-    /**TILEMAP: Create a Base Pointer List to pass to our tileMap**/
+    /**TILEMAP: Create a Base Pointer List to pass to our tileMap**////WE SHOULD NOT BE GIVING ALL OF THE BASE THINGS, JUST THE ONES WE ADDED ON THIS ADD() CALL
     vector<GraphicsBase*> gfxBasePList;
     for(vector<tr1::shared_ptr<GModule> >::const_iterator it_derived = m_GModuleSPList.begin(); it_derived != m_GModuleSPList.end(); ++it_derived)
     {

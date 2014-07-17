@@ -71,7 +71,6 @@ int GraphicsBase::getTextVertexIndex() const
 void GraphicsBase::setTilePos(const sf::Vector2f& rTilePos)/**///THIS IS GOING WRONG SOMEHOW, or is it?
 {
     m_tilePos = rTilePos;//pointer
-    ///make this use the tex vert pointer
     m_pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
 
     sf::Vector2f vertices[4];

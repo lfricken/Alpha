@@ -12,8 +12,8 @@ struct TriggerData : public ModuleData
     {
         density = 0;
         halfSize = b2Vec2(8,8);
-        categoryBits = Category::ShipForceField;
-        maskBits = Mask::ShipForceField;
+        categoryBits = Category::Trigger;
+        maskBits = Mask::Trigger;
         type = ClassType::TRIGGER;
         isSensor = true;
         butes.setBute(isSolid, false);

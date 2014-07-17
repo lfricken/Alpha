@@ -7,7 +7,6 @@
 #include "AnimationController.h"
 
 
-
 struct GraphicsComponentData
 {
     GraphicsComponentData() :
@@ -51,7 +50,6 @@ public:
 protected:
 private:
     virtual void f_init(const GraphicsComponentData& rData);
-
 
     sf::Vector2f m_texTileSize;
 

@@ -12,9 +12,15 @@ enum class Category///look at classtype.h
     ShipHull = 0x0010,
     Actor = 0x0020,
     Item = 0x0040,
+    Trigger = 0x0080,
 
     All = 0xFFFF,
 };
+
+constexpr inline int operator |(int a, Category b)
+{
+    return static_cast<int>(a | static_cast<int>(b));
+}
 constexpr inline int operator |(Category a, Category b)
 {
     return static_cast<int>(static_cast<int>(a) | static_cast<int>(b));
@@ -28,17 +34,18 @@ constexpr inline int operator &(Category a, Category b)
 enum class Mask
 {
     None = Category::None,
-    ProjectileNorm = Category::ShipModule | Category::ShipForceField,
+    ProjectileNorm = Category::ShipModule | Category::ShipForceField | Category::Trigger,
     ProjectileOff = Category::ShipHullSensor,
 
-    ShipModuleNorm = Category::Projectile,
-    ShipModuleBroke = Category::None,
+    ShipModuleNorm = Category::Projectile | Category::Trigger,
+    ShipModuleBroke = Category::Trigger,
 
     ShipForceField = Category::Projectile,
 
     ShipHull = Category::ShipHull,//ship hulls should collide with other ship hulls
     ShipHullSensor = Category::Projectile,
 
+    Trigger = Category::All,
 
     All = 0xFFFF,
 };

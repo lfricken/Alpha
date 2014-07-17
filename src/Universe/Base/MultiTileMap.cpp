@@ -43,44 +43,43 @@ set their vertex pointer using nextAccessed and update nextAccessed;
 1. Figure out if one of our texVertices has the texture a gfxBase wants
 2. if not make a new one with appropriate stuff
 3. Add vertices to the list in texturedVertex
-4. Give the gfx list a pointer to to texturedVertex
+4. Give the gfxBase a pointer to to texturedVertex
 5. Rinse Repeat
 **/
 ///work through and verify all this code
 void MultiTileMap::add(vector<GraphicsBase*> gfxBaseList)
 {
-    /**1**/
-    typedef vector<tr1::shared_ptr<TexturedVertices> >::iterator iter;
-    TexturedVertices* pTexuredVertex = NULL;
-    for(vector<GraphicsBase*>::iterator it_gfxBase = gfxBaseList.begin(); it_gfxBase != gfxBaseList.end(); ++it_gfxBase)
+    TexturedVertices* pTexturedVertex = NULL;
+    for(auto it_gfxBase = gfxBaseList.begin(); it_gfxBase != gfxBaseList.end(); ++it_gfxBase)
     {
         bool found = false;
-        for(iter it_texVert = m_TexVertSPList.begin(); it_texVert != m_TexVertSPList.end(); ++it_texVert)
+        for(auto it_texVert = m_TexVertSPList.begin(); it_texVert != m_TexVertSPList.end(); ++it_texVert)
         {
             /**1**/
             if((*it_texVert)->textureName == (*it_gfxBase)->getTexName())
             {
                 found = true;
-
-                pTexuredVertex = &**it_texVert;
+                pTexturedVertex = &**it_texVert;
             }
         }
+
         if(!found)/**2**/
         {
+            cout << "\nNot Found.";
             m_TexVertSPList.push_back(tr1::shared_ptr<TexturedVertices>(new TexturedVertices));
             m_TexVertSPList.back()->pTexture = game.getTextureAllocator().request((*it_gfxBase)->getTexName());
             m_TexVertSPList.back()->textureName = (*it_gfxBase)->getTexName();
             m_TexVertSPList.back()->vertices.setPrimitiveType(sf::Quads);
             m_TexVertSPList.back()->nextAccessed = 0;
 
-            pTexuredVertex = &*m_TexVertSPList.back();
-
+            pTexturedVertex = &*m_TexVertSPList.back();
         }
+
         /**3**/
-        pTexuredVertex->vertices.resize(pTexuredVertex->vertices.getVertexCount()+4);//*4 because each one has 4 vertices/(quad)
+        pTexturedVertex->vertices.resize(pTexturedVertex->vertices.getVertexCount()+4);//*4 because each one has 4 vertices/(quad)
         /**4**/
-        (*it_gfxBase)->setTextVertex(pTexuredVertex, pTexuredVertex->nextAccessed);/// (*it_gfxBase)->setVertex( &(*it_texVert)->vertices[ (*it_texVert)->nextAccessed ] );//GraphicsBase::setVertex should handle all this???
-        pTexuredVertex->nextAccessed += 4;//+= the number of vertices in sf::Quads!!!
+        (*it_gfxBase)->setTextVertex(pTexturedVertex, pTexturedVertex->nextAccessed);/// (*it_gfxBase)->setVertex( &(*it_texVert)->vertices[ (*it_texVert)->nextAccessed ] );//GraphicsBase::setVertex should handle all this???
+        pTexturedVertex->nextAccessed += 4;//+= the number of vertices in sf::Quads!!!
     }
 }
 //  1 OLD OLD OLD

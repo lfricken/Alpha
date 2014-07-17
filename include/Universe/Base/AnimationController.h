@@ -31,7 +31,7 @@ private:
         float frameDelay;//delay between each frame
     };
     ///temporary
-    ///what we need is std::vector<AnimationSetting> m_animationSettings;
+    ///what we need is std::vector<AnimationSetting> m_animationSettings;//where AnimationSetting contains the data of sequence, delay, runOnce,
     std::vector<sf::Vector2f> m_default;
     std::vector<sf::Vector2f> m_damaged;
     std::vector<sf::Vector2f> m_activated;

@@ -50,8 +50,7 @@ public:
     virtual void setTexTile(const sf::Vector2f& rTexTile);//depreciated
     virtual const sf::Vector2f& getTexTile() const;//depreciated
 
-    virtual void setTileSize(const sf::Vector2f& rTileSize);
-    virtual const sf::Vector2f& getTileSize() const;
+    virtual const sf::Vector2f& getTileHalfSize() const;
 
     virtual void setColor(const sf::Color& rColor);
     virtual const sf::Color& getColor();
@@ -61,7 +60,7 @@ public:
     virtual void animate();
 protected:
     sf::Color m_color;//color modifier for the vertices
-    sf::Vector2f m_tileSize;//size of pos coords
+    sf::Vector2f m_tileHalfSize;//size of pos coords
     sf::Vector2f m_texTileSize;//size of tex coords
     sf::Vector2f m_texTile;//tile of the texture that is being displayed
     sf::Vector2f m_tilePos;//position of the tile

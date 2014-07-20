@@ -10,6 +10,18 @@ coords are coordinates in an array (take as a pointer to the original)
 size is the total size of the vector, so 1 element in the array means you pass in 1
 angle is how much you rotate it in degrees
 **/
+template <typename T>
+struct VertexData
+{
+    VertexData()
+    {
+        center = T(0,0);
+        halfSize = T(0,0);
+    }
+    T center;
+    T halfSize;
+};
+
 template<class T>
 inline void RotateCoordinatesDegs(std::vector<T>& coords, float angle, T rotationPoint)///rotates about origin
 {
@@ -53,14 +65,14 @@ inline void RotateCoordinatesRads(T coords[], unsigned int size, float angle, T 
 Find Center of coords, simply by constructing an AABB(Bounding Box), and getting it's center coordinate
 **/
 template<class T>
-inline T FindCenter(const std::vector<T>& coords)/**we want to rotate about center because otherwise, strange things will happen**/
+inline VertexData<T> FindCenter(const std::vector<T>& coords)/**we want to rotate about center because otherwise, strange things will happen**/
 {
     unsigned int size = coords.size();
     if(size < 1)
-        return T(0, 0);
+        return VertexData<T>();
 
-    T topLeft = coords[0];
-    T bottomRight = coords[0];
+    T topLeft = coords[0];/**top left in screen coordinate system**/
+    T bottomRight = coords[0];/**bottom right in screen coordinate system**/
     T center = coords[0];
     unsigned int i = 0;
 
@@ -83,10 +95,16 @@ inline T FindCenter(const std::vector<T>& coords)/**we want to rotate about cent
     /**compute center from topLeft and bottomRight**/
     center.x = (topLeft.x + bottomRight.x)/2;
     center.y = (topLeft.y + bottomRight.y)/2;
-    return center;
+
+    VertexData<T> data;
+    data.center = center;
+    data.halfSize.x = (bottomRight.x-topLeft.x)/2.0f;
+    data.halfSize.y = (bottomRight.y-topLeft.y)/2.0f;
+
+    return data;
 }
 template<class T>
-inline T FindCenter(const T coords[], unsigned int size)/**we want to rotate about center because otherwise, strange things will happen**/
+inline VertexData<T> FindCenter(const T coords[], unsigned int size)/**we want to rotate about center because otherwise, strange things will happen**/
 {
     std::vector<T> vec;
     for(unsigned int i=0; i<size; ++i)

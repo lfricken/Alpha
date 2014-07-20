@@ -2,7 +2,7 @@
 #define MULTITILEMAP_H
 
 #include "stdafx.h"
-#include "GModule.h"
+#include "GraphicsBase.h"
 
 struct TexturedVertices
 {
@@ -24,7 +24,8 @@ public:
     MultiTileMap& operator= (const MultiTileMap& other);
     ~MultiTileMap();
 
-    void add(std::vector<GraphicsBase*> gBaseList);
+    void add(GraphicsBase* pGfxBase);
+    void add(std::vector<GraphicsBase*>& gBaseList);
 
     /**CONST OVERLOADS**/
     const sf::Vector2i& getTileSize() const;

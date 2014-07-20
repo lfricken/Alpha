@@ -45,9 +45,11 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
         vertices[6].Set(x, y-x/2);
         vertices[7].Set(x/2, y);
 
-        RotateCoordinatesDegs(vertices, num, data.rotation, FindCenter(vertices, num));///MAYBE WE SHOULD JUST SAY THAT 0,0 IS CENTER, instead of finding it???
+        VertexData<b2Vec2> vdat = FindCenter(vertices, num);
+        RotateCoordinatesDegs(vertices, num, data.rotation, vdat.center);///MAYBE WE SHOULD JUST SAY THAT 0,0 IS CENTER, instead of finding it???
         for(unsigned int i = 0; i < num; ++i)
         {
+            vertices[i] -= vdat.center;//takes care of halfsize modification
             vertices[i] += data.offset;
         }
 
@@ -69,9 +71,11 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
         vertices[6].Set(x, y/2);
         vertices[7].Set(x/2, y);
 
-        RotateCoordinatesDegs(vertices, num, data.rotation, FindCenter(vertices, num));///MAYBE WE SHOULD JUST SAY THAT 0,0 IS CENTER, instead of finding it???
+        VertexData<b2Vec2> vdat = FindCenter(vertices, num);
+        RotateCoordinatesDegs(vertices, num, data.rotation, vdat.center);///MAYBE WE SHOULD JUST SAY THAT 0,0 IS CENTER, instead of finding it???
         for(unsigned int i = 0; i < num; ++i)
         {
+            vertices[i] -= vdat.center;//takes care of halfsize modification
             vertices[i] += data.offset;
         }
 
@@ -89,9 +93,11 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
         vertices[1].Set(2*x-data.halfSize.x, 0-data.halfSize.y);// *2 because halfsize
         vertices[2].Set(0-data.halfSize.x, 2*y-data.halfSize.y);// *2 because halfsize
 
-        RotateCoordinatesDegs(vertices, num, data.rotation, FindCenter(vertices, num));///MAYBE WE SHOULD JUST SAY THAT 0,0 IS CENTER, instead of finding it???
+        VertexData<b2Vec2> vdat = FindCenter(vertices, num);
+        RotateCoordinatesDegs(vertices, num, data.rotation, vdat.center);///MAYBE WE SHOULD JUST SAY THAT 0,0 IS CENTER, instead of finding it???
         for(unsigned int i = 0; i < num; ++i)
         {
+            vertices[i] -= vdat.center;//takes care of halfsize modification
             vertices[i] += data.offset;
         }
 
@@ -101,7 +107,7 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
     {
         m_shape = std::tr1::shared_ptr<b2Shape>(new b2CircleShape);
         b2CircleShape* temp = &*std::tr1::static_pointer_cast<b2CircleShape>(m_shape);
-        temp->m_p.Set(data.offset.x, data.offset.y);
+        temp->m_p.Set(data.offset.x, data.offset.y);//assumed to set the center
         temp->m_radius = data.halfSize.x;
     }
     else if((data.shape == Shape::POLYGON) && (data.vertices.size() > 2))
@@ -113,10 +119,14 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
         for(unsigned int i = 0; i < num; ++i)
             vertices[i] = data.vertices[i];
 
-        RotateCoordinatesDegs(vertices, num, data.rotation, FindCenter(vertices, num));///MAYBE WE SHOULD JUST SAY THAT 0,0 IS CENTER, instead of finding it???
+        VertexData<b2Vec2> vdat = FindCenter(vertices, num);
+        RotateCoordinatesDegs(vertices, num, data.rotation, vdat.center);///MAYBE WE SHOULD JUST SAY THAT 0,0 IS CENTER, instead of finding it???
 
         for(unsigned int i = 0; i < num; ++i)
+        {
+            vertices[i] -= vdat.center;//takes care of halfsize modification
             vertices[i] += data.offset;
+        }
 
         std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->Set(vertices, num);
     }
@@ -125,7 +135,7 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
         cout << "\nType [" << data.shape << "] not found in PhysicsBase.";
         ///ERROR LOG
         m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
-        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, leon::degToRad(data.rotation));//default
+        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, (data.offset+data.halfSize), leon::degToRad(data.rotation));//default
     }
 
     m_fixtureDef.isSensor = data.isSensor;

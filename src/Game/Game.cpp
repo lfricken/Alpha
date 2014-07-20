@@ -13,6 +13,7 @@
 #include "IOManager.h"
 #include "ControlManager.h"
 
+#include "Hull.h"
 #include "Armor.h"
 #include "ForceFieldCore.h"
 #include "Thruster.h"
@@ -343,20 +344,14 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     GModuleData shipModuleData;
     shipModuleData.spCourierList.push_back(tr1::shared_ptr<Courier>(pModuleCourier));
 
-    ModuleData hull;
-    hull.type = ClassType::HULL;
+    HullData hull;
     hull.shape = Shape::POLYGON;
     hull.vertices.push_back(b2Vec2(3, 5));
     hull.vertices.push_back(b2Vec2(-3, 5));
     hull.vertices.push_back(b2Vec2(-3, -5));
-    hull.vertices.push_back(b2Vec2(0, -6));
+    //hull.vertices.push_back(b2Vec2(0, -6));
     hull.vertices.push_back(b2Vec2(3, -5));
-    hull.categoryBits = Category::ShipHull;
-    hull.maskBits = Mask::ShipHull;
-    hull.halfSize = b2Vec2(4, 4);
-    hull.density = 0.0f;
-    hull.butes.setBute(Butes::isDestructable, false);
-    hull.butes.setBute(Butes::isSolid, true);
+
 
     ///WE NEED TO GET A STANDARD SIZE??
     vector<tr1::shared_ptr<GModuleData> > moduleList1;
@@ -428,12 +423,10 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     }
 
     ForceFieldCoreData fieldCoreData;
-    fieldCoreData.type = ClassType::FORCE;
     fieldCoreData.offset = b2Vec2(0, 0);
-    fieldCoreData.fieldData.filterData.defaultsTrue = false;
+    fieldCoreData.spForceFieldData->filterData.defaultsTrue = false;
 
     ThrusterData thrustDat;
-    thrustDat.type = ClassType::THRUSTER;
     thrustDat.offset = b2Vec2(0, 0.5);
     thrustDat.force = 500;
 
@@ -442,7 +435,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ThrusterData(thrustDat)) );
     moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ForceFieldCoreData(fieldCoreData)) );
-    moduleList2.push_back( tr1::shared_ptr<ModuleData>(new ModuleData(hull)) );
+    moduleList2.push_back( tr1::shared_ptr<ModuleData>(new HullData(hull)) );
 
     /**SHIP MODULES**/
 

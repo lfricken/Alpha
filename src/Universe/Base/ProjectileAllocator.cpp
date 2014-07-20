@@ -1,5 +1,7 @@
 #include "ProjectileAllocator.h"
 
+#include "GModule.h"
+
 using namespace std;
 
 ProjectileAllocator::ProjectileAllocator()

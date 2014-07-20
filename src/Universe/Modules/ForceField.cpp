@@ -21,15 +21,13 @@ void ForceField::f_initialize(const ForceFieldData& rData)
 }
 bool ForceField::physUpdate()
 {
-   // std::cout << "\nGuest Count: [" << m_guests.size() << "].";
-
-
     bool hasContact = false;
 
     if(m_isEnabled)
     {
         for(auto it = m_guests.begin(); it != m_guests.end(); ++it)
         {
+
             float distanceMagnitude;
             b2Vec2 force;
             b2Vec2 difference;

@@ -17,14 +17,13 @@ GraphicsBase::GraphicsBase(const GraphicsBaseData& rData, const b2Vec2& rHalfSiz
 GraphicsBase::~GraphicsBase()
 {
 }
-///    : m_color(rData.color), m_tileSize(rHalfSize.x*2, rHalfSize.y*2), m_tilePos(rOffset.x, rOffset.y)
 void GraphicsBase::f_initialize(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset, const float rotation)
 {
     m_animControl.setState(rData.animState);
 
     m_color = rData.color;
-    m_tileSize = sf::Vector2f(rHalfSize.x*2, rHalfSize.y*2);
-    m_tilePos = sf::Vector2f(rOffset.x, rOffset.y);///IS M_TILEPOS CORRECTLY SET?
+    m_tileHalfSize = sf::Vector2f(rHalfSize.x, rHalfSize.y);
+    m_tilePos = sf::Vector2f(rOffset.x, rOffset.y);
 
     m_pVertex = NULL;
     m_texTileSize = rData.texTileSize;
@@ -68,29 +67,30 @@ int GraphicsBase::getTextVertexIndex() const
 {
     return m_textVertexIndex;
 }
-void GraphicsBase::setTilePos(const sf::Vector2f& rTilePos)/**///THIS IS GOING WRONG SOMEHOW, or is it?
+void GraphicsBase::setTilePos(const sf::Vector2f& rTilePos)
 {
     m_tilePos = rTilePos;//pointer
     m_pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
 
     sf::Vector2f vertices[4];
-    vertices[0] = sf::Vector2f(scale*m_tilePos.x, scale*m_tilePos.y);
-    vertices[1] = sf::Vector2f(scale*(m_tilePos.x+m_tileSize.x), scale*m_tilePos.y);//1
-    vertices[2] = sf::Vector2f(scale*(m_tilePos.x+m_tileSize.x), scale*(m_tilePos.y+m_tileSize.y));//2
-    vertices[3] = sf::Vector2f(scale*m_tilePos.x, scale*(m_tilePos.y+m_tileSize.y));//3
+    vertices[0] = sf::Vector2f(scale*(m_tilePos.x-m_tileHalfSize.x), scale*(m_tilePos.y-m_tileHalfSize.y));
+    vertices[1] = sf::Vector2f(scale*(m_tilePos.x+m_tileHalfSize.x), scale*(m_tilePos.y-m_tileHalfSize.y));
+    vertices[2] = sf::Vector2f(scale*(m_tilePos.x+m_tileHalfSize.x), scale*(m_tilePos.y+m_tileHalfSize.y));
+    vertices[3] = sf::Vector2f(scale*(m_tilePos.x-m_tileHalfSize.x), scale*(m_tilePos.y+m_tileHalfSize.y));
 
-    RotateCoordinatesDegs(vertices, 4, m_netRotation, FindCenter(vertices, 4));
+    VertexData<sf::Vector2f> vdat = FindCenter(vertices, 4);
+    RotateCoordinatesDegs(vertices, 4, m_netRotation, vdat.center);
 
     m_pVertex[0].position = vertices[0];
     m_pVertex[1].position = vertices[1];
     m_pVertex[2].position = vertices[2];
     m_pVertex[3].position = vertices[3];
 }
-const sf::Vector2f& GraphicsBase::getTilePosition() const///nomenclature
+const sf::Vector2f& GraphicsBase::getTilePosition() const
 {
     return m_tilePos;
 }
-void GraphicsBase::incTexTile()///for testing???
+void GraphicsBase::incTexTile()///for testing only??? remove?
 {
     if(m_texTile.x == 3)
         m_texTile.x = 0;
@@ -101,7 +101,7 @@ void GraphicsBase::incTexTile()///for testing???
 void GraphicsBase::setTexTile(const sf::Vector2f& rTexTile)/**set texture tile in our loaded graphic**/
 {
     m_texTile = rTexTile;//pointer
-    ///make this use the tex vert pointer
+
     m_pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
     m_pVertex[0].texCoords = sf::Vector2f(m_texTileSize.x*(m_texTile.x), m_texTileSize.y*(m_texTile.y));
     m_pVertex[1].texCoords = sf::Vector2f(m_texTileSize.x*(m_texTile.x+1), m_texTileSize.y*(m_texTile.y));
@@ -112,15 +112,9 @@ const sf::Vector2f& GraphicsBase::getTexTile() const
 {
     return m_texTile;
 }
-void GraphicsBase::setTileSize(const sf::Vector2f& rTileSize)
+const sf::Vector2f& GraphicsBase::getTileHalfSize() const
 {
-    m_tileSize = rTileSize;
-    setTexTile(m_texTile);
-    setTilePos(m_tilePos);
-}
-const sf::Vector2f& GraphicsBase::getTileSize() const
-{
-    return m_tileSize;
+    return m_tileHalfSize;
 }
 void GraphicsBase::setColor(const sf::Color& rColor)
 {

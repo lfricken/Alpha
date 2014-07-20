@@ -3,20 +3,7 @@
 
 #include "GModule.h"
 
-struct ThrusterData : public GModuleData
-{
-    ThrusterData() :
-        GModuleData(),
-        force(100),
-        torque(50)
-    {
-        type = ClassType::THRUSTER;
-        texName = "textures/armor/armor.png";
-    }
-    float force;
-    float torque;
-};
-
+struct ThrusterData;
 class Thruster : public GModule
 {
 public:
@@ -41,6 +28,27 @@ protected:
 private:
     void f_initialize(const ThrusterData& data);
 
+};
+
+struct ThrusterData : public GModuleData
+{
+    ThrusterData() :
+        GModuleData(),
+        force(100),
+        torque(50)
+    {
+        type = ClassType::THRUSTER;
+        texName = "textures/armor/armor.png";
+    }
+    float force;
+    float torque;
+
+
+    virtual GModule* generate(Chunk* pChunk)
+    {
+        pBody = pChunk->getBody();
+        return new Thruster(*this);
+    }
 };
 
 #endif // THRUSTER_H

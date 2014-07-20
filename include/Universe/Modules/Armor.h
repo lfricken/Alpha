@@ -3,18 +3,7 @@
 
 #include "GModule.h"
 
-struct ArmorData : public GModuleData
-{
-    ArmorData() :
-        GModuleData()
-    {
-        type = ClassType::ARMOR;
-        armor = 500;
-        texName = "textures/armor/armor.png";
-    }
-
-};
-
+struct ArmorData;
 class Armor : public GModule
 {
 public:
@@ -26,6 +15,22 @@ protected:
 private:
     void f_initialize(const ArmorData& data);
 
+};
+
+struct ArmorData : public GModuleData
+{
+    ArmorData() :
+        GModuleData()
+    {
+        type = ClassType::ARMOR;
+        armor = 500;
+        texName = "textures/armor/armor.png";
+    }
+    virtual GModule* generate(Chunk* pChunk)
+    {
+        pBody = pChunk->getBody();
+        return new Armor(*this);
+    }
 };
 
 #endif // ARMOR_H

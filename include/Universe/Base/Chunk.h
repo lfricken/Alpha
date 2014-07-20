@@ -3,9 +3,9 @@
 
 #include "stdafx.h"
 #include "MultiTileMap.h"
-#include "ForceField.h"///dont need this??
 #include "Timer.h"
 
+class PhysicsBase;
 class GModule;
 struct GModuleData;
 class Module;
@@ -41,7 +41,6 @@ public:
     Chunk();
     Chunk(const ChunkData& data);
     virtual ~Chunk();//Don't destroy us in the middle of a physics step
-    ///Chunk(const Chunk& old);///should this exist?
 
     virtual b2Body* getBody();
 
@@ -51,8 +50,8 @@ public:
     IOBase* getIOBase(unsigned int id);
 
   ///  virtual void add(std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);
-    virtual void add(const std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);//we only call this once!
-    virtual void add(const std::vector<std::tr1::shared_ptr<ModuleData> >& data);//we only call this once!
+    virtual GModule* add(const std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);//returns the last GModule added
+    virtual Module* add(const std::vector<std::tr1::shared_ptr<ModuleData> >& data);//returns the last Module added
 
 
     /**IO-SYSTEM**/
@@ -126,7 +125,6 @@ protected:
 
     std::vector<std::tr1::shared_ptr<GModule> > m_GModuleSPList;
     std::vector<std::tr1::shared_ptr<Module> > m_ModuleSPList;
-    std::vector<PhysicsBase*> m_SpecialPhysPList;//these are objects that need to do special physics operations every tick
 
 private:
     Timer m_fireTimer;///these should be in turret

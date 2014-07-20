@@ -1,8 +1,22 @@
 #ifndef DMODULE_H
 #define DMODULE_H
 
-#include <IOBase.h>
-#include <PhysicsBase.h>
+#include "IOBase.h"
+#include "PhysicsBase.h"
+#include "Chunk.h"
+
+struct ModuleData;
+class Module : public PhysicsBase
+{
+public:
+    Module();
+    Module(const ModuleData& data);
+    virtual ~Module();
+
+protected:
+private:
+    virtual void f_initialize(const ModuleData& data);
+};
 
 struct ModuleData : public PhysicsBaseData
 {
@@ -15,19 +29,12 @@ struct ModuleData : public PhysicsBaseData
         butes.setBute(isSolid, true);
         butes.setBute(isDestructable, false);
     }
-};
-
-
-class Module : public PhysicsBase
-{
-public:
-    Module();
-    Module(const ModuleData& data);
-    virtual ~Module();
-
-protected:
-private:
-    virtual void f_initialize(const ModuleData& data);
+    virtual Module* generate(Chunk* pChunk)
+    {
+        std::cout << "\nBASE.";
+        pBody = pChunk->getBody();
+        return new Module(*this);
+    }
 };
 
 #endif // DMODULE_H

@@ -4,26 +4,9 @@
 #include "PhysicsBase.h"
 #include "GraphicsBase.h"
 #include "IOBase.h"
+#include "Chunk.h"
 
-struct GModuleData : public PhysicsBaseData, public GraphicsBaseData
-{
-    GModuleData() :
-        PhysicsBaseData(),
-        GraphicsBaseData(),
-        armor(0),
-        health(1000)
-    {
-        type = ClassType::GMODULE;
-        categoryBits = Category::ShipModule;
-        maskBits = Mask::ShipModuleNorm;
-        butes.setBute(isSolid, true);
-        butes.setBute(isDestructable, true);
-    }
-
-    T_Armor armor;
-    T_Health health;
-};
-
+struct GModuleData;
 class GModule : public PhysicsBase, public GraphicsBase
 {
 public:
@@ -58,6 +41,30 @@ protected:
 private:
     HealthData m_health;
     bool m_isDestroyed;
+};
+
+struct GModuleData : public PhysicsBaseData, public GraphicsBaseData
+{
+    GModuleData() :
+        PhysicsBaseData(),
+        GraphicsBaseData(),
+        armor(0),
+        health(1000)
+    {
+        type = ClassType::GMODULE;
+        categoryBits = Category::ShipModule;
+        maskBits = Mask::ShipModuleNorm;
+        butes.setBute(isSolid, true);
+        butes.setBute(isDestructable, true);
+    }
+    virtual GModule* generate(Chunk* pChunk)
+    {
+        pBody = pChunk->getBody();
+        return new GModule(*this);
+    }
+
+    T_Armor armor;
+    T_Health health;
 };
 
 #endif // DGMODULE_H

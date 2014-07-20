@@ -3,21 +3,8 @@
 
 #include "Trigger.h"
 
-struct ForceFieldData : public TriggerData
-{
-    ForceFieldData() :
-        TriggerData(),
-        forceStrength(400)
-    {
-        shape = Shape::CIRCLE;
-        categoryBits = Category::ShipForceField;
-        maskBits = Mask::ShipForceField;
-        type = ClassType::TRIGGER;
-    }
 
-    float forceStrength;
-};
-
+struct ForceFieldData;
 class ForceField : public Trigger
 {
 public:
@@ -40,6 +27,26 @@ private:
     float f_magnitude_quadratic(float magnitude) const;
 
     float m_strength;
+};
+
+struct ForceFieldData : public TriggerData
+{
+    ForceFieldData() :
+        TriggerData(),
+        forceStrength(400)
+    {
+        shape = Shape::CIRCLE;
+        categoryBits = Category::ShipForceField;
+        maskBits = Mask::ShipForceField;
+        type = ClassType::TRIGGER;
+    }
+    virtual Module* generate(Chunk* pChunk)
+    {
+        pBody = pChunk->getBody();
+        return new ForceField(*this);
+    }
+
+    float forceStrength;
 };
 
 #endif // FORCEFIELD_H

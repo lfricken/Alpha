@@ -94,133 +94,28 @@ IOBase* Chunk::getIOBase(const std::string& targetName)
 
     return getModule(targetName);
 }
-/*
-IOBase* Chunk::getIOBase(unsigned int id)
+GModule* Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList)
 {
-    for(vector<tr1::shared_ptr<Module> >::const_iterator it = m_ModuleSPList.begin(); it != m_ModuleSPList.end(); ++it)
-    {
-        if((*it)->getID() == targetName)
-            return &(**it);
-    }
-    cout << "\nTarget " << targetName << " not found in chunk \"" << m_pIOComponent->getName() << "\":[" << m_pIOComponent->getID() << "]";
-    ///ERROR LOG
-
-
-
-    return NULL;
-}*/
-
-
-
-/**
-1. OUR LIST: Create GModules in our GModuleList
-2. TILEMAP: Pass them to our MultiTileMap to be drawn later.
-**////BUT ONLY THE ONES WE JUST ADDED
-void Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList)
-{
-    ///should implement double dispatch so we don't have to check what we are creating.
-    ///Make a Generate(this) function for each "Blank"Data,
-    ///it creates the object and returns a base pointer to it
-
-    ///for data that creates other modules, it calls add again on the this pointer, and passes the data needed (lol recursion)
-
-    /**1**/
-    for(vector<tr1::shared_ptr<GModuleData> >::const_iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
-    {
-        GModule* ptr;
-        (**it_data).pBody = m_pBody;
-
-        if((**it_data).type == ClassType::GMODULE)
-        {
-            ptr = static_cast<GModule*>(new GModule(static_cast<GModuleData>(**it_data)));
-        }
-        else if((**it_data).type == ClassType::ARMOR)
-        {
-            GModuleData* pData = &(**it_data);
-            ArmorData* pArmor = static_cast<ArmorData*>(pData);
-            ptr = static_cast<GModule*>(new Armor(*pArmor));
-        }
-        else if((**it_data).type == ClassType::THRUSTER)
-        {
-            GModuleData* pData = &(**it_data);
-            ThrusterData* pThruster = static_cast<ThrusterData*>(pData);
-            ptr = static_cast<GModule*>(new Thruster(*pThruster));
-        }
-        else if((*it_data)->type == ClassType::FORCE)
-        {
-            GModuleData* pData = &(**it_data);
-            ForceFieldCoreData* pFFCD = static_cast<ForceFieldCoreData*>(pData);
-
-            pFFCD->fieldData.pBody = m_pBody;
-            ForceField* tempPtr = new ForceField(pFFCD->fieldData);
-            m_ModuleSPList.push_back(tr1::shared_ptr<Module>(tempPtr));
-            m_SpecialPhysPList.push_back(tempPtr);
-
-            pFFCD->pForceField = tempPtr;
-
-            ptr = static_cast<GModule*>(new ForceFieldCore(*pFFCD));
-        }
-
-
-
-        else
-        {
-            cout << "\nModule of type " << (**it_data).type << " with name " << (**it_data).name <<  " was not found.";
-            ///ERROR LOG
-            ptr = static_cast<GModule*>(new GModule(*dynamic_pointer_cast<GModuleData>(*it_data)));
-        }
-        InsertPtrVector(m_GModuleSPList, &IOBase::getID, tr1::shared_ptr<GModule>(ptr));
-    }
-
-
-    /**TILEMAP: Create a Base Pointer List to pass to our tileMap**////WE SHOULD NOT BE GIVING ALL OF THE BASE THINGS, JUST THE ONES WE ADDED ON THIS ADD() CALL
-    vector<GraphicsBase*> gfxBasePList;
-    for(vector<tr1::shared_ptr<GModule> >::const_iterator it_derived = m_GModuleSPList.begin(); it_derived != m_GModuleSPList.end(); ++it_derived)
-    {
-        gfxBasePList.push_back(&(*(*it_derived)));
-    }
-    m_tiles.add(gfxBasePList);
-
-
-    if(!rDataList.empty())/**Now, offset our origin by half the width of a tile, so that its center is also the center of the box's**/
-        m_tiles.setOrigin(rDataList[0]->halfSize.x * scale , rDataList[0]->halfSize.y * scale);
-    else
-    {
-        cout << "\nWARNING: Chunk::add()";
-        ///ERROR LOG
-    }
-}
-void Chunk::add(const vector<tr1::shared_ptr<ModuleData> >& rDataList)
-{
+    GModule* ptr;
     for(auto it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
-        Module* ptr;
-        (*it_data)->pBody = m_pBody;
+        ptr = (*it_data)->generate(this);
+        InsertPtrVector(m_GModuleSPList, &IOBase::getID, tr1::shared_ptr<GModule>(ptr));
+        m_tiles.add(ptr);///HERE IS WHERE WE WOULD give it a graphics component, instead of us a derived pointer from which it gets the base type
+    }
 
-        if((*it_data)->type == ClassType::MODULE)
-        {
-            ptr = new Module(**it_data);
-        }
-        else if((*it_data)->type == ClassType::HULL)
-        {
-            ptr = new Module(**it_data);
-
-            ModuleData hullSensorDat = **it_data;
-            hullSensorDat.isSensor = true;
-            hullSensorDat.categoryBits = Category::ShipHullSensor;
-            hullSensorDat.maskBits = Mask::ShipHullSensor;
-            hullSensorDat.butes.setBute(Butes::isDestructable, false);
-            hullSensorDat.butes.setBute(Butes::isSolid, false);
-            InsertPtrVector(m_ModuleSPList, &IOBase::getID, tr1::shared_ptr<Module>(new Module(hullSensorDat)));
-        }
-        else
-        {
-            ///ERROR LOG
-            cout << "\nModule of type " << (*it_data)->type << " was not found.";
-            ptr = new Module(**it_data);
-        }
+    return ptr;
+}
+Module* Chunk::add(const vector<tr1::shared_ptr<ModuleData> >& rDataList)
+{
+    Module* ptr;
+    for(auto it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
+    {
+        ptr = (*it_data)->generate(this);
         InsertPtrVector(m_ModuleSPList, &IOBase::getID, tr1::shared_ptr<Module>(ptr));
     }
+
+    return ptr;
 }
 void Chunk::draw()
 {
@@ -239,7 +134,11 @@ void Chunk::draw()
 }
 void Chunk::physUpdate()//loop over all the special physics objects
 {
-    for(vector<PhysicsBase*>::iterator it = m_SpecialPhysPList.begin(); it != m_SpecialPhysPList.end(); ++it)
+    for(auto it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
+    {
+        (*it)->physUpdate();
+    }
+    for(auto it = m_ModuleSPList.begin(); it != m_ModuleSPList.end(); ++it)
     {
         (*it)->physUpdate();
     }
@@ -532,61 +431,3 @@ int Chunk::postSolveContact(PhysicsBase* other)
 {
     return 0;
 }
-
-/*
-void Chunk::add(vector<tr1::shared_ptr<GModuleData> >& rDataList)
-{
-    //Take our list of gmodule data and make real modules with it! rDataList
-    for(vector<tr1::shared_ptr<GModuleData> >::iterator it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
-    {
-        GModule* ptr;
-        (*it_data)->pBody = m_pBody;
-
-        if((*it_data)->type == ClassType::GMODULE)
-            ptr = new GModule(**it_data);
-
-        ///list all types of modules here
-
-
-        else
-        {
-            cout << "\nModule of type " << (*it_data)->type << " with name " << (*it_data)->name <<  " was not found.";
-            ///ERROR LOG
-            ptr = new GModule(**it_data);
-        }
-        m_GModuleSPList.push_back(tr1::shared_ptr<GModule>(ptr));
-    }
-
-
-    //TILEMAP: Create a Base Pointer List to pass to our tileMap
-    vector<GraphicsBase*> gfxBasePList;
-    for(vector<tr1::shared_ptr<GModule> >::const_iterator it_derived = m_GModuleSPList.begin(); it_derived != m_GModuleSPList.end(); ++it_derived)
-    {
-        gfxBasePList.push_back(&(*(*it_derived)));
-    }
-    m_tiles.add(gfxBasePList);
-
-
-    if(!rDataList.empty())//Now, offset our origin by the appropriate amount indicated by the physData
-        m_tiles.setOrigin(rDataList[0]->halfSize.x * scale , rDataList[0]->halfSize.y * scale);
-    else
-        cout << "\nWARNING: Chunk::add()";
-}
-*/
-
-
-
-
-
-/*
-Chunk::Chunk(const Chunk& old) : m_rWindow(game.getGameWindow()), m_rPhysWorld(game.getGameUniverse().getWorld())
-{
-    cout << "\nChunk Copy Called...";
-    m_pBody = old.getBody();
-    m_bodyDef = old.getBodyDef();
-    m_tiles = old.getTiles();
-    m_GModuleSPList = old.getGModuleSPList();
-    m_ModuleSPList = old.getModuleSPList();
-    cout << "Completed.";
-}
-*/

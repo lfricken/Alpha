@@ -3,7 +3,6 @@
 
 #include "BedFinder.h"
 #include "Projectile.h"
-#include "Chunk.h"
 #include "Timer.h"
 
 /**we hold our own chunks**/

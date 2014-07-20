@@ -46,11 +46,16 @@ set their vertex pointer using nextAccessed and update nextAccessed;
 4. Give the gfxBase a pointer to to texturedVertex
 5. Rinse Repeat
 **/
-///work through and verify all this code
-void MultiTileMap::add(vector<GraphicsBase*> gfxBaseList)
+void MultiTileMap::add(GraphicsBase* pGfxBase)
+{
+    std::vector<GraphicsBase*> miniList;
+    miniList.push_back(pGfxBase);
+    add(miniList);
+}
+void MultiTileMap::add(vector<GraphicsBase*>& rGfxBaseList)
 {
     TexturedVertices* pTexturedVertex = NULL;
-    for(auto it_gfxBase = gfxBaseList.begin(); it_gfxBase != gfxBaseList.end(); ++it_gfxBase)
+    for(auto it_gfxBase = rGfxBaseList.begin(); it_gfxBase != rGfxBaseList.end(); ++it_gfxBase)
     {
         bool found = false;
         for(auto it_texVert = m_TexVertSPList.begin(); it_texVert != m_TexVertSPList.end(); ++it_texVert)
@@ -65,7 +70,6 @@ void MultiTileMap::add(vector<GraphicsBase*> gfxBaseList)
 
         if(!found)/**2**/
         {
-            cout << "\nNot Found.";
             m_TexVertSPList.push_back(tr1::shared_ptr<TexturedVertices>(new TexturedVertices));
             m_TexVertSPList.back()->pTexture = game.getTextureAllocator().request((*it_gfxBase)->getTexName());
             m_TexVertSPList.back()->textureName = (*it_gfxBase)->getTexName();

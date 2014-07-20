@@ -4,24 +4,8 @@
 #include "Module.h"
 #include "Filter.h"
 
-struct TriggerData : public ModuleData
-{
-    TriggerData() :
-        ModuleData(),
-        filterData()
-    {
-        density = 0;
-        halfSize = b2Vec2(8,8);
-        categoryBits = Category::Trigger;
-        maskBits = Mask::Trigger;
-        type = ClassType::TRIGGER;
-        isSensor = true;
-        butes.setBute(isSolid, false);
-        butes.setBute(isDestructable, false);
-    }
-    FilterData filterData;
-};
 
+struct TriggerData;
 class Trigger : public Module
 {
 public:
@@ -49,4 +33,28 @@ private:
     virtual void f_initialize(const TriggerData& rData);
 };
 
+
+struct TriggerData : public ModuleData
+{
+    TriggerData() :
+        ModuleData(),
+        filterData()
+    {
+        density = 0;
+        halfSize = b2Vec2(8,8);
+        categoryBits = Category::Trigger;
+        maskBits = Mask::Trigger;
+        type = ClassType::TRIGGER;
+        isSensor = true;
+        butes.setBute(isSolid, false);
+        butes.setBute(isDestructable, false);
+    }
+    FilterData filterData;
+
+    virtual Module* generate(Chunk* pChunk)
+    {
+        pBody = pChunk->getBody();
+        return new Trigger(*this);
+    }
+};
 #endif // TRIGGER_H

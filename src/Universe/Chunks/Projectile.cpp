@@ -1,6 +1,8 @@
 #include "Projectile.h"
+
 #include "globals.h"
 #include "IOManager.h"
+#include "PhysicsBase.h"
 
 using namespace std;
 

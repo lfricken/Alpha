@@ -298,8 +298,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
 
     TriggerData trigDat;
-    trigDat.type = ClassType::TRIGGER;
     trigDat.offset = b2Vec2(-20, 0);
+    trigDat.filterData.defaultsTrue = true;
 
 
     Courier* pTriggerCourier = new Courier();
@@ -421,14 +421,14 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
         //shipModuleData.texTile.x = texTile;
         moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ArmorData(armorData)) );
     }
+    moduleList1.back()->name = "fixturePositionExample";
 
     ForceFieldCoreData fieldCoreData;
     fieldCoreData.offset = b2Vec2(0, 0);
-    fieldCoreData.spForceFieldData->filterData.defaultsTrue = false;
+    fieldCoreData.forceFieldData.filterData.defaultsTrue = true;
 
     ThrusterData thrustDat;
     thrustDat.offset = b2Vec2(0, 0.5);
-    thrustDat.force = 500;
 
 
 

@@ -11,8 +11,8 @@ struct FilterData
         defaultsTrue(true)
     {
     }
-    std::map<std::string, int> names;
-    std::map<ClassType, int> types;
+    std::map<std::string, bool> names;
+    std::map<ClassType, bool> types;
     bool mustPassAll;
     bool defaultsTrue;
 };
@@ -28,8 +28,8 @@ public:
 protected:
 private:
 
-    std::map<ClassType, int> m_types;
-    std::map<std::string, int> m_names;
+    std::map<ClassType, bool> m_types;//classname stores the key, bool stores whether it should be allowed or not
+    std::map<std::string, bool> m_names;
     bool m_mustPassAll;//do we just have to come back positive on one, or all?
     bool m_default;
 };

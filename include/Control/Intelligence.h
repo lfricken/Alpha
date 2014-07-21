@@ -33,8 +33,8 @@ public:
 
     virtual IOBaseReturn input(IOBaseArgs);
 
-    void setAim(const sf::Vector2f& newAim);
-    const sf::Vector2f& getAim() const;
+    void setAim(const b2Vec2& newAim);//in world coordinates
+    const b2Vec2& getAim() const;//in world coordinates
 
     void setTargetName(const std::string& target);
     const std::string& getTargetName();
@@ -48,11 +48,11 @@ private:
     void f_setTarget(Chunk* target);
     bool m_hasTarget;
     PlayerState m_playerState;//playing, editing, interfacing ect.
-    std::string m_targetName;
+    std::string m_targetName;///WHAT IS THIS
     std::vector<std::tr1::shared_ptr<leon::Panel> > m_HUDspElements;
     Chunk* m_pTarget;
 
-    sf::Vector2f m_aim;
+    b2Vec2 m_aim;//in world coordinates
 };
 
 #endif // INTELLIGENCE_H

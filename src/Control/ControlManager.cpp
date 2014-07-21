@@ -3,6 +3,8 @@
 #include "Sort.h"
 #include "Angles.h"
 
+#include "GModule.h"///remove
+
 using namespace std;
 
 ControlManager::ControlManager() : m_rUniverse(game.getGameUniverse()), m_rWindow(game.getGameWindow()), m_rGui(game.getGameOverlayManager().getGui()), m_pDraggingWidget(nullptr)
@@ -93,13 +95,25 @@ int ControlManager::pressedUpdate()
 
                     if (sf::Mouse::isButtonPressed(rInputConfig.primary))
                     {
-                        m_pCPT->setAim(m_rWindow.mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView() ));
-                        m_chunkTarget->primary((*it)->getAim());
+                        b2Vec2 worldAim;
+                        sf::Vector2f windowAim;
+
+                        windowAim = m_rWindow.mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView());
+                        worldAim.x = windowAim.x/scale;
+                        worldAim.y = windowAim.y/scale;
+                        m_pCPT->setAim(worldAim);
+                        m_chunkTarget->primary(worldAim);
                     }
                     if (sf::Mouse::isButtonPressed(rInputConfig.secondary))
                     {
-                        m_pCPT->setAim(m_rWindow.mapPixelToCoords((*it)->getMouseCoords(), m_pCPT->getCamera().getView() ));
-                        m_chunkTarget->secondary((*it)->getAim());
+                        b2Vec2 worldAim;
+                        sf::Vector2f windowAim;
+
+                        windowAim = m_rWindow.mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView());
+                        worldAim.x = windowAim.x/scale;
+                        worldAim.y = windowAim.y/scale;
+                        m_pCPT->setAim(worldAim);
+                        m_chunkTarget->secondary(worldAim);
                     }
                     if (sf::Keyboard::isKeyPressed(rInputConfig.up))
                     {
@@ -161,7 +175,7 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
             if (rEvent.key.code == sf::Keyboard::Escape)
             {
                 cout << "\n\n\nExiting...";
-                return 1;///USE STATES
+                return 1;///USE STATES, not numbers!
             }
         }
 
@@ -176,9 +190,16 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
             if (rEvent.type == sf::Event::MouseMoved)//aim on mouse move
             {
                 m_pCPT->setMouseCoords(sf::Vector2i(rEvent.mouseMove.x, rEvent.mouseMove.y));
-                m_pCPT->setAim(m_rWindow.mapPixelToCoords(sf::Vector2i(rEvent.mouseMove.x, rEvent.mouseMove.y), m_pCPT->getCamera().getView()));
+
+                b2Vec2 worldAim;
+                sf::Vector2f windowAim;
+
+                windowAim = m_rWindow.mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView());
+                worldAim.x = windowAim.x/scale;
+                worldAim.y = windowAim.y/scale;
+                m_pCPT->setAim(worldAim);
                 if(m_pCPT->hasTarget())
-                    m_pCPT->getTarget()->aim(m_pCPT->getAim());
+                    m_pCPT->getTarget()->aim(worldAim);
             }
             if (rEvent.type == sf::Event::MouseWheelMoved)//control zooming of camera for a player
             {
@@ -199,8 +220,8 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
                 m_pCPT->getCamera().getView().zoom(zoomChange);
                 m_pCPT->getCamera().zoomFactor(zoomChange);
 
-                sf::Vector2f smooth = m_pCPT->getCamera().getView().getCenter();//we do this so zooming to a spot is smoother
-                m_pCPT->getCamera().getView().setCenter(sf::Vector2f( (m_pCPT->getAim().x+smooth.x)/2, (m_pCPT->getAim().y+smooth.y)/2 ));
+                sf::Vector2f smooth = m_pCPT->getCamera().getView().getCenter();/**we do this so zooming to a spot is smoother**/
+                m_pCPT->getCamera().getView().setCenter(sf::Vector2f( (scale*m_pCPT->getAim().x+smooth.x)/2, (scale*m_pCPT->getAim().y+smooth.y)/2 ));
             }
 
 
@@ -312,14 +333,17 @@ void ControlManager::f_cheats(vector<tr1::shared_ptr<Player> >::iterator it, sf:
         {
             cout << "\n" << m_rUniverse.getBackwardPhys()->getBody()->IsAwake();
         }
-        if (rEvent.key.code == sf::Keyboard::Numpad8)
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
         {
-            string target;
-            cin >> target;
-            cout << "\nControlling \"" << target << "\"";
-            (*it)->linkControl(m_rUniverse.getPhysTarget(target));
+            GModule* ptr = NULL;
+            ptr = m_chunkTarget->getGModule("fixturePositionExample");
+            if(ptr != NULL)
+            {
+                std::cout << "\n(" << ptr->getCenter().x << "," << ptr->getCenter().y << ")";
+            }
+            else
+                cout << "\nError.";
         }
-
 
     }
 }

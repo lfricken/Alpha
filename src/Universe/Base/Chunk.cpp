@@ -239,14 +239,14 @@ const MultiTileMap& Chunk::getTiles() const
 {
     return m_tiles;
 }
-void Chunk::primary(sf::Vector2f coords)
+void Chunk::primary(const b2Vec2& coords)
 {
     ///tell all our modules that we have primaried at those coords
 
     ///get rid of this temporary stuff
     if(m_fireTimer.isTimeUp())
     {
-        b2Vec2 difference(coords.x/scale - m_pBody->GetPosition().x, coords.y/scale - m_pBody->GetPosition().y);
+        b2Vec2 difference(coords - m_pBody->GetPosition());
         float distance = sqrt(difference.x*difference.x + difference.y*difference.y);
         b2Vec2 component(difference.x/distance, difference.y/distance);
 
@@ -260,12 +260,12 @@ void Chunk::primary(sf::Vector2f coords)
         pBullet->wake(m_pBody->GetPosition()+offset, atan(component.y/component.x), velvec+m_pBody->GetLinearVelocity(), m_pBody->GetAngularVelocity());//our position + some, no rotation, velocity +ours, our angular velocity
     }
 }
-void Chunk::secondary(sf::Vector2f coords)
+void Chunk::secondary(const b2Vec2& coords)
 {
     ///tell all our modules that we have secondaired at coords
     if(m_fireTimer.isTimeUp())
     {
-        b2Vec2 difference(coords.x/scale - m_pBody->GetPosition().x, coords.y/scale - m_pBody->GetPosition().y);
+        b2Vec2 difference(coords - m_pBody->GetPosition());
         float distance = sqrt(difference.x*difference.x + difference.y*difference.y);
         b2Vec2 component(difference.x/distance, difference.y/distance);
 
@@ -279,7 +279,7 @@ void Chunk::secondary(sf::Vector2f coords)
         pBullet->wake(m_pBody->GetPosition()+offset, atan(component.y/component.x), velvec+m_pBody->GetLinearVelocity(), m_pBody->GetAngularVelocity());//our position + some, no rotation, velocity +ours, our angular velocity
     }
 }
-void Chunk::aim(sf::Vector2f coords)
+void Chunk::aim(const b2Vec2& coords)
 {
 ///tell modules
 }

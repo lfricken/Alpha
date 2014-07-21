@@ -26,8 +26,7 @@ struct ForceFieldCoreData : public GModuleData
 {
     ForceFieldCoreData() :
         GModuleData(),
-        pForceField(NULL),
-        spForceFieldData(new ForceFieldData())
+        pForceField(NULL)
     {
         type = ClassType::FORCE;
         categoryBits = Category::ShipModule;
@@ -36,13 +35,13 @@ struct ForceFieldCoreData : public GModuleData
     }
 
     ForceField* pForceField;
-    std::tr1::shared_ptr<ForceFieldData> spForceFieldData;
+    ForceFieldData forceFieldData;
 
 
     virtual GModule* generate(Chunk* pChunk)
     {
         std::vector<std::tr1::shared_ptr<ModuleData> > fieldDataList;
-        fieldDataList.push_back(spForceFieldData);
+        fieldDataList.push_back(std::tr1::shared_ptr<ModuleData>(new ForceFieldData(forceFieldData)));
         pForceField = dynamic_cast<ForceField*>(pChunk->add(fieldDataList));
         if(pForceField == NULL)
         {

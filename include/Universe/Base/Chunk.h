@@ -72,9 +72,9 @@ public:
 
 
     /**INPUT**/
-    virtual void primary(sf::Vector2f coords);
-    virtual void secondary(sf::Vector2f coords);
-    virtual void aim(sf::Vector2f coords);
+    virtual void primary(const b2Vec2& coords);
+    virtual void secondary(const b2Vec2& coords);
+    virtual void aim(const b2Vec2& coords);
     virtual void up();
     virtual void down();
     virtual void left();

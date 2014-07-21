@@ -4,34 +4,26 @@
 
 using namespace std;
 
-PhysicsBase::PhysicsBase() :
-    IOBase(),
-    m_rPhysWorld(game.getGameUniverse().getWorld())
+PhysicsBase::PhysicsBase() : IOBase(), m_rPhysWorld(game.getGameUniverse().getWorld())
 {
     PhysicsBaseData data;
     f_initialize(data);
 }
-PhysicsBase::PhysicsBase(const PhysicsBaseData& data) :
-    IOBase(static_cast<IOBaseData>(data)),
-    m_rPhysWorld(game.getGameUniverse().getWorld())
+PhysicsBase::PhysicsBase(const PhysicsBaseData& data) : IOBase(static_cast<IOBaseData>(data)), m_rPhysWorld(game.getGameUniverse().getWorld())
 {
     f_initialize(data);
 }
 void PhysicsBase::f_initialize(const PhysicsBaseData& data)
 {
-    //if(!data.vertices.empty())//if we have some vertex data, use it
-   // {
-   //     vector<b2Vec2> vertices = data.vertices;
-    //    RotateCoordinatesDegs(vertices, data.rotation, FindCenter(vertices));/**we want to rotate about center because otherwise, strange things will happen**////MAYBE WE SHOULD JUST SAY THAT 0,0 IS CENTER, instead of finding it???
-   // }
     if (data.shape == Shape::BOX)
     {
-        m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
-        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, leon::degToRad(data.rotation));//set our shape
+        m_spShape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
+        std::tr1::static_pointer_cast<b2PolygonShape>(m_spShape)->SetAsBox(data.halfSize.x, data.halfSize.y, data.offset, leon::degToRad(data.rotation));//set our shape
+        m_halfSize = data.halfSize;
     }
     else if((data.shape == Shape::OCTAGON) && (data.halfSize.x < data.halfSize.y))
     {
-        m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
+        m_spShape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
         unsigned int num = 8;
         float x = data.halfSize.x, y = data.halfSize.y;
         b2Vec2 vertices[num];
@@ -52,12 +44,12 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
             vertices[i] -= vdat.center;//takes care of halfsize modification
             vertices[i] += data.offset;
         }
-
-        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->Set(vertices, num);
+        m_halfSize = vdat.halfSize;
+        std::tr1::static_pointer_cast<b2PolygonShape>(m_spShape)->Set(vertices, num);
     }
     else if((data.shape == Shape::OCTAGON) && (data.halfSize.x >= data.halfSize.y))
     {
-        m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
+        m_spShape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
         unsigned int num = 8;
         float x = data.halfSize.x, y = data.halfSize.y;
         b2Vec2 vertices[num];
@@ -78,12 +70,12 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
             vertices[i] -= vdat.center;//takes care of halfsize modification
             vertices[i] += data.offset;
         }
-
-        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->Set(vertices, num);
+        m_halfSize = vdat.halfSize;
+        std::tr1::static_pointer_cast<b2PolygonShape>(m_spShape)->Set(vertices, num);
     }
     else if(data.shape == Shape::TRIANGLE)
     {
-        m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
+        m_spShape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
         unsigned int num = 3;
         float x = data.halfSize.x;
         float y = data.halfSize.y;
@@ -100,19 +92,21 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
             vertices[i] -= vdat.center;//takes care of halfsize modification
             vertices[i] += data.offset;
         }
-
-        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->Set(vertices, num);
+        m_halfSize = vdat.halfSize;
+        std::tr1::static_pointer_cast<b2PolygonShape>(m_spShape)->Set(vertices, num);
     }
     else if(data.shape == Shape::CIRCLE)
     {
-        m_shape = std::tr1::shared_ptr<b2Shape>(new b2CircleShape);
-        b2CircleShape* temp = &*std::tr1::static_pointer_cast<b2CircleShape>(m_shape);
+        m_spShape = std::tr1::shared_ptr<b2Shape>(new b2CircleShape);
+        b2CircleShape* temp = &*std::tr1::static_pointer_cast<b2CircleShape>(m_spShape);
         temp->m_p.Set(data.offset.x, data.offset.y);//assumed to set the center
         temp->m_radius = data.halfSize.x;
+        m_halfSize.x = data.halfSize.x;
+        m_halfSize.y = data.halfSize.x;
     }
     else if((data.shape == Shape::POLYGON) && (data.vertices.size() > 2))
     {
-        m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
+        m_spShape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
         unsigned int num = data.vertices.size();
         b2Vec2 vertices[num];
 
@@ -127,19 +121,20 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
             vertices[i] -= vdat.center;//takes care of halfsize modification
             vertices[i] += data.offset;
         }
-
-        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->Set(vertices, num);
+        m_halfSize = vdat.halfSize;
+        std::tr1::static_pointer_cast<b2PolygonShape>(m_spShape)->Set(vertices, num);
     }
     else
     {
         cout << "\nType [" << data.shape << "] not found in PhysicsBase.";
         ///ERROR LOG
-        m_shape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
-        std::tr1::static_pointer_cast<b2PolygonShape>(m_shape)->SetAsBox(data.halfSize.x, data.halfSize.y, (data.offset+data.halfSize), leon::degToRad(data.rotation));//default
+        m_spShape = std::tr1::shared_ptr<b2Shape>(new b2PolygonShape);
+        std::tr1::static_pointer_cast<b2PolygonShape>(m_spShape)->SetAsBox(data.halfSize.x, data.halfSize.y, (data.offset+data.halfSize), leon::degToRad(data.rotation));//default
+        m_halfSize = data.halfSize;
     }
 
     m_fixtureDef.isSensor = data.isSensor;
-    m_fixtureDef.shape = m_shape.get();//give our shape to our fixture definition
+    m_fixtureDef.shape = &*m_spShape;//give our shape to our fixture definition
     m_fixtureDef.density = data.density;
     m_fixtureDef.friction = data.friction;
     m_fixtureDef.restitution = data.restitution;//setting our fixture data
@@ -149,6 +144,11 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
     m_pBody = data.pBody;
     m_pFixture = m_pBody->CreateFixture(&m_fixtureDef);
     m_pFixture->SetUserData(this);
+
+
+    b2MassData massData;/**get the mass of our fixture**/
+    m_pFixture->GetShape()->ComputeMass(&massData, m_pFixture->GetDensity());
+    m_mass = massData.mass;
 }
 PhysicsBase::~PhysicsBase()
 {
@@ -179,43 +179,16 @@ int PhysicsBase::postSolveContact(PhysicsBase* other)
     parent->postSolveContact(other);
     return 0;
 }
-
-
-
 bool PhysicsBase::physUpdate()
 {
     return false;
 }
+
+
+
 b2World& PhysicsBase::getWorld()
 {
     return m_rPhysWorld;
-}
-const b2Shape& PhysicsBase::getShape() const
-{
-    return *m_shape;
-}
-b2Shape& PhysicsBase::getShape()
-{
-    return *m_shape;
-}
-
-const b2FixtureDef& PhysicsBase::getFixtureDef() const
-{
-    return m_fixtureDef;
-}
-b2FixtureDef& PhysicsBase::getFixtureDef()
-{
-    return m_fixtureDef;
-}
-
-
-b2Fixture* PhysicsBase::getFixture() const
-{
-    return m_pFixture;
-}
-b2Body* PhysicsBase::getBody() const
-{
-    return m_pBody;
 }
 
 
@@ -223,16 +196,45 @@ b2Fixture* PhysicsBase::getFixture()
 {
     return m_pFixture;
 }
-b2Body* PhysicsBase::getBody()
+
+
+
+const b2Body* PhysicsBase::getBody() const
 {
     return m_pBody;
 }
-
-void PhysicsBase::setFixture(b2Fixture* pFixture)
+const b2Fixture* PhysicsBase::getFixture() const
 {
-    m_pFixture = pFixture;
+    return m_pFixture;
 }
-void PhysicsBase::setBody(b2Body* pBody)
+float PhysicsBase::getMass() const
 {
-    m_pBody = pBody;
+    return m_mass;
+}
+b2Vec2 PhysicsBase::getCenter() const
+{
+    b2Vec2 center(0,0);
+
+    if(m_spShape->GetType() == b2Shape::e_polygon)
+    {
+        center = m_pBody->GetWorldPoint(static_cast<b2CircleShape*>(&*m_spShape)->GetVertex(0));
+    }
+    else if(m_spShape->GetType() == b2Shape::e_circle)//must be a circle
+    {
+        b2PolygonShape* pPShape = static_cast<b2PolygonShape*>(&*m_spShape);
+
+        unsigned int num = pPShape->GetVertexCount();
+        for(unsigned int i = 0; i<num; ++i)
+            center += pPShape->GetVertex(i);
+
+        center.x /= num;
+        center.y /= num;
+        center = m_pBody->GetWorldPoint(center);
+    }
+    else
+    {
+        std::cout << FILELINE;
+        ///eRROR LOG
+    }
+    return center;
 }

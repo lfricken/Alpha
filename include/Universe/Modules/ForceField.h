@@ -35,6 +35,7 @@ struct ForceFieldData : public TriggerData
         TriggerData(),
         forceStrength(400)
     {
+        density = 0;
         shape = Shape::CIRCLE;
         categoryBits = Category::ShipForceField;
         maskBits = Mask::ShipForceField;

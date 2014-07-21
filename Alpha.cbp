@@ -56,15 +56,15 @@
 			<Add directory="../../../Engines/Box2D" />
 			<Add directory="include" />
 			<Add directory="include/Control" />
-			<Add directory="include/Universe" />
-			<Add directory="include/IO" />
 			<Add directory="include/Game" />
-			<Add directory="include/MultipleInheritance" />
 			<Add directory="include/GUI" />
-			<Add directory="include/Universe/Base" />
 			<Add directory="include/Headers" />
+			<Add directory="include/IO" />
+			<Add directory="include/MultipleInheritance" />
+			<Add directory="include/Universe/Base" />
 			<Add directory="include/Universe/Chunks" />
 			<Add directory="include/Universe/Modules" />
+			<Add directory="include/Universe/Simple" />
 		</Compiler>
 		<Linker>
 			<Add directory="../../../Engines/SFML-2_recompile/lib" />
@@ -84,8 +84,11 @@
 		<Unit filename="include/Game/TextureAllocator.h" />
 		<Unit filename="include/Headers/Angles.h" />
 		<Unit filename="include/Headers/AnimationState.h" />
+		<Unit filename="include/Headers/ClassType.h" />
+		<Unit filename="include/Headers/CollisionCategory.h" />
 		<Unit filename="include/Headers/PacketMod.hpp" />
 		<Unit filename="include/Headers/Rotate.h" />
+		<Unit filename="include/Headers/Shape.h" />
 		<Unit filename="include/Headers/Sort.h" />
 		<Unit filename="include/Headers/defaults.h" />
 		<Unit filename="include/Headers/globals.h" />
@@ -103,22 +106,13 @@
 		<Unit filename="include/MultipleInheritance/IOComponent.h" />
 		<Unit filename="include/MultipleInheritance/PhysicsBase.h" />
 		<Unit filename="include/MultipleInheritance/PhysicsBodyComponent.h" />
-		<Unit filename="include/Universe/Base/AnimationController.h" />
-		<Unit filename="include/Universe/Base/AnimationLooper.h" />
-		<Unit filename="include/Universe/Base/Attributes.h" />
 		<Unit filename="include/Universe/Base/BedFinder.h" />
 		<Unit filename="include/Universe/Base/Chunk.h" />
-		<Unit filename="include/Universe/Base/ClassType.h" />
-		<Unit filename="include/Universe/Base/CollisionCategory.h" />
 		<Unit filename="include/Universe/Base/DebugDraw.h" />
 		<Unit filename="include/Universe/Base/Decoration.h" />
-		<Unit filename="include/Universe/Base/Filter.h" />
 		<Unit filename="include/Universe/Base/GModule.h" />
 		<Unit filename="include/Universe/Base/Module.h" />
-		<Unit filename="include/Universe/Base/MultiTileMap.h" />
 		<Unit filename="include/Universe/Base/ProjectileAllocator.h" />
-		<Unit filename="include/Universe/Base/Shape.h" />
-		<Unit filename="include/Universe/Base/Timer.h" />
 		<Unit filename="include/Universe/Base/UniversalContactListener.h" />
 		<Unit filename="include/Universe/Base/UniversalQueryCallback.h" />
 		<Unit filename="include/Universe/Base/Universe.h" />
@@ -127,8 +121,15 @@
 		<Unit filename="include/Universe/Modules/Armor.h" />
 		<Unit filename="include/Universe/Modules/ForceField.h" />
 		<Unit filename="include/Universe/Modules/ForceFieldCore.h" />
+		<Unit filename="include/Universe/Modules/Hull.h" />
 		<Unit filename="include/Universe/Modules/Thruster.h" />
 		<Unit filename="include/Universe/Modules/Trigger.h" />
+		<Unit filename="include/Universe/Simple/AnimationController.h" />
+		<Unit filename="include/Universe/Simple/AnimationLooper.h" />
+		<Unit filename="include/Universe/Simple/Attributes.h" />
+		<Unit filename="include/Universe/Simple/Filter.h" />
+		<Unit filename="include/Universe/Simple/MultiTileMap.h" />
+		<Unit filename="include/Universe/Simple/Timer.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Control/Camera.cpp" />
 		<Unit filename="src/Control/ControlManager.cpp" />
@@ -151,19 +152,13 @@
 		<Unit filename="src/MultipleInheritance/IOComponent.cpp" />
 		<Unit filename="src/MultipleInheritance/PhysicsBase.cpp" />
 		<Unit filename="src/MultipleInheritance/PhysicsBodyComponent.cpp" />
-		<Unit filename="src/Universe/Base/AnimationController.cpp" />
-		<Unit filename="src/Universe/Base/AnimationLooper.cpp" />
-		<Unit filename="src/Universe/Base/Attributes.cpp" />
 		<Unit filename="src/Universe/Base/BedFinder.cpp" />
 		<Unit filename="src/Universe/Base/Chunk.cpp" />
 		<Unit filename="src/Universe/Base/DebugDraw.cpp" />
 		<Unit filename="src/Universe/Base/Decoration.cpp" />
-		<Unit filename="src/Universe/Base/Filter.cpp" />
 		<Unit filename="src/Universe/Base/GModule.cpp" />
 		<Unit filename="src/Universe/Base/Module.cpp" />
-		<Unit filename="src/Universe/Base/MultiTileMap.cpp" />
 		<Unit filename="src/Universe/Base/ProjectileAllocator.cpp" />
-		<Unit filename="src/Universe/Base/Timer.cpp" />
 		<Unit filename="src/Universe/Base/UniversalContactListener.cpp" />
 		<Unit filename="src/Universe/Base/UniversalQueryCallback.cpp" />
 		<Unit filename="src/Universe/Base/Universe.cpp" />
@@ -172,8 +167,15 @@
 		<Unit filename="src/Universe/Modules/Armor.cpp" />
 		<Unit filename="src/Universe/Modules/ForceField.cpp" />
 		<Unit filename="src/Universe/Modules/ForceFieldCore.cpp" />
+		<Unit filename="src/Universe/Modules/Hull.cpp" />
 		<Unit filename="src/Universe/Modules/Thruster.cpp" />
 		<Unit filename="src/Universe/Modules/Trigger.cpp" />
+		<Unit filename="src/Universe/Simple/AnimationController.cpp" />
+		<Unit filename="src/Universe/Simple/AnimationLooper.cpp" />
+		<Unit filename="src/Universe/Simple/Attributes.cpp" />
+		<Unit filename="src/Universe/Simple/Filter.cpp" />
+		<Unit filename="src/Universe/Simple/MultiTileMap.cpp" />
+		<Unit filename="src/Universe/Simple/Timer.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

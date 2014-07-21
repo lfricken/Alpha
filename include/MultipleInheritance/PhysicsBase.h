@@ -51,34 +51,29 @@ public:///MAYBE we shouldn't have this many functions???
 
     virtual bool physUpdate();//used to implement special physical forces and stuff
 
-    virtual b2World& getWorld();
 
-    virtual b2Fixture* getFixture();
-    virtual void setFixture(b2Fixture* fix);
+    b2World& getWorld();
 
-    virtual b2Body* getBody();
-    virtual void setBody(b2Body* fix);
+    b2Fixture* getFixture();
 
-    virtual b2Shape& getShape();
+    /**CONST**/
+    const b2Body* getBody() const;
+    const b2Fixture* getFixture() const;
 
-    virtual const b2FixtureDef& getFixtureDef() const;
-    virtual b2FixtureDef& getFixtureDef();
+    float getMass() const;
+    b2Vec2 getCenter() const;
 
-    /**CONST OVERLOADS**/
-    virtual b2Fixture* getFixture() const;
-    virtual b2Body* getBody() const;
-    virtual const b2Shape& getShape() const;
-    float getAproximateMass() const;
 
 protected:
-    std::tr1::shared_ptr<b2Shape> m_shape;
+    std::tr1::shared_ptr<b2Shape> m_spShape;
     b2FixtureDef m_fixtureDef;
 
     b2Body* m_pBody;//pointer, no ownership
     b2Fixture* m_pFixture;//pointer, no ownership
 
     b2World& m_rPhysWorld;
-
+    float m_mass;
+    b2Vec2 m_halfSize;
 private:
     virtual void f_initialize(const PhysicsBaseData& data);
 };

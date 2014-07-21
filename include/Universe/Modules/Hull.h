@@ -33,6 +33,7 @@ struct HullData : public ModuleData
         std::vector<std::tr1::shared_ptr<ModuleData> > miniList;
         miniList.push_back(std::tr1::shared_ptr<ModuleData>(new ModuleData(*this)));
         ModuleData& rHullSensorData = *miniList.back();
+        rHullSensorData.density = 0;
         rHullSensorData.isSensor = true;
         rHullSensorData.categoryBits = Category::ShipHullSensor;
         rHullSensorData.maskBits = Mask::ShipHullSensor;

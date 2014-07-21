@@ -31,7 +31,6 @@ struct ModuleData : public PhysicsBaseData
     }
     virtual Module* generate(Chunk* pChunk)
     {
-        std::cout << "\nBASE.";
         pBody = pChunk->getBody();
         return new Module(*this);
     }

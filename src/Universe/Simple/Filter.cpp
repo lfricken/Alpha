@@ -27,13 +27,13 @@ bool Filter::passes(ClassType type, const std::string& rName) const
     else
         passedType = it_type->second;
 
+
     auto it_name = m_names.find(rName);
     if(it_name == m_names.end())//the key doesn't exist
         passedName = m_default;//so it defaults to pass
     else
         passedName = it_name->second;
 
-    //std::cout << std::endl << m_default << passedName << passedType;
 
     if(m_mustPassAll)
         return (passedType && passedName);

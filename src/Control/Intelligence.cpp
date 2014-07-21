@@ -96,11 +96,11 @@ void Intelligence::f_setTarget(Chunk* target)//done
 }
 /**END**/
 
-void Intelligence::setAim(const sf::Vector2f& newAim)
+void Intelligence::setAim(const b2Vec2& newAim)
 {
     m_aim = newAim;
 }
-const sf::Vector2f& Intelligence::getAim() const
+const b2Vec2& Intelligence::getAim() const
 {
     return m_aim;
 }

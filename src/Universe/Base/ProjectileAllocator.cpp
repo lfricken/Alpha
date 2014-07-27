@@ -39,12 +39,12 @@ Projectile* ProjectileAllocator::getProjectile(ProjectileType type)
     /**check if we have one available by comparing the free index to the size of our projectile list**/
     if(get<spList>(m_projList[type]).size() == get<freeIndex>(m_projList[type]))/**if not, create AT LEAST one**/
     {
-        add(type); ///how many should we create if we start running out??? //it will initially be sleeping
+        add(type); ///how many should we create if we start running out???
     }
 
     get<freeIndex>(m_projList[type]) += 1; /**either way, increase free index by 1, and give a pointer to this one**/
 
-    return static_cast<Projectile*>(get<spList>(m_projList[type])[get<freeIndex>(m_projList[type])-1].get());
+    return (get<spList>(m_projList[type])[get<freeIndex>(m_projList[type])-1].get());
 }
 void ProjectileAllocator::recieveProjectile(Projectile* pSleepy)
 {

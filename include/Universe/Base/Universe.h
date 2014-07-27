@@ -9,6 +9,7 @@
 #include "DebugDraw.h"
 #include "BedFinder.h"
 #include "ProjectileAllocator.h"
+#include "GraphicsComponentFactory.h"
 
 #include "Decoration.h"
 
@@ -33,6 +34,7 @@ public:
     b2World& getWorld();
     BedFinder& getBedFinder();
     ProjectileAllocator& getProjAlloc();
+    GraphicsComponentFactory& getGfxCompFactory();
 
 
     void add(Chunk* pChunk);
@@ -57,6 +59,7 @@ private:
     b2World m_physWorld;
     BedFinder m_bedFinder;
     ProjectileAllocator m_projAlloc;
+    GraphicsComponentFactory m_gfxCompFactory;
     sf::RenderWindow& m_rWindow;
 
     bool m_notPaused;

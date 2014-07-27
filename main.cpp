@@ -52,6 +52,7 @@ const sf::Vector2f texTile = sf::Vector2f(0, 0);///deprecated
 extern const sf::Vector2f position = sf::Vector2f(0, 0);
 extern const sf::Vector2f scale = sf::Vector2f(1, 1);
 extern const AnimationState animState = AnimationState::Default;
+extern GraphicsLayer layer = GraphicsLayer::GModules;
 }
 /**GRAPHICS**/
 
@@ -75,7 +76,6 @@ namespace cntrl
 const std::string targetName = io::name;
 const PlayerMode playerMode = PlayerMode::God;
 const sf::Vector2f cameraPos = sf::Vector2f(0, 0);
-const sf::Vector2f cameraSize = sf::Vector2f(800, 600);
 const PlayerState playerState = PlayerState::Playing;
 }
 /**CONTROLERS**/

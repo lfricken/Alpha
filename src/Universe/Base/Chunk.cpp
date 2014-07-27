@@ -51,19 +51,6 @@ void Chunk::f_initialize(const ChunkData& data)
 
     m_fireTimer.setCountDown(0.1);///TEMPORARY
 }
-float Chunk::f_findRadius(std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList)
-{
-    float a, b, c, maxRadius = 1;
-    for(vector<std::tr1::shared_ptr<GModuleData> >::iterator it = rDataList.begin(); it != rDataList.end(); ++it)
-    {
-        a = (*it)->offset.x;
-        b = (*it)->offset.y;
-        c = sqrt(a*a + b*b);
-        if(c > maxRadius)
-            maxRadius = c;
-    }
-    return maxRadius;
-}
 GModule* Chunk::getGModule(const std::string& targetName)
 {
     for(vector<tr1::shared_ptr<GModule> >::const_iterator it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
@@ -241,7 +228,10 @@ const MultiTileMap& Chunk::getTiles() const
 }
 void Chunk::primary(const b2Vec2& coords)
 {
-    ///tell all our modules that we have primaried at those coords
+    for(auto it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
+    {
+        (*it)->primary(coords);
+    }
 
     ///get rid of this temporary stuff
     if(m_fireTimer.isTimeUp())
@@ -281,7 +271,10 @@ void Chunk::secondary(const b2Vec2& coords)
 }
 void Chunk::aim(const b2Vec2& coords)
 {
-///tell modules
+    for(auto it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
+    {
+        (*it)->aim(coords);
+    }
 }
 void Chunk::up()
 {
@@ -289,7 +282,6 @@ void Chunk::up()
     {
         (*it)->up();
     }
-    //m_pBody->ApplyForceToCenter(b2Vec2(m_accel*m_pBody->GetMass()*sin(m_pBody->GetAngle()),-m_accel*m_pBody->GetMass()*cos(m_pBody->GetAngle())), true);
 }
 void Chunk::down()
 {

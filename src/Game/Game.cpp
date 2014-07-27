@@ -17,6 +17,7 @@
 #include "Armor.h"
 #include "ForceFieldCore.h"
 #include "Thruster.h"
+#include "Turret.h"
 
 #include "EditBox.h"
 
@@ -32,7 +33,7 @@ Game::Game()
     m_settings.antialiasingLevel = 4;
 
     sf::VideoMode mode = sf::VideoMode::getDesktopMode();
-    mode = sf::VideoMode(1200, 800, 32);
+    mode = sf::VideoMode(1900, 1000, 32);
     //mode =
     m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(mode, "SFML Box2D Test Environment", sf::Style::Default, m_settings));
 
@@ -47,7 +48,7 @@ Game::Game()
 
 
     bool loadedVsinc = false;
-    int loadedFrameRate = 60;///called that because we are supposed to load that info
+    int loadedFrameRate = 60;///called loaded because we are supposed to load that info from a file
     std::string loadedFont = "TGUI/fonts/DejaVuSans.ttf";
 
     m_spOverlayManager->getGui().setGlobalFont(loadedFont);
@@ -200,7 +201,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     /**=============================================GUI=============================================**/
     std::string config = "TGUI/widgets/Black.conf";
 
-    /**TAB**/
+    /**GUI**/
     tgui::Tab::Ptr tab(m_spOverlayManager->getGui());///TEMPORARY, JUST FOR TESTS, NEED TO MAKE MY OWN CONTAINER FOR THIS
     tab->load(config);
     tab->setPosition(300, 10);
@@ -249,25 +250,16 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     m_spOverlayManager->add(tr1::shared_ptr<leon::Panel>(panel));
 
 
-    /**TAB**/
-
-    /**
-        leon::ButtonData buttonData;
-        buttonData.size = sf::Vector2f(100,50);
-        buttonData.buttonText = "Win";
-        buttonData.position = sf::Vector2f(20, 300);
-
-        leon::Button(*m_spGui, buttonData);///we need this button to be deleted so its temporarily in the main loop
-        **/
-
-
+    /**GUI**/
     /**=============================================GUI=============================================**/
 ///==============================================================================
 ///==============================================================================
 ///==============================================================================
     /**=============================================DECORATIONS=============================================**/
     DecorationData decorDat;
+    decorDat.gfxCompData.scale = sf::Vector2f(0.5, 0.5);
     decorDat.name = "art";
+    decorDat.gfxCompData.rotation = 75;
     decorDat.gfxCompData.animState = AnimationState::Activated;
     decorDat.gfxCompData.position = sf::Vector2f(20, 10);
     Decoration* pDecor = new Decoration(decorDat);
@@ -371,6 +363,10 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
             {
 
             }
+            else if((x==0) && (y==1))
+            {
+
+            }
             else
             {
                 shipModuleData.offset.x = x;
@@ -381,6 +377,19 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
         }
     }
 
+    TurretBarrelData barrelData;
+
+    TurretData turretData;
+    turretData.offset = b2Vec2(0,1);
+    turretData.decorationData.gfxCompData.rotation = 90;
+    turretData.barrelData.push_back(barrelData);
+
+    FireCommand twice;
+    twice.delay = 0;
+    twice.barrelIndex = 0;
+    turretData.fireCommandList.push_back(twice);
+    twice.delay = 0.5;
+    turretData.fireCommandList.push_back(twice);
 
 
 
@@ -435,6 +444,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ThrusterData(thrustDat)) );
     moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ForceFieldCoreData(fieldCoreData)) );
+    moduleList1.push_back( tr1::shared_ptr<GModuleData>(new TurretData(turretData)) );
+
     moduleList2.push_back( tr1::shared_ptr<ModuleData>(new HullData(hull)) );
 
     /**SHIP MODULES**/
@@ -568,10 +579,29 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     player1.keyConfig.secondary = sf::Mouse::Right;
 
     player1.cameraPos = sf::Vector2f(0, 0);
-    player1.cameraSize = (static_cast<sf::Vector2f>(m_spWindow->getSize()));
+    player1.viewport = sf::FloatRect(0, 0, 1, 1);
 
-    tr1::shared_ptr<Player> spPlayer(new Player(player1));
-    m_spControlManager->add(spPlayer);
+    m_spControlManager->add(std::tr1::shared_ptr<Player>(new Player(player1)));
+/**
+    PlayerData player2;
+    player2.name = "player_2";
+    player2.type = ClassType::PLAYER;
+    player2.playerMode = PlayerMode::God;
+    player2.targetName = "ship_2";
+
+    player2.keyConfig.up = sf::Keyboard::Numpad8;
+    player2.keyConfig.left = sf::Keyboard::Numpad4;
+    player2.keyConfig.down = sf::Keyboard::Numpad5;
+    player2.keyConfig.right = sf::Keyboard::Numpad6;
+
+    player2.keyConfig.primary = sf::Mouse::Left;
+    player2.keyConfig.secondary = sf::Mouse::Right;
+
+    player2.cameraPos = sf::Vector2f(0, 0);
+    player2.viewport = sf::FloatRect(0.5, 0, 0.5, 1);
+
+    m_spControlManager->add(std::tr1::shared_ptr<Player>(new Player(player2)));
+**/
     /**PLAYER**/
 
     /**===========================PLAYER===========================**/

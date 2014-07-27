@@ -55,7 +55,7 @@ public:
     virtual void setColor(const sf::Color& rColor);
     virtual const sf::Color& getColor();
 
-    AnimationController& getAnimation();
+    AnimationController& getAnimationController();
 
     virtual void animate();
 protected:

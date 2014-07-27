@@ -23,7 +23,9 @@ struct ChunkData : public IOBaseData//initialized
         minZoom(def::cnk::minZoom),
         controlEnabled(def::cnk::controlEnabled),
         awake(true)///need a default state here
-        {type = ClassType::CHUNK;}
+    {
+        type = ClassType::CHUNK;
+    }
 
     ///be able to add a texture here so we can have big space ships
     b2BodyType bodyType;
@@ -49,7 +51,7 @@ public:
     IOBase* getIOBase(const std::string& targetName);
     IOBase* getIOBase(unsigned int id);
 
-  ///  virtual void add(std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);
+    ///  virtual void add(std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);
     virtual GModule* add(const std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);//returns the last GModule added
     virtual Module* add(const std::vector<std::tr1::shared_ptr<ModuleData> >& data);//returns the last Module added
 
@@ -125,12 +127,9 @@ protected:
 
     std::vector<std::tr1::shared_ptr<GModule> > m_GModuleSPList;
     std::vector<std::tr1::shared_ptr<Module> > m_ModuleSPList;
-
+    std::vector<std::tr1::shared_ptr<sf::Sprite> > m_Sprites;
 private:
     Timer m_fireTimer;///these should be in turret
-
-
-    float f_findRadius(std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);//finds the top/bottom left, bottom
     virtual void f_initialize(const ChunkData& data);
 
     friend class Intelligence;

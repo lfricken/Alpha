@@ -8,12 +8,12 @@ class Armor : public GModule
 {
 public:
     Armor();
-    Armor(const ArmorData& data);
+    Armor(const ArmorData& rData);
     virtual ~Armor();
 
 protected:
 private:
-    void f_initialize(const ArmorData& data);
+    void f_initialize(const ArmorData& rData);
 
 };
 

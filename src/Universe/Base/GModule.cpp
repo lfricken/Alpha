@@ -56,7 +56,7 @@ T_Health GModule::damage(T_Damage damage)
     f_varEvent(m_health.getValue(), m_health.getEventType());
 
     if(m_health.getValuePercent() < 50.0f)
-        getAnimation().setState(AnimationState::Damaged);
+        getAnimationController().setState(AnimationState::Damaged);
 
     if(m_health.getValue() <= 0)//if our health drops too low
         destruct();
@@ -83,13 +83,12 @@ void GModule::destruct()
 
         m_isDestroyed = true;
         m_isEnabled = false;
-        getAnimation().setState(AnimationState::Destroyed);
+        getAnimationController().setState(AnimationState::Destroyed);
     }
 }
-void GModule::primary(sf::Vector2f coords) {}
-
-void GModule::secondary(sf::Vector2f coords) {}
-void GModule::aim(sf::Vector2f coords) {}
+void GModule::primary(const b2Vec2& coords) {}
+void GModule::secondary(const b2Vec2& coords) {}
+void GModule::aim(const b2Vec2& coords) {}
 void GModule::up() {}
 void GModule::down() {}
 void GModule::left() {}

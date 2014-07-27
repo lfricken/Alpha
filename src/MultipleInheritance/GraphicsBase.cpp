@@ -136,7 +136,7 @@ void GraphicsBase::animate()
 {
     setTexTile(m_animControl.getTile());
 }
-AnimationController& GraphicsBase::getAnimation()
+AnimationController& GraphicsBase::getAnimationController()
 {
     return m_animControl;
 }

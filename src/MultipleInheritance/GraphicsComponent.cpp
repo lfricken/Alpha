@@ -1,6 +1,7 @@
 #include "GraphicsComponent.h"
 
 #include "globals.h"
+#include "GraphicsComponentFactory.h"
 
 GraphicsComponent::GraphicsComponent()
 {
@@ -17,16 +18,23 @@ GraphicsComponent::~GraphicsComponent()
 }
 void GraphicsComponent::f_init(const GraphicsComponentData& rData)
 {
-    m_sprite.setTexture(*game.getTextureAllocator().request(rData.texName), false);
-
+    m_texName = rData.texName;
+    m_sprite.setTexture(*game.getTextureAllocator().request(m_texName), false);
+    m_sprite.setOrigin(rData.texTileSize.x/2, rData.texTileSize.y/2);
     m_texTileSize = rData.texTileSize;
     m_texTileSize = rData.texTileSize;
 
+    m_rotation = rData.rotation;
+    setRotation(0);
     m_sprite.setScale(rData.scale);
     m_sprite.setColor(rData.color);
-    m_sprite.setPosition(rData.position.x*scale, rData.position.y*scale);
 
     m_animControl.setState(rData.animState);
+
+    m_gfxLayer = rData.gfxLayer;
+    m_pParent = rData.pParent;
+
+    setPosition(b2Vec2(rData.position.x, rData.position.y));
 }
 void GraphicsComponent::load(const std::string& sheet)
 {
@@ -40,25 +48,29 @@ const sf::Sprite& GraphicsComponent::getSprite() const
 {
     return m_sprite;
 }
-void GraphicsComponent::setPosition(const sf::Vector2f& pos)
+const std::string& GraphicsComponent::getTexName() const
 {
-    m_sprite.setPosition(pos);
+    return m_texName;
 }
-void GraphicsComponent::move(const sf::Vector2f& change)
+GraphicsLayer GraphicsComponent::getGfxLayer() const
 {
-    m_sprite.move(change);
+    return m_gfxLayer;
+}
+void GraphicsComponent::setPosition(const b2Vec2& rPos)
+{
+    m_sprite.setPosition(sf::Vector2f(rPos.x*scale, rPos.y*scale));
 }
 void GraphicsComponent::setRotation(float r)
 {
-    m_sprite.setRotation(r);
-}
-void GraphicsComponent::rotate(float r)
-{
-    m_sprite.rotate(r);
+    m_sprite.setRotation(r+m_rotation);
 }
 void GraphicsComponent::setAnimState(AnimationState state)
 {
     m_animControl.setState(state);
+}
+void GraphicsComponent::free()
+{
+    m_pParent->freeComponent(this);
 }
 void GraphicsComponent::update()
 {

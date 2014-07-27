@@ -111,11 +111,6 @@ void Universe::add(Chunk* pChunk)
 {
     InsertPtrVector(m_physList, &IOBase::getID, tr1::shared_ptr<Chunk>(pChunk));
 }
-/*deprecated
-void Universe::add(tr1::shared_ptr<Chunk> spChunk)
-{
-    InsertPtrVector(m_physList, &IOBase::getID, spChunk);
-}*/
 void Universe::add(Decoration* pDecor)
 {
     InsertPtrVector(m_gfxList, &IOBase::getID, tr1::shared_ptr<Decoration>(pDecor));
@@ -132,11 +127,13 @@ float Universe::physStep()
 {
     if(m_notPaused)
     {
+        m_physWorld.Step(m_timeStep, m_velocityIterations, m_positionIterations);
+
         for(vector<tr1::shared_ptr<Chunk> >::iterator it = m_physList.begin(); it != m_physList.end(); ++it)
         {
             (*it)->physUpdate();
         }
-        m_physWorld.Step(m_timeStep, m_velocityIterations, m_positionIterations);
+
         m_projAlloc.recoverProjectiles();
     }
     return m_timeStep;
@@ -149,15 +146,14 @@ void Universe::draw()
 {
     if(m_normalDraw)
     {
-        for(vector<tr1::shared_ptr<Decoration> >::iterator it = m_gfxList.begin(); it != m_gfxList.end(); ++it)
-        {
-            (*it)->update();
-            m_rWindow.draw((*it)->getGfxComp().getSprite());
-        }
+
         for(vector<tr1::shared_ptr<Chunk> >::iterator it = m_physList.begin(); it != m_physList.end(); ++it)
         {
             (*it)->draw();
         }
+
+        m_gfxCompFactory.draw(m_rWindow);//things with a gfx component
+
         m_projAlloc.draw();
         ///also draw graphics objects?? maybe we should have another section for that??
     }
@@ -187,6 +183,10 @@ BedFinder& Universe::getBedFinder()
 ProjectileAllocator& Universe::getProjAlloc()
 {
     return m_projAlloc;
+}
+GraphicsComponentFactory& Universe::getGfxCompFactory()
+{
+    return m_gfxCompFactory;
 }
 void Universe::removeBack()
 {

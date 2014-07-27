@@ -4,6 +4,8 @@ Camera::Camera()
 {
     m_zoomLevel = 1;
     m_isTracking = true;
+
+    m_view.setViewport(sf::FloatRect(0, 0, 0.5, 1));
 }
 Camera::~Camera()
 {

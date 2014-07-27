@@ -7,6 +7,7 @@
 #include "ClassType.h"
 #include "PlayerMode.h"
 #include "AnimationState.h"
+#include "GraphicsLayer.h"
 
 namespace def
 {
@@ -45,7 +46,7 @@ extern const float rotation;//degrees CW
 /**GRAPHICS**/
 namespace gfx
 {
-extern const float rotation;
+extern const float rotation;//
 extern const std::string texName;
 extern const sf::Color color;
 extern const sf::Vector2f texTileSize;
@@ -54,6 +55,7 @@ extern const sf::Vector2f texTile;
 extern const sf::Vector2f position;
 extern const sf::Vector2f scale;
 extern const AnimationState animState;
+extern GraphicsLayer layer;
 }
 /**GRAPHICS**/
 
@@ -77,7 +79,6 @@ namespace cntrl
 extern const std::string targetName;
 extern const PlayerMode playerMode;
 extern const sf::Vector2f cameraPos;
-extern const sf::Vector2f cameraSize;
 extern const PlayerState playerState;
 }
 /**CONTROLERS**/

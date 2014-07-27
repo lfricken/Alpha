@@ -18,6 +18,7 @@
 					<Add directory="include/Universe/Modules" />
 					<Add directory="include/MultipleInheritance" />
 					<Add directory="include/GUI" />
+					<Add directory="include/Universe/Simple" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -33,6 +34,7 @@
 					<Add directory="include/Universe/Modules" />
 					<Add directory="include/MultipleInheritance" />
 					<Add directory="include/GUI" />
+					<Add directory="include/Universe/Simple" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
@@ -86,6 +88,7 @@
 		<Unit filename="include/Headers/AnimationState.h" />
 		<Unit filename="include/Headers/ClassType.h" />
 		<Unit filename="include/Headers/CollisionCategory.h" />
+		<Unit filename="include/Headers/GraphicsLayer.h" />
 		<Unit filename="include/Headers/PacketMod.hpp" />
 		<Unit filename="include/Headers/Rotate.h" />
 		<Unit filename="include/Headers/Shape.h" />
@@ -124,12 +127,16 @@
 		<Unit filename="include/Universe/Modules/Hull.h" />
 		<Unit filename="include/Universe/Modules/Thruster.h" />
 		<Unit filename="include/Universe/Modules/Trigger.h" />
+		<Unit filename="include/Universe/Modules/Turret.h" />
+		<Unit filename="include/Universe/Simple/AmmoContainer.h" />
 		<Unit filename="include/Universe/Simple/AnimationController.h" />
 		<Unit filename="include/Universe/Simple/AnimationLooper.h" />
 		<Unit filename="include/Universe/Simple/Attributes.h" />
 		<Unit filename="include/Universe/Simple/Filter.h" />
+		<Unit filename="include/Universe/Simple/GraphicsComponentFactory.h" />
 		<Unit filename="include/Universe/Simple/MultiTileMap.h" />
 		<Unit filename="include/Universe/Simple/Timer.h" />
+		<Unit filename="include/Universe/Simple/TurretBarrel.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Control/Camera.cpp" />
 		<Unit filename="src/Control/ControlManager.cpp" />
@@ -170,12 +177,16 @@
 		<Unit filename="src/Universe/Modules/Hull.cpp" />
 		<Unit filename="src/Universe/Modules/Thruster.cpp" />
 		<Unit filename="src/Universe/Modules/Trigger.cpp" />
+		<Unit filename="src/Universe/Modules/Turret.cpp" />
+		<Unit filename="src/Universe/Simple/AmmoContainer.cpp" />
 		<Unit filename="src/Universe/Simple/AnimationController.cpp" />
 		<Unit filename="src/Universe/Simple/AnimationLooper.cpp" />
 		<Unit filename="src/Universe/Simple/Attributes.cpp" />
 		<Unit filename="src/Universe/Simple/Filter.cpp" />
+		<Unit filename="src/Universe/Simple/GraphicsComponentFactory.cpp" />
 		<Unit filename="src/Universe/Simple/MultiTileMap.cpp" />
 		<Unit filename="src/Universe/Simple/Timer.cpp" />
+		<Unit filename="src/Universe/Simple/TurretBarrel.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

@@ -1,39 +1,37 @@
 #include "Decoration.h"
+#include "globals.h"
 
-Decoration::Decoration() : m_gfxComp()
+Decoration::Decoration()
 {
     DecorationData data;
     f_init(data);
 }
-Decoration::Decoration(const DecorationData& rData) : m_gfxComp(rData.gfxCompData)
+Decoration::Decoration(const DecorationData& rData)
 {
     f_init(rData);
 }
 Decoration::~Decoration()
 {
-
+    m_pGfxComp->free();
 }
 void Decoration::f_init(const DecorationData& rData)
 {
-
+    m_pGfxComp = game.getGameUniverse().getGfxCompFactory().generate(rData.gfxCompData);
 }
+/*
 const GraphicsComponent& Decoration::getGfxComp() const
 {
-    return m_gfxComp;
-}
-void Decoration::setPosition(const sf::Vector2f& pos)
+    return *m_pGfxComp;
+}*/
+void Decoration::setPosition(const b2Vec2& rPos)
 {
-    m_gfxComp.setPosition(pos);
+    m_pGfxComp->setPosition(rPos);
 }
 void Decoration::setRotation(float r)
 {
-    m_gfxComp.setRotation(r);
+    m_pGfxComp->setRotation(r);
 }
 void Decoration::setAnimState(AnimationState state)
 {
-    m_gfxComp.setAnimState(state);
-}
-void Decoration::update()//update animation
-{
-    m_gfxComp.update();
+    m_pGfxComp->setAnimState(state);
 }

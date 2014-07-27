@@ -1,24 +1,30 @@
 #include "Player.h"
+#include "globals.h"
 
 Player::Player() : Intelligence()
 {
     PlayerData data;
     f_initialize(data);
 }
-Player::Player(const PlayerData& data) : Intelligence(static_cast<IntelligenceData>(data))
+Player::Player(const PlayerData& rData) : Intelligence(static_cast<IntelligenceData>(rData))
 {
-    f_initialize(data);
+    f_initialize(rData);
 }
 Player::~Player()
 {
 
 }
-void Player::f_initialize(const PlayerData& data)
+void Player::f_initialize(const PlayerData& rData)
 {
-    m_inputConfig = data.keyConfig;
-    m_playerMode = data.playerMode;
-    m_camera.getView().setCenter(data.cameraPos);
-    m_camera.getView().setSize(data.cameraSize);
+    m_inputConfig = rData.keyConfig;
+    m_playerMode = rData.playerMode;
+    m_camera.getView().setCenter(rData.cameraPos);
+    m_camera.getView().setViewport(rData.viewport);
+
+    sf::Vector2f subWindowSize;//generate sub window for us
+    subWindowSize.x = rData.viewport.width*game.getGameWindow().getSize().x;
+    subWindowSize.y = rData.viewport.height*game.getGameWindow().getSize().y;
+    m_camera.getView().setSize(subWindowSize);
 }
 Camera& Player::getCamera()
 {

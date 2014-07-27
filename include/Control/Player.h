@@ -43,22 +43,22 @@ struct PlayerData : public IntelligenceData
         keyConfig(),
         playerMode(def::cntrl::playerMode),
         cameraPos(def::cntrl::cameraPos),
-        cameraSize(def::cntrl::cameraSize),
-        initState(def::cntrl::playerState)
+        initState(def::cntrl::playerState),
+        viewport(0,0,1,1)
     {}
 
     InputConfig keyConfig;
     PlayerMode playerMode;
     sf::Vector2f cameraPos;
-    sf::Vector2f cameraSize;
     PlayerState initState;
+    sf::FloatRect viewport;
 };
 
 class Player : public Intelligence
 {
 public:
     Player();
-    Player(const PlayerData& data);
+    Player(const PlayerData& rData);
     virtual ~Player();
 
     Camera& getCamera();
@@ -75,7 +75,7 @@ public:
     const InputConfig& getInputConfig() const;
 protected:
 private:
-    virtual void f_initialize(const PlayerData& data);
+    virtual void f_initialize(const PlayerData& rData);
 
     sf::Vector2i m_mouseCoords;//where is the mouse of us
     Camera m_camera;

@@ -27,9 +27,9 @@ void Decoration::setPosition(const b2Vec2& rPos)
 {
     m_pGfxComp->setPosition(rPos);
 }
-void Decoration::setRotation(float r)
+void Decoration::setRotation(float r)//radians
 {
-    m_pGfxComp->setRotation(r);
+    m_pGfxComp->setRotation(r);//radians
 }
 void Decoration::setAnimState(AnimationState state)
 {

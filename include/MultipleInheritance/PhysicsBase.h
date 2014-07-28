@@ -5,6 +5,8 @@
 #include "IOBase.h"
 #include "CollisionCategory.h"
 
+class Chunk;
+
 struct PhysicsBaseData : public IOBaseData//initialized
 {
     PhysicsBaseData() :
@@ -19,7 +21,8 @@ struct PhysicsBaseData : public IOBaseData//initialized
         friction(def::phys::friction),
         restitution(def::phys::restitution),
         rotation(def::phys::rotation),
-        pBody(NULL)
+        pBody(NULL),
+        pChunk(NULL)
         {}
 
     Shape shape;
@@ -33,6 +36,7 @@ struct PhysicsBaseData : public IOBaseData//initialized
     float restitution;
     float rotation;//degrees CW
     b2Body* pBody;
+    Chunk* pChunk;
     std::vector<b2Vec2> vertices;
 };
 
@@ -68,8 +72,10 @@ protected:
     std::tr1::shared_ptr<b2Shape> m_spShape;
     b2FixtureDef m_fixtureDef;
 
+    Chunk* m_pChunk;
     b2Body* m_pBody;//pointer, no ownership
     b2Fixture* m_pFixture;//pointer, no ownership
+
 
     b2World& m_rPhysWorld;
     float m_mass;

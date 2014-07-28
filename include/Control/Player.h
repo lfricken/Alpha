@@ -42,14 +42,14 @@ struct PlayerData : public IntelligenceData
         IntelligenceData(),
         keyConfig(),
         playerMode(def::cntrl::playerMode),
-        cameraPos(def::cntrl::cameraPos),
+        cameraPos(0, 0),
         initState(def::cntrl::playerState),
         viewport(0,0,1,1)
     {}
 
     InputConfig keyConfig;
     PlayerMode playerMode;
-    sf::Vector2f cameraPos;
+    b2Vec2 cameraPos;
     PlayerState initState;
     sf::FloatRect viewport;
 };

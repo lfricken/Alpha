@@ -1,5 +1,6 @@
 #include "MultiTileMap.h"
 #include "globals.h"
+#include "Angles.h"
 
 using namespace std;
 
@@ -54,9 +55,17 @@ void MultiTileMap::add(vector<GraphicsBase*>& rGfxBaseList)
         /**3**/
         pTexturedVertex->vertices.resize(pTexturedVertex->vertices.getVertexCount()+4);//*4 because each one has 4 vertices/(quad)
         /**4**/
-        (*it_gfxBase)->setTextVertex(pTexturedVertex, pTexturedVertex->nextAccessed);/// (*it_gfxBase)->setVertex( &(*it_texVert)->vertices[ (*it_texVert)->nextAccessed ] );//GraphicsBase::setVertex should handle all this???
+        (*it_gfxBase)->setTextVertex(pTexturedVertex, pTexturedVertex->nextAccessed);
         pTexturedVertex->nextAccessed += 4;//+= the number of vertices in sf::Quads!!!
     }
+}
+void MultiTileMap::setPosition(const b2Vec2& rPos)
+{
+    sf::Transformable::setPosition(leon::b2Tosf<float>(rPos));
+}
+void MultiTileMap::setRotation(float r)//radians
+{
+    sf::Transformable::setRotation(-leon::radToDeg(r));
 }
 void MultiTileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {

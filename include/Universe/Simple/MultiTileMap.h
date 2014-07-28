@@ -25,6 +25,9 @@ public:
     void add(GraphicsBase* pGfxBase);
     void add(std::vector<GraphicsBase*>& gBaseList);
 
+    void setPosition(const b2Vec2& rPos);
+    void setRotation(float r);//radians
+
     const std::vector<std::tr1::shared_ptr<TexturedVertices> >& getTexVertList() const;
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

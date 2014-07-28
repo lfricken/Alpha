@@ -33,8 +33,8 @@ public:
     T_Health damage(T_Damage damage);
     T_Health heal(T_Health h);
     T_Health getHealth() const;
-    virtual void destruct();//if our health drops too low, try and "destruct"
-
+    void destruct();//if our health drops too low, try and "destruct"
+    bool isDestroyed() const;
 protected:
     virtual void f_initialize(const GModuleData& data);
 

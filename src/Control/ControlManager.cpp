@@ -95,23 +95,13 @@ int ControlManager::pressedUpdate()
 
                     if (sf::Mouse::isButtonPressed(rInputConfig.primary))
                     {
-                        b2Vec2 worldAim;
-                        sf::Vector2f windowAim;
-
-                        windowAim = m_rWindow.mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView());
-                        worldAim.x = windowAim.x/scale;
-                        worldAim.y = windowAim.y/scale;
+                        b2Vec2 worldAim = leon::sfTob2(m_rWindow.mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView()));
                         m_pCPT->setAim(worldAim);
                         m_chunkTarget->primary(worldAim);
                     }
                     if (sf::Mouse::isButtonPressed(rInputConfig.secondary))
                     {
-                        b2Vec2 worldAim;
-                        sf::Vector2f windowAim;
-
-                        windowAim = m_rWindow.mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView());
-                        worldAim.x = windowAim.x/scale;
-                        worldAim.y = windowAim.y/scale;
+                        b2Vec2 worldAim = leon::sfTob2(m_rWindow.mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView()));
                         m_pCPT->setAim(worldAim);
                         m_chunkTarget->secondary(worldAim);
                     }
@@ -191,12 +181,7 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
             {
                 m_pCPT->setMouseCoords(sf::Vector2i(rEvent.mouseMove.x, rEvent.mouseMove.y));
 
-                b2Vec2 worldAim;
-                sf::Vector2f windowAim;
-
-                windowAim = m_rWindow.mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView());
-                worldAim.x = windowAim.x/scale;
-                worldAim.y = windowAim.y/scale;
+                b2Vec2 worldAim = leon::sfTob2(m_rWindow.mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView()));
                 m_pCPT->setAim(worldAim);
                 if(m_pCPT->hasTarget())
                     m_pCPT->getTarget()->aim(worldAim);
@@ -217,11 +202,13 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
                         zoomChange = 1;
                 }
 
-                m_pCPT->getCamera().getView().zoom(zoomChange);
-                m_pCPT->getCamera().zoomFactor(zoomChange);
+                m_pCPT->getCamera().zoom(zoomChange);
 
-                sf::Vector2f smooth = m_pCPT->getCamera().getView().getCenter();/**we do this so zooming to a spot is smoother**/
-                m_pCPT->getCamera().getView().setCenter(sf::Vector2f( (scale*m_pCPT->getAim().x+smooth.x)/2, (scale*m_pCPT->getAim().y+smooth.y)/2 ));
+                b2Vec2 oldPos = m_pCPT->getCamera().getCenter();/**we do this so zooming to a spot is smoother**/
+                b2Vec2 aimPos = m_pCPT->getAim();
+                b2Vec2 smoothPos((oldPos.x+aimPos.x)/2, (oldPos.y+aimPos.y)/2);
+
+                m_pCPT->getCamera().setCenter(smoothPos);
             }
 
 
@@ -279,11 +266,11 @@ void ControlManager::drawUpdate()
         {
             m_bodyTarget = (*it)->getTarget()->getBody();
 
-            center.x = scale*m_bodyTarget->GetPosition().x;
-            center.y = scale*m_bodyTarget->GetPosition().y;
+
+            (*it)->getCamera().setCenter(m_bodyTarget->GetPosition());
             rotation = leon::radToDeg(m_bodyTarget->GetAngle());
 
-            (*it)->getCamera().getView().setCenter(center);
+
             ///(*it)->getCamera().getView().setRotation(rotation);
         }
 

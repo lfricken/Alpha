@@ -18,13 +18,13 @@ void Player::f_initialize(const PlayerData& rData)
 {
     m_inputConfig = rData.keyConfig;
     m_playerMode = rData.playerMode;
-    m_camera.getView().setCenter(rData.cameraPos);
-    m_camera.getView().setViewport(rData.viewport);
+    m_camera.setCenter(rData.cameraPos);
+    m_camera.setViewportSF(rData.viewport);
 
     sf::Vector2f subWindowSize;//generate sub window for us
     subWindowSize.x = rData.viewport.width*game.getGameWindow().getSize().x;
     subWindowSize.y = rData.viewport.height*game.getGameWindow().getSize().y;
-    m_camera.getView().setSize(subWindowSize);
+    m_camera.setSizeSF(subWindowSize);
 }
 Camera& Player::getCamera()
 {

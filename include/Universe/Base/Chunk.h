@@ -3,13 +3,15 @@
 
 #include "stdafx.h"
 #include "MultiTileMap.h"
-#include "Timer.h"
 
-class PhysicsBase;
 class GModule;
 struct GModuleData;
 class Module;
 struct ModuleData;
+class Weapon;
+struct WeaponData;
+
+class PhysicsBase;
 class Intelligence;
 
 struct ChunkData : public IOBaseData//initialized
@@ -54,7 +56,7 @@ public:
     ///  virtual void add(std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);
     virtual GModule* add(const std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);//returns the last GModule added
     virtual Module* add(const std::vector<std::tr1::shared_ptr<ModuleData> >& data);//returns the last Module added
-
+    virtual Weapon* add(const WeaponData& rData);
 
     /**IO-SYSTEM**/
     virtual IOBaseReturn input(IOBaseArgs);
@@ -127,9 +129,9 @@ protected:
 
     std::vector<std::tr1::shared_ptr<GModule> > m_GModuleSPList;
     std::vector<std::tr1::shared_ptr<Module> > m_ModuleSPList;
-    std::vector<std::tr1::shared_ptr<sf::Sprite> > m_Sprites;
+    std::vector<std::tr1::shared_ptr<Weapon> > m_WeaponSPList;
+    std::vector<std::tr1::shared_ptr<sf::Sprite> > m_Sprites;///THESE SHOULD BE DECORATIONS, NOT RAW SPRITES
 private:
-    Timer m_fireTimer;///these should be in turret
     virtual void f_initialize(const ChunkData& data);
 
     friend class Intelligence;

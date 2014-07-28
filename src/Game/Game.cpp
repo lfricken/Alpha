@@ -21,8 +21,6 @@
 
 #include "EditBox.h"
 
-//#include "AnimationLooper.h"
-
 #include "Decoration.h"
 
 using namespace std;
@@ -30,7 +28,7 @@ using namespace std;
 Game::Game()
 {
     ///load window data into settings, and launch window with the settings
-    m_settings.antialiasingLevel = 4;
+    m_settings.antialiasingLevel = 0;
 
     sf::VideoMode mode = sf::VideoMode::getDesktopMode();
     mode = sf::VideoMode(1900, 1000, 32);
@@ -259,7 +257,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     DecorationData decorDat;
     decorDat.gfxCompData.scale = sf::Vector2f(0.5, 0.5);
     decorDat.name = "art";
-    decorDat.gfxCompData.rotation = 75;
+    decorDat.gfxCompData.rotation = leon::degToRad(45);
     decorDat.gfxCompData.animState = AnimationState::Activated;
     decorDat.gfxCompData.position = sf::Vector2f(20, 10);
     Decoration* pDecor = new Decoration(decorDat);
@@ -367,6 +365,10 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
             {
 
             }
+            else if((x==1) && (y==2))
+            {
+
+            }
             else
             {
                 shipModuleData.offset.x = x;
@@ -377,21 +379,27 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
         }
     }
 
-    TurretBarrelData barrelData;
-
+    WeaponBarrelData barrelData1;
+    WeaponBarrelData barrelData2;
+    barrelData1.barrelPixelOffset.y = 5;
+    barrelData2.barrelPixelOffset.y = -5;
+    barrelData1.muzzlePixelOffset.x = 32;
+    barrelData2.muzzlePixelOffset.x = 32;
     TurretData turretData;
     turretData.offset = b2Vec2(0,1);
-    turretData.decorationData.gfxCompData.rotation = 90;
-    turretData.barrelData.push_back(barrelData);
+    turretData.weaponData.refireDelay = 0.4;
+    turretData.weaponData.barrelData.push_back(barrelData1);
+    turretData.weaponData.barrelData.push_back(barrelData2);
 
-    FireCommand twice;
-    twice.delay = 0;
-    twice.barrelIndex = 0;
-    turretData.fireCommandList.push_back(twice);
-    twice.delay = 0.5;
-    turretData.fireCommandList.push_back(twice);
+    FireCommand once;
+    once.delay = 0.07;
+    once.barrelIndex = 0;
+    turretData.weaponData.fireCommandList.push_back(once);
+    once.barrelIndex = 1;
+    turretData.weaponData.fireCommandList.push_back(once);
 
-
+    TurretData turretData2(turretData);
+    turretData2.offset = b2Vec2(1,2);
 
 
 
@@ -445,7 +453,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ThrusterData(thrustDat)) );
     moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ForceFieldCoreData(fieldCoreData)) );
     moduleList1.push_back( tr1::shared_ptr<GModuleData>(new TurretData(turretData)) );
-
+    moduleList1.push_back( tr1::shared_ptr<GModuleData>(new TurretData(turretData2)) );
     moduleList2.push_back( tr1::shared_ptr<ModuleData>(new HullData(hull)) );
 
     /**SHIP MODULES**/
@@ -578,7 +586,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     player1.keyConfig.primary = sf::Mouse::Left;
     player1.keyConfig.secondary = sf::Mouse::Right;
 
-    player1.cameraPos = sf::Vector2f(0, 0);
+    player1.cameraPos = b2Vec2(0, 0);
     player1.viewport = sf::FloatRect(0, 0, 1, 1);
 
     m_spControlManager->add(std::tr1::shared_ptr<Player>(new Player(player1)));

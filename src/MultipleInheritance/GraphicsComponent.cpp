@@ -2,6 +2,7 @@
 
 #include "globals.h"
 #include "GraphicsComponentFactory.h"
+#include "Angles.h"
 
 GraphicsComponent::GraphicsComponent()
 {
@@ -58,11 +59,11 @@ GraphicsLayer GraphicsComponent::getGfxLayer() const
 }
 void GraphicsComponent::setPosition(const b2Vec2& rPos)
 {
-    m_sprite.setPosition(sf::Vector2f(rPos.x*scale, rPos.y*scale));
+    m_sprite.setPosition(leon::b2Tosf<float>(rPos));
 }
 void GraphicsComponent::setRotation(float r)
 {
-    m_sprite.setRotation(r+m_rotation);
+    m_sprite.setRotation(leon::radToDeg(-r-m_rotation));
 }
 void GraphicsComponent::setAnimState(AnimationState state)
 {

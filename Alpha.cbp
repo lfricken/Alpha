@@ -134,9 +134,11 @@
 		<Unit filename="include/Universe/Simple/Attributes.h" />
 		<Unit filename="include/Universe/Simple/Filter.h" />
 		<Unit filename="include/Universe/Simple/GraphicsComponentFactory.h" />
+		<Unit filename="include/Universe/Simple/Link.h" />
 		<Unit filename="include/Universe/Simple/MultiTileMap.h" />
 		<Unit filename="include/Universe/Simple/Timer.h" />
-		<Unit filename="include/Universe/Simple/TurretBarrel.h" />
+		<Unit filename="include/Universe/Simple/Weapon.h" />
+		<Unit filename="include/Universe/Simple/WeaponBarrel.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Control/Camera.cpp" />
 		<Unit filename="src/Control/ControlManager.cpp" />
@@ -184,9 +186,11 @@
 		<Unit filename="src/Universe/Simple/Attributes.cpp" />
 		<Unit filename="src/Universe/Simple/Filter.cpp" />
 		<Unit filename="src/Universe/Simple/GraphicsComponentFactory.cpp" />
+		<Unit filename="src/Universe/Simple/Link.cpp" />
 		<Unit filename="src/Universe/Simple/MultiTileMap.cpp" />
 		<Unit filename="src/Universe/Simple/Timer.cpp" />
-		<Unit filename="src/Universe/Simple/TurretBarrel.cpp" />
+		<Unit filename="src/Universe/Simple/Weapon.cpp" />
+		<Unit filename="src/Universe/Simple/WeaponBarrel.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

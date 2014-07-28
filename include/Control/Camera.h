@@ -2,19 +2,23 @@
 #define CAMERA_H
 
 #include "stdafx.h"
-
+#include "Angles.h"
 class Camera
 {
     public:
         Camera();
         virtual ~Camera();
 
-        sf::View& getView();
         const sf::View& getView() const;
+        void setViewportSF(const sf::FloatRect& rPort);
+        void setSizeSF(const sf::Vector2f& rSize);
 
-        const float& getZoomLevel() const;
+        void setCenter(const b2Vec2& rPos);
+        b2Vec2 getCenter() const;
+
         void setZoomLevel(float newZoom);
-        void zoomFactor(float zoomChange);
+        float getZoomLevel() const;
+        void zoom(float zoomChange);//zoom by a multiple amount
 
         bool isTracking() const;
         bool toggleTracking();

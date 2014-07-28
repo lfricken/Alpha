@@ -23,57 +23,49 @@ struct GraphicsBaseData//initialized
     AnimationState animState;//sets animation to start initially or not
 };
 
-///Maybe we shouldn't have so many setters, getters are ok
-class GraphicsBase///http://stackoverflow.com/questions/14399929/should-i-use-public-or-private-variables
-///read first post
+
+class GraphicsBase
 {
 public:
     GraphicsBase();
     GraphicsBase(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset, const float rotation);
     virtual ~GraphicsBase();
 
-    virtual void setTexName(const std::string& rTexName);
-    virtual const std::string getTexName() const;
+    /**VERTICES**/
+    void setTextVertex(TexturedVertices* pTextVertex, const int index);
 
-    virtual void setVertex(sf::Vertex* pVertex);
-    virtual const sf::Vertex* getVertex() const;
+    /**TEXTURE**/
+    void setTexTile(const sf::Vector2f& rTexTile);//position of the display tile on the texture
 
-    virtual void setTextVertex(TexturedVertices* pTextVertex, const int index);
-    virtual const TexturedVertices* getTextVertex() const;
-    int getTextVertexIndex() const;
+    /**WORLD TILE**/
+    void setTilePos(const b2Vec2& rTilePos);//position of tile in the tilemap
 
-    virtual void setTilePos(const sf::Vector2f& rTilePos);//position of tile in game
-    virtual const sf::Vector2f& getTilePosition() const;
-
-    virtual void incTexTile();//depreciated
-
-    virtual void setTexTile(const sf::Vector2f& rTexTile);//depreciated
-    virtual const sf::Vector2f& getTexTile() const;//depreciated
-
-    virtual const sf::Vector2f& getTileHalfSize() const;
-
-    virtual void setColor(const sf::Color& rColor);
-    virtual const sf::Color& getColor();
+    /**OTHER**/
+    void setColor(const sf::Color& rColor);//set color of the vertices
+    const std::string& getTexName() const;
 
     AnimationController& getAnimationController();
-
-    virtual void animate();
+    void animate();
 protected:
-    sf::Color m_color;//color modifier for the vertices
-    sf::Vector2f m_tileHalfSize;//size of pos coords
-    sf::Vector2f m_texTileSize;//size of tex coords
-    sf::Vector2f m_texTile;//tile of the texture that is being displayed
-    sf::Vector2f m_tilePos;//position of the tile
-
-
-    int m_dispPri;///display priority, has it been implemented?
-    sf::Vertex* m_pVertex;/**never go above 3rd index,because we only have our own set of 4 vertices**/
-    TexturedVertices* m_pTextVertex;
-    int m_textVertexIndex;
-    std::string m_texName;
-    float m_netRotation;
 private:
     virtual void f_initialize(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset, const float rotation);
+
+    /**VERTICES**/
+    TexturedVertices* m_pTextVertex;//pointer to the beginning of the vertices
+    int m_textVertexIndex;//how far down the list of textured vertices our vertices are
+
+    /**TEXTURE**/
+    sf::Vector2f m_texTileSize;//size of tile that is displaying from the texture
+    sf::Vector2f m_texTile;//tile of the texture that is being displayed
+
+    /**WORLD TILE**/
+    b2Vec2 m_tileHalfSize;//size of us in world coords
+    b2Vec2 m_tilePos;//position of the tile in the map
+
+    /**OTHER**/
+    sf::Color m_color;//color modifier for the vertices, needs to be stored because our vertexes don't exist when we are created
+    float m_netRotation;
+    std::string m_texName;
 
     AnimationController m_animControl;
 };

@@ -2,7 +2,7 @@
 #include "globals.h"
 #include "Rotate.h"
 
-using namespace std;
+using namespace sf;
 
 GraphicsBase::GraphicsBase()
 {
@@ -22,121 +22,80 @@ void GraphicsBase::f_initialize(const GraphicsBaseData& rData, const b2Vec2& rHa
     m_animControl.setState(rData.animState);
 
     m_color = rData.color;
-    m_tileHalfSize = sf::Vector2f(rHalfSize.x, rHalfSize.y);
-    m_tilePos = sf::Vector2f(rOffset.x, rOffset.y);
+    m_tileHalfSize = rHalfSize;
+    m_tilePos = rOffset;
 
-    m_pVertex = NULL;
     m_texTileSize = rData.texTileSize;
     m_texName = rData.texName;
     m_netRotation = rotation;
 }
-void GraphicsBase::setTexName(const string& texName)
-{
-    m_texName = texName;///UPDATE OUR TEXTURE????
-}
-const string GraphicsBase::getTexName() const
-{
-    return m_texName;
-}
-void GraphicsBase::setVertex(sf::Vertex* pVertex)///verify pointer integrity
-{
-    m_pVertex = pVertex;
-    setColor(m_color);
-    setTexTile(m_texTile);
-    setTilePos(m_tilePos);
-}
-const sf::Vertex* GraphicsBase::getVertex() const///verify pointer integrity??
-{
-    return ((*m_pTextVertex)[m_textVertexIndex]);
-}
+
+/**==============VERTICES=================**/
 void GraphicsBase::setTextVertex(TexturedVertices* pTextVertex, const int index)
 {
     m_textVertexIndex = index;
     m_pTextVertex = pTextVertex;
 
-    m_pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
     setColor(m_color);
     setTexTile(m_texTile);
     setTilePos(m_tilePos);
 }
-const TexturedVertices* GraphicsBase::getTextVertex() const
-{
-    return m_pTextVertex;
-}
-int GraphicsBase::getTextVertexIndex() const
-{
-    return m_textVertexIndex;
-}
-void GraphicsBase::setTilePos(const sf::Vector2f& rTilePos)
-{
-    m_tilePos = rTilePos;//pointer
-    m_pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
 
-    sf::Vector2f vertices[4];
-    vertices[0] = sf::Vector2f(scale*(m_tilePos.x-m_tileHalfSize.x), scale*(m_tilePos.y-m_tileHalfSize.y));
-    vertices[1] = sf::Vector2f(scale*(m_tilePos.x+m_tileHalfSize.x), scale*(m_tilePos.y-m_tileHalfSize.y));
-    vertices[2] = sf::Vector2f(scale*(m_tilePos.x+m_tileHalfSize.x), scale*(m_tilePos.y+m_tileHalfSize.y));
-    vertices[3] = sf::Vector2f(scale*(m_tilePos.x-m_tileHalfSize.x), scale*(m_tilePos.y+m_tileHalfSize.y));
+/**==============TEXTURE*==============**/
+void GraphicsBase::setTexTile(const sf::Vector2f& rTexTile)
+{
+    m_texTile = rTexTile;
 
-    VertexData<sf::Vector2f> vdat = FindCenter(vertices, 4);
+    Vertex* pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
+    pVertex[0].texCoords = Vector2f(m_texTileSize.x*(m_texTile.x), m_texTileSize.y*(m_texTile.y+1));//bottom left(cartesian on the texture)
+    pVertex[1].texCoords = Vector2f(m_texTileSize.x*(m_texTile.x+1), m_texTileSize.y*(m_texTile.y+1));
+    pVertex[2].texCoords = Vector2f(m_texTileSize.x*(m_texTile.x+1), m_texTileSize.y*(m_texTile.y));
+    pVertex[3].texCoords = Vector2f(m_texTileSize.x*(m_texTile.x), m_texTileSize.y*(m_texTile.y));//top left
+}
+
+/**==================WORLD TILE==============**/
+void GraphicsBase::setTilePos(const b2Vec2& rTilePos)
+{
+    m_tilePos = rTilePos;
+    Vertex* pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
+
+    Vector2f vertices[4];
+    vertices[0] = leon::b2Tosf<float>(b2Vec2(m_tilePos.x-m_tileHalfSize.x, m_tilePos.y-m_tileHalfSize.y));//bottom left (cartesian in the world)
+    vertices[1] = leon::b2Tosf<float>(b2Vec2(m_tilePos.x+m_tileHalfSize.x, m_tilePos.y-m_tileHalfSize.y));//bottom right
+    vertices[2] = leon::b2Tosf<float>(b2Vec2(m_tilePos.x+m_tileHalfSize.x, m_tilePos.y+m_tileHalfSize.y));//top right
+    vertices[3] = leon::b2Tosf<float>(b2Vec2(m_tilePos.x-m_tileHalfSize.x, m_tilePos.y+m_tileHalfSize.y));//top left
+
+    VertexData<Vector2f> vdat = FindCenter(vertices, 4);
     RotateCoordinatesDegs(vertices, 4, m_netRotation, vdat.center);
 
-    m_pVertex[0].position = vertices[0];
-    m_pVertex[1].position = vertices[1];
-    m_pVertex[2].position = vertices[2];
-    m_pVertex[3].position = vertices[3];
+    pVertex[0].position = vertices[0];
+    pVertex[1].position = vertices[1];
+    pVertex[2].position = vertices[2];
+    pVertex[3].position = vertices[3];
 }
-const sf::Vector2f& GraphicsBase::getTilePosition() const
-{
-    return m_tilePos;
-}
-void GraphicsBase::incTexTile()///for testing only??? remove?
-{
-    if(m_texTile.x == 3)
-        m_texTile.x = 0;
-    else
-        m_texTile.x += 1;
-    setTexTile(m_texTile);
-}
-void GraphicsBase::setTexTile(const sf::Vector2f& rTexTile)/**set texture tile in our loaded graphic**/
-{
-    m_texTile = rTexTile;//pointer
 
-    m_pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
-    m_pVertex[0].texCoords = sf::Vector2f(m_texTileSize.x*(m_texTile.x), m_texTileSize.y*(m_texTile.y));
-    m_pVertex[1].texCoords = sf::Vector2f(m_texTileSize.x*(m_texTile.x+1), m_texTileSize.y*(m_texTile.y));
-    m_pVertex[2].texCoords = sf::Vector2f(m_texTileSize.x*(m_texTile.x+1), m_texTileSize.y*(m_texTile.y+1));
-    m_pVertex[3].texCoords = sf::Vector2f(m_texTileSize.x*(m_texTile.x), m_texTileSize.y*(m_texTile.y+1));
-}
-const sf::Vector2f& GraphicsBase::getTexTile() const
-{
-    return m_texTile;
-}
-const sf::Vector2f& GraphicsBase::getTileHalfSize() const
-{
-    return m_tileHalfSize;
-}
+/**==================OTHER==================**/
 void GraphicsBase::setColor(const sf::Color& rColor)
 {
-    m_color = rColor;//pointer
-    ///make this use the tex vert pointer
-    m_pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
+    m_color = rColor;
 
-    m_pVertex[0].color = rColor;
-    m_pVertex[1].color = rColor;
-    m_pVertex[2].color = rColor;
-    m_pVertex[3].color = rColor;
+    Vertex* pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
+
+    pVertex[0].color = rColor;
+    pVertex[1].color = rColor;
+    pVertex[2].color = rColor;
+    pVertex[3].color = rColor;
 }
-const sf::Color& GraphicsBase::getColor()
+const std::string& GraphicsBase::getTexName() const
 {
-    m_pVertex = ((*m_pTextVertex)[m_textVertexIndex]);
-    return m_pVertex[0].color;//pointer
-}
-void GraphicsBase::animate()
-{
-    setTexTile(m_animControl.getTile());
+    return m_texName;
 }
 AnimationController& GraphicsBase::getAnimationController()
 {
     return m_animControl;
+}
+
+void GraphicsBase::animate()
+{
+    setTexTile(m_animControl.getTile());
 }

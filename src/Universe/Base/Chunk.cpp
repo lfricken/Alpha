@@ -12,6 +12,7 @@
 #include "ForceField.h"
 #include "ForceFieldCore.h"
 #include "Thruster.h"
+#include "Weapon.h"
 
 using namespace std;
 
@@ -48,8 +49,6 @@ void Chunk::f_initialize(const ChunkData& data)
     if(!data.awake)//if it should be asleep
         sleep();//then cleanly put it to sleep
 
-
-    m_fireTimer.setCountDown(0.1);///TEMPORARY
 }
 GModule* Chunk::getGModule(const std::string& targetName)
 {
@@ -86,6 +85,7 @@ GModule* Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList)
     GModule* ptr;
     for(auto it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
+        (*it_data)->pChunk = this;
         ptr = (*it_data)->generate(this);
         InsertPtrVector(m_GModuleSPList, &IOBase::getID, tr1::shared_ptr<GModule>(ptr));
         m_tiles.add(ptr);///HERE IS WHERE WE WOULD give it a graphics component, instead of us a derived pointer from which it gets the base type
@@ -98,10 +98,17 @@ Module* Chunk::add(const vector<tr1::shared_ptr<ModuleData> >& rDataList)
     Module* ptr;
     for(auto it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
+        (*it_data)->pChunk = this;
         ptr = (*it_data)->generate(this);
         InsertPtrVector(m_ModuleSPList, &IOBase::getID, tr1::shared_ptr<Module>(ptr));
     }
 
+    return ptr;
+}
+Weapon* Chunk::add(const WeaponData& rData)
+{
+    Weapon* ptr = new Weapon(rData);
+    m_WeaponSPList.push_back(std::tr1::shared_ptr<Weapon>(ptr));
     return ptr;
 }
 void Chunk::draw()
@@ -114,8 +121,8 @@ void Chunk::draw()
             (*it)->animate();
         }
 
-        m_tiles.setPosition(scale*m_pBody->GetPosition().x, scale*m_pBody->GetPosition().y);
-        m_tiles.setRotation(leon::radToDeg(m_pBody->GetAngle()));
+        m_tiles.setPosition(m_pBody->GetPosition());
+        m_tiles.setRotation(m_pBody->GetAngle());
         m_rWindow.draw(m_tiles);
     }
 }
@@ -232,28 +239,13 @@ void Chunk::primary(const b2Vec2& coords)
     {
         (*it)->primary(coords);
     }
-
-    ///get rid of this temporary stuff
-    if(m_fireTimer.isTimeUp())
-    {
-        b2Vec2 difference(coords - m_pBody->GetPosition());
-        float distance = sqrt(difference.x*difference.x + difference.y*difference.y);
-        b2Vec2 component(difference.x/distance, difference.y/distance);
-
-        float vel = 25;
-        float off = 0;
-        b2Vec2 velvec(vel*component.x, vel*component.y);
-        b2Vec2 offset(off*component.x, off*component.y);
-
-        Projectile* pBullet = game.getGameUniverse().getProjAlloc().getProjectile(0);
-        pBullet->setLifeTimeRemain(3);
-        pBullet->wake(m_pBody->GetPosition()+offset, atan(component.y/component.x), velvec+m_pBody->GetLinearVelocity(), m_pBody->GetAngularVelocity());//our position + some, no rotation, velocity +ours, our angular velocity
-    }
 }
 void Chunk::secondary(const b2Vec2& coords)
 {
+    b2Vec2 f = m_pBody->GetPosition();
+    std::cout << "\nSec: (" << f.x << "," << f.y << ").";
     ///tell all our modules that we have secondaired at coords
-    if(m_fireTimer.isTimeUp())
+    //if(m_fireTimer.isTimeUp())
     {
         b2Vec2 difference(coords - m_pBody->GetPosition());
         float distance = sqrt(difference.x*difference.x + difference.y*difference.y);

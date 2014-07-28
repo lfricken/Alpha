@@ -49,7 +49,7 @@ public:
     GraphicsLayer getGfxLayer() const;
 
     void setPosition(const b2Vec2& rPos);
-    void setRotation(float r);
+    void setRotation(float r);//radians
     void setAnimState(AnimationState state);
 
     void free();

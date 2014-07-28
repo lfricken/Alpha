@@ -33,20 +33,20 @@ void Thruster::torque(bool isCCW)//if true, rotate counter clockwise
     {
         int direction;
         if(isCCW)
-            direction = -1;
-        else
             direction = 1;
+        else
+            direction = -1;
 
         m_pBody->ApplyTorque(m_torque*direction, true);
     }
 }
 void Thruster::up()
 {
-    thrust(b2Vec2(0, -1));
+    thrust(b2Vec2(0, 1));
 }
 void Thruster::down()
 {
-    thrust(b2Vec2(0, 1));
+    thrust(b2Vec2(0, -1));
 }
 void Thruster::left()
 {

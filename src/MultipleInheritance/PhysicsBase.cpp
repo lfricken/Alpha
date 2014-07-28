@@ -141,6 +141,7 @@ void PhysicsBase::f_initialize(const PhysicsBaseData& data)
     m_fixtureDef.filter.maskBits = static_cast<uint16>(data.maskBits);
     m_fixtureDef.filter.categoryBits = static_cast<uint16>(data.categoryBits);
 
+    m_pChunk = data.pChunk;
     m_pBody = data.pBody;
     m_pFixture = m_pBody->CreateFixture(&m_fixtureDef);
     m_pFixture->SetUserData(this);

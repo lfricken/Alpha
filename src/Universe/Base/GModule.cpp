@@ -86,10 +86,10 @@ void GModule::destruct()
         getAnimationController().setState(AnimationState::Destroyed);
     }
 }
-    bool GModule::isDestroyed() const
-    {
-        return m_isDestroyed;
-    }
+bool GModule::isDestroyed() const
+{
+    return m_isDestroyed;
+}
 void GModule::primary(const b2Vec2& coords) {}
 void GModule::secondary(const b2Vec2& coords) {}
 void GModule::aim(const b2Vec2& coords) {}

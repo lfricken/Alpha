@@ -13,12 +13,6 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-					<Add directory="include/Universe/Chunks" />
-					<Add directory="include/Universe/Base" />
-					<Add directory="include/Universe/Modules" />
-					<Add directory="include/MultipleInheritance" />
-					<Add directory="include/GUI" />
-					<Add directory="include/Universe/Simple" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -29,12 +23,6 @@
 				<Compiler>
 					<Add option="-pg" />
 					<Add option="-g" />
-					<Add directory="include/Universe/Chunks" />
-					<Add directory="include/Universe/Base" />
-					<Add directory="include/Universe/Modules" />
-					<Add directory="include/MultipleInheritance" />
-					<Add directory="include/GUI" />
-					<Add directory="include/Universe/Simple" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
@@ -56,6 +44,8 @@
 			<Add directory="../../../Engines/SFML-2_recompile/include" />
 			<Add directory="../../../Engines/TGUI-0.6.1/include" />
 			<Add directory="../../../Engines/Box2D" />
+			<Add directory="../../../Engines/JSON/dist" />
+			<Add directory="../../../Engines/JSON/dist/json" />
 			<Add directory="include" />
 			<Add directory="include/Control" />
 			<Add directory="include/Game" />

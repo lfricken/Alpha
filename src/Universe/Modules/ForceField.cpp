@@ -23,6 +23,7 @@ bool ForceField::physUpdate()
 {
     bool hasContact = false;
 
+    ///std::cout << std::endl << m_isEnabled;
     if(m_isEnabled)
     {
         for(auto it = m_guests.begin(); it != m_guests.end(); ++it)

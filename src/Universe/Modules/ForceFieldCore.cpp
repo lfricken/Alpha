@@ -19,7 +19,6 @@ void ForceFieldCore::f_initialize(const ForceFieldCoreData& data)
 }
 void ForceFieldCore::destruct()
 {
-    GModule::destruct();
-
     m_pForceField->disable();
+    GModule::destruct();
 }

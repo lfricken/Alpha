@@ -29,13 +29,13 @@ Game::Game()
 {
     ///load window data into settings, and launch window with the settings
     m_settings.antialiasingLevel = 0;
-
-    //mode = sf::VideoMode(1900, 1000, 32);
-    sf::VideoMode mode = sf::VideoMode::getDesktopMode();
+    sf::VideoMode mode;
+    mode = sf::VideoMode(1900, 1000, 32);
+    //mode = sf::VideoMode::getDesktopMode();
     std::string windowName = "SFML Box2D Test Environment";
 
 
-    m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(mode, windowName, sf::Style::Fullscreen, m_settings));
+    m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(mode, windowName, sf::Style::Default, m_settings));
 
     m_spIOManager = std::tr1::shared_ptr<IOManager>(new IOManager());//independent
     m_spTexAlloc = std::tr1::shared_ptr<TextureAllocator>(new TextureAllocator());//independent

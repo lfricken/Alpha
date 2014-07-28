@@ -1,5 +1,7 @@
-Finish emplementing double dispatch for chunks.
+Read from file
+Create System for blueprints
+
+review scaling
+Recondense GraphicsBase and GraphicsComponent
 Create getMass() function for Physics Base.
-Create getCenter() function for physics base.
 Design system for physics components?
-Totally implement system for graphics components? Maybe the current system is good enough?

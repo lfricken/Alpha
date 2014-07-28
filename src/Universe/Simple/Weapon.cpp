@@ -72,9 +72,17 @@ bool Weapon::checkFireState()
         m_queuedCommands[i].delay -= m_commandTimer.getTimeElapsed();
         if(m_queuedCommands[i].delay <= 0)
         {
-            m_barrels[m_queuedCommands[i].barrelIndex].fire();
-            m_queuedCommands.erase(m_queuedCommands.begin() + i);
-            --i;
+            if(m_queuedCommands[i].barrelIndex < m_barrels.size())
+            {
+                m_barrels[m_queuedCommands[i].barrelIndex].fire();
+                m_queuedCommands.erase(m_queuedCommands.begin() + i);
+                --i;
+            }
+            else
+            {
+                std::cout << FILELINE;
+                ///ERROR LOG
+            }
         }
     }
 }

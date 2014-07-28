@@ -20,30 +20,24 @@ GraphicsComponent::~GraphicsComponent()
 void GraphicsComponent::f_init(const GraphicsComponentData& rData)
 {
     m_texName = rData.texName;
-    m_sprite.setTexture(*game.getTextureAllocator().request(m_texName), false);
+
     m_sprite.setOrigin(rData.texTileSize.x/2, rData.texTileSize.y/2);
     m_texTileSize = rData.texTileSize;
     m_texTileSize = rData.texTileSize;
-
+    m_sprite.setTexture(*game.getTextureAllocator().request(m_texName), false);
     m_rotation = rData.rotation;
     setRotation(0);
     m_sprite.setScale(rData.scale);
     m_sprite.setColor(rData.color);
 
-    m_animControl.setState(rData.animState);
+
 
     m_gfxLayer = rData.gfxLayer;
     m_pParent = rData.pParent;
 
     setPosition(b2Vec2(rData.position.x, rData.position.y));
-}
-void GraphicsComponent::load(const std::string& sheet)
-{
-    ///do this
-    /**load the texture along with the animation stuff to be sent to animationController**/
-    ///m_texTileSize.x = load;
-    ///m_texTileSize.y = load;
-    m_sprite.setTexture(*game.getTextureAllocator().request(sheet), false);
+    m_animControl.load(rData.animationFileName);
+    m_animControl.setState(rData.animState);
 }
 const sf::Sprite& GraphicsComponent::getSprite() const
 {

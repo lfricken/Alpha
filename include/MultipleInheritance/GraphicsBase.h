@@ -11,16 +11,19 @@ struct TexturedVertices;
 struct GraphicsBaseData//initialized
 {
     GraphicsBaseData() :
+        animationFileName("default.acfg"),
         texName(def::gfx::texName),
         color(def::gfx::color),
         texTileSize(def::gfx::texTileSize),
         animState(def::gfx::animState)
         {}
 
+    std::string animationFileName;
     std::string texName;
     sf::Color color;//color mask
     sf::Vector2f texTileSize;//size of the texture rectangle
     AnimationState animState;//sets animation to start initially or not
+
 };
 
 

@@ -24,18 +24,25 @@ protected:
 private:
     void f_initialize(const TurretData& rData);
 
+    bool m_firesPrimary;
+    bool m_firesSecondary;
+
     Link<Turret, Weapon> m_linker;
 };
 
 struct TurretData : public GModuleData
 {
     TurretData() :
-        GModuleData()
+        GModuleData(),
+        firesPrimary(true),
+        firesSecondary(false)
     {
         type = ClassType::TURRET;
-        texName = "textures/armor/armor.png";
+        texName = "textures/turret/turret.png";
     }
 
+    bool firesPrimary;
+    bool firesSecondary;
     WeaponData weaponData;
 
     virtual GModule* generate(Chunk* pChunk)

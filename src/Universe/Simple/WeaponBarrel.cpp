@@ -49,7 +49,7 @@ void WeaponBarrel::fire()
     tempBarrelOffset.x = cos(-angle)*(m_barrelPositionOffset.x+m_additionalMuzzleOffset.x) + sin(-angle)*(m_barrelPositionOffset.y+m_additionalMuzzleOffset.y);
     tempBarrelOffset.y = -sin(-angle)*(m_barrelPositionOffset.x+m_additionalMuzzleOffset.x) + cos(-angle)*(m_barrelPositionOffset.y+m_additionalMuzzleOffset.y);
 
-    Projectile* pBullet = game.getGameUniverse().getProjAlloc().getProjectile(0);
+    Projectile* pBullet = game.getGameUniverse().getProjAlloc().getProjectile(m_projectileType);
     pBullet->setLifeTimeRemain(m_projectileDuration);
     pBullet->wake(m_pParent->getLinker().getTargetPtr()->getCenter()+tempBarrelOffset, atan(velVec.y/velVec.x), velVec+m_pParent->getLinker().getTargetPtr()->getBody()->GetLinearVelocity(), m_projectileAngularVelocity);
 

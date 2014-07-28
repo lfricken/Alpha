@@ -242,23 +242,9 @@ void Chunk::primary(const b2Vec2& coords)
 }
 void Chunk::secondary(const b2Vec2& coords)
 {
-    b2Vec2 f = m_pBody->GetPosition();
-    std::cout << "\nSec: (" << f.x << "," << f.y << ").";
-    ///tell all our modules that we have secondaired at coords
-    //if(m_fireTimer.isTimeUp())
+    for(auto it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
     {
-        b2Vec2 difference(coords - m_pBody->GetPosition());
-        float distance = sqrt(difference.x*difference.x + difference.y*difference.y);
-        b2Vec2 component(difference.x/distance, difference.y/distance);
-
-        float vel = 240;
-        float off = 0;
-        b2Vec2 velvec(vel*component.x, vel*component.y);
-        b2Vec2 offset(off*component.x, off*component.y);
-
-        Projectile* pBullet = game.getGameUniverse().getProjAlloc().getProjectile(1);
-        pBullet->setLifeTimeRemain(3);
-        pBullet->wake(m_pBody->GetPosition()+offset, atan(component.y/component.x), velvec+m_pBody->GetLinearVelocity(), m_pBody->GetAngularVelocity());//our position + some, no rotation, velocity +ours, our angular velocity
+        (*it)->secondary(coords);
     }
 }
 void Chunk::aim(const b2Vec2& coords)

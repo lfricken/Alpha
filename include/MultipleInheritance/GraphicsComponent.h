@@ -18,6 +18,7 @@ struct GraphicsComponentData
         texTileSize(def::gfx::texTileSize),
         color(def::gfx::color),
         texName(def::gfx::texName),
+        animationFileName("defaultAnimation.acfg"),
         pParent(NULL),
         gfxLayer(def::gfx::layer)
     {
@@ -30,6 +31,7 @@ struct GraphicsComponentData
     sf::Vector2f texTileSize;
     sf::Color color;
     std::string texName;
+    std::string animationFileName;
 
     GraphicsComponentFactory* pParent;
     GraphicsLayer gfxLayer;
@@ -41,8 +43,6 @@ public:
     GraphicsComponent();
     GraphicsComponent(const GraphicsComponentData& rData);
     virtual ~GraphicsComponent();
-
-    void load(const std::string& sheet);
 
     const sf::Sprite& getSprite() const;//to be used for drawing, a function calls this and tells window to draw it
     const std::string& getTexName() const;

@@ -38,7 +38,7 @@ struct ThrusterData : public GModuleData
         torque(50)
     {
         type = ClassType::THRUSTER;
-        texName = "textures/armor/armor.png";
+        texName = "textures/thruster/thruster.png";
     }
     float force;
     float torque;

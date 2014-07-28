@@ -6,6 +6,15 @@ AnimationController::AnimationController()
 
 
     ///LOAD THESE FROM A FILE SPECIFIC TO THE TEXTURE
+
+        setState(AnimationState::Default);
+}
+AnimationController::~AnimationController()
+{
+
+}
+void AnimationController::load(const std::string& animationFile)
+{
     m_default.push_back(sf::Vector2f(0, 0));
 
     m_damaged.push_back(sf::Vector2f(1, 0));
@@ -72,15 +81,6 @@ AnimationController::AnimationController()
         m_destroyed.push_back(sf::Vector2f(6, 5));
         m_destroyed.push_back(sf::Vector2f(7, 5));
         */
-        setState(AnimationState::Default);
-}
-AnimationController::~AnimationController()
-{
-
-}
-void AnimationController::load(const std::string& animationFile)
-{
-
 }
 const sf::Vector2f& AnimationController::getTile()
 {

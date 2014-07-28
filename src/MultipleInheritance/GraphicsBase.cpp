@@ -19,6 +19,7 @@ GraphicsBase::~GraphicsBase()
 }
 void GraphicsBase::f_initialize(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset, const float rotation)
 {
+    m_animControl.load(rData.animationFileName);
     m_animControl.setState(rData.animState);
 
     m_color = rData.color;

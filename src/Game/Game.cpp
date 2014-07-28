@@ -30,10 +30,12 @@ Game::Game()
     ///load window data into settings, and launch window with the settings
     m_settings.antialiasingLevel = 0;
 
+    //mode = sf::VideoMode(1900, 1000, 32);
     sf::VideoMode mode = sf::VideoMode::getDesktopMode();
-    mode = sf::VideoMode(1900, 1000, 32);
-    //mode =
-    m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(mode, "SFML Box2D Test Environment", sf::Style::Default, m_settings));
+    std::string windowName = "SFML Box2D Test Environment";
+
+
+    m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(mode, windowName, sf::Style::Fullscreen, m_settings));
 
     m_spIOManager = std::tr1::shared_ptr<IOManager>(new IOManager());//independent
     m_spTexAlloc = std::tr1::shared_ptr<TextureAllocator>(new TextureAllocator());//independent
@@ -369,6 +371,10 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
             {
 
             }
+            else if((x==-1) && (y==2))
+            {
+
+            }
             else
             {
                 shipModuleData.offset.x = x;
@@ -400,8 +406,20 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     TurretData turretData2(turretData);
     turretData2.offset = b2Vec2(1,2);
+    TurretData turretData3(turretData);
 
+    turretData3.offset = b2Vec2(-1,2);
+    turretData3.weaponData.barrelData.clear();
+    turretData3.weaponData.refireDelay = 0.8;
+    turretData3.firesPrimary = false;
+    turretData3.firesSecondary = true;
 
+    barrelData1.recoilRecoverTime = 0.8;
+    barrelData1.barrelPixelOffset.y = 0;
+    barrelData1.projectileType = 1;
+    barrelData1.projectileVelocity = 240;
+    turretData3.weaponData.fireCommandList.pop_back();
+    turretData3.weaponData.barrelData.push_back(barrelData1);
 
     ArmorData armorData;
 
@@ -454,6 +472,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ForceFieldCoreData(fieldCoreData)) );
     moduleList1.push_back( tr1::shared_ptr<GModuleData>(new TurretData(turretData)) );
     moduleList1.push_back( tr1::shared_ptr<GModuleData>(new TurretData(turretData2)) );
+    moduleList1.push_back( tr1::shared_ptr<GModuleData>(new TurretData(turretData3)) );
+
     moduleList2.push_back( tr1::shared_ptr<ModuleData>(new HullData(hull)) );
 
     /**SHIP MODULES**/

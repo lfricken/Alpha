@@ -7,7 +7,7 @@
 
 using namespace std;
 
-ControlManager::ControlManager() : m_rUniverse(game.getGameUniverse()), m_rWindow(game.getGameWindow()), m_rGui(game.getGameOverlayManager().getGui()), m_pDraggingWidget(nullptr)
+ControlManager::ControlManager() : m_pDraggingWidget(nullptr)
 {
 
 }
@@ -20,10 +20,10 @@ void ControlManager::setupControl()
     Chunk* chunk;
     for(vector<tr1::shared_ptr<Player> >::iterator it = m_localPlayerList.begin(); it != m_localPlayerList.end(); ++it)
     {
-        chunk = m_rUniverse.getPhysTarget((*it)->getTargetName());
+        chunk = game.getGameUniverse().getPhysTarget((*it)->getTargetName());
         if(chunk != NULL)
         {
-            (*it)->linkControl(chunk);
+            (*it)->getLinker().link(&chunk->getLinker());
         }
     }
 
@@ -86,48 +86,48 @@ int ControlManager::pressedUpdate()
         m_pCPT = &**it;
         if((m_pCPT->getState() == PlayerState::Playing))//if the player is in the playing state
         {
-            if(m_pCPT->hasTarget())//if we have a target
+            if(m_pCPT->getLinker().isLinked())//if we have a target
             {
-                m_chunkTarget = m_pCPT->getTarget();
-                if(m_chunkTarget->isControlEnabled())
+                Chunk* pChunkTarget = m_pCPT->getLinker().getTargetPtr();
+                if(pChunkTarget->isControlEnabled())
                 {
                     InputConfig& rInputConfig = m_pCPT->getInputConfig();
 
                     if (sf::Mouse::isButtonPressed(rInputConfig.primary))
                     {
-                        b2Vec2 worldAim = leon::sfTob2(m_rWindow.mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView()));
+                        b2Vec2 worldAim = leon::sfTob2(game.getGameWindow().mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView()));
                         m_pCPT->setAim(worldAim);
-                        m_chunkTarget->primary(worldAim);
+                        pChunkTarget->primary(worldAim);
                     }
                     if (sf::Mouse::isButtonPressed(rInputConfig.secondary))
                     {
-                        b2Vec2 worldAim = leon::sfTob2(m_rWindow.mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView()));
+                        b2Vec2 worldAim = leon::sfTob2(game.getGameWindow().mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView()));
                         m_pCPT->setAim(worldAim);
-                        m_chunkTarget->secondary(worldAim);
+                        pChunkTarget->secondary(worldAim);
                     }
                     if (sf::Keyboard::isKeyPressed(rInputConfig.up))
                     {
-                        m_chunkTarget->up();/**should be how each of these if's looks**/
+                        pChunkTarget->up();/**should be how each of these if's looks**/
                     }
                     if (sf::Keyboard::isKeyPressed(rInputConfig.down))
                     {
-                        m_chunkTarget->down();
+                        pChunkTarget->down();
                     }
                     if (sf::Keyboard::isKeyPressed(rInputConfig.left))
                     {
-                        m_chunkTarget->left();
+                        pChunkTarget->left();
                     }
                     if (sf::Keyboard::isKeyPressed(rInputConfig.right))
                     {
-                        m_chunkTarget->right();
+                        pChunkTarget->right();
                     }
                     if (sf::Keyboard::isKeyPressed(rInputConfig.rollLeft))
                     {
-                        m_chunkTarget->rollLeft();
+                        pChunkTarget->rollLeft();
                     }
                     if (sf::Keyboard::isKeyPressed(rInputConfig.rollRight))
                     {
-                        m_chunkTarget->rollRight();
+                        pChunkTarget->rollRight();
                     }
                 }
             }
@@ -146,7 +146,7 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
         /**THINGS WE SHOULD ALWAYS BE LISTENING FOR**/
         if (rEvent.type == sf::Event::Closed)//closed window
         {
-            m_rWindow.close();
+            game.getGameWindow().close();
             return 1;///USE STATES
         }
         if (rEvent.type == sf::Event::KeyPressed)//on key press
@@ -181,10 +181,10 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
             {
                 m_pCPT->setMouseCoords(sf::Vector2i(rEvent.mouseMove.x, rEvent.mouseMove.y));
 
-                b2Vec2 worldAim = leon::sfTob2(m_rWindow.mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView()));
+                b2Vec2 worldAim = leon::sfTob2(game.getGameWindow().mapPixelToCoords(m_pCPT->getMouseCoords(), m_pCPT->getCamera().getView()));
                 m_pCPT->setAim(worldAim);
-                if(m_pCPT->hasTarget())
-                    m_pCPT->getTarget()->aim(worldAim);
+                if(m_pCPT->getLinker().isLinked())
+                    m_pCPT->getLinker().getTargetPtr()->aim(worldAim);
             }
             if (rEvent.type == sf::Event::MouseWheelMoved)//control zooming of camera for a player
             {
@@ -194,11 +194,11 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
                 else if (zoomChange < 0)
                     zoomChange = 2.0;
 
-                if(m_pCPT->hasTarget())
+                if(m_pCPT->getLinker().isLinked())
                 {
-                    if(zoomChange*m_pCPT->getCamera().getZoomLevel() > m_pCPT->getTarget()->getMaxZoom())
+                    if(zoomChange*m_pCPT->getCamera().getZoomLevel() > m_pCPT->getLinker().getTargetPtr()->getMaxZoom())
                         zoomChange = 1;
-                    else if(zoomChange*m_pCPT->getCamera().getZoomLevel() < m_pCPT->getTarget()->getMinZoom())
+                    else if(zoomChange*m_pCPT->getCamera().getZoomLevel() < m_pCPT->getLinker().getTargetPtr()->getMinZoom())
                         zoomChange = 1;
                 }
 
@@ -222,7 +222,7 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
         {
             if (rEvent.type == sf::Event::MouseButtonPressed)
             {
-                tgui::Widget::Ptr widget = f_MouseOnWhichWidget(rEvent.mouseButton.x, rEvent.mouseButton.y, m_rGui.getWidgets());
+                tgui::Widget::Ptr widget = f_MouseOnWhichWidget(rEvent.mouseButton.x, rEvent.mouseButton.y, game.getGameOverlayManager().getGui().getWidgets());
                 if(widget != nullptr)
                 {
                     if(widget->getWidgetType() == tgui::WidgetTypes::Type_Panel)
@@ -251,7 +251,7 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
             }
         }
         else if(m_pCPT->getState() == PlayerState::Interfacing)//we are clicking buttons
-            m_rGui.handleEvent(rEvent);/**GUI EVENT HANDLER**/
+            game.getGameOverlayManager().getGui().handleEvent(rEvent);/**GUI EVENT HANDLER**/
     }/**END OF PLAYER LOOP**/
     ///LOOP OVER AI HERE??? what would we update exactly?
     return 0;
@@ -260,11 +260,11 @@ void ControlManager::drawUpdate()
 {
     sf::Vector2f center;
     float rotation;///degrees
-    for(vector<tr1::shared_ptr<Player> >::iterator it = m_localPlayerList.begin(); it != m_localPlayerList.end(); ++it)
+    for(auto it = m_localPlayerList.begin(); it != m_localPlayerList.end(); ++it)
     {
-        if((*it)->getCamera().isTracking() && (*it)->hasTarget())
+        if((*it)->getCamera().isTracking() && (*it)->getLinker().isLinked())
         {
-            m_bodyTarget = (*it)->getTarget()->getBody();
+            m_bodyTarget = (*it)->getLinker().getTargetPtr()->getBody();
 
 
             (*it)->getCamera().setCenter(m_bodyTarget->GetPosition());
@@ -279,12 +279,13 @@ void ControlManager::drawUpdate()
         sf::Listener::setPosition((*it)->getCamera().getView().getCenter().x, (*it)->getCamera().getView().getCenter().y, 0);
         sf::Listener::setDirection(sin((*it)->getCamera().getView().getRotation()), 0.0f, -cos((*it)->getCamera().getView().getRotation()));
 
-        m_rWindow.setView((*it)->getCamera().getView());
-        m_rUniverse.draw();
+        game.getGameWindow().setView((*it)->getCamera().getView());
+        game.getGameUniverse().draw();
     }
 }
 void ControlManager::f_cheats(vector<tr1::shared_ptr<Player> >::iterator it, sf::Event& rEvent)
 {
+    Universe& rUniverse = game.getGameUniverse();
     if (rEvent.type == sf::Event::KeyPressed)
     {
         if (rEvent.key.code == sf::Keyboard::T)
@@ -298,32 +299,31 @@ void ControlManager::f_cheats(vector<tr1::shared_ptr<Player> >::iterator it, sf:
         }
         if (rEvent.key.code == sf::Keyboard::P)
         {
-            m_rUniverse.togglePause();
+            rUniverse.togglePause();
         }
         if (rEvent.key.code == sf::Keyboard::O)
         {
-            m_rUniverse.toggleDebugDraw();
+            rUniverse.toggleDebugDraw();
         }
         if (rEvent.key.code == sf::Keyboard::Delete)
         {
-            m_rUniverse.removeBack();
+            rUniverse.removeBack();
         }
         if (rEvent.key.code == sf::Keyboard::K)
         {
-            m_rUniverse.getBackwardPhys()->sleep();
+            rUniverse.getBackwardPhys()->sleep();
         }
         if (rEvent.key.code == sf::Keyboard::J)
         {
-            m_rUniverse.getBackwardPhys()->wake();
+            rUniverse.getBackwardPhys()->wake();
         }
         if (rEvent.key.code == sf::Keyboard::L)
         {
-            cout << "\n" << m_rUniverse.getBackwardPhys()->getBody()->IsAwake();
+            cout << "\n" << rUniverse.getBackwardPhys()->getBody()->IsAwake();
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
         {
-            GModule* ptr = NULL;
-            ptr = m_chunkTarget->getGModule("fixturePositionExample");
+            GModule* ptr = (*it)->getLinker().getTargetPtr()->getGModule("fixturePositionExample");
             if(ptr != NULL)
             {
                 std::cout << "\n(" << ptr->getCenter().x << "," << ptr->getCenter().y << ")";

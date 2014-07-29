@@ -6,12 +6,12 @@
 
 using namespace std;
 
-IOBase::IOBase() : m_rIOManager(game.getGameIOManager())
+IOBase::IOBase()
 {
     IOBaseData data;
     f_initialize(data);
 }
-IOBase::IOBase(const IOBaseData& data) : m_rIOManager(game.getGameIOManager())
+IOBase::IOBase(const IOBaseData& data)
 {
     f_initialize(data);
 }
@@ -21,9 +21,9 @@ IOBase::~IOBase()
 }
 void IOBase::f_initialize(const IOBaseData& data)
 {
-    m_pIOComponent = m_rIOManager.createIOComponent(data.name);
+    m_pIOComponent = game.getGameIOManager().createIOComponent(data.name);
     m_pIOComponent->setOwner(this);
-    m_pIOComponent->getEventer()->addList(data.spCourierList);
+    m_pIOComponent->getEventer()->addList(data.courierList);
 
     m_attributes = data.butes;
 

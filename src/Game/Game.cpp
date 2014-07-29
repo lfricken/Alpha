@@ -20,25 +20,28 @@
 #include "Turret.h"
 
 #include "EditBox.h"
-
 #include "Decoration.h"
+
+
+#include "json.h"
 
 using namespace std;
 
 Game::Game()
 {
     ///load window data into settings, and launch window with the settings
-    m_settings.antialiasingLevel = 0;
+    bool shouldSmoothTextures = true;
+    m_settings.antialiasingLevel = 4;
     sf::VideoMode mode;
     mode = sf::VideoMode(1900, 1000, 32);
-    //mode = sf::VideoMode::getDesktopMode();
+    //mode = sf::VideoMode::getDesktopMode();//used for full screen
     std::string windowName = "SFML Box2D Test Environment";
 
 
     m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(mode, windowName, sf::Style::Default, m_settings));
 
     m_spIOManager = std::tr1::shared_ptr<IOManager>(new IOManager());//independent
-    m_spTexAlloc = std::tr1::shared_ptr<TextureAllocator>(new TextureAllocator());//independent
+    m_spTexAlloc = std::tr1::shared_ptr<TextureAllocator>(new TextureAllocator(shouldSmoothTextures));//independent
     m_spUniverse = std::tr1::shared_ptr<Universe>(new Universe());//independent
 
     /**created last**/
@@ -98,6 +101,7 @@ OverlayManager& Game::getGameOverlayManager()
 {
     return *m_spOverlayManager;
 }
+
 Game::Status Game::client()
 {
     return run();
@@ -224,23 +228,23 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     buttonData.buttonText = "Exit";
     buttonData.position = sf::Vector2f(0, 0);
     buttonData.type = ClassType::BUTTON;
-    Courier* pCourier = new Courier();
+    Courier buttonMessage;
     sf::Packet pack;
     pack << "packet data";
-    pCourier->condition.reset(Event::LeftMouseClicked, "", 0, 'd', true);
-    pCourier->package.reset("Static_Chunk_1", "message", pack, 0, Destination::UNIVERSE, false);
-    buttonData.spCourierList.push_back(tr1::shared_ptr<Courier>(pCourier));
+    buttonMessage.condition.reset(Event::LeftMouseClicked, "", 0, 'd', true);
+    buttonMessage.package.reset("Static_Chunk_1", "message", pack, 0, Destination::UNIVERSE, false);
+    buttonData.courierList.push_back(buttonMessage);
 
     leon::EditBoxData editboxData;
     editboxData.startingText = "This is Here";
     editboxData.size = sf::Vector2f(400, 50);
     editboxData.position = sf::Vector2f(100,100);
-    pCourier = new Courier();
+    Courier editboxMessage;
     sf::Packet editBoxOutput;
     editBoxOutput << "ship_2";
-    pCourier->condition.reset(Event::ReturnKeyPressed, "", 0, 'd', true);
-    pCourier->package.reset("player_1", "switchLink", editBoxOutput, 0, Destination::UNIVERSE, true);
-    editboxData.spCourierList.push_back(tr1::shared_ptr<Courier>(pCourier));
+    editboxMessage.condition.reset(Event::ReturnKeyPressed, "", 0, 'd', true);
+    editboxMessage.package.reset("player_1", "switchLink", editBoxOutput, 0, Destination::UNIVERSE, true);
+    editboxData.courierList.push_back(editboxMessage);
 
 
     leon::WidgetBase* pEditBox = new leon::EditBox(*panel->getPanelPtr(), editboxData);
@@ -257,7 +261,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 ///==============================================================================
     /**=============================================DECORATIONS=============================================**/
     DecorationData decorDat;
-    decorDat.gfxCompData.scale = sf::Vector2f(0.5, 0.5);
+    decorDat.gfxCompData.scale = sf::Vector2f(1, 1);
     decorDat.name = "art";
     decorDat.gfxCompData.rotation = leon::degToRad(45);
     decorDat.gfxCompData.animState = AnimationState::Activated;
@@ -294,13 +298,13 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     trigDat.filterData.defaultsTrue = true;
 
 
-    Courier* pTriggerCourier = new Courier();
+    Courier triggerMessage;
     sf::Packet triggerPack;
     triggerPack << "triggered";
-    pTriggerCourier->condition.reset(Event::Triggered, "50", 50, '<', true);
-    pTriggerCourier->package.reset("Static_Chunk_1", "message", triggerPack, 0, Destination::UNIVERSE, false);
-    trigDat.spCourierList.push_back(std::tr1::shared_ptr<Courier>(pTriggerCourier));
-    staticModuleDataList.push_back( tr1::shared_ptr<ModuleData>(new TriggerData(trigDat)) );
+    triggerMessage.condition.reset(Event::Triggered, "50", 50, '<', true);
+    triggerMessage.package.reset("Static_Chunk_1", "message", triggerPack, 0, Destination::UNIVERSE, false);
+    trigDat.courierList.push_back(triggerMessage);
+    staticModuleDataList.push_back(tr1::shared_ptr<ModuleData>(new TriggerData(trigDat)));
 
 
     /**STATIC MODULES**/
@@ -324,17 +328,17 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     /**=============================================SHIPS=============================================**/
 
     /**SHIP MODULES**/
-    Courier* pModuleCourier = new Courier();
+    Courier deathMessage;
     sf::Packet modulePack;
     modulePack << "module health < 50";
-    pModuleCourier->condition.reset(Event::Health, "50", 50, '<', true);
-    pModuleCourier->package.reset("Static_Chunk_1", "message", modulePack, 0, Destination::UNIVERSE, false);
+    deathMessage.condition.reset(Event::Health, "50", 50, '<', true);
+    deathMessage.package.reset("Static_Chunk_1", "message", modulePack, 0, Destination::UNIVERSE, false);
 
 
 
 
     GModuleData shipModuleData;
-    shipModuleData.spCourierList.push_back(tr1::shared_ptr<Courier>(pModuleCourier));
+    shipModuleData.courierList.push_back(deathMessage);
 
     HullData hull;
     hull.shape = Shape::POLYGON;

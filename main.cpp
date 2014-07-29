@@ -100,7 +100,7 @@ const sf::Vector2f size = sf::Vector2f(100, 50);
 
 /**CONVERSIONS**/
 extern const float pi = 3.14159;
-const int scale = 128;//use this when converting from Box2D coordinates, to sfml coordinates
+const int scale = 256;//use this when converting from Box2D coordinates, to sfml coordinates
 /**CONVERSIONS**/
 
 

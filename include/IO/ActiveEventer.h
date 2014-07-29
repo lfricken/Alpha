@@ -13,8 +13,8 @@ public:
     ActiveEventer();//when we create an Active eventer, we need to pass it an io manager
     virtual ~ActiveEventer();
 
-    void add(const std::tr1::shared_ptr<Courier> spCourier);//gets sent a courier and puts it into its vector to be checked later
-    void addList(const std::vector<std::tr1::shared_ptr<Courier> >& spCourierList);
+    void add(const Courier& rCourier);//gets sent a courier and puts it into its vector to be checked later
+    void addList(const std::vector<Courier>& rCourierList);
     void event(const std::string& variable, Event variableName);
 
     std::map<Event, CourierVector>& getCourierMap();

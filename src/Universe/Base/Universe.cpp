@@ -5,11 +5,11 @@
 
 using namespace std;
 
-Universe::Universe() : IOBase(), m_physWorld(b2Vec2(0,0)), m_projAlloc(), m_rWindow(game.getGameWindow())
+Universe::Universe() : IOBase(), m_physWorld(b2Vec2(0,0)), m_projAlloc()
 {
-
+    m_skippedTime = 0;
     m_normalDraw = true;
-    m_notPaused = true;
+    m_paused = false;
 
     m_velocityIterations = 1;///how should these be set?
     m_positionIterations = 1;///how should these be set?
@@ -125,7 +125,7 @@ void Universe::add(Decoration* pDecor)
 /**=================**/
 float Universe::physStep()
 {
-    if(m_notPaused)
+    if(not m_paused)
     {
         m_physWorld.Step(m_timeStep, m_velocityIterations, m_positionIterations);
 
@@ -140,7 +140,19 @@ float Universe::physStep()
 }
 void Universe::togglePause()
 {
-    m_notPaused = !m_notPaused;
+    m_paused = !m_paused;
+
+    if(not m_paused)
+        m_skippedTime += game.getTime()-m_pauseTime;
+    else
+        m_pauseTime = game.getTime();
+}
+float Universe::getTime() const
+{
+    if(m_paused)
+        return m_pauseTime-m_skippedTime;
+    else
+        return game.getTime()-m_skippedTime;
 }
 void Universe::draw()
 {
@@ -152,7 +164,7 @@ void Universe::draw()
             (*it)->draw();
         }
 
-        m_gfxCompFactory.draw(m_rWindow);//things with a gfx component
+        m_gfxCompFactory.draw(game.getGameWindow());//things with a gfx component
 
         m_projAlloc.draw();
         ///also draw graphics objects?? maybe we should have another section for that??

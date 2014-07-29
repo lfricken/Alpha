@@ -49,7 +49,8 @@ struct GModuleData : public PhysicsBaseData, public GraphicsBaseData
         PhysicsBaseData(),
         GraphicsBaseData(),
         armor(0),
-        health(1000)
+        health(1000),
+        healthMax(1000)
     {
         type = ClassType::GMODULE;
         categoryBits = Category::ShipModule;
@@ -65,6 +66,7 @@ struct GModuleData : public PhysicsBaseData, public GraphicsBaseData
 
     T_Armor armor;
     T_Health health;
+    T_Health healthMax;
 };
 
 #endif // DGMODULE_H

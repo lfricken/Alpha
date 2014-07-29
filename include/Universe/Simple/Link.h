@@ -3,6 +3,10 @@
 
 #include "stdafx.h"
 
+
+
+/**takes care of all your linking needs**/
+/**getLinker() function should return reference, not pointer**/
 template<class US, class THEM>
 class Link
 {

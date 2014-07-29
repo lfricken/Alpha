@@ -16,19 +16,19 @@
 
 using namespace std;
 
-Chunk::Chunk() : IOBase(), m_rWindow(game.getGameWindow()), m_rPhysWorld(game.getGameUniverse().getWorld())
+Chunk::Chunk() : IOBase(), m_energyPool(m_pIOComponent->getEventer()), m_linker(this)
 {
     ChunkData data;
     f_initialize(data);
 }
-Chunk::Chunk(const ChunkData& data) : IOBase(static_cast<IOBaseData>(data)), m_rWindow(game.getGameWindow()), m_rPhysWorld(game.getGameUniverse().getWorld())
+Chunk::Chunk(const ChunkData& data) : IOBase(static_cast<IOBaseData>(data)), m_energyPool(m_pIOComponent->getEventer()), m_linker(this)
 {
     f_initialize(data);
 }
 Chunk::~Chunk()/**Don't destroy us in the middle of a physics step!**/
 {
-    breakControl();
-    m_rPhysWorld.DestroyBody(m_pBody);
+    m_linker.breakLink();
+    game.getGameUniverse().getWorld().DestroyBody(m_pBody);
 }
 void Chunk::f_initialize(const ChunkData& data)
 {
@@ -40,16 +40,17 @@ void Chunk::f_initialize(const ChunkData& data)
     m_bodyDef.position = data.position;
     m_controlEnabled = data.controlEnabled;
 
-    m_pBody = m_rPhysWorld.CreateBody(&m_bodyDef);
+    m_pBody = game.getGameUniverse().getWorld().CreateBody(&m_bodyDef);
     m_pBody->SetUserData(this);
-    m_pController = NULL;
-    m_hasController = false;
 
     m_awake = true;//regardless, set us to be awake
     if(!data.awake)//if it should be asleep
         sleep();//then cleanly put it to sleep
 
 }
+
+
+/**GET MODULES**/
 GModule* Chunk::getGModule(const std::string& targetName)
 {
     for(vector<tr1::shared_ptr<GModule> >::const_iterator it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
@@ -80,6 +81,9 @@ IOBase* Chunk::getIOBase(const std::string& targetName)
 
     return getModule(targetName);
 }
+
+
+/**ADD MODULES**/
 GModule* Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList)
 {
     GModule* ptr;
@@ -88,7 +92,7 @@ GModule* Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList)
         (*it_data)->pChunk = this;
         ptr = (*it_data)->generate(this);
         InsertPtrVector(m_GModuleSPList, &IOBase::getID, tr1::shared_ptr<GModule>(ptr));
-        m_tiles.add(ptr);///HERE IS WHERE WE WOULD give it a graphics component, instead of us a derived pointer from which it gets the base type
+        m_tiles.add(ptr);///HERE IS WHERE WE WOULD give it a graphics COMPONENT, instead of us as a derived pointer from which it gets the base type
     }
 
     return ptr;
@@ -111,20 +115,28 @@ Weapon* Chunk::add(const WeaponData& rData)
     m_WeaponSPList.push_back(std::tr1::shared_ptr<Weapon>(ptr));
     return ptr;
 }
-void Chunk::draw()
-{
-    if(m_awake)
-    {
-        auto it_end = m_GModuleSPList.end();
-        for(auto it = m_GModuleSPList.begin(); it != it_end; ++it)
-        {
-            (*it)->animate();
-        }
 
-        m_tiles.setPosition(m_pBody->GetPosition());
-        m_tiles.setRotation(m_pBody->GetAngle());
-        m_rWindow.draw(m_tiles);
-    }
+
+/**PHYSICS**/
+int Chunk::startContact(PhysicsBase* other)
+{
+    return 0;
+}
+int Chunk::endContact(PhysicsBase* other)
+{
+    return 0;
+}
+int Chunk::preSolveContact(PhysicsBase* other)
+{
+    return 0;
+}
+int Chunk::postSolveContact(PhysicsBase* other)
+{
+    return 0;
+}
+b2Body* Chunk::getBody()
+{
+    return m_pBody;
 }
 void Chunk::physUpdate()//loop over all the special physics objects
 {
@@ -136,16 +148,6 @@ void Chunk::physUpdate()//loop over all the special physics objects
     {
         (*it)->physUpdate();
     }
-}
-
-/**IO-SYSTEM**/
-void Chunk::toggleControl(bool state)//will or wont accept inputs from controllers
-{
-    m_controlEnabled = state;
-}
-bool Chunk::isControlEnabled() const
-{
-    return m_controlEnabled;
 }
 void Chunk::sleep()
 {
@@ -203,36 +205,14 @@ void Chunk::wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, float a
         cout << "\nWake Failed";
         ///error log
     }
-
 }
 bool Chunk::isAwake() const
 {
     return m_awake;
 }
-b2Body* Chunk::getBody()
-{
-    return m_pBody;
-}
-b2Body* Chunk::getBody() const
-{
-    return m_pBody;
-}
-const b2BodyDef& Chunk::getBodyDef() const
-{
-    return m_bodyDef;
-}
-const vector<tr1::shared_ptr<GModule> >& Chunk::getGModuleSPList() const
-{
-    return m_GModuleSPList;
-}
-const vector<tr1::shared_ptr<Module> >& Chunk::getModuleSPList() const
-{
-    return m_ModuleSPList;
-}
-const MultiTileMap& Chunk::getTiles() const
-{
-    return m_tiles;
-}
+
+
+/**INPUT**/
 void Chunk::primary(const b2Vec2& coords)
 {
     for(auto it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
@@ -298,20 +278,40 @@ void Chunk::rollRight()
 }
 void Chunk::special_1()
 {
-    ///tell modules
+    for(auto it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
+    {
+        (*it)->special_1();
+    }
 }
 void Chunk::special_2()
 {
-    ///tell modules
+    for(auto it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
+    {
+        (*it)->special_2();
+    }
 }
 void Chunk::special_3()
 {
-    ///tell modules
+    for(auto it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
+    {
+        (*it)->special_3();
+    }
 }
 void Chunk::special_4()
 {
-    ///tell modules
+    for(auto it = m_GModuleSPList.begin(); it != m_GModuleSPList.end(); ++it)
+    {
+        (*it)->special_4();
+    }
+}
 
+
+
+
+/**CONTROL**/
+Link<Chunk, Intelligence>& Chunk::getLinker()
+{
+    return m_linker;
 }
 float Chunk::getMaxZoom() const
 {
@@ -321,51 +321,37 @@ float Chunk::getMinZoom() const
 {
     return m_minZoom;
 }
-void Chunk::setGroupIndex(int group)
+void Chunk::toggleControl(bool state)//will or wont accept inputs from controllers
 {
-    ///ERROR LOG
-    cout << "\nWtf are you doing??";
-    /**loop over fixtures**/
-    for (b2Fixture* fix = m_pBody->GetFixtureList(); fix; fix = fix->GetNext())
+    m_controlEnabled = state;
+}
+bool Chunk::isControlEnabled() const
+{
+    return m_controlEnabled;
+}
+
+
+
+/**GRAPHICS**/
+void Chunk::draw()
+{
+    if(m_awake)
     {
-        b2Filter filter = fix->GetFilterData();
-        filter.groupIndex = group;
-        fix->SetFilterData(filter);
+        auto it_end = m_GModuleSPList.end();
+        for(auto it = m_GModuleSPList.begin(); it != it_end; ++it)
+        {
+            (*it)->animate();
+        }
+
+        m_tiles.setPosition(m_pBody->GetPosition());
+        m_tiles.setRotation(m_pBody->GetAngle());
+        game.getGameWindow().draw(m_tiles);
     }
 }
-/**CONTROL**/
-Intelligence* Chunk::getController() const//done
-{
-    return m_pController;
-}
-bool Chunk::hasController() const//done
-{
-    return m_hasController;
-}
-void Chunk::linkControl(Intelligence* controller)
-{
-    f_setController(controller);
-    m_pController->f_setTarget(this);
-}
-void Chunk::breakControl()//done
-{
-    if(m_hasController)
-        m_pController->f_forgetTarget();
 
-    f_forgetController();
-}
-void Chunk::f_forgetController()//done
-{
-    m_pController = NULL;
-    m_hasController = false;
-}
-void Chunk::f_setController(Intelligence* controller)//done
-{
-    breakControl();
-    m_pController = controller;
-    m_hasController = true;
-}
-/**END**/
+
+
+/**IO SYSTEM**/
 IOBaseReturn Chunk::input(IOBaseArgs)
 {
     if(rCommand == "message")
@@ -385,19 +371,28 @@ IOBaseReturn Chunk::input(IOBaseArgs)
         ///ERROR LOG
     }
 }
-int Chunk::startContact(PhysicsBase* other)
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+void Chunk::setGroupIndex(int group)
 {
-    return 0;
-}
-int Chunk::endContact(PhysicsBase* other)
-{
-    return 0;
-}
-int Chunk::preSolveContact(PhysicsBase* other)
-{
-    return 0;
-}
-int Chunk::postSolveContact(PhysicsBase* other)
-{
-    return 0;
-}
+    ///ERROR LOG
+    cout << "\nWtf are you doing??";
+    //loop over fixtures
+    for (b2Fixture* fix = m_pBody->GetFixtureList(); fix; fix = fix->GetNext())
+    {
+        b2Filter filter = fix->GetFilterData();
+        filter.groupIndex = group;
+        fix->SetFilterData(filter);
+    }
+}*/

@@ -56,11 +56,10 @@ public:///MAYBE we shouldn't have this many functions???
     virtual bool physUpdate();//used to implement special physical forces and stuff
 
 
-    b2World& getWorld();
-
     b2Fixture* getFixture();
 
     /**CONST**/
+    Chunk* getChunk();
     const b2Body* getBody() const;
     const b2Fixture* getFixture() const;
 
@@ -77,7 +76,6 @@ protected:
     b2Fixture* m_pFixture;//pointer, no ownership
 
 
-    b2World& m_rPhysWorld;
     float m_mass;
     b2Vec2 m_halfSize;
 private:

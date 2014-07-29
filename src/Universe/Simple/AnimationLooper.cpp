@@ -52,13 +52,10 @@ void AnimationLooper::setSequence(const std::vector<sf::Vector2f>& sequence)//se
 }
 const sf::Vector2f& AnimationLooper::getTile()//get the current tile we should be on
 {
-    if(!m_stopped)
-    {
+    if(not m_stopped)
         for(m_accumulatedTime += m_timer.getTimeElapsed(); m_accumulatedTime >= m_delay; m_accumulatedTime -= m_delay)
-        {
             m_itLast = f_getNext();
-        }
-    }
+
     return *m_itLast;
 }
 AnimationLooper::const_it AnimationLooper::f_getNext()

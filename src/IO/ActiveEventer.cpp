@@ -18,13 +18,13 @@ ActiveEventer::~ActiveEventer()
 {
 
 }
-void ActiveEventer::add(const std::tr1::shared_ptr<Courier> spCourier)
+void ActiveEventer::add(const Courier& rCourier)
 {
-    m_spCourierMap[spCourier->condition.getEventName()].push_back(std::tr1::shared_ptr<Courier>( new Courier(*spCourier)));
+    m_spCourierMap[rCourier.condition.getEventName()].push_back(  std::tr1::shared_ptr<Courier>(new Courier(rCourier))  );
 }
-void ActiveEventer::addList(const std::vector<std::tr1::shared_ptr<Courier> >& spCourierList)
+void ActiveEventer::addList(const std::vector<Courier>& rCourierList)
 {
-    for(auto it = spCourierList.begin(); it != spCourierList.end(); ++it)
+    for(auto it = rCourierList.cbegin(); it != rCourierList.cend(); ++it)
         add(*it);
 }
 void ActiveEventer::event(const std::string& rVariable, Event variableName)

@@ -23,11 +23,6 @@ public:
     Intelligence(const IntelligenceData& data);
     virtual ~Intelligence();
 
-    Chunk* getTarget() const;
-    bool hasTarget() const;
-    void linkControl(Chunk* target);
-    void breakControl();//called to break the control links
-
     PlayerState getState() const;
     void setState(PlayerState newState);
 
@@ -36,17 +31,15 @@ public:
     void setAim(const b2Vec2& newAim);//in world coordinates
     const b2Vec2& getAim() const;//in world coordinates
 
-    void setTargetName(const std::string& target);
-    const std::string& getTargetName();
+    const std::string& getTargetName() const;
 
+    Link<Intelligence, Chunk>& getLinker();
 protected:
 private:
     virtual void f_initialize(const IntelligenceData& data);
 
-    friend class Chunk;
-    void f_forgetTarget();//CONTROL
-    void f_setTarget(Chunk* target);
-    bool m_hasTarget;
+    Link<Intelligence, Chunk> m_linker;
+
     PlayerState m_playerState;//playing, editing, interfacing ect.
     std::string m_targetName;///WHAT IS THIS
     std::vector<std::tr1::shared_ptr<leon::Panel> > m_HUDspElements;

@@ -1,7 +1,8 @@
 #ifndef CONDITION_H
 #define CONDITION_H
 
-#include "VariableNames.h"
+#include "stdafx.h"
+#include "EventNames.h"
 
 class Condition//used to determine if the package should be sent
 {

@@ -47,6 +47,7 @@ public:
 
     float physStep();
     void togglePause();
+    float getTime() const;
 
 
     void draw();//draws everything thats drawable in universe
@@ -60,9 +61,11 @@ private:
     BedFinder m_bedFinder;
     ProjectileAllocator m_projAlloc;
     GraphicsComponentFactory m_gfxCompFactory;
-    sf::RenderWindow& m_rWindow;
 
-    bool m_notPaused;
+
+    float m_pauseTime;
+    float m_skippedTime;
+    bool m_paused;
     bool m_normalDraw;
 
     int m_iterations;

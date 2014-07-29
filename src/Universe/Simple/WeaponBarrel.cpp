@@ -36,6 +36,7 @@ WeaponBarrel::~WeaponBarrel()
 }
 void WeaponBarrel::fire()
 {
+   // m_pParent->getLinker().getTargetPtr()->getChunk().getAmmoPool().consume
     ///check for ammo first
 
     b2Vec2 velVec;
@@ -54,8 +55,6 @@ void WeaponBarrel::fire()
     pBullet->wake(m_pParent->getLinker().getTargetPtr()->getCenter()+tempBarrelOffset, atan(velVec.y/velVec.x), velVec+m_pParent->getLinker().getTargetPtr()->getBody()->GetLinearVelocity(), m_projectileAngularVelocity);
 
     m_currentRecoilDistance = m_recoilDistance;
-
-    ///we need to compute where it comes from, not just the center of fixture
 }
 void WeaponBarrel::update(const b2Vec2& rPos, float angle)//radians
 {

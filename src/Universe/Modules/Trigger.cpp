@@ -1,6 +1,7 @@
 #include "Trigger.h"
 
 #include "IOManager.h"
+#include "globals.h"
 
 Trigger::Trigger() : Module(), m_filter()
 {
@@ -73,5 +74,5 @@ void Trigger::sendGuests(const std::string& targetName)//send a list of IDs that
         packet << *it;
 
     Package pack(targetName, "receiveFriends", packet, 0.0f, Destination::UNIVERSE, false);
-    m_rIOManager.recieve(pack);
+    game.getGameIOManager().recieve(pack);
 }

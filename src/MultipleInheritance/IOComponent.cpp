@@ -1,10 +1,11 @@
 #include "IOComponent.h"
 
 #include "defaults.h"
+#include "globals.h"
 #include "IOBase.h"
 #include "IOManager.h"
 
-IOComponent::IOComponent(unsigned int id, IOManager& manager) : m_rIOManager(manager)
+IOComponent::IOComponent(unsigned int id, IOManager& manager)
 {
     m_ID = id;
     m_name = def::io::name;
@@ -16,7 +17,7 @@ IOComponent::~IOComponent()
 }
 void IOComponent::free()
 {
-    m_rIOManager.f_free(m_ID);
+    game.getGameIOManager().f_free(m_ID);
 }
 void IOComponent::setOwner(IOBase* pOwner)
 {
@@ -37,14 +38,6 @@ const std::string& IOComponent::getName() const
 void IOComponent::setName(const std::string& name)
 {
     m_name = name;
-}
-void IOComponent::addCouriers(const std::vector<std::tr1::shared_ptr<Courier> >& spCourierList)
-{
-    if(!m_spEventer)//if we don't have an active eventer(because that would mean m_spEventer returns false)
-        m_spEventer = std::tr1::shared_ptr<ActiveEventer>(new ActiveEventer());
-
-    for(std::vector<std::tr1::shared_ptr<Courier> >::const_iterator it = spCourierList.begin(); it != spCourierList.end(); ++it)
-        m_spEventer->add(*it);
 }
 ActiveEventer* IOComponent::getEventer()
 {

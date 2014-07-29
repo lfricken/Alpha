@@ -1,7 +1,8 @@
-Read from file
-Create System for blueprints
+make zoom a variable like energy and health
+Make some more modules for zoom and energy
 
-review scaling
+Create System for blueprints
+Read from file
 Recondense GraphicsBase and GraphicsComponent
-Create getMass() function for Physics Base.
 Design system for physics components?
+review scaling

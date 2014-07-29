@@ -38,7 +38,6 @@ public:
     Universe& getGameUniverse();
     OverlayManager& getGameOverlayManager();
     TextureAllocator& getTextureAllocator();
-    tgui::Gui& getGameGui();
 
 protected:
 private:

@@ -39,6 +39,11 @@ public:
     Projectile(const ProjectileData& sData);
     virtual ~Projectile();
 
+
+    /**PROJECTILE**/
+    float getLifeTimeRemain() const;
+    void setLifeTimeRemain(float time);
+    float changeLifeTimeRemain(float change);
     void setDamage(T_Damage damage);//set the damage this projectile will deal
 
     ProjectileType getProjType() const;
@@ -48,15 +53,14 @@ public:
     void setListPos(unsigned int pos);
     void swapListPos(Projectile& other);
 
-    float getLifeTimeRemain() const;
-    void setLifeTimeRemain(float time);
-    float changeLifeTimeRemain(float change);
+    void enable();//no longer interacts with hull sensors, set to default collision state for a projectile
+    void disable();//disable all collision except with hull sensors
 
-    virtual void wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, float angVel);
-    virtual int startContact(PhysicsBase* other);
-    virtual int endContact(PhysicsBase* other);
-    virtual void enable();//no longer interacts with hull sensors, set to default collision state for a projectile
-    virtual void disable();//disable all collision except with hull sensors
+
+    /**PHYSICS**/
+    void wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, float angVel);
+    int startContact(PhysicsBase* other);
+    int endContact(PhysicsBase* other);
 
 protected:
 private:

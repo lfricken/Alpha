@@ -6,14 +6,16 @@ using namespace std;
 
 GModule::GModule():
     PhysicsBase(),
-    GraphicsBase()
+    GraphicsBase(),
+    m_health(m_pIOComponent->getEventer())
 {
     GModuleData data;
     f_initialize(data);
 }
 GModule::GModule(const GModuleData& data) :
     PhysicsBase(static_cast<PhysicsBaseData>(data)),
-    GraphicsBase(static_cast<GraphicsBaseData>(data), data.halfSize, data.offset, data.rotation)
+    GraphicsBase(static_cast<GraphicsBaseData>(data), data.halfSize, data.offset, data.rotation),
+    m_health(m_pIOComponent->getEventer())
 {
     f_initialize(data);
 }
@@ -23,9 +25,10 @@ GModule::~GModule()
 }
 void GModule::f_initialize(const GModuleData& data)
 {
+        m_health.setMaxValue(data.healthMax);
     m_health.setArmor(data.armor);
     m_health.setValue(data.health);
-    m_health.setMaxValue(data.health);
+
 
     m_isDestroyed = false;
 }
@@ -53,9 +56,8 @@ IOBaseReturn GModule::input(IOBaseArgs)
 T_Health GModule::damage(T_Damage damage)
 {
     m_health.takeDamage(damage);
-    f_varEvent(m_health.getValue(), m_health.getEventType());
 
-    if(m_health.getValuePercent() < 50.0f)
+    if(m_health.getValuePercent() <= 50.0f)
         getAnimationController().setState(AnimationState::Damaged);
 
     if(m_health.getValue() <= 0)//if our health drops too low
@@ -66,7 +68,6 @@ T_Health GModule::damage(T_Damage damage)
 T_Health GModule::heal(T_Health h)
 {
     m_health.heal(h);
-    f_varEvent(m_health.getValue(), m_health.getEventType());
     return m_health.getValue();
 }
 T_Health GModule::getHealth() const

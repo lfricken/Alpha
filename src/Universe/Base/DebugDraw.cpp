@@ -3,7 +3,7 @@
 
 #include "Angles.h"
 
-DebugDraw::DebugDraw() : m_rWindow(game.getGameWindow())
+DebugDraw::DebugDraw()
 {
 
     m_convex.setFillColor(sf::Color(0,200,0,64));
@@ -31,20 +31,20 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
     {
         m_convex.setPoint(i, leon::b2Tosf<float>(vertices[i]));
     }
-    m_rWindow.draw(m_convex);
+    game.getGameWindow().draw(m_convex);
 }
 void DebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
 {
     m_circle.setRadius(radius*scale);
     m_circle.setPosition(leon::b2Tosf<float>(center));
-    m_rWindow.draw(m_circle);
+    game.getGameWindow().draw(m_circle);
 }
 void DebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color)
 {
     m_circle.setOrigin(radius*scale, radius*scale);
     m_circle.setRadius(radius*scale);
     m_circle.setPosition(leon::b2Tosf<float>(center));
-    m_rWindow.draw(m_circle);
+    game.getGameWindow().draw(m_circle);
 }
 void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
 {

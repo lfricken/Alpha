@@ -4,12 +4,12 @@
 
 using namespace std;
 
-PhysicsBase::PhysicsBase() : IOBase(), m_rPhysWorld(game.getGameUniverse().getWorld())
+PhysicsBase::PhysicsBase() : IOBase()
 {
     PhysicsBaseData data;
     f_initialize(data);
 }
-PhysicsBase::PhysicsBase(const PhysicsBaseData& data) : IOBase(static_cast<IOBaseData>(data)), m_rPhysWorld(game.getGameUniverse().getWorld())
+PhysicsBase::PhysicsBase(const PhysicsBaseData& data) : IOBase(static_cast<IOBaseData>(data))
 {
     f_initialize(data);
 }
@@ -187,19 +187,15 @@ bool PhysicsBase::physUpdate()
 
 
 
-b2World& PhysicsBase::getWorld()
-{
-    return m_rPhysWorld;
-}
-
 
 b2Fixture* PhysicsBase::getFixture()
 {
     return m_pFixture;
 }
-
-
-
+Chunk* PhysicsBase::getChunk()
+{
+    return m_pChunk;
+}
 const b2Body* PhysicsBase::getBody() const
 {
     return m_pBody;

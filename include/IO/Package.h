@@ -6,7 +6,7 @@
 
 class IOBase;
 
-typedef ClassType Destination;///ISNT USED FOR ANYTHING AT THE MOMENT
+typedef ClassType Destination;///ISNT USED FOR ANYTHING AT THE MOMENT, should probably be removed
 
 class Package
 {

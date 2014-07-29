@@ -82,7 +82,7 @@ int Projectile::startContact(PhysicsBase* other)
     {
         m_damagePackage.setTargetName(other->getName());
         m_damagePackage.setTargetID(other->getID());
-        m_rIOManager.recieve(m_damagePackage);
+        game.getGameIOManager().recieve(m_damagePackage);
         endLife();///put this in the above function!!! what?
     }
     //std::cout << "\nEnd Projectile Contact";

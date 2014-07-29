@@ -32,11 +32,9 @@ private:
     ///remove anything here that isn't a state we hold
     Intelligence* m_pCIT;//control intelligence target
     Player* m_pCPT;//control player target
-    Universe& m_rUniverse;
-    sf::RenderWindow& m_rWindow;
-    tgui::Gui& m_rGui;
+
     b2Body* m_bodyTarget;
-    Chunk* m_chunkTarget;
+
 
     tgui::Widget::Ptr m_pDraggingWidget;//target that is getting dragged
     sf::Vector2f m_pDraggingPosition;//position of the dragging

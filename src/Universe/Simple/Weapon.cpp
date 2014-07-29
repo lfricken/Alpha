@@ -4,6 +4,7 @@
 
 Weapon::Weapon(const WeaponData& rData) : m_linker(this)
 {
+    m_aimAngle = 0;//IF WE DONT do this, the turrets dont appear initially sometimes because of nan (WTF?)
     m_ammoContainer = rData.ammo;
     m_refireTimer.setCountDown(rData.refireDelay);
     m_canPivot = rData.canPivot;
@@ -22,18 +23,13 @@ Weapon::~Weapon()
 }
 void Weapon::primary(const b2Vec2& coords)
 {
-    ///should we be re aiming?
     if(m_refireTimer.isTimeUp() && (!m_ammoContainer.isReloading()))
-    {
         f_queueCommands();
-    }
 }
 void Weapon::secondary(const b2Vec2& coords)
 {
     if(m_refireTimer.isTimeUp() && (!m_ammoContainer.isReloading()))
-    {
         f_queueCommands();
-    }
 }
 void Weapon::aim(const b2Vec2& coords)
 {
@@ -56,6 +52,7 @@ bool Weapon::checkFireState()
     //update us to aim at the correct angle before trying to fire anything
 
     b2Vec2 position(m_linker.getTargetPtr()->getCenter());
+
 
     m_spGunMantle->setPosition(position);
     m_spGunMantle->setRotation(m_aimAngle);

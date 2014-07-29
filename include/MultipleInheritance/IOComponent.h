@@ -20,16 +20,12 @@ public:
     const std::string& getName() const;
     void setName(const std::string& name);
 
-    void addCouriers(const std::vector<std::tr1::shared_ptr<Courier> >& spCourierList);
     ActiveEventer* getEventer();
     void resetEventer();//used in Game::Game() to reset some pointers that otherwise get messed up
-
-    IOManager& getIOManager();
 
     IOBaseReturn input(IOBaseArgs);//called for any input
 protected:
 private:
-    IOManager& m_rIOManager;
     IOBase* m_pOwner;
 
     unsigned int m_ID;

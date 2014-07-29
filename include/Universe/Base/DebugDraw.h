@@ -18,7 +18,7 @@ public:
 
 protected:
 
-    sf::ConvexShape m_convex;
+    sf::ConvexShape m_convex;//necessary to hold here to prevent major lag from creating and destroying
     sf::CircleShape m_circle;
 private:
 };

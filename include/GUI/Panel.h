@@ -41,7 +41,7 @@ private:
     virtual void f_initialize(const PanelData& data);
     std::vector<std::tr1::shared_ptr<WidgetBase> > m_widgetList;
 
-    tgui::Panel::Ptr m_pPanel;
+    tgui::Panel::Ptr m_pPanel;//the gui panel
     tgui::ChildWindow::Ptr m_pChildWindow;
 };
 }

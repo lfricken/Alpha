@@ -93,7 +93,6 @@
 		<Unit filename="include/IO/ActiveEventer.h" />
 		<Unit filename="include/IO/Condition.h" />
 		<Unit filename="include/IO/Courier.h" />
-		<Unit filename="include/IO/Enumerate.h" />
 		<Unit filename="include/IO/IOManager.h" />
 		<Unit filename="include/IO/Package.h" />
 		<Unit filename="include/IO/VariableNames.h" />

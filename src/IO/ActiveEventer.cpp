@@ -7,12 +7,7 @@ using namespace std;
 
 ActiveEventer::ActiveEventer()
 {
-    m_pIOManager = &game.getGameIOManager();
 
-    if(m_pIOManager == NULL)///DEBUG //sometimes we may not get created after GameIOManager so...
-    {
-        ///ERROR LOG
-    }
 }
 ActiveEventer::~ActiveEventer()
 {
@@ -47,7 +42,7 @@ void ActiveEventer::event(const std::string& rVariable, Event variableName)
                 }
 
 
-                m_pIOManager->recieve(rVector[i]->package);
+                game.getGameIOManager().recieve(rVector[i]->package);
                 if(!(rVector[i]->condition.isRepeatable()))//and if the event isn't repeatable, remove it from our list
                 {
                     rVector.erase(rVector.begin()+i);//pointer

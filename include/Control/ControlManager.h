@@ -29,18 +29,7 @@ private:
     void f_cheats(std::vector<std::tr1::shared_ptr<Player> >::iterator it, sf::Event& rEvent);
     tgui::Widget::Ptr f_MouseOnWhichWidget(float x, float y, std::vector<tgui::Widget::Ptr>& widgets);
 
-    ///remove anything here that isn't a state we hold
-    Intelligence* m_pCIT;//control intelligence target
-    Player* m_pCPT;//control player target
-
-    b2Body* m_bodyTarget;
-
-
-    tgui::Widget::Ptr m_pDraggingWidget;//target that is getting dragged
-    sf::Vector2f m_pDraggingPosition;//position of the dragging
-
     std::vector<std::tr1::shared_ptr<Player> > m_localPlayerList;
-    std::vector<Player> m_deactivatedPlayerList;///we dont do these, what is this for????
     ///std::vector<std::tr1::shared_ptr<SyntheticIntelligence> > m_localSIList;
 };
 

@@ -20,9 +20,8 @@ public:
     std::map<Event, CourierVector>& getCourierMap();
 
 protected:
-    std::map<Event, CourierVector> m_spCourierMap;/**holds all the couriers for this object**/
-    IOManager* m_pIOManager;//a pointer to the world io manager
 private:
+    std::map<Event, CourierVector> m_spCourierMap;/**holds all the couriers for this object**/
 };
 
 #endif // ActiveEventer_H

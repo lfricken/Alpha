@@ -29,7 +29,7 @@ class IOManager
         IOComponent* m_currentTarget;
         std::vector<Packagelet> m_packageletList;//list of packages to be sent
 
-        std::vector<unsigned int> m_IOCFreeList;//holds free element indexes of m_IOComponentList
+        std::vector<unsigned int> m_IOComponentFreeList;//holds free element indexes of m_IOComponentList
         std::vector<std::tr1::shared_ptr<IOComponent> > m_IOComponentList;//list of all IOComponents
 
         std::map<std::string, unsigned int> m_nameIDMap;

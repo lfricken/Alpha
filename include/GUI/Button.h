@@ -38,7 +38,7 @@ protected:
 private:
     virtual void f_initialize(const ButtonData& data);
 
-    tgui::Button::Ptr m_pButton;
+    tgui::Button::Ptr m_pButton;//pointer to our button in the gui
 };
 }
 #endif // BUTTON_H

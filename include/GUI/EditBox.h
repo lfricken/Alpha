@@ -41,7 +41,7 @@ protected:
 private:
     virtual void f_initialize(const EditBoxData& data);
 
-    tgui::EditBox::Ptr m_pEditBox;
+    tgui::EditBox::Ptr m_pEditBox;//pointer to our editbox inside gui
 };
 }
 #endif // EDITBOX_H

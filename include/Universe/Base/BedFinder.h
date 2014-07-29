@@ -10,8 +10,8 @@ class BedFinder
         BedFinder();
         virtual ~BedFinder();
 
-        const b2Vec2& getSleepPosition();//gives a new spot to sleep in
-        void free(const b2Vec2& pos);//called by the object that was woken, gives it's current sleep position
+        const b2Vec2& getSleepPosition();//world coordinates. gives a new spot to sleep in
+        void free(const b2Vec2& pos);//world coordinates. called by the object that was woken, gives it's current sleep position
     protected:
     private:
         ///list of open spots

@@ -51,10 +51,10 @@ IOComponent* IOManager::createIOComponent(const std::string& name)
 {
     IOComponent* pIOComp = NULL;
 
-    if(!m_IOCFreeList.empty()) /**check if there is a free IOComponent we can use**/
+    if(!m_IOComponentFreeList.empty()) /**check if there is a free IOComponent we can use**/
     {
-        pIOComp = &*m_IOComponentList[m_IOCFreeList.back()];
-        m_IOCFreeList.pop_back();
+        pIOComp = &*m_IOComponentList[m_IOComponentFreeList.back()];
+        m_IOComponentFreeList.pop_back();
     }
     else /**if not, make a new one**/
     {
@@ -88,11 +88,9 @@ void IOManager::setTargets()
                 targetName = pPac->getTargetName();
 
                 it_name = m_nameIDMap.find(targetName);
-                if(it_name != m_nameIDMap.end())
-                {
+                if(it_name != m_nameIDMap.end())//we found it
                     pPac->setTargetID(it_name->second);
-                }
-                else
+                else//we didn't find it
                 {
                     cout << "\nCould not find target [" << targetName << "]" << FILELINE;
                     pPac->setTargetID(0);
@@ -117,5 +115,5 @@ IOBase* IOManager::getTarget(unsigned int targetID)
 }
 void IOManager::f_free(unsigned int id)
 {
-    m_IOCFreeList.push_back(id);
+    m_IOComponentFreeList.push_back(id);
 }

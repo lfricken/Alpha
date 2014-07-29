@@ -21,11 +21,10 @@ void Intelligence::f_initialize(const IntelligenceData& data)
     m_targetName = data.targetName;
 }
 /**CONTROL**/
-    Link<Intelligence, Chunk>& Intelligence::getLinker()
-    {
-        return m_linker;
-    }
-
+Link<Intelligence, Chunk>& Intelligence::getLinker()
+{
+    return m_linker;
+}
 PlayerState Intelligence::getState() const
 {
     return m_playerState;

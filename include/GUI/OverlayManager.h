@@ -13,17 +13,22 @@ class OverlayManager : public IOBase//Overlay Manager holds overlays. Each overl
         OverlayManager(sf::RenderWindow& window);
         ~OverlayManager();
 
-        /**GENERIC**/
+
+        /**ADD PANELS**/
+        void add(std::tr1::shared_ptr<leon::Panel> panel);
+
+        /**GET PANELS**/
+        leon::Panel* getTarget(const std::string& target);//returns base pointer to target
+        leon::Panel* getTarget(unsigned int targetID);
+
+        /**OVERLAY MANAGER**/
         void enableAll();
         void disableAll();
         void showAll();
         void hideAll();
-
-        void add(std::tr1::shared_ptr<leon::Panel> panel);
-        leon::Panel* getTarget(const std::string& target);//returns base pointer to target
-        leon::Panel* getTarget(unsigned int targetID);
         tgui::Gui& getGui();
 
+        /**GRAPHICS**/
         void draw();//draws everything thats active, just calls gui draw
 
         /**IO**/
@@ -31,19 +36,8 @@ class OverlayManager : public IOBase//Overlay Manager holds overlays. Each overl
     protected:
 
     private:
-        tgui::Gui m_gui;
-        std::vector<std::tr1::shared_ptr<leon::Panel> > m_panelList;//all the Overlays that can get displayed, each item can be active or inactive, if its active, it gets displayed.
+        tgui::Gui m_gui;//the TGUI gui that handles most things
+        std::vector<std::tr1::shared_ptr<leon::Panel> > m_panelList;//all the Panels that can get displayed, each item can be active or inactive, if its active, it gets displayed.
 };
 
 #endif // OverlayManager_H
-
-/*
-
-        void setActive(const std::string& target);//sets the target overlay active(taking input)
-        void setInactive(const std::string& target);//sets target overlay inactive(not taking input)
-        void show(const std::string& target);//sets the target overlay to showing
-        void hide(const std::string& target);
-
-        void toggleActive(const std::string& target);//toggles the activity of an overlay
-        void toggleShow(const std::string& target);
-*/

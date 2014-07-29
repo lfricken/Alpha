@@ -48,24 +48,23 @@ public:///MAYBE we shouldn't have this many functions???
     PhysicsBase(const PhysicsBaseData& data);
     virtual ~PhysicsBase();
 
+
+    /**PHYSICS**/
     virtual int startContact(PhysicsBase* other);
     virtual int endContact(PhysicsBase* other);
     virtual int preSolveContact(PhysicsBase* other);
     virtual int postSolveContact(PhysicsBase* other);
 
     virtual bool physUpdate();//used to implement special physical forces and stuff
-
-
     b2Fixture* getFixture();
+    Chunk* getChunk();
+
 
     /**CONST**/
-    Chunk* getChunk();
     const b2Body* getBody() const;
     const b2Fixture* getFixture() const;
-
     float getMass() const;
     b2Vec2 getCenter() const;
-
 
 protected:
     std::tr1::shared_ptr<b2Shape> m_spShape;
@@ -75,8 +74,7 @@ protected:
     b2Body* m_pBody;//pointer, no ownership
     b2Fixture* m_pFixture;//pointer, no ownership
 
-
-    float m_mass;
+    float m_mass;//computed in our constructor
     b2Vec2 m_halfSize;
 private:
     virtual void f_initialize(const PhysicsBaseData& data);

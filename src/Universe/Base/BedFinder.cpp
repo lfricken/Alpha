@@ -6,7 +6,7 @@ BedFinder::BedFinder()
 }
 BedFinder::~BedFinder()
 {
-    //dtor
+
 }
 const b2Vec2& BedFinder::getSleepPosition()
 {

@@ -41,34 +41,41 @@ public:
 
 protected:
 private:
+    void f_load(const std::string& stuff);//told where to get blueprintsData and mapsData, and panelsData
+
+
     /**created first**/
     std::tr1::shared_ptr<sf::RenderWindow> m_spWindow;
-
     std::tr1::shared_ptr<IOManager> m_spIOManager;
     std::tr1::shared_ptr<TextureAllocator> m_spTexAlloc;
     std::tr1::shared_ptr<Universe> m_spUniverse;
-
     /**needs access to previous ones**/
     std::tr1::shared_ptr<OverlayManager> m_spOverlayManager;
     std::tr1::shared_ptr<ControlManager> m_spControlManager;
 
-    sf::Clock m_clock;
 
+    sf::Clock m_clock;
     sf::Image m_icon;
     sf::ContextSettings m_settings;///how can we edit the settings of the window?
-
-    void f_load(const std::string& stuff);
-
-    ///DONT NEED IT ANYMORE
-    ///std::vector<Courier*> m_allCouriers;///this problem is so old we almost forgot about it
-    ///IN order to avoid IOManager having to search for objects during runtime, it will find them
-    ///at load time, and give them pointers to the IOBase part of the target, so later, it can just
-    /// use the pointer and send the message instantly
-    ///the problem is, what if that object got deleted...
-    ///that is solved by our friend: shared_ptr
-    ///by giving the courier a shared_ptr, even though the object was told to be deleted, it wont delete until
-    ///all shared_ptr's have tried to delete it
-    ///so a deleted object will actually sit in memory, then it will get the message, and destroy itself
 };
 
 #endif // GAME_H
+
+
+
+
+
+
+
+    /**
+    DONT NEED IT ANYMORE
+    //std::vector<Courier*> m_allCouriers;///this problem is so old we almost forgot about it
+    //IN order to avoid IOManager having to search for objects during runtime, it will find them
+    //at load time, and give them pointers to the IOBase part of the target, so later, it can just
+    // use the pointer and send the message instantly
+    //the problem is, what if that object got deleted...
+    //that is solved by our friend: shared_ptr
+    //by giving the courier a shared_ptr, even though the object was told to be deleted, it wont delete until
+    //all shared_ptr's have tried to delete it
+    so a deleted object will actually sit in memory, then it will get the message, and destroy itself
+    **/

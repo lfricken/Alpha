@@ -41,9 +41,8 @@ private:
     Link<Intelligence, Chunk> m_linker;
 
     PlayerState m_playerState;//playing, editing, interfacing ect.
-    std::string m_targetName;///WHAT IS THIS
+    std::string m_targetName;//this is the name of the thing we will try and link with (if anything)
     std::vector<std::tr1::shared_ptr<leon::Panel> > m_HUDspElements;
-    Chunk* m_pTarget;
 
     b2Vec2 m_aim;//in world coordinates
 };

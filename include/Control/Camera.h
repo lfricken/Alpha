@@ -9,25 +9,34 @@ class Camera
         Camera();
         virtual ~Camera();
 
+        /**SF::VIEW**/
         const sf::View& getView() const;
         void setViewportSF(const sf::FloatRect& rPort);
         void setSizeSF(const sf::Vector2f& rSize);
 
+        /**POSITION**/
         void setCenter(const b2Vec2& rPos);
         b2Vec2 getCenter() const;
+        bool isTracking() const;
+        bool toggleTracking();
 
+        /**ROTATION**/
+        void setRotation(float);//radians
+        float getRotation() const;//radians
+        bool rotates() const;
+        bool toggleRotation();
+
+        /**ZOOM**/
         void setZoomLevel(float newZoom);
         float getZoomLevel() const;
         void zoom(float zoomChange);//zoom by a multiple amount
 
-        bool isTracking() const;
-        bool toggleTracking();
     protected:
     private:
-        bool m_isTracking;
-        float m_zoomLevel;
-        ///enum mode (like 1,2,3, or 4 players)
-        ///and which one are we?
+        float m_zoomLevel;///consider max and min zoom
+
+        bool m_isTracking;//should we follow a target
+        bool m_rotates;//should we spin with the target
         sf::View m_view;
 };
 #endif // CAMERA_H

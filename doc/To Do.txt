@@ -1,6 +1,9 @@
 make zoom a variable like energy and health
-Make some more modules for zoom and energy
+Make some modules for zoom and energy
+make ammo and ammo modules
 
+review and fix file system
+look at the GUI system
 Create System for blueprints
 Read from file
 Recondense GraphicsBase and GraphicsComponent

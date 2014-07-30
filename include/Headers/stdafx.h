@@ -32,7 +32,7 @@
 DOCUMENTING:
 //minor addition
 / ** significant information ** /
-///something that needs to be addressed
+///something that needs to be addressed in the future
 
 INCLUDING:
 Always have an include guard.
@@ -71,12 +71,14 @@ Put a comment of //pointer next to any pointer dereference.
 
 
 SFML:
-Use Vector2f when possible in sfml.
+Use Vector2f for dealing with screen coordinates only.
+Try to use b2Vec2 for everything else. They are the standard unit of measurement
 Sprites hold a reference to a texture, so the texture needs to not get destroyed.
 Textures are heavy, Sprites are light.
 
 
 NOMENCLATURE:
+A get function should end with Ptr if it is returning a pointer. Otherwise it should return a value or reference.
 http://stackoverflow.com/questions/1866794/naming-classes-how-to-avoid-calling-everything-a-whatevermanager
 The first letter of every word in class names are always capitalized like GameManager, or ActiveEventer
 The first letter of the first word in any instance of any type is lower case. So GameManager gameManager; or int craigFritz;

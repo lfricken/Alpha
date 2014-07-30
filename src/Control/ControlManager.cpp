@@ -195,9 +195,9 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
 
                 if(pPlayer->getLinker().isLinked())
                 {
-                    if(zoomChange*pPlayer->getCamera().getZoomLevel() > pPlayer->getLinker().getTargetPtr()->getMaxZoom())
+                    if(zoomChange*pPlayer->getCamera().getZoomLevel() > pPlayer->getLinker().getTargetPtr()->getZoomPool().getMaxZoom())
                         zoomChange = 1;
-                    else if(zoomChange*pPlayer->getCamera().getZoomLevel() < pPlayer->getLinker().getTargetPtr()->getMinZoom())
+                    else if(zoomChange*pPlayer->getCamera().getZoomLevel() < pPlayer->getLinker().getTargetPtr()->getZoomPool().getMinZoom())
                         zoomChange = 1;
                 }
 

@@ -13,6 +13,7 @@ enum class Event
     /**UNIVERSE**/
     Health = 0,
     Energy,
+    Zoom,
     /**UNIVERSE**/
 
     /**GUI**/

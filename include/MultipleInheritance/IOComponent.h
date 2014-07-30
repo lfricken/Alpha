@@ -20,7 +20,7 @@ public:
     const std::string& getName() const;
     void setName(const std::string& name);
 
-    ActiveEventer* getEventer();
+    ActiveEventer* getEventerPtr();
     void resetEventer();//used in Game::Game() to reset some pointers that otherwise get messed up
 
     IOBaseReturn input(IOBaseArgs);//called for any input

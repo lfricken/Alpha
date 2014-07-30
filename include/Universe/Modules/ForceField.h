@@ -13,7 +13,7 @@ public:
     virtual ~ForceField();
 
 
-    virtual bool physUpdate();
+    bool physUpdate();
 protected:
 private:
     virtual void f_initialize(const ForceFieldData& data);

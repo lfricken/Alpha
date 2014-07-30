@@ -23,12 +23,16 @@ void IOBase::f_initialize(const IOBaseData& data)
 {
     m_pIOComponent = game.getGameIOManager().createIOComponent(data.name);
     m_pIOComponent->setOwner(this);
-    m_pIOComponent->getEventer()->addList(data.courierList);
+    m_pIOComponent->getEventerPtr()->addList(data.courierList);
 
     m_attributes = data.butes;
 
     m_type = data.type;
-    m_isEnabled = data.isEnabled;
+
+    if(data.isEnabled)
+        enable();//DOES NOT CALL DERIVED BECAUSE THE DERIVED PART OF THE CLASS HAS NOT BEEN GENERATED
+    else
+        disable();
 }
 
 
@@ -90,23 +94,23 @@ void IOBase::trigger()
 /**PRIVATE**/
 void IOBase::f_varEvent(std::string value, Event eventType)//takes a generic variable type, and sends the data to eventer
 {
-    m_pIOComponent->getEventer()->event(value, eventType);
+    m_pIOComponent->getEventerPtr()->event(value, eventType);
 }
 void IOBase::f_varEvent(int value, Event eventType)
 {
     std::ostringstream convert;
     convert << value;
-    m_pIOComponent->getEventer()->event(convert.str(), eventType);
+    m_pIOComponent->getEventerPtr()->event(convert.str(), eventType);
 }
 void IOBase::f_varEvent(float value, Event eventType)
 {
     std::ostringstream convert;
     convert << value;
-    m_pIOComponent->getEventer()->event(convert.str(), eventType);
+    m_pIOComponent->getEventerPtr()->event(convert.str(), eventType);
 }
 void IOBase::f_varEvent(double value, Event eventType)
 {
     std::ostringstream convert;
     convert << value;
-    m_pIOComponent->getEventer()->event(convert.str(), eventType);
+    m_pIOComponent->getEventerPtr()->event(convert.str(), eventType);
 }

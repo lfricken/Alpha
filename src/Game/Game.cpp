@@ -18,6 +18,8 @@
 #include "ForceFieldCore.h"
 #include "Thruster.h"
 #include "Turret.h"
+#include "Capacitor.h"
+#include "Reactor.h"
 
 #include "EditBox.h"
 #include "Decoration.h"
@@ -379,6 +381,14 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
             {
 
             }
+            else if((x==0) && (y==2.5))
+            {
+
+            }
+            else if((x==0) && (y==2))
+            {
+
+            }
             else
             {
                 shipModuleData.offset.x = x;
@@ -388,6 +398,12 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
             }
         }
     }
+
+    CapacitorData capData;
+    capData.offset = b2Vec2(0, 2.5);
+
+    ReactorData reacData;
+    reacData.offset = b2Vec2(0, 2);
 
     WeaponBarrelData barrelData1;
     WeaponBarrelData barrelData2;
@@ -477,6 +493,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     moduleList1.push_back( tr1::shared_ptr<GModuleData>(new TurretData(turretData)) );
     moduleList1.push_back( tr1::shared_ptr<GModuleData>(new TurretData(turretData2)) );
     moduleList1.push_back( tr1::shared_ptr<GModuleData>(new TurretData(turretData3)) );
+    moduleList1.push_back( tr1::shared_ptr<GModuleData>(new CapacitorData(capData)) );
+    moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ReactorData(reacData)) );
 
     moduleList2.push_back( tr1::shared_ptr<ModuleData>(new HullData(hull)) );
 

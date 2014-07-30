@@ -16,37 +16,28 @@
 
 using namespace std;
 
-Chunk::Chunk() : IOBase(), m_energyPool(m_pIOComponent->getEventer()), m_linker(this)
-{
-    ChunkData data;
-    f_initialize(data);
-}
-Chunk::Chunk(const ChunkData& data) : IOBase(static_cast<IOBaseData>(data)), m_energyPool(m_pIOComponent->getEventer()), m_linker(this)
-{
-    f_initialize(data);
-}
-Chunk::~Chunk()/**Don't destroy us in the middle of a physics step!**/
-{
-    m_linker.breakLink();
-    game.getGameUniverse().getWorld().DestroyBody(m_pBody);
-}
-void Chunk::f_initialize(const ChunkData& data)
-{
-    m_maxZoom = data.maxZoom;
-    m_minZoom = data.minZoom;
 
-    m_bodyDef.bullet = data.isBullet;
-    m_bodyDef.type = data.bodyType;
-    m_bodyDef.position = data.position;
-    m_controlEnabled = data.controlEnabled;
+Chunk::Chunk(const ChunkData& rData) : IOBase(static_cast<IOBaseData>(rData))
+{
+    m_spLinker.reset(new Link<Chunk, Intelligence>(this));
+    m_spZoomPool.reset(new ZoomPool(m_pIOComponent->getEventerPtr(), rData.defaultMaxZoom, rData.maxMaxZoom, rData.minZoom));
+    m_spEnergyPool.reset(new EnergyPool(m_pIOComponent->getEventerPtr(), 0, rData.defaultMaxEnergy));
+
+    m_bodyDef.bullet = rData.isBullet;
+    m_bodyDef.type = rData.bodyType;
+    m_bodyDef.position = rData.position;
+    m_controlEnabled = rData.controlEnabled;
 
     m_pBody = game.getGameUniverse().getWorld().CreateBody(&m_bodyDef);
     m_pBody->SetUserData(this);
 
     m_awake = true;//regardless, set us to be awake
-    if(!data.awake)//if it should be asleep
+    if(!rData.awake)//if it should be asleep
         sleep();//then cleanly put it to sleep
-
+}
+Chunk::~Chunk()/**Don't destroy us in the middle of a physics step!**/
+{
+    game.getGameUniverse().getWorld().DestroyBody(m_pBody);
 }
 
 
@@ -311,15 +302,7 @@ void Chunk::special_4()
 /**CONTROL**/
 Link<Chunk, Intelligence>& Chunk::getLinker()
 {
-    return m_linker;
-}
-float Chunk::getMaxZoom() const
-{
-    return m_maxZoom;
-}
-float Chunk::getMinZoom() const
-{
-    return m_minZoom;
+    return *m_spLinker;
 }
 void Chunk::toggleControl(bool state)//will or wont accept inputs from controllers
 {
@@ -331,6 +314,16 @@ bool Chunk::isControlEnabled() const
 }
 
 
+
+/**Variables**/
+ZoomPool& Chunk::getZoomPool()
+{
+    return *m_spZoomPool;
+}
+EnergyPool& Chunk::getEnergyPool()
+{
+    return *m_spEnergyPool;
+}
 
 /**GRAPHICS**/
 void Chunk::draw()

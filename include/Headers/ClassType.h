@@ -44,6 +44,7 @@ enum ClassType///look at COLLISIONCATEGORY.h, and classes.txt
     GMODULE,//basic gModule type
     ARMOR,
     CAPACITOR,
+    REACTOR,
     FLOOR,
     THRUSTER,
     TURRET,

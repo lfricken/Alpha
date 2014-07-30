@@ -39,7 +39,7 @@ void IOComponent::setName(const std::string& name)
 {
     m_name = name;
 }
-ActiveEventer* IOComponent::getEventer()
+ActiveEventer* IOComponent::getEventerPtr()
 {
     return &*m_spEventer;
 }

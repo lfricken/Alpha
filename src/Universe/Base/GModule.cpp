@@ -7,7 +7,7 @@ using namespace std;
 GModule::GModule():
     PhysicsBase(),
     GraphicsBase(),
-    m_health(m_pIOComponent->getEventer())
+    m_health(m_pIOComponent->getEventerPtr(), 1000, 1000)
 {
     GModuleData data;
     f_initialize(data);
@@ -15,7 +15,7 @@ GModule::GModule():
 GModule::GModule(const GModuleData& data) :
     PhysicsBase(static_cast<PhysicsBaseData>(data)),
     GraphicsBase(static_cast<GraphicsBaseData>(data), data.halfSize, data.offset, data.rotation),
-    m_health(m_pIOComponent->getEventer())
+    m_health(m_pIOComponent->getEventerPtr(), 1000, 1000)
 {
     f_initialize(data);
 }
@@ -25,11 +25,6 @@ GModule::~GModule()
 }
 void GModule::f_initialize(const GModuleData& data)
 {
-        m_health.setMaxValue(data.healthMax);
-    m_health.setArmor(data.armor);
-    m_health.setValue(data.health);
-
-
     m_isDestroyed = false;
 }
 IOBaseReturn GModule::input(IOBaseArgs)
@@ -68,6 +63,12 @@ T_Health GModule::damage(T_Damage damage)
 T_Health GModule::heal(T_Health h)
 {
     m_health.heal(h);
+
+    if(isDestroyed() and (m_health.getValuePercent() == 100.0f))//if we reached 100% health
+    {
+        ///construct();//we have been rebuilt!!!
+    }
+
     return m_health.getValue();
 }
 T_Health GModule::getHealth() const
@@ -83,8 +84,8 @@ void GModule::destruct()
         m_pFixture->SetFilterData(filter);
 
         m_isDestroyed = true;
-        m_isEnabled = false;
         getAnimationController().setState(AnimationState::Destroyed);
+        disable();
     }
 }
 bool GModule::isDestroyed() const

@@ -14,6 +14,7 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add directory="include/Universe/Simple" />
+					<Add directory="include/Universe/Modules" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -25,6 +26,7 @@
 					<Add option="-pg" />
 					<Add option="-g" />
 					<Add directory="include/Universe/Simple" />
+					<Add directory="include/Universe/Modules" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
@@ -115,9 +117,11 @@
 		<Unit filename="include/Universe/Chunks/Projectile.h" />
 		<Unit filename="include/Universe/Chunks/Ship.h" />
 		<Unit filename="include/Universe/Modules/Armor.h" />
+		<Unit filename="include/Universe/Modules/Capacitor.h" />
 		<Unit filename="include/Universe/Modules/ForceField.h" />
 		<Unit filename="include/Universe/Modules/ForceFieldCore.h" />
 		<Unit filename="include/Universe/Modules/Hull.h" />
+		<Unit filename="include/Universe/Modules/Reactor.h" />
 		<Unit filename="include/Universe/Modules/Thruster.h" />
 		<Unit filename="include/Universe/Modules/Trigger.h" />
 		<Unit filename="include/Universe/Modules/Turret.h" />
@@ -125,10 +129,12 @@
 		<Unit filename="include/Universe/Simple/AnimationController.h" />
 		<Unit filename="include/Universe/Simple/AnimationLooper.h" />
 		<Unit filename="include/Universe/Simple/Attributes.h" />
+		<Unit filename="include/Universe/Simple/CapacitorComponent.h" />
 		<Unit filename="include/Universe/Simple/Filter.h" />
 		<Unit filename="include/Universe/Simple/GraphicsComponentFactory.h" />
 		<Unit filename="include/Universe/Simple/Link.h" />
 		<Unit filename="include/Universe/Simple/MultiTileMap.h" />
+		<Unit filename="include/Universe/Simple/ReactorComponent.h" />
 		<Unit filename="include/Universe/Simple/Timer.h" />
 		<Unit filename="include/Universe/Simple/Weapon.h" />
 		<Unit filename="include/Universe/Simple/WeaponBarrel.h" />
@@ -167,9 +173,11 @@
 		<Unit filename="src/Universe/Chunks/Projectile.cpp" />
 		<Unit filename="src/Universe/Chunks/Ship.cpp" />
 		<Unit filename="src/Universe/Modules/Armor.cpp" />
+		<Unit filename="src/Universe/Modules/Capacitor.cpp" />
 		<Unit filename="src/Universe/Modules/ForceField.cpp" />
 		<Unit filename="src/Universe/Modules/ForceFieldCore.cpp" />
 		<Unit filename="src/Universe/Modules/Hull.cpp" />
+		<Unit filename="src/Universe/Modules/Reactor.cpp" />
 		<Unit filename="src/Universe/Modules/Thruster.cpp" />
 		<Unit filename="src/Universe/Modules/Trigger.cpp" />
 		<Unit filename="src/Universe/Modules/Turret.cpp" />
@@ -177,10 +185,12 @@
 		<Unit filename="src/Universe/Simple/AnimationController.cpp" />
 		<Unit filename="src/Universe/Simple/AnimationLooper.cpp" />
 		<Unit filename="src/Universe/Simple/Attributes.cpp" />
+		<Unit filename="src/Universe/Simple/CapacitorComponent.cpp" />
 		<Unit filename="src/Universe/Simple/Filter.cpp" />
 		<Unit filename="src/Universe/Simple/GraphicsComponentFactory.cpp" />
 		<Unit filename="src/Universe/Simple/Link.cpp" />
 		<Unit filename="src/Universe/Simple/MultiTileMap.cpp" />
+		<Unit filename="src/Universe/Simple/ReactorComponent.cpp" />
 		<Unit filename="src/Universe/Simple/Timer.cpp" />
 		<Unit filename="src/Universe/Simple/Weapon.cpp" />
 		<Unit filename="src/Universe/Simple/WeaponBarrel.cpp" />

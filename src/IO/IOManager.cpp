@@ -78,7 +78,7 @@ void IOManager::setTargets()
 
     for(auto it_io = m_IOComponentList.begin(); it_io != m_IOComponentList.end(); ++it_io)//for each map in the IOComponents
     {
-        pMap = &(*it_io)->getEventer()->getCourierMap();
+        pMap = &(*it_io)->getEventerPtr()->getCourierMap();
         for(auto it_map = pMap->begin(); it_map != pMap->end(); ++it_map)//for each vector in the maps
         {
             pVec = &it_map->second;

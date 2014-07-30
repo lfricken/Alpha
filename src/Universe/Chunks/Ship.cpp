@@ -4,11 +4,7 @@
 
 using namespace std;
 
-Ship::Ship() : Chunk()
-{
-    ShipData data;
-    f_initialize(data);
-}
+
 Ship::Ship(const ShipData& sData) : Chunk(static_cast<ChunkData>(sData))
 {
     f_initialize(sData);

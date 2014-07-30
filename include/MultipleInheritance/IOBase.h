@@ -37,7 +37,7 @@ struct IOBaseData//initialized
     bool isEnabled;
     std::string name;
 
-    std::vector<Courier> courierList;///THIS SHOULD NOT BE HOLDING POINTERS, just the data
+    std::vector<Courier> courierList;
 };
 class IOBase//base class inherited by literally everything, that way objects can always communicate
 {

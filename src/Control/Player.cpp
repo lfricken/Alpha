@@ -1,5 +1,5 @@
-#include "Player.h"
-#include "globals.h"
+#include "Player.hpp"
+#include "globals.hpp"
 
 Player::Player() : Intelligence()
 {

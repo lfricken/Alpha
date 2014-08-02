@@ -1,5 +1,5 @@
-#include "Panel.h"
-#include "Sort.h"
+#include "Panel.hpp"
+#include "Sort.hpp"
 
 using namespace leon;
 

@@ -1,4 +1,4 @@
-#include "Condition.h"
+#include "Condition.hpp"
 
 /**=====PUBLIC=====**/
 Condition::Condition()

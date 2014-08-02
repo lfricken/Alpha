@@ -1,6 +1,6 @@
-#include "IOManager.h"
+#include "IOManager.hpp"
 
-#include "IOComponent.h"
+#include "IOComponent.hpp"
 
 using namespace std;
 

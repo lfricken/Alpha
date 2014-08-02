@@ -1,8 +1,8 @@
-#include "ActiveEventer.h"
+#include "ActiveEventer.hpp"
 
 
-#include "globals.h"
-#include "IOManager.h"
+#include "globals.hpp"
+#include "IOManager.hpp"
 using namespace std;
 
 ActiveEventer::ActiveEventer()

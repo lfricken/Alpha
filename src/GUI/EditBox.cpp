@@ -1,4 +1,4 @@
-#include "EditBox.h"
+#include "EditBox.hpp"
 
 using namespace leon;
 

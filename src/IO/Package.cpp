@@ -1,8 +1,7 @@
-#include "Package.h"
-#include "IOBase.h"
-#include "globals.h"
+#include "Package.hpp"
+#include "IOBase.hpp"
+#include "globals.hpp"
 
-#include "Enumerate.h"
 
 Package::Package()
 {

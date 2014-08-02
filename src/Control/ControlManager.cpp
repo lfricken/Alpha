@@ -1,7 +1,7 @@
-#include "ControlManager.h"
-#include "globals.h"
-#include "Sort.h"
-#include "Angles.h"
+#include "ControlManager.hpp"
+#include "globals.hpp"
+#include "Sort.hpp"
+#include "Convert.hpp"
 
 using namespace std;
 

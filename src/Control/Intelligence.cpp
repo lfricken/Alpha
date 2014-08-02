@@ -1,5 +1,5 @@
-#include "Intelligence.h"
-#include "globals.h"
+#include "Intelligence.hpp"
+#include "globals.hpp"
 
 Intelligence::Intelligence() : IOBase(), m_linker(this)
 {

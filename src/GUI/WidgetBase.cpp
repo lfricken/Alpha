@@ -1,4 +1,4 @@
-#include "WidgetBase.h"
+#include "WidgetBase.hpp"
 
 using namespace leon;
 

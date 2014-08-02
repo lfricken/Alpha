@@ -1,5 +1,5 @@
-#include "OverlayManager.h"
-#include "Sort.h"
+#include "OverlayManager.hpp"
+#include "Sort.hpp"
 
 using namespace std;
 

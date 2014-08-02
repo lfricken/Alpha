@@ -1,82 +1,88 @@
-#include "stdafx.h"
-#include "defaults.h"
-#include "Game.h"
+#include "stdafx.hpp"
+#include "defaults.hpp"
+#include "Game.hpp"
 
-#include "CollisionCategory.h"
+#include "CollisionCategory.hpp"
 
 /**defaults must be defined first because they may be, and are, used in the creation of other things**/
 /**================**/
 /**====DEFAULTS====**/
 /**================**/
-namespace def
+namespace defaults
 {
 
 
 /**IOBASE**/
 namespace io
 {
-const ClassType classType = ClassType::UNKNOWN;
-const bool isEnabled = true;
-const std::string name = "defaultName";
-const unsigned long long int ID = -1;//max value
+ClassType classType = ClassType::UNKNOWN;
+bool isEnabled = true;
+std::string name = "defaultName";
+unsigned long long int ID = -1;//max value
 }
 /**IOBASE**/
 
 
 /**PHYSICS**/
-namespace phys
+namespace fixture
 {
-const Shape shape = Shape::BOX;
-const Category category = Category::None;
-const Mask mask = Mask::None;
-const bool isSensor = false;
-const b2Vec2 offset = b2Vec2(0, 0);
-const b2Vec2 halfSize = b2Vec2(0.25, 0.25);
-const float density = 1.0;
-const float friction = 0.3;
-const float restitution = 0.2;
-const float rotation = 0.0;//degrees CW
+Shape shape = Shape::BOX;
+Category category = Category::None;
+Mask mask = Mask::None;
+bool isSensor = false;
+b2Vec2 offset = b2Vec2(0, 0);
+b2Vec2 halfSize = b2Vec2(0.25, 0.25);
+float density = 1.0;
+float friction = 0.3;
+float restitution = 0.2;
+float rotation = 0.0;//degrees CW
 }
 /**PHYSICS**/
 
 
 /**GRAPHICS**/
-namespace gfx
+namespace graphics
 {
-const float rotation = 0;
-const std::string texName = "textures/default.png";
-const sf::Color color = sf::Color::White;
-const sf::Vector2f texTileSize = sf::Vector2f(128, 128);
-const sf::Vector2f texTile = sf::Vector2f(0, 0);///deprecated
+float rotation = 0;
+std::string texName = "textures/default.png";
+sf::Color color = sf::Color::White;
+sf::Vector2f texTileSize = sf::Vector2f(128, 128);
+sf::Vector2f texTile = sf::Vector2f(0, 0);///deprecated
 
-extern const sf::Vector2f position = sf::Vector2f(0, 0);
-extern const sf::Vector2f scale = sf::Vector2f(1, 1);
-extern const AnimationState animState = AnimationState::Default;
-extern GraphicsLayer layer = GraphicsLayer::GModules;
+std::string animFile = "textures/default.acfg";
+
+sf::Vector2f position = sf::Vector2f(0, 0);
+sf::Vector2f scale = sf::Vector2f(1, 1);
+AnimationState animState = AnimationState::Default;
+GraphicsLayer layer = GraphicsLayer::GModules;
 }
 /**GRAPHICS**/
 
 
 /**CHUNK**/
-namespace cnk
+namespace chunk
 {
-const b2BodyType bodyType = b2BodyType::b2_staticBody;
-const b2Vec2 position = b2Vec2(0,0);
-const bool isBullet = false;
-const float maxZoom = 16.0f;
-const float minZoom = 0.5f;
-const bool controlEnabled = true;
+b2BodyType bodyType = b2BodyType::b2_staticBody;
+b2Vec2 position = b2Vec2(0,0);
+bool isBullet = false;
+bool controlEnabled = true;
+
+float startMaxEnergy = 0;
+float maxMaxZoom = 128;
+float startMaxZoom = 32;
+float minZoom = 0.5;
+bool startAwake = true;
 }
 /**CHUNK**/
 
 
 /**CONTROLERS**/
-namespace cntrl
+namespace control
 {
-const std::string targetName = io::name;
-const PlayerMode playerMode = PlayerMode::God;
-const sf::Vector2f cameraPos = sf::Vector2f(0, 0);
-const PlayerState playerState = PlayerState::Playing;
+std::string targetName = io::name;
+PlayerMode playerMode = PlayerMode::God;
+sf::Vector2f cameraPos = sf::Vector2f(0, 0);
+PlayerState playerState = PlayerState::Playing;
 }
 /**CONTROLERS**/
 
@@ -84,11 +90,11 @@ const PlayerState playerState = PlayerState::Playing;
 /**GUI**/
 namespace gui
 {
-const sf::Color backgroundColor = sf::Color::White;
-const std::string buttonText = "FixThis";
-const std::string config = "TGUI/widgets/Black.conf";
-const sf::Vector2f position = sf::Vector2f(10, 10);
-const sf::Vector2f size = sf::Vector2f(100, 50);
+sf::Color backgroundColor = sf::Color::White;
+std::string buttonText = "FixThis";
+std::string config = "TGUI/widgets/Black.conf";
+sf::Vector2f position = sf::Vector2f(10, 10);
+sf::Vector2f size = sf::Vector2f(100, 50);
 }
 /**GUI**/
 }
@@ -99,7 +105,7 @@ const sf::Vector2f size = sf::Vector2f(100, 50);
 
 
 /**CONVERSIONS**/
-extern const float pi = 3.14159;
+const float pi = 3.14159;
 const int scale = 256;//use this when converting from Box2D coordinates, to sfml coordinates
 /**CONVERSIONS**/
 
@@ -112,6 +118,7 @@ Game game;//globals.h
 /**====GLOBALS====**/
 /**===============**/
 
+
 int main()
 {
     ///we should load the defaults from a file, in which case they shouldn't be a const
@@ -121,11 +128,6 @@ int main()
     std::cout << "\nTexture Size: [" << tex.getSize().x << "].";
 
 
-    std::string str;
-    str = __FILE__;
-    std::stringstream stream;
-    stream << __LINE__;
-    str += ", line: " + stream.str();
 
 
     Game::Status state = Game::Local;

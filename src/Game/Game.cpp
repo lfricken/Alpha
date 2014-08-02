@@ -1,31 +1,30 @@
 /**WONT BE NEEDED**/
-#include "Chunk.h"
-#include "Ship.h"
+#include "Chunk.hpp"
+#include "Ship.hpp"
 
-#include "GModule.h"
-#include "Module.h"
-#include "Button.h"
+#include "GModule.hpp"
+#include "Module.hpp"
+#include "Button.hpp"
 /**WONT BE NEEDED**/
 
-#include "Sort.h"
-#include "Game.h"
-#include "globals.h"
-#include "IOManager.h"
-#include "ControlManager.h"
+#include "Sort.hpp"
+#include "Game.hpp"
+#include "globals.hpp"
+#include "IOManager.hpp"
+#include "ControlManager.hpp"
 
-#include "Hull.h"
-#include "Armor.h"
-#include "ForceFieldCore.h"
-#include "Thruster.h"
-#include "Turret.h"
-#include "Capacitor.h"
-#include "Reactor.h"
+#include "Hull.hpp"
+#include "Armor.hpp"
+#include "ForceFieldCore.hpp"
+#include "Thruster.hpp"
+#include "Turret.hpp"
+#include "Capacitor.hpp"
+#include "Reactor.hpp"
 
-#include "EditBox.h"
-#include "Decoration.h"
+#include "EditBox.hpp"
+#include "Decoration.hpp"
+#include "ProjectileBarrel.hpp"
 
-
-#include "json.h"
 
 using namespace std;
 
@@ -265,7 +264,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     DecorationData decorDat;
     decorDat.gfxCompData.scale = sf::Vector2f(1, 1);
     decorDat.name = "art";
-    decorDat.gfxCompData.rotation = leon::degToRad(45);
+    decorDat.gfxCompData.rotation = 20;
     decorDat.gfxCompData.animState = AnimationState::Activated;
     decorDat.gfxCompData.position = sf::Vector2f(20, 10);
     Decoration* pDecor = new Decoration(decorDat);
@@ -405,8 +404,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     ReactorData reacData;
     reacData.offset = b2Vec2(0, 2);
 
-    WeaponBarrelData barrelData1;
-    WeaponBarrelData barrelData2;
+    ProjectileBarrelData barrelData1;
+    ProjectileBarrelData barrelData2;
     barrelData1.barrelPixelOffset.y = 5;
     barrelData2.barrelPixelOffset.y = -5;
     barrelData1.muzzlePixelOffset.x = 32;
@@ -414,15 +413,19 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     TurretData turretData;
     turretData.offset = b2Vec2(0,1);
     turretData.weaponData.refireDelay = 0.4;
-    turretData.weaponData.barrelData.push_back(barrelData1);
-    turretData.weaponData.barrelData.push_back(barrelData2);
+    turretData.weaponData.barrelData.push_back( std::tr1::shared_ptr<WeaponBarrelData>(new ProjectileBarrelData(barrelData1)) );
+    turretData.weaponData.barrelData.push_back( std::tr1::shared_ptr<WeaponBarrelData>(new ProjectileBarrelData(barrelData2)) );
 
-    FireCommand once;
-    once.delay = 0.07;
-    once.barrelIndex = 0;
-    turretData.weaponData.fireCommandList.push_back(once);
-    once.barrelIndex = 1;
-    turretData.weaponData.fireCommandList.push_back(once);
+
+
+    FireCommand once1;
+    once1.delay = 0;
+    once1.barrelIndex = 0;
+    turretData.weaponData.primeCommandList.push_back(once1);
+    FireCommand once2;
+    once2.delay = 0.1;
+    once2.barrelIndex = 1;
+    turretData.weaponData.primeCommandList.push_back(once2);
 
     TurretData turretData2(turretData);
     turretData2.offset = b2Vec2(1,2);
@@ -438,8 +441,13 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     barrelData1.barrelPixelOffset.y = 0;
     barrelData1.projectileType = 1;
     barrelData1.projectileVelocity = 240;
-    turretData3.weaponData.fireCommandList.pop_back();
-    turretData3.weaponData.barrelData.push_back(barrelData1);
+    turretData3.weaponData.primeCommandList.clear();
+
+    FireCommand once3;
+    once3.delay = 0;
+    once3.barrelIndex = 0;
+    turretData3.weaponData.secondaryCommandList.push_back(once3);
+    turretData3.weaponData.barrelData.push_back( std::tr1::shared_ptr<WeaponBarrelData>(new ProjectileBarrelData(barrelData1)) );
 
     ArmorData armorData;
 

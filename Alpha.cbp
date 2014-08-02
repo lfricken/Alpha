@@ -79,6 +79,7 @@
 		<Unit filename="include/GUI/WidgetBase.h" />
 		<Unit filename="include/Game/Game.h" />
 		<Unit filename="include/Game/TextureAllocator.h" />
+		<Unit filename="include/Headers/AmmoType.h" />
 		<Unit filename="include/Headers/Angles.h" />
 		<Unit filename="include/Headers/AnimationState.h" />
 		<Unit filename="include/Headers/ClassType.h" />
@@ -126,6 +127,7 @@
 		<Unit filename="include/Universe/Modules/Trigger.h" />
 		<Unit filename="include/Universe/Modules/Turret.h" />
 		<Unit filename="include/Universe/Simple/AmmoContainer.h" />
+		<Unit filename="include/Universe/Simple/AmmoPool.h" />
 		<Unit filename="include/Universe/Simple/AnimationController.h" />
 		<Unit filename="include/Universe/Simple/AnimationLooper.h" />
 		<Unit filename="include/Universe/Simple/Attributes.h" />
@@ -133,7 +135,9 @@
 		<Unit filename="include/Universe/Simple/Filter.h" />
 		<Unit filename="include/Universe/Simple/GraphicsComponentFactory.h" />
 		<Unit filename="include/Universe/Simple/Link.h" />
+		<Unit filename="include/Universe/Simple/Magazine.h" />
 		<Unit filename="include/Universe/Simple/MultiTileMap.h" />
+		<Unit filename="include/Universe/Simple/ProjectileBarrel.h" />
 		<Unit filename="include/Universe/Simple/ReactorComponent.h" />
 		<Unit filename="include/Universe/Simple/Timer.h" />
 		<Unit filename="include/Universe/Simple/Weapon.h" />
@@ -182,6 +186,7 @@
 		<Unit filename="src/Universe/Modules/Trigger.cpp" />
 		<Unit filename="src/Universe/Modules/Turret.cpp" />
 		<Unit filename="src/Universe/Simple/AmmoContainer.cpp" />
+		<Unit filename="src/Universe/Simple/AmmoPool.cpp" />
 		<Unit filename="src/Universe/Simple/AnimationController.cpp" />
 		<Unit filename="src/Universe/Simple/AnimationLooper.cpp" />
 		<Unit filename="src/Universe/Simple/Attributes.cpp" />
@@ -189,7 +194,9 @@
 		<Unit filename="src/Universe/Simple/Filter.cpp" />
 		<Unit filename="src/Universe/Simple/GraphicsComponentFactory.cpp" />
 		<Unit filename="src/Universe/Simple/Link.cpp" />
+		<Unit filename="src/Universe/Simple/Magazine.cpp" />
 		<Unit filename="src/Universe/Simple/MultiTileMap.cpp" />
+		<Unit filename="src/Universe/Simple/ProjectileBarrel.cpp" />
 		<Unit filename="src/Universe/Simple/ReactorComponent.cpp" />
 		<Unit filename="src/Universe/Simple/Timer.cpp" />
 		<Unit filename="src/Universe/Simple/Weapon.cpp" />

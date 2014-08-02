@@ -1,4 +1,5 @@
-
+Fix ammo(multiple collisions for one shot)
+Fix ammo(incorrect damage calc)
 Make some modules for zoom and energy
 make ammo and ammo modules
 

@@ -53,7 +53,7 @@ std::string animFile = "textures/default.acfg";
 
 sf::Vector2f position = sf::Vector2f(0, 0);
 sf::Vector2f scale = sf::Vector2f(1, 1);
-AnimationState animState = AnimationState::Default;
+AnimationState animState ="Default";
 GraphicsLayer layer = GraphicsLayer::GModules;
 }
 /**GRAPHICS**/

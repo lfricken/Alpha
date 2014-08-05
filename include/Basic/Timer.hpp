@@ -9,7 +9,7 @@ public:
     virtual ~Timer();
 
     float getTime() const;//time elapsed as seconds since game was initialized
-    float getTimeElapsed();//get time elapsed since we last called this function
+    float getTimeElapsed() const;//get time elapsed since we last called this function
 
     bool isTimeUp() const;//asks whether the time is up
     void resetTimer();
@@ -17,7 +17,7 @@ public:
     void restartCountDown();
 protected:
 private:
-    float m_lastElapsedTime;
+    mutable float m_lastElapsedTime;
 
     float m_countDownTime;
     mutable float m_lastCountDownTime;

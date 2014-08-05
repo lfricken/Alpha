@@ -30,15 +30,63 @@ using namespace std;
 
 Game::Game()
 {
+    /**
+    Json::Value root;//Let's parse it
+    Json::Reader reader;
+    std::ifstream test(animationFile, std::ifstream::binary);
+    bool parsedSuccess = reader.parse(test, root, false);
+
+    if(not parsedSuccess)
+    {
+        std::cout << "\nFailed to parse JSON " << std::endl << FILELINE;
+        ///eRROR LOG
+    }
+    else
+    {
+        std::vector<int> copyPositions;
+        const Json::Value stateList = root["stateList"];
+
+        for(auto it = stateList.begin(); it != stateList.end(); ++it)//get all the state settings
+        {
+            if(not (*it)["copyFrom"].isNull())//check if we have some value to copy from
+            {
+                std::cout << "\nWill Copy.";
+            }
+            else//copy that data to one of our animation states
+            {
+                AnimationSetting setting;
+                setting.delay = (*it)["delay"].asFloat();
+                setting.nextState = (*it)["nextState"].asString();
+
+                const Json::Value tileList = (*it)["tileList"];
+                for(unsigned int i = 0; i<tileList.size(); i+=2)
+                {
+                    setting.sequence.push_back(sf::Vector2f(tileList[i].asInt(), tileList[i+1].asInt()));
+                }
+
+                (*m_pSettingsList)[(*it)["state"].asString()] = setting;
+            }
+        }
+
+
+        for(auto it = copyPositions.begin(); it != copyPositions.end(); ++it)
+        {
+            (*m_pSettingsList)[stateList[*it]["animState"].asString()] = (*m_pSettingsList)[stateList[*it]["copyFrom"].asString()];
+        }
+    }
+
+    **/
+
+
     ///load window data into settings, and launch window with the settings
     bool shouldSmoothTextures = true;
     m_settings.antialiasingLevel = 4;
     sf::VideoMode mode;
-    mode = sf::VideoMode(1900, 1000, 32);
-    //mode = sf::VideoMode::getDesktopMode();//used for full screen
+    // mode = sf::VideoMode(1900, 1000, 32);
+    mode = sf::VideoMode::getDesktopMode();//used for full screen
     std::string windowName = "SFML Box2D Test Environment";
 
-
+    m_spAnimAlloc = std::tr1::shared_ptr<AnimationAllocator>(new AnimationAllocator);
     m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(mode, windowName, sf::Style::Default, m_settings));
 
     m_spIOManager = std::tr1::shared_ptr<IOManager>(new IOManager());//independent
@@ -102,6 +150,11 @@ OverlayManager& Game::getGameOverlayManager()
 {
     return *m_spOverlayManager;
 }
+AnimationAllocator& Game::getAnimationAllocator()
+{
+    return *m_spAnimAlloc;
+}
+
 
 Game::Status Game::client()
 {
@@ -265,7 +318,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     decorDat.gfxCompData.scale = sf::Vector2f(1, 1);
     decorDat.name = "art";
     decorDat.gfxCompData.rotation = 20;
-    decorDat.gfxCompData.animState = AnimationState::Activated;
+    decorDat.gfxCompData.animState = "Activated";
     decorDat.gfxCompData.position = sf::Vector2f(20, 10);
     Decoration* pDecor = new Decoration(decorDat);
     m_spUniverse->add(pDecor);
@@ -536,26 +589,26 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     m_spUniverse->add(pShip1);
 
 
-   /* vector<tr1::shared_ptr<GModuleData> > moduleListAdditive1;
-    for (float i=0, x=-2, y=9, numBoxsX = 1; i<numBoxsX; ++i, ++x)//creates boxes in a line
-    {
-        armorData.offset.x = x*2*armorData.halfSize.x;
-        armorData.offset.y = y*2*armorData.halfSize.y;
-        //shipModuleData.texTile.x = texTile;
-        moduleListAdditive1.push_back( tr1::shared_ptr<GModuleData>(new ArmorData(armorData)) );
-    }
-    vector<tr1::shared_ptr<GModuleData> > moduleListAdditive2;*/
-   /* for (float i=0, x=-2, y=10, numBoxsX = 5; i<numBoxsX; ++i, ++x)//creates boxes in a line
-    {
-        armorData.offset.x = x*2*armorData.halfSize.x;
-        armorData.offset.y = y*2*armorData.halfSize.y;
-        //shipModuleData.texTile.x = texTile;
-        moduleListAdditive2.push_back( tr1::shared_ptr<GModuleData>(new ArmorData(armorData)) );
-    }
-    cout << "\nAdditive.";
-    pChunk1->add(moduleListAdditive1);
-    cout << "\nEndAdditive.";
-    pChunk1->add(moduleListAdditive2);*/
+    /* vector<tr1::shared_ptr<GModuleData> > moduleListAdditive1;
+     for (float i=0, x=-2, y=9, numBoxsX = 1; i<numBoxsX; ++i, ++x)//creates boxes in a line
+     {
+         armorData.offset.x = x*2*armorData.halfSize.x;
+         armorData.offset.y = y*2*armorData.halfSize.y;
+         //shipModuleData.texTile.x = texTile;
+         moduleListAdditive1.push_back( tr1::shared_ptr<GModuleData>(new ArmorData(armorData)) );
+     }
+     vector<tr1::shared_ptr<GModuleData> > moduleListAdditive2;*/
+    /* for (float i=0, x=-2, y=10, numBoxsX = 5; i<numBoxsX; ++i, ++x)//creates boxes in a line
+     {
+         armorData.offset.x = x*2*armorData.halfSize.x;
+         armorData.offset.y = y*2*armorData.halfSize.y;
+         //shipModuleData.texTile.x = texTile;
+         moduleListAdditive2.push_back( tr1::shared_ptr<GModuleData>(new ArmorData(armorData)) );
+     }
+     cout << "\nAdditive.";
+     pChunk1->add(moduleListAdditive1);
+     cout << "\nEndAdditive.";
+     pChunk1->add(moduleListAdditive2);*/
 
     /**SHIP CHUNKS**/
 
@@ -640,26 +693,26 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     player1.viewport = sf::FloatRect(0, 0, 1, 1);
 
     m_spControlManager->add(std::tr1::shared_ptr<Player>(new Player(player1)));
-/**
-    PlayerData player2;
-    player2.name = "player_2";
-    player2.type = ClassType::PLAYER;
-    player2.playerMode = PlayerMode::God;
-    player2.targetName = "ship_2";
+    /**
+        PlayerData player2;
+        player2.name = "player_2";
+        player2.type = ClassType::PLAYER;
+        player2.playerMode = PlayerMode::God;
+        player2.targetName = "ship_2";
 
-    player2.keyConfig.up = sf::Keyboard::Numpad8;
-    player2.keyConfig.left = sf::Keyboard::Numpad4;
-    player2.keyConfig.down = sf::Keyboard::Numpad5;
-    player2.keyConfig.right = sf::Keyboard::Numpad6;
+        player2.keyConfig.up = sf::Keyboard::Numpad8;
+        player2.keyConfig.left = sf::Keyboard::Numpad4;
+        player2.keyConfig.down = sf::Keyboard::Numpad5;
+        player2.keyConfig.right = sf::Keyboard::Numpad6;
 
-    player2.keyConfig.primary = sf::Mouse::Left;
-    player2.keyConfig.secondary = sf::Mouse::Right;
+        player2.keyConfig.primary = sf::Mouse::Left;
+        player2.keyConfig.secondary = sf::Mouse::Right;
 
-    player2.cameraPos = sf::Vector2f(0, 0);
-    player2.viewport = sf::FloatRect(0.5, 0, 0.5, 1);
+        player2.cameraPos = sf::Vector2f(0, 0);
+        player2.viewport = sf::FloatRect(0.5, 0, 0.5, 1);
 
-    m_spControlManager->add(std::tr1::shared_ptr<Player>(new Player(player2)));
-**/
+        m_spControlManager->add(std::tr1::shared_ptr<Player>(new Player(player2)));
+    **/
     /**PLAYER**/
 
     /**===========================PLAYER===========================**/

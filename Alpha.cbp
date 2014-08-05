@@ -13,6 +13,8 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="include/Universe/Utility" />
+					<Add directory="include/Graphics" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -23,6 +25,8 @@
 				<Compiler>
 					<Add option="-pg" />
 					<Add option="-g" />
+					<Add directory="include/Universe/Utility" />
+					<Add directory="include/Graphics" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
@@ -79,8 +83,7 @@
 		<Unit filename="include/Control/PlayerState.hpp" />
 		<Unit filename="include/Game/Game.hpp" />
 		<Unit filename="include/Graphics/AnimationController.hpp" />
-		<Unit filename="include/Graphics/AnimationLooper.hpp" />
-		<Unit filename="include/Graphics/AnimationState.hpp" />
+		<Unit filename="include/Graphics/AnimationSetting.hpp" />
 		<Unit filename="include/Graphics/Decoration.hpp" />
 		<Unit filename="include/Graphics/GraphicsBase.hpp" />
 		<Unit filename="include/Graphics/GraphicsComponent.hpp" />
@@ -127,6 +130,7 @@
 		<Unit filename="include/Universe/Module/Trigger.hpp" />
 		<Unit filename="include/Universe/Module/Turret.hpp" />
 		<Unit filename="include/Universe/Universe.hpp" />
+		<Unit filename="include/Universe/Utility/AnimationAllocator.hpp" />
 		<Unit filename="include/Universe/Utility/BedFinder.hpp" />
 		<Unit filename="include/Universe/Utility/DebugDraw.hpp" />
 		<Unit filename="include/Universe/Utility/GraphicsComponentFactory.hpp" />
@@ -147,13 +151,14 @@
 		<Unit filename="src/Basic/Filter.cpp" />
 		<Unit filename="src/Basic/Link.cpp" />
 		<Unit filename="src/Basic/Timer.cpp" />
+		<Unit filename="src/Basic/jsoncpp.cpp" />
 		<Unit filename="src/Control/Camera.cpp" />
 		<Unit filename="src/Control/ControlManager.cpp" />
 		<Unit filename="src/Control/Intelligence.cpp" />
 		<Unit filename="src/Control/Player.cpp" />
 		<Unit filename="src/Game/Game.cpp" />
 		<Unit filename="src/Graphics/AnimationController.cpp" />
-		<Unit filename="src/Graphics/AnimationLooper.cpp" />
+		<Unit filename="src/Graphics/AnimationSetting.cpp" />
 		<Unit filename="src/Graphics/Decoration.cpp" />
 		<Unit filename="src/Graphics/GraphicsBase.cpp" />
 		<Unit filename="src/Graphics/GraphicsComponent.cpp" />
@@ -187,6 +192,7 @@
 		<Unit filename="src/Universe/Module/Trigger.cpp" />
 		<Unit filename="src/Universe/Module/Turret.cpp" />
 		<Unit filename="src/Universe/Universe.cpp" />
+		<Unit filename="src/Universe/Utility/AnimationAllocator.cpp" />
 		<Unit filename="src/Universe/Utility/BedFinder.cpp" />
 		<Unit filename="src/Universe/Utility/DebugDraw.cpp" />
 		<Unit filename="src/Universe/Utility/GraphicsComponentFactory.cpp" />

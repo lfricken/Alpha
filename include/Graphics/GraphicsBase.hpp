@@ -4,7 +4,7 @@
 #include "stdafx.hpp"
 #include "IOBase.hpp"
 #include "AnimationController.hpp"
-#include "AnimationState.hpp"
+#include "AnimationSetting.hpp"
 
 struct TexturedVertices;
 

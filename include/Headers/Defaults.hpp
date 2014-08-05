@@ -7,7 +7,7 @@
 #include "ClassType.hpp"
 #include "PlayerState.hpp"
 #include "PlayerMode.hpp"
-#include "AnimationState.hpp"
+#include "AnimationSetting.hpp"
 #include "GraphicsLayer.hpp"
 
 namespace defaults
@@ -38,7 +38,7 @@ extern b2Vec2 halfSize;
 extern float density;
 extern float friction;
 extern float restitution;
-extern float rotation;///degrees CCW <----double check this
+extern float rotation;///degrees CCW? <----double check this
 }
 /**PHYSICS**/
 

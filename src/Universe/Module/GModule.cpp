@@ -52,7 +52,7 @@ T_Health GModule::damage(T_Damage damage)
     m_health.takeDamage(damage);
 
     if(m_health.getValuePercent() <= 50.0f)
-        getAnimationController().setState(AnimationState::Damaged);
+        getAnimationController().setState("Damaged");
 
     if(m_health.getValue() <= 0)//if our health drops too low
         destruct();
@@ -83,7 +83,7 @@ void GModule::destruct()
         m_pFixture->SetFilterData(filter);
 
         m_isDestroyed = true;
-        getAnimationController().setState(AnimationState::Destroyed);
+        getAnimationController().setState("Destroyed");
         disable();
     }
 }

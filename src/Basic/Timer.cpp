@@ -19,7 +19,7 @@ float Timer::getTime() const//time elapsed as seconds since universe was initial
 {
     return game.getGameUniverse().getTime();
 }
-float Timer::getTimeElapsed()//get time elapsed since we last called this function
+float Timer::getTimeElapsed() const//get time elapsed since we last called this function
 {
     float oldTime = m_lastElapsedTime;
     m_lastElapsedTime = game.getGameUniverse().getTime();

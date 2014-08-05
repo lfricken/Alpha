@@ -38,6 +38,7 @@ public:
     Universe& getGameUniverse();
     OverlayManager& getGameOverlayManager();
     TextureAllocator& getTextureAllocator();
+    AnimationAllocator& getAnimationAllocator();
 
 protected:
 private:
@@ -45,6 +46,7 @@ private:
 
 
     /**created first**/
+    std::tr1::shared_ptr<AnimationAllocator> m_spAnimAlloc;
     std::tr1::shared_ptr<sf::RenderWindow> m_spWindow;
     std::tr1::shared_ptr<IOManager> m_spIOManager;
     std::tr1::shared_ptr<TextureAllocator> m_spTexAlloc;
@@ -56,7 +58,7 @@ private:
 
     sf::Clock m_clock;
     sf::Image m_icon;
-    sf::ContextSettings m_settings;///how can we edit the settings of the window?
+    sf::ContextSettings m_settings;
 };
 
 #endif // GAME_H

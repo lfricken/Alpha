@@ -1,5 +1,5 @@
 Fix ammo(multiple collisions for one shot)
-Fix ammo(incorrect damage calc)
+Fix gun turrets getting stuck in midair
 Make some modules for zoom and energy
 make ammo and ammo modules
 

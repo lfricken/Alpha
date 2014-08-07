@@ -30,67 +30,10 @@ using namespace std;
 
 Game::Game()
 {
-    /**
-    Json::Value root;//Let's parse it
-    Json::Reader reader;
-    std::ifstream test(animationFile, std::ifstream::binary);
-    bool parsedSuccess = reader.parse(test, root, false);
-
-    if(not parsedSuccess)
-    {
-        std::cout << "\nFailed to parse JSON " << std::endl << FILELINE;
-        ///eRROR LOG
-    }
-    else
-    {
-        std::vector<int> copyPositions;
-        const Json::Value stateList = root["stateList"];
-
-        for(auto it = stateList.begin(); it != stateList.end(); ++it)//get all the state settings
-        {
-            if(not (*it)["copyFrom"].isNull())//check if we have some value to copy from
-            {
-                std::cout << "\nWill Copy.";
-            }
-            else//copy that data to one of our animation states
-            {
-                AnimationSetting setting;
-                setting.delay = (*it)["delay"].asFloat();
-                setting.nextState = (*it)["nextState"].asString();
-
-                const Json::Value tileList = (*it)["tileList"];
-                for(unsigned int i = 0; i<tileList.size(); i+=2)
-                {
-                    setting.sequence.push_back(sf::Vector2f(tileList[i].asInt(), tileList[i+1].asInt()));
-                }
-
-                (*m_pSettingsList)[(*it)["state"].asString()] = setting;
-            }
-        }
-
-
-        for(auto it = copyPositions.begin(); it != copyPositions.end(); ++it)
-        {
-            (*m_pSettingsList)[stateList[*it]["animState"].asString()] = (*m_pSettingsList)[stateList[*it]["copyFrom"].asString()];
-        }
-    }
-
-    **/
-
-
-    ///load window data into settings, and launch window with the settings
-    bool shouldSmoothTextures = true;
-    m_settings.antialiasingLevel = 4;
-    sf::VideoMode mode;
-    // mode = sf::VideoMode(1900, 1000, 32);
-    mode = sf::VideoMode::getDesktopMode();//used for full screen
-    std::string windowName = "SFML Box2D Test Environment";
+    loadWindow();
 
     m_spAnimAlloc = std::tr1::shared_ptr<AnimationAllocator>(new AnimationAllocator);
-    m_spWindow = std::tr1::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(mode, windowName, sf::Style::Default, m_settings));
-
     m_spIOManager = std::tr1::shared_ptr<IOManager>(new IOManager());//independent
-    m_spTexAlloc = std::tr1::shared_ptr<TextureAllocator>(new TextureAllocator(shouldSmoothTextures));//independent
     m_spUniverse = std::tr1::shared_ptr<Universe>(new Universe());//independent
 
     /**created last**/
@@ -99,13 +42,11 @@ Game::Game()
 
 
 
-    bool loadedVsinc = false;
-    int loadedFrameRate = 60;///called loaded because we are supposed to load that info from a file
+
     std::string loadedFont = "TGUI/fonts/DejaVuSans.ttf";
 
     m_spOverlayManager->getGui().setGlobalFont(loadedFont);
-    m_spWindow->setVerticalSyncEnabled(loadedVsinc);
-    m_spWindow->setFramerateLimit(loadedFrameRate);
+
     ///This code won't work! WTF?
     ///if(!icon.loadFromFile("textures/tileset.png"))
     /// cout << "\nIcon Load Error";///texture allocator
@@ -130,6 +71,89 @@ Game::~Game()//unfinished
 {
 
 }
+void Game::loadWindow()
+{
+    struct WindowInitData
+    {
+        WindowInitData()
+        {
+            windowName = "FIXME";
+            windowMode = "windowed";
+            mode = sf::VideoMode(640, 640, 32);
+            antiAliasLevel = 0;
+            smoothTextures = false;
+            vSinc = false;
+            targetFPS = 10;
+        }
+        std::string windowName;//name of window to display
+        std::string defaultFont;//font file
+        std::string windowMode;//windowed vs fullscreen
+        sf::VideoMode mode;
+        int antiAliasLevel;
+        bool smoothTextures;
+        bool vSinc;
+        int targetFPS;
+    };
+    WindowInitData windowData;
+
+
+    Json::Value root;//Let's parse it
+    Json::Reader reader;
+    std::string windowFile = "window.ini";
+    std::ifstream test(windowFile, std::ifstream::binary);
+    bool parsedSuccess = reader.parse(test, root, false);
+
+    if(not parsedSuccess)
+    {
+        std::cout << "\nFailed to parse JSON file [" << windowFile << "]." << std::endl << FILELINE;
+        ///eRROR LOG
+    }
+    else
+    {
+        windowData.windowName = root["windowName"].asString();
+        windowData.defaultFont = root["defaultFont"].asString();
+        windowData.windowMode = root["windowMode"].asString();
+        windowData.mode = sf::VideoMode(root["resX"].asInt(), root["resY"].asInt(), root["color"].asInt());
+        windowData.antiAliasLevel = root["antiAliasLevel"].asInt();
+        windowData.smoothTextures = root["smoothTextures"].asBool();
+        windowData.vSinc = root["vSinc"].asBool();
+        windowData.targetFPS = root["targetFPS"].asInt();
+    }
+
+    /**LOAD DATA FROM WINDOW**/
+    m_settings.antialiasingLevel = windowData.antiAliasLevel;
+    int style;//the sf::style enum has no name!!
+    if(windowData.windowMode == "windowed")//windowed or fullscreen?
+    {
+        style = sf::Style::Default;
+    }
+    else
+    {
+        style = sf::Style::Fullscreen;
+    }
+
+
+    /**CREATE THE WINDOW AND TEXTURE ALLOC**/
+    if(m_spWindow)//if we are already pointing at something
+    {
+        ///close the old window???
+        m_spWindow->create(windowData.mode, windowData.windowName, style, m_settings);
+        m_spTexAlloc->smoothTextures(windowData.smoothTextures);
+    }
+    else//if this is the first time we created something
+    {
+        m_spWindow.reset(new sf::RenderWindow(windowData.mode, windowData.windowName, style, m_settings));
+        m_spTexAlloc.reset(new TextureAllocator(windowData.smoothTextures));
+    }
+
+    m_spWindow->setVerticalSyncEnabled(windowData.vSinc);
+    m_spWindow->setFramerateLimit(windowData.targetFPS);
+
+}
+
+
+
+
 IOManager& Game::getGameIOManager()
 {
     return *m_spIOManager;

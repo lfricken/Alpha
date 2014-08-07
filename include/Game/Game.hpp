@@ -31,6 +31,8 @@ public:
     Status client();
     Status server();
 
+    void loadWindow();
+
     float getTime() const;
 
     IOManager& getGameIOManager();
@@ -47,7 +49,7 @@ private:
 
     /**created first**/
     std::tr1::shared_ptr<AnimationAllocator> m_spAnimAlloc;
-    std::tr1::shared_ptr<sf::RenderWindow> m_spWindow;
+    std::tr1::shared_ptr<sf::RenderWindow> m_spWindow;///unfortunately TGUI keeps a pointer to this!!
     std::tr1::shared_ptr<IOManager> m_spIOManager;
     std::tr1::shared_ptr<TextureAllocator> m_spTexAlloc;
     std::tr1::shared_ptr<Universe> m_spUniverse;

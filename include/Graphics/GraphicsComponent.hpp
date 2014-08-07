@@ -13,7 +13,7 @@ struct GraphicsComponentData
     GraphicsComponentData() :
         animState(defaults::graphics::animState),
         position(defaults::graphics::position),
-        rotation(defaults::graphics::rotation),//degrees
+        rotation(defaults::graphics::rotation),//degrees CCW
         scale(defaults::graphics::scale),
         texTileSize(defaults::graphics::texTileSize),
         color(defaults::graphics::color),
@@ -26,7 +26,7 @@ struct GraphicsComponentData
 
     AnimationState animState;
     sf::Vector2f position;
-    float rotation;//degrees
+    float rotation;//degrees CCW
     sf::Vector2f scale;
     sf::Vector2f texTileSize;
     sf::Color color;

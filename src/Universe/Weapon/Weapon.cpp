@@ -29,13 +29,19 @@ Weapon::~Weapon()
 }
 void Weapon::primary(const b2Vec2& coords)
 {
-    T_Energy energy = m_linker.getTargetPtr()->getChunk()->getEnergyPool().getValue();
+    EnergyPool& rEnergyPool = m_linker.getTargetPtr()->getChunk()->getEnergyPool();
+    AmmoPool& rAmmoPool = m_linker.getTargetPtr()->getChunk()->getAmmoPool();
 
-    if(m_refireTimer.isTimeUp() && (!m_magazine.isReloading()))
+    if(m_refireTimer.isTimeUp() and (m_magazine.canConsume(m_ammoConsumption)) and (rEnergyPool.canConsume(m_energyConsumption)))
     {
+        rEnergyPool.consume(m_energyConsumption);
+        m_magazine.consume(m_ammoConsumption);
         m_refireTimer.restartCountDown();
         f_queuePrimaryCommands();
+        std::cout << "\n" << m_magazine.getRemainingAmmo() << ":" << m_magazine.getCapacity();
     }
+    else if(not m_magazine.hasEnoughAmmo(m_ammoConsumption))
+        m_magazine.reload(rAmmoPool, m_ammoType);
 }
 void Weapon::secondary(const b2Vec2& coords)
 {

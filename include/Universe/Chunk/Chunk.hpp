@@ -109,7 +109,7 @@ public:
     AmmoPool& getAmmoPool();
 
     /**GRAPHICS**/
-    void draw();
+    virtual void draw();
 
     /**IO-SYSTEM**/
     virtual IOBaseReturn input(IOBaseArgs);

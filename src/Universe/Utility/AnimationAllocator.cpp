@@ -2,11 +2,12 @@
 
 AnimationAllocator::AnimationAllocator()
 {
+    /**
     std::tr1::shared_ptr<AnimSet> spBackupSet(new AnimSet);
     spBackupSet->delay = 1;
     spBackupSet->nextState = "";
     spBackupSet->sequence.push_back(sf::Vector2f(0,0));
-    m_animationSets["BackupHardCodedAnimSet"] = spBackupSet;
+    m_animationSets["BackupHardCodedAnimSet"] = spBackupSet;**/
 }
 AnimationAllocator::~AnimationAllocator()
 {

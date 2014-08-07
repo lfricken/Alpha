@@ -20,6 +20,12 @@ TextureAllocator::~TextureAllocator()
 {
 
 }
+void TextureAllocator::smoothTextures(bool smooth)
+{
+    m_smoothTextures = smooth;
+    for(auto it = m_textures.begin(); it != m_textures.end(); ++it)//loop through all our textures to make them smooth
+        it->second->setSmooth(m_smoothTextures);
+}
 Texture* TextureAllocator::request(const std::string& rFilePath)
 {
     map<string, tr1::shared_ptr<Texture> >::iterator it = m_textures.find(rFilePath);

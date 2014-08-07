@@ -10,7 +10,7 @@ class TextureAllocator
         TextureAllocator(bool shouldSmoothTextures);
         ~TextureAllocator();
 
-        ///smoothTextures(bool smooth);//loops through our textures and either smooths them or not, and sets m_smoothTextures apropriatly
+        void smoothTextures(bool smooth);//loops through our textures and either smooths them or not, and sets m_smoothTextures apropriatly
         sf::Texture* request(const std::string& rFilePath);
     protected:
     private:

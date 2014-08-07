@@ -198,7 +198,7 @@ typedef int T_Ammo;
 class Ammo : public Variable<T_Ammo>
 {
 public:
-    Ammo() : Variable(NULL, Event::Ammo, 14, 60, 0) {}
+    Ammo() : Variable(NULL, Event::Ammo, 0, 0, 0) {}
     Ammo(ActiveEventer* pEventer, T_Ammo val, T_Ammo max) : Variable(pEventer, Event::Ammo, val, max, 0) {}
 
     void setMaxCapacity(T_Ammo amount)

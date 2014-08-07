@@ -53,7 +53,7 @@
             "comment": "This is a comment where you can write something, the comment value is not read by the engine",
             "state": "Destroyed",
             "delay": 1,
-            "nextState": "Activated",
+            "nextState": null,
             "tileList": [
                 2,
                 0,

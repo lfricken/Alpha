@@ -48,6 +48,8 @@ enum ClassType///we should revise this possible
     FLOOR,
     THRUSTER,
     TURRET,
+    STORAGE,
+    SENSOR,
 
 
     /**CHUNKS**/

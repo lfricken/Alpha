@@ -26,7 +26,6 @@ class IOManager
     private:
         void f_free(unsigned int id);
 
-        IOComponent* m_currentTarget;
         std::vector<Packagelet> m_packageletList;//list of packages to be sent
 
         std::vector<unsigned int> m_IOComponentFreeList;//holds free element indexes of m_IOComponentList

@@ -1,3 +1,4 @@
+Fix child parent relationship
 Fix ammo(multiple collisions for one shot)
 Fix gun turrets getting stuck in midair
 Make some modules for zoom and energy

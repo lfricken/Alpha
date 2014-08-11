@@ -23,8 +23,9 @@ struct IOBaseData//initialized
 {
     IOBaseData () :
         type(defaults::io::classType),
+        butes(),
         isEnabled(defaults::io::isEnabled),
-        name(defaults::io::name)/**ID is calculated with a name**/
+        name(defaults::io::name)
     {
         butes.setBute(Butes::isSolid, false);
         butes.setBute(Butes::isDestructable, false);
@@ -54,11 +55,15 @@ public:
 
     /**IO**/
     virtual IOBaseReturn input(IOBaseArgs);
-    virtual void enable();
-    virtual void disable();
+    void enable();
+    void disable();
+
     virtual void trigger();
 
 protected:
+    virtual void enablePostHook();
+    virtual void disablePostHook();
+
     void f_varEvent(std::string value, Event eventType);//takes a generic variable type, and sends the data to eventer
     void f_varEvent(int value, Event eventType);
     void f_varEvent(float value, Event eventType);

@@ -17,27 +17,35 @@ void Turret::f_initialize(const TurretData& rData)
 }
 void Turret::primary(const b2Vec2& coords)
 {
-    if(!isDestroyed() and m_firesPrimary and m_linker.isLinked())
+    if((not isDestroyed()) and m_firesPrimary and m_linker.isLinked())
         m_linker.getTargetPtr()->primary(coords);
 }
 void Turret::secondary(const b2Vec2& coords)
 {
-    if(not isDestroyed() and m_firesSecondary and m_linker.isLinked())
+    if((not isDestroyed()) and m_firesSecondary and m_linker.isLinked())
         m_linker.getTargetPtr()->secondary(coords);
 }
 void Turret::aim(const b2Vec2& coords)
 {
-    if((!isDestroyed()) and m_linker.isLinked())
+    if((not isDestroyed()) and m_linker.isLinked())
         m_linker.getTargetPtr()->aim(getCenter(), coords);
 }
 bool Turret::physUpdate()
 {
-    if(m_pChunk->getLinker().isLinked())
-        m_linker.getTargetPtr()->aim(getCenter(), m_pChunk->getLinker().getTargetPtr()->getAim());
+    if(m_linker.isLinked())
+    {
+        m_linker.getTargetPtr()->updatePosition(getCenter());
+        if(not isDestroyed())
+            m_linker.getTargetPtr()->checkFireState();
+    }
 
-    if((not isDestroyed()) and m_linker.isLinked())
-        m_linker.getTargetPtr()->checkFireState(getCenter());
     return true;
+}
+void Turret::destructHook()
+{
+   // if(m_linker.isLinked())
+    //    m_linker.getTargetPtr()->setPivot(false);
+    GModule::destructHook();
 }
 Link<Turret, Weapon>& Turret::getLinker()
 {

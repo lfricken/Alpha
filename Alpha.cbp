@@ -15,6 +15,9 @@
 					<Add option="-g" />
 					<Add directory="include/Universe/Utility" />
 					<Add directory="include/Graphics" />
+					<Add directory="include/Basic" />
+					<Add directory="include/Universe/Module" />
+					<Add directory="include/Universe/ModuleComponent" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -23,13 +26,14 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-pg" />
 					<Add option="-g" />
 					<Add directory="include/Universe/Utility" />
 					<Add directory="include/Graphics" />
+					<Add directory="include/Basic" />
+					<Add directory="include/Universe/Module" />
+					<Add directory="include/Universe/ModuleComponent" />
 				</Compiler>
 				<Linker>
-					<Add option="-pg -lgmon" />
 					<Add option="-lsfml-network-s" />
 					<Add option="-lsfml-audio-s" />
 					<Add option="-lsfml-graphics-s" />
@@ -44,8 +48,10 @@
 		</Build>
 		<Compiler>
 			<Add option="-std=c++11" />
+			<Add option="-Wfatal-errors" />
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
+			<Add option="-Wuninitialized" />
 			<Add directory="../../../Engines/SFML-2_recompile/include" />
 			<Add directory="../../../Engines/TGUI-0.6.1/include" />
 			<Add directory="../../../Engines/Box2D" />
@@ -74,6 +80,8 @@
 		<Unit filename="include/Basic/Attributes.hpp" />
 		<Unit filename="include/Basic/Filter.hpp" />
 		<Unit filename="include/Basic/Link.hpp" />
+		<Unit filename="include/Basic/StateGraph.hpp" />
+		<Unit filename="include/Basic/StateNode.hpp" />
 		<Unit filename="include/Basic/Timer.hpp" />
 		<Unit filename="include/Control/Camera.hpp" />
 		<Unit filename="include/Control/ControlManager.hpp" />
@@ -89,6 +97,7 @@
 		<Unit filename="include/Graphics/GraphicsComponent.hpp" />
 		<Unit filename="include/Graphics/GraphicsLayer.hpp" />
 		<Unit filename="include/Graphics/MultiTileMap.hpp" />
+		<Unit filename="include/Graphics/Spinner.hpp" />
 		<Unit filename="include/Gui/Button.hpp" />
 		<Unit filename="include/Gui/EditBox.hpp" />
 		<Unit filename="include/Gui/OverlayManager.hpp" />
@@ -118,6 +127,7 @@
 		<Unit filename="include/Universe/Chunk/Ship.hpp" />
 		<Unit filename="include/Universe/ModuleComponent/CapacitorComponent.hpp" />
 		<Unit filename="include/Universe/ModuleComponent/ReactorComponent.hpp" />
+		<Unit filename="include/Universe/ModuleComponent/ZoomModComponent.hpp" />
 		<Unit filename="include/Universe/Module/Armor.hpp" />
 		<Unit filename="include/Universe/Module/Capacitor.hpp" />
 		<Unit filename="include/Universe/Module/ForceField.hpp" />
@@ -125,6 +135,7 @@
 		<Unit filename="include/Universe/Module/GModule.hpp" />
 		<Unit filename="include/Universe/Module/Hull.hpp" />
 		<Unit filename="include/Universe/Module/Module.hpp" />
+		<Unit filename="include/Universe/Module/Radar.hpp" />
 		<Unit filename="include/Universe/Module/Reactor.hpp" />
 		<Unit filename="include/Universe/Module/Thruster.hpp" />
 		<Unit filename="include/Universe/Module/Trigger.hpp" />
@@ -150,6 +161,8 @@
 		<Unit filename="src/Basic/Attributes.cpp" />
 		<Unit filename="src/Basic/Filter.cpp" />
 		<Unit filename="src/Basic/Link.cpp" />
+		<Unit filename="src/Basic/StateGraph.cpp" />
+		<Unit filename="src/Basic/StateNode.cpp" />
 		<Unit filename="src/Basic/Timer.cpp" />
 		<Unit filename="src/Basic/jsoncpp.cpp" />
 		<Unit filename="src/Control/Camera.cpp" />
@@ -163,6 +176,7 @@
 		<Unit filename="src/Graphics/GraphicsBase.cpp" />
 		<Unit filename="src/Graphics/GraphicsComponent.cpp" />
 		<Unit filename="src/Graphics/MultiTileMap.cpp" />
+		<Unit filename="src/Graphics/Spinner.cpp" />
 		<Unit filename="src/Gui/Button.cpp" />
 		<Unit filename="src/Gui/EditBox.cpp" />
 		<Unit filename="src/Gui/OverlayManager.cpp" />
@@ -180,6 +194,7 @@
 		<Unit filename="src/Universe/Chunk/Ship.cpp" />
 		<Unit filename="src/Universe/ModuleComponent/CapacitorComponent.cpp" />
 		<Unit filename="src/Universe/ModuleComponent/ReactorComponent.cpp" />
+		<Unit filename="src/Universe/ModuleComponent/ZoomModComponent.cpp" />
 		<Unit filename="src/Universe/Module/Armor.cpp" />
 		<Unit filename="src/Universe/Module/Capacitor.cpp" />
 		<Unit filename="src/Universe/Module/ForceField.cpp" />
@@ -187,6 +202,7 @@
 		<Unit filename="src/Universe/Module/GModule.cpp" />
 		<Unit filename="src/Universe/Module/Hull.cpp" />
 		<Unit filename="src/Universe/Module/Module.cpp" />
+		<Unit filename="src/Universe/Module/Radar.cpp" />
 		<Unit filename="src/Universe/Module/Reactor.cpp" />
 		<Unit filename="src/Universe/Module/Thruster.cpp" />
 		<Unit filename="src/Universe/Module/Trigger.cpp" />

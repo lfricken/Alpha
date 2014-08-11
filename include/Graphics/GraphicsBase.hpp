@@ -50,6 +50,8 @@ public:
     AnimationController& getAnimationController();
     void animate();
 protected:
+    virtual void animatePreHook();
+
 private:
     virtual void f_initialize(const GraphicsBaseData& rData, const b2Vec2& rHalfSize, const b2Vec2& rOffset, const float rotation);
 

@@ -33,7 +33,9 @@ public:
     T_Health damage(T_Damage damage);
     T_Health heal(T_Health h);
     T_Health getHealth() const;
-    virtual void destruct();//if our health drops too low, try and "destruct"
+
+    void destruct();//if our health drops too low, try and "destruct"
+    virtual void destructHook();//hooks into end of destruct
     bool isDestroyed() const;
 protected:
     virtual void f_initialize(const GModuleData& data);
@@ -58,15 +60,20 @@ struct GModuleData : public PhysicsBaseData, public GraphicsBaseData
         butes.setBute(isSolid, true);
         butes.setBute(isDestructable, true);
     }
-    virtual GModule* generate(Chunk* pChunk)
-    {
-        pBody = pChunk->getBody();
-        return new GModule(*this);
-    }
+
 
     T_Armor armor;
     T_Health health;
     T_Health healthMax;
+
+
+    virtual GModule* generate(Chunk* pChunk) const
+    {
+        GModuleData mutableCopy(*this);
+        mutableCopy.pBody = pChunk->getBody();
+                mutableCopy.pChunk = pChunk;
+        return new GModule(mutableCopy);
+    }
 };
 
 #endif // DGMODULE_H

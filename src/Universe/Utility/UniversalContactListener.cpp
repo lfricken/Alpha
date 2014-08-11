@@ -25,6 +25,7 @@ void UniversalContactListener::EndContact(b2Contact* contact)
 }
 void UniversalContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {
+    (void)oldManifold;//shutup the compiler about unused
     PhysicsBase* fixA = static_cast<PhysicsBase*>(contact->GetFixtureA()->GetUserData());
     PhysicsBase* fixB = static_cast<PhysicsBase*>(contact->GetFixtureB()->GetUserData());
 
@@ -35,6 +36,7 @@ void UniversalContactListener::PreSolve(b2Contact* contact, const b2Manifold* ol
 }
 void UniversalContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
 {
+    (void)impulse;//shutup the compiler about unused
     PhysicsBase* fixA = static_cast<PhysicsBase*>(contact->GetFixtureA()->GetUserData());
     PhysicsBase* fixB = static_cast<PhysicsBase*>(contact->GetFixtureB()->GetUserData());
 

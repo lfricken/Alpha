@@ -27,7 +27,7 @@ float Timer::getTimeElapsed() const//get time elapsed since we last called this 
 }
 bool Timer::isTimeUp() const
 {
-    m_countDownTimeRemain -= game.getGameUniverse().getTime() - m_lastCountDownTime;
+    m_countDownTimeRemain -= (game.getGameUniverse().getTime() - m_lastCountDownTime);
     m_lastCountDownTime = game.getGameUniverse().getTime();
     return (m_countDownTimeRemain <= 0);
 }

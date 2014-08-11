@@ -19,10 +19,10 @@ void ProjectileAllocator::f_initialize()
 }
 void ProjectileAllocator::add(ProjectileType type)/**make a new projectile of the specified type**/
 {
-    m_GModuleDataList.clear();/**clear our GModule list**/
-    m_GModuleDataList.push_back(std::tr1::shared_ptr<GModuleData>(  new GModuleData(  get<gModData>(m_projList[type]  ))    ));/**add a single element to it of the correct type from tuple**/
+    std::vector<std::tr1::shared_ptr<const GModuleData> > gModuleDataList;
+    gModuleDataList.push_back(std::tr1::shared_ptr<const GModuleData>(  new GModuleData(  get<gModData>(m_projList[type]  ))    ));/**add a single element to it of the correct type from tuple**/
     Projectile* m_pProjTemp = new Projectile(get<projData>(m_projList[type]));/**create a new projectile of the correct type with the data in tuple**/
-    m_pProjTemp->add(m_GModuleDataList);/**add our GModule List to it**/
+    m_pProjTemp->add(gModuleDataList);/**add our GModule List to it**/
     m_pProjTemp->setListPos(get<spList>(m_projList[type]).size());//since we WILL be at the end of the list    /**tell the projectile what it's index is, and increment the new value**/
     get<spList>(m_projList[type]).push_back(tr1::shared_ptr<Projectile>(m_pProjTemp));    /**finally, add the new projectile**/
 }

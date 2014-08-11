@@ -38,19 +38,25 @@ struct ForceFieldCoreData : public GModuleData
     ForceFieldData forceFieldData;
 
 
-    virtual GModule* generate(Chunk* pChunk)
+    virtual GModule* generate(Chunk* pChunk) const
     {
-        std::vector<std::tr1::shared_ptr<ModuleData> > fieldDataList;
-        fieldDataList.push_back(std::tr1::shared_ptr<ModuleData>(new ForceFieldData(forceFieldData)));
-        pForceField = dynamic_cast<ForceField*>(pChunk->add(fieldDataList));
-        if(pForceField == NULL)
+
+
+        std::vector<std::tr1::shared_ptr<const ModuleData> > fieldDataList;
+        fieldDataList.push_back(std::tr1::shared_ptr<const ModuleData>(new ForceFieldData(forceFieldData)));
+        ForceField* ptr = dynamic_cast<ForceField*>(pChunk->add(fieldDataList));
+        if(ptr == NULL)
         {
             ///ERROR LOG
             std::cout << FILELINE;
         }
 
-        pBody = pChunk->getBody();
-        return new ForceFieldCore(*this);
+
+        ForceFieldCoreData mutableCopy(*this);
+        mutableCopy.pBody = pChunk->getBody();
+        mutableCopy.pForceField = ptr;
+                mutableCopy.pChunk = pChunk;
+        return new ForceFieldCore(mutableCopy);
     }
 };
 #endif // FORCEFIELDCORE_H

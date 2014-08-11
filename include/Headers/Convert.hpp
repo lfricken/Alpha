@@ -13,12 +13,12 @@ namespace leon
 template<typename T>
 inline float degToRad(T value)
 {
-    return (pi*value)/180.0;
+    return (pi*value)/180.0f;
 }
 template<typename T>
 inline float radToDeg(T value)
 {
-    return (180.0*value)/pi;
+    return (180.0f*value)/pi;
 }
 
 

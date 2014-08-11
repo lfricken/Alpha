@@ -39,7 +39,7 @@ void Camera::setCenter(const b2Vec2& rPos)
 }
 b2Vec2 Camera::getCenter() const
 {
-    leon::sfTob2(m_view.getCenter());
+    return leon::sfTob2(m_view.getCenter());
 }
 bool Camera::isTracking() const
 {

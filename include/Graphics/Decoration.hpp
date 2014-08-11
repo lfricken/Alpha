@@ -19,7 +19,6 @@ struct DecorationData : public IOBaseData
 class Decoration : public IOBase
 {
 public:
-    Decoration();
     Decoration(const DecorationData& rData);
     virtual ~Decoration();
 
@@ -29,7 +28,6 @@ public:
 
 protected:
 private:
-    virtual void f_init(const DecorationData& rData);
 
     GraphicsComponent* m_pGfxComp;
 };

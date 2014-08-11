@@ -7,6 +7,7 @@
 
 IOComponent::IOComponent(unsigned int id, IOManager& manager)
 {
+    (void)manager;//shutup the compiler about unused
     m_ID = id;
     m_name = defaults::io::name;
     m_spEventer = std::tr1::shared_ptr<ActiveEventer>(new ActiveEventer());

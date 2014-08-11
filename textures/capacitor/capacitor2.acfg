@@ -1,0 +1,176 @@
+{
+    "stateList": [
+        {
+            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "state": "Default",
+            "delay": 1,
+            "nextState": null,
+            "tileList": [0,0],
+            "copyFrom": null
+        },
+        {
+            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "state": "Activated",
+            "delay": 1,
+            "nextState": "Activated",
+            "tileList": [
+                0,
+                0,
+                1,
+                0,
+                2,
+                0,
+                3,
+                0
+            ],
+            "copyFrom": null
+        },
+        {
+            "comment": "this state is the state we go into if we are told to have some state we don't have in our memory",
+            "state": "Error",
+            "delay": 1,
+            "nextState": "Error",
+            "tileList": [
+                1,
+                0,
+				0,
+				0
+            ],
+            "copyFrom": null
+        },
+		{
+            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "state": "Zero",
+            "delay": 1,
+            "nextState": null,
+            "tileList": [
+                1,
+                0
+            ],
+            "copyFrom": null
+        },
+						{
+            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "state": "One",
+            "delay": 1,
+            "nextState": null,
+            "tileList": [
+                1,
+                0
+            ],
+            "copyFrom": null
+        },
+        {
+            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "state": "Two",
+            "delay": 1,
+            "nextState": null,
+            "tileList": [
+                2,
+                0
+            ],
+            "copyFrom": null
+        },
+		        {
+            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "state": "Three",
+            "delay": 1,
+            "nextState": null,
+            "tileList": [
+                3,
+                0
+            ],
+            "copyFrom": null
+        },
+		        {
+            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "state": "Four",
+            "delay": 1,
+            "nextState": null,
+            "tileList": [
+                4,
+                0
+            ],
+            "copyFrom": null
+        },
+		        {
+            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "state": "Five",
+            "delay": 1,
+            "nextState": null,
+            "tileList": [
+                5,
+                0
+            ],
+            "copyFrom": null
+        },
+		        {
+            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "state": "Six",
+            "delay": 1,
+            "nextState": null,
+            "tileList": [
+                6,
+                0
+            ],
+            "copyFrom": null
+        },
+		        {
+            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "state": "Seven",
+            "delay": 1,
+            "nextState": null,
+            "tileList": [
+                7,
+                0
+            ],
+            "copyFrom": null
+        },
+		        {
+            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "state": "Eight",
+            "delay": 1,
+            "nextState": null,
+            "tileList": [
+                8,
+                0
+            ],
+            "copyFrom": null
+        },
+		        {
+            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "state": "Nine",
+            "delay": 1,
+            "nextState": null,
+            "tileList": [
+                9,
+                0
+            ],
+            "copyFrom": null
+        },
+				        {
+            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "state": "Ten",
+            "delay": 1,
+            "nextState": null,
+            "tileList": [
+                0,
+                0
+            ],
+            "copyFrom": null
+        },
+		{
+            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "state": "Destroyed",
+            "delay": 0.25,
+            "nextState": "Destroyed",
+            "tileList": [
+                0,
+                0,
+				1,
+				0
+            ],
+            "copyFrom": null
+        }
+    ]
+}

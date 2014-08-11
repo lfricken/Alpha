@@ -71,6 +71,7 @@ bool Condition::f_notEquals(const std::string& input) const
 }
 bool Condition::f_change(const std::string& input) const
 {
+    (void)input;//shutup the compiler about unused
     return true;
 }
 void Condition::f_setComparisonFunction(char op)

@@ -27,10 +27,12 @@ struct ArmorData : public GModuleData
     }
 
 
-    virtual GModule* generate(Chunk* pChunk)
+    virtual GModule* generate(Chunk* pChunk) const
     {
-        pBody = pChunk->getBody();
-        return new Armor(*this);
+        ArmorData mutableCopy(*this);
+        mutableCopy.pBody = pChunk->getBody();
+        mutableCopy.pChunk = pChunk;
+        return new Armor(mutableCopy);
     }
 };
 

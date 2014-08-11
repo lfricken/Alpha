@@ -18,7 +18,6 @@ namespace io
 ClassType classType = ClassType::UNKNOWN;
 bool isEnabled = true;
 std::string name = "defaultName";
-unsigned long long int ID = -1;//max value
 }
 /**IOBASE**/
 
@@ -35,7 +34,7 @@ b2Vec2 halfSize = b2Vec2(0.25, 0.25);
 float density = 1.0;
 float friction = 0.3;
 float restitution = 0.2;
-float rotation = 0.0;//degrees CW
+float rotation = 0.0f;///degrees CCW?
 }
 /**PHYSICS**/
 
@@ -122,10 +121,10 @@ Game game;//globals.h
 int main()
 {
     ///we should load the defaults from a file, in which case they shouldn't be a const
-    sf::Texture tex;
-    std::cout << "\nMax Texture Size: [" << tex.getMaximumSize() << "].";
-    tex.loadFromFile("textures/default.png");
-    std::cout << "\nTexture Size: [" << tex.getSize().x << "].";
+//    sf::Texture tex;
+ //   std::cout << "\nMax Texture Size: [" << tex.getMaximumSize() << "].";
+  //  tex.loadFromFile("textures/default.png");
+  //  std::cout << "\nTexture Size: [" << tex.getSize().x << "].";
 
 
 

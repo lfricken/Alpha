@@ -28,21 +28,23 @@ struct HullData : public ModuleData
         density = 0;
     }
 
-    virtual Module* generate(Chunk* pChunk)
+    virtual Module* generate(Chunk* pChunk) const
     {
-        std::vector<std::tr1::shared_ptr<ModuleData> > miniList;
-        miniList.push_back(std::tr1::shared_ptr<ModuleData>(new ModuleData(*this)));
-        ModuleData& rHullSensorData = *miniList.back();
+        std::vector<std::tr1::shared_ptr<const ModuleData> > miniList;
+        ModuleData rHullSensorData(*this);
         rHullSensorData.density = 0;
         rHullSensorData.isSensor = true;
         rHullSensorData.categoryBits = Category::ShipHullSensor;
         rHullSensorData.maskBits = Mask::ShipHullSensor;
         rHullSensorData.butes.setBute(Butes::isDestructable, false);
         rHullSensorData.butes.setBute(Butes::isSolid, false);
+        miniList.push_back(std::tr1::shared_ptr<const ModuleData>(new ModuleData(rHullSensorData)));
         pChunk->add(miniList);
 
-        pBody = pChunk->getBody();
-        return new Hull(*this);
+        HullData mutableCopy(*this);
+        mutableCopy.pBody = pChunk->getBody();
+        mutableCopy.pChunk = pChunk;
+        return new Hull(mutableCopy);
     }
 };
 

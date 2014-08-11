@@ -14,7 +14,7 @@ Ship::~Ship()
 }
 void Ship::f_initialize(const ShipData& rData)
 {
-
+    (void)rData;//shutup the compiler about unused
 }
 void Ship::draw()
 {

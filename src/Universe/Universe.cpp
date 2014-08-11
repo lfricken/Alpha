@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Universe::Universe() : IOBase(), m_physWorld(b2Vec2(0,0)), m_projAlloc()
+Universe::Universe() : IOBase(), m_physWorld(b2Vec2(0,0)), m_projAlloc(), m_gfxCompFactory()
 {
     m_skippedTime = 0;
     m_normalDraw = true;
@@ -38,7 +38,7 @@ IOBase* Universe::getTarget(const string& targetName)///unfinished
     if(pTarget != NULL)
         return pTarget;
 
-    pTarget = getGfxTarget(targetName);
+    ///pTarget = getGfxTarget(targetName);
     return pTarget;
 }
 IOBase* Universe::getTarget(unsigned int targetID)
@@ -49,7 +49,7 @@ IOBase* Universe::getTarget(unsigned int targetID)
     if(pTarget != NULL)
         return pTarget;
 
-    pTarget = getGfxTarget(targetID);
+    ///pTarget = getGfxTarget(targetID);
     return pTarget;
 }
 Chunk* Universe::getPhysTarget(const std::string& targetName)
@@ -77,7 +77,7 @@ Decoration* Universe::getGfxTarget(const std::string& targetName)
     Decoration* pTarget = NULL;
 
     for(vector<std::tr1::shared_ptr<Decoration> >::iterator it = m_gfxList.begin(); it != m_gfxList.end(); ++it)
-        if((*it)->getName() == targetName)
+///        if((*it)->getName() == targetName)
             pTarget = &(**it);
 
     return pTarget;
@@ -86,9 +86,9 @@ Decoration* Universe::getGfxTarget(unsigned int targetID)
 {
     Decoration* pTarget = NULL;
 
-    int location = BinarySearchPtrVector(m_gfxList, &Decoration::getID, targetID);
-    if(location != -1)
-        pTarget = &(*m_gfxList[location]);
+   /// int location = BinarySearchPtrVector(m_gfxList, &Decoration::getID, targetID);
+   /// if(location != -1)
+   ///     pTarget = &(*m_gfxList[location]);
 
     return pTarget;
 }
@@ -113,7 +113,7 @@ void Universe::add(Chunk* pChunk)
 }
 void Universe::add(Decoration* pDecor)
 {
-    InsertPtrVector(m_gfxList, &IOBase::getID, tr1::shared_ptr<Decoration>(pDecor));
+  ///  InsertPtrVector(m_gfxList, &IOBase::getID, tr1::shared_ptr<Decoration>(pDecor));
 }
 /**=================**/
 /**=================**/

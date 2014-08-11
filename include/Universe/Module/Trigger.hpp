@@ -51,10 +51,12 @@ struct TriggerData : public ModuleData
     }
     FilterData filterData;
 
-    virtual Module* generate(Chunk* pChunk)
+    virtual Module* generate(Chunk* pChunk) const
     {
-        pBody = pChunk->getBody();
-        return new Trigger(*this);
+        TriggerData mutableCopy(*this);
+        mutableCopy.pBody = pChunk->getBody();
+        mutableCopy.pChunk = pChunk;
+        return new Trigger(mutableCopy);
     }
 };
 #endif // TRIGGER_H

@@ -10,11 +10,13 @@ GraphicsComponentFactory::~GraphicsComponentFactory()
 }
 GraphicsComponent* GraphicsComponentFactory::generate(const GraphicsComponentData& rData)
 {
-    GraphicsComponentData tempData(rData);
-    auto& spGfxCompList = m_layers[tempData.gfxLayer][tempData.texName];
-    tempData.pParent = this;
+    GraphicsComponentData mutableCopy(rData);
+    mutableCopy.pParent = this;
 
-    GraphicsComponent* ptr = new GraphicsComponent(tempData);//create the component
+
+    auto& spGfxCompList = m_layers[mutableCopy.gfxLayer][mutableCopy.texName];
+
+    GraphicsComponent* ptr = new GraphicsComponent(mutableCopy, this);//create the component
     spGfxCompList.push_back(std::tr1::shared_ptr<GraphicsComponent>(ptr));
 
     return ptr;
@@ -38,11 +40,12 @@ void GraphicsComponentFactory::draw(sf::RenderWindow& rWindow)
     /**2 loop over the sprite groups**/
     /**3 loop over elements in sprite groups**/
     /**4 draw those elements**/
-    for(auto it_layer = m_layers.begin(); it_layer != m_layers.end(); ++it_layer)//1
-        for(auto it_gfxCompGroup = it_layer->second.begin(); it_gfxCompGroup != it_layer->second.end(); ++it_gfxCompGroup)//2
-            for(auto it_comp = it_gfxCompGroup->second.begin(); it_comp != it_gfxCompGroup->second.end(); ++it_comp)//3
-            {
-                (**it_comp).update();
-                rWindow.draw( (**it_comp).getSprite() );//4
-            }
+
+     for(auto it_layer = m_layers.begin(); it_layer != m_layers.end(); ++it_layer)//1
+         for(auto it_gfxCompGroup = it_layer->second.begin(); it_gfxCompGroup != it_layer->second.end(); ++it_gfxCompGroup)//2
+             for(auto it_comp = it_gfxCompGroup->second.begin(); it_comp != it_gfxCompGroup->second.end(); ++it_comp)//3
+             {
+                 (**it_comp).update();
+                 rWindow.draw( (**it_comp).getSprite() );//4
+             }
 }

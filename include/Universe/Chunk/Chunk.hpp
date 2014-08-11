@@ -49,6 +49,8 @@ struct ChunkData : public IOBaseData
     T_Zoom startMaxZoom;
     T_Zoom minZoom;
 
+    AmmoPool ammoPool;
+
     bool controlEnabled;
     bool awake;
 };
@@ -65,8 +67,8 @@ public:
     IOBase* getIOBase(const std::string& targetName);
 
     /**ADD MODULES**////SHOULD ADD A SINGLE ONE, AND A LIST
-    GModule* add(const std::vector<std::tr1::shared_ptr<GModuleData> >& rDataList);//returns the last GModule added
-    Module* add(const std::vector<std::tr1::shared_ptr<ModuleData> >& data);//returns the last Module added
+    GModule* add(const std::vector<std::tr1::shared_ptr<const GModuleData> >& rDataList);//returns the last GModule added
+    Module* add(const std::vector<std::tr1::shared_ptr<const ModuleData> >& data);//returns the last Module added
     Weapon* add(const WeaponData& rData);
 
     /**PHYSICS**/
@@ -105,7 +107,9 @@ public:
 
     /**Variables**/
     ZoomPool& getZoomPool();
+    std::tr1::shared_ptr<ZoomPool> getZoomPoolSPtr();
     EnergyPool& getEnergyPool();
+    std::tr1::shared_ptr<EnergyPool> getEnergyPoolSPtr();
     AmmoPool& getAmmoPool();
 
     /**GRAPHICS**/
@@ -113,8 +117,18 @@ public:
 
     /**IO-SYSTEM**/
     virtual IOBaseReturn input(IOBaseArgs);
+
+protected:
+    b2Body* m_pBody;
+    b2BodyDef m_bodyDef;
+    MultiTileMap m_tiles;
+
+    std::vector<std::tr1::shared_ptr<GModule> > m_GModuleSPList;
+    std::vector<std::tr1::shared_ptr<Module> > m_ModuleSPList;
+    std::vector<std::tr1::shared_ptr<Weapon> > m_WeaponSPList;
+
 private:
-    std::tr1::shared_ptr<ZoomPool> m_spZoomPool;///THE RELATIONSHIP THESE POOLS HAVE WITH THE MODULES IS BAD
+    std::tr1::shared_ptr<ZoomPool> m_spZoomPool;
     std::tr1::shared_ptr<EnergyPool> m_spEnergyPool;
     std::tr1::shared_ptr<AmmoPool> m_spAmmoPool;
     std::tr1::shared_ptr<Link<Chunk, Intelligence> > m_spLinker;
@@ -125,16 +139,6 @@ private:
 
     b2Vec2 m_oldPos;//used for sleep
     float m_oldAngle;
-protected:
-    b2Body* m_pBody;
-    b2BodyDef m_bodyDef;
-    MultiTileMap m_tiles;
-
-    std::vector<std::tr1::shared_ptr<GModule> > m_GModuleSPList;
-    std::vector<std::tr1::shared_ptr<Module> > m_ModuleSPList;
-    std::vector<std::tr1::shared_ptr<Weapon> > m_WeaponSPList;
-
-
 };
 
 #endif // DCHUNK_H

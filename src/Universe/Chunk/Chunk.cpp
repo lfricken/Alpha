@@ -22,7 +22,7 @@ Chunk::Chunk(const ChunkData& rData) : IOBase(static_cast<IOBaseData>(rData))
     m_spLinker.reset(new Link<Chunk, Intelligence>(this));
     m_spZoomPool.reset(new ZoomPool(m_pIOComponent->getEventerPtr(), rData.startMaxZoom, rData.maxMaxZoom, rData.minZoom));
     m_spEnergyPool.reset(new EnergyPool(m_pIOComponent->getEventerPtr(), 0, rData.startMaxEnergy));
-    m_spAmmoPool.reset(new AmmoPool);
+    m_spAmmoPool.reset(new AmmoPool(rData.ammoPool));
 
     m_bodyDef.bullet = rData.isBullet;
     m_bodyDef.type = rData.bodyType;
@@ -76,12 +76,11 @@ IOBase* Chunk::getIOBase(const std::string& targetName)
 
 
 /**ADD MODULES**/
-GModule* Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList)
+GModule* Chunk::add(const vector<tr1::shared_ptr<const GModuleData> >& rDataList)
 {
     GModule* ptr;
     for(auto it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
     {
-        (*it_data)->pChunk = this;
         ptr = (*it_data)->generate(this);
         InsertPtrVector(m_GModuleSPList, &IOBase::getID, tr1::shared_ptr<GModule>(ptr));
         m_tiles.add(ptr);///HERE IS WHERE WE WOULD give it a graphics COMPONENT, instead of us as a derived pointer from which it gets the base type
@@ -89,12 +88,11 @@ GModule* Chunk::add(const vector<tr1::shared_ptr<GModuleData> >& rDataList)
 
     return ptr;
 }
-Module* Chunk::add(const vector<tr1::shared_ptr<ModuleData> >& rDataList)
+Module* Chunk::add(const vector<tr1::shared_ptr<const ModuleData> >& rDataList)
 {
     Module* ptr;
-    for(auto it_data = rDataList.begin(); it_data != rDataList.end(); ++it_data)
+    for(auto it_data = rDataList.cbegin(); it_data != rDataList.cend(); ++it_data)
     {
-        (*it_data)->pChunk = this;
         ptr = (*it_data)->generate(this);
         InsertPtrVector(m_ModuleSPList, &IOBase::getID, tr1::shared_ptr<Module>(ptr));
     }
@@ -112,18 +110,22 @@ Weapon* Chunk::add(const WeaponData& rData)
 /**PHYSICS**/
 int Chunk::startContact(PhysicsBase* other)
 {
+    (void)other;//shutup the compiler about unused
     return 0;
 }
 int Chunk::endContact(PhysicsBase* other)
 {
+    (void)other;//shutup the compiler about unused
     return 0;
 }
 int Chunk::preSolveContact(PhysicsBase* other)
 {
+    (void)other;//shutup the compiler about unused
     return 0;
 }
 int Chunk::postSolveContact(PhysicsBase* other)
 {
+    (void)other;//shutup the compiler about unused
     return 0;
 }
 b2Body* Chunk::getBody()
@@ -321,9 +323,17 @@ ZoomPool& Chunk::getZoomPool()
 {
     return *m_spZoomPool;
 }
+std::tr1::shared_ptr<ZoomPool> Chunk::getZoomPoolSPtr()
+{
+    return m_spZoomPool;
+}
 EnergyPool& Chunk::getEnergyPool()
 {
     return *m_spEnergyPool;
+}
+std::tr1::shared_ptr<EnergyPool> Chunk::getEnergyPoolSPtr()
+{
+    return m_spEnergyPool;
 }
 AmmoPool& Chunk::getAmmoPool()
 {

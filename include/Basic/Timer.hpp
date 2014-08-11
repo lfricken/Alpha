@@ -9,12 +9,11 @@ public:
     virtual ~Timer();
 
     float getTime() const;//time elapsed as seconds since game was initialized
-    float getTimeElapsed() const;//get time elapsed since we last called this function
+    float getTimeElapsed() const;//get time elapsed since we last called this function, this isn't actually const!!!
 
     bool isTimeUp() const;//asks whether the time is up
-    void resetTimer();
-    void setCountDown(float countDown);
-    void restartCountDown();
+    void setCountDown(float countDown);//sets the countdownTime
+    void restartCountDown();//starts, the current countdown time from whatever it is supposed to be
 protected:
 private:
     mutable float m_lastElapsedTime;

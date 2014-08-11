@@ -60,5 +60,8 @@ void WeaponBarrel::update(const b2Vec2& rPos, float angle)//radians
 }
 void WeaponBarrel::f_emit(const b2Vec2& rEmitPoint, float barrelAngle, const b2Vec2& rUnitVec, const b2Vec2& rBodySpeed)
 {
-
+    (void)rEmitPoint;//shutup the compiler about unused
+    (void)barrelAngle;//shutup the compiler about unused
+    (void)rUnitVec;//shutup the compiler about unused
+    (void)rBodySpeed;//shutup the compiler about unused
 }

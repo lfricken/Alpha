@@ -11,12 +11,12 @@ struct ShipData : public ChunkData//initialized
     {
         type = ClassType::SHIP;
         bodyType = b2BodyType::b2_dynamicBody;
-        hullDecor.gfxCompData.texName = "textures/hull/kestral_2.png";
-        hullDecor.gfxCompData.texTileSize = sf::Vector2f(652, 418);
+        hullDecor.gfxCompData.texName = "textures/hull/loahn.png";
+        hullDecor.gfxCompData.texTileSize = sf::Vector2f(840, 1436);
         hullDecor.gfxCompData.gfxLayer = GraphicsLayer::ShipHull;
-        hullDecor.gfxCompData.rotation = 90;
-        hullDecor.gfxCompData.scale = sf::Vector2f(5,5);
-        hullDecor.gfxCompData.color = sf::Color(255,255,255,255);
+        hullDecor.gfxCompData.rotation = 0;
+        hullDecor.gfxCompData.scale = sf::Vector2f(3,3);
+        hullDecor.gfxCompData.color = sf::Color(255,255,255,10);
     }
     DecorationData hullDecor;
 };

@@ -44,10 +44,12 @@ struct ThrusterData : public GModuleData
     float torque;
 
 
-    virtual GModule* generate(Chunk* pChunk)
+    virtual GModule* generate(Chunk* pChunk) const
     {
-        pBody = pChunk->getBody();
-        return new Thruster(*this);
+        ThrusterData mutableCopy(*this);
+        mutableCopy.pBody = pChunk->getBody();
+        mutableCopy.pChunk = pChunk;
+        return new Thruster(mutableCopy);
     }
 };
 

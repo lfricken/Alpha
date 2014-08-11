@@ -1,15 +1,15 @@
-Fix child parent relationship
+finish capacitor load animation thing
 Fix ammo(multiple collisions for one shot)
-Fix gun turrets getting stuck in midair
-Make some modules for zoom and energy
-make ammo and ammo modules
+make ammo modules
+make ships face the appropriate direction of motion
+make ships have max velocity through wind resistance
 
 make a construct() function that reverses the effects of destruct
 remove the pointless default constructors for all MOdules //AND THAT MIGHT MEAN WE CAN REMOVE STUPID INIT FUNCTIONs
-review and fix file system
 look at the GUI system
 Create System for blueprints
 Read from file
 Recondense GraphicsBase and GraphicsComponent
 Design system for physics components?
-review scaling
+review radian vs degree vs CW vs CCW problem
+review scaling (again?)

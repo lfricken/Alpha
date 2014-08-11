@@ -13,5 +13,5 @@ bool Reactor::physUpdate()
     if(m_isEnabled)
         m_reactorCore.produce(m_pChunk->getEnergyPool());
 
-    GModule::physUpdate();
+    return GModule::physUpdate();
 }

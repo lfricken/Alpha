@@ -20,6 +20,7 @@
 #include "Turret.hpp"
 #include "Capacitor.hpp"
 #include "Reactor.hpp"
+#include "Radar.hpp"
 
 #include "EditBox.hpp"
 #include "Decoration.hpp"
@@ -34,10 +35,10 @@ Game::Game()
 
     m_spAnimAlloc = std::tr1::shared_ptr<AnimationAllocator>(new AnimationAllocator);
     m_spIOManager = std::tr1::shared_ptr<IOManager>(new IOManager());//independent
-    m_spUniverse = std::tr1::shared_ptr<Universe>(new Universe());//independent
+    m_spUniverse = std::tr1::shared_ptr<Universe>(new Universe());//needs IO Manager
 
     /**created last**/
-    m_spOverlayManager = std::tr1::shared_ptr<OverlayManager>(new OverlayManager(*m_spWindow));//needs Window
+    m_spOverlayManager = std::tr1::shared_ptr<OverlayManager>(new OverlayManager(*m_spWindow));//needs Window and iomanager
     m_spControlManager = std::tr1::shared_ptr<ControlManager>(new ControlManager());//needs Window and Universe and GUI
 
 
@@ -203,6 +204,7 @@ Game::Status Game::run()
 
     float fps = 0;
     float firstTime = 0, secondTime = 0, timeForFrame = 0, computeTime = 0, remainder = 0;
+    int maxSteps = 7;
     int i = 0;
     int gray = 60;
     /**SIMULATION & RUNTIME**/
@@ -228,14 +230,13 @@ Game::Status Game::run()
         }
         /**FPS**/
 
-
         /**INPUT and PHYSICS**/
         while(m_spWindow->pollEvent(event))
         {
             if(m_spControlManager->choiceUpdate(event))//if we put this before physstep, the camera lags!
                 newState = Game::Quit;
         }
-        for(i = 0; computeTime > 0 && i < 6; ++i)///should max iterations depend on how far we are behind?
+        for(i = 0; computeTime > 0 && i < maxSteps; ++i)///should max iterations depend on how far we are behind?
         {
             m_spControlManager->pressedUpdate();
             computeTime -= m_spUniverse->physStep();
@@ -248,6 +249,7 @@ Game::Status Game::run()
         m_spIOManager->update(timeForFrame);
         /**INPUT and PHYSICS**/
 
+        ///cout << endl;
 
         /**DRAW**/
         m_spWindow->clear(sf::Color(gray,gray,gray,255));
@@ -266,6 +268,7 @@ float Game::getTime() const
 }
 void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING EXACTLY, defaults states?, maps?, screen items?
 {
+    (void)stuff;//shutup the compiler about unused
     ///Go through file sections
     ///Intelligences
     ///Universe Entities
@@ -353,8 +356,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 ///==============================================================================
     /**=============================================STATIC CHUNKS=============================================**/
     /**STATIC MODULES**/
-    vector<tr1::shared_ptr<GModuleData> > staticGModuleDataList;
-    vector<tr1::shared_ptr<ModuleData> > staticModuleDataList;
+    vector<tr1::shared_ptr<const GModuleData> > staticGModuleDataList;
+    vector<tr1::shared_ptr<const ModuleData> > staticModuleDataList;
     GModuleData solidFixtureData;
     solidFixtureData.type = ClassType::GMODULE;
 
@@ -382,7 +385,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     triggerMessage.condition.reset(Event::Triggered, "50", 50, '<', true);
     triggerMessage.package.reset("Static_Chunk_1", "message", triggerPack, 0, Destination::UNIVERSE, false);
     trigDat.courierList.push_back(triggerMessage);
-    staticModuleDataList.push_back(tr1::shared_ptr<ModuleData>(new TriggerData(trigDat)));
+    staticModuleDataList.push_back(tr1::shared_ptr<const ModuleData>(new TriggerData(trigDat)));
 
 
     /**STATIC MODULES**/
@@ -428,8 +431,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
 
     ///WE NEED TO GET A STANDARD SIZE??
-    vector<tr1::shared_ptr<GModuleData> > moduleList1;
-    vector<tr1::shared_ptr<ModuleData> > moduleList2;
+    vector<tr1::shared_ptr<const GModuleData> > moduleList1;
+    vector<tr1::shared_ptr<const ModuleData> > moduleList2;
 
     float offsetDelta = 2*shipModuleData.halfSize.x;
     float numBoxsX = 5, numBoxsY = 13;
@@ -465,12 +468,16 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
             {
 
             }
+            else if((x==1) && (y==-0.5))
+            {
+
+            }
             else
             {
                 shipModuleData.offset.x = x;
                 shipModuleData.offset.y = y;
 
-                moduleList1.push_back( tr1::shared_ptr<GModuleData>(new GModuleData(shipModuleData)) );
+                moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new GModuleData(shipModuleData)) );
             }
         }
     }
@@ -492,7 +499,6 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     turretData.weaponData.refireDelay = 0.4;
     turretData.weaponData.barrelData.push_back( std::tr1::shared_ptr<WeaponBarrelData>(new ProjectileBarrelData(barrelData1)) );
     turretData.weaponData.barrelData.push_back( std::tr1::shared_ptr<WeaponBarrelData>(new ProjectileBarrelData(barrelData2)) );
-
 
 
     FireCommand once1;
@@ -538,30 +544,30 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
         armorData.offset.x = x*2*armorData.halfSize.x;
         armorData.offset.y = y*2*armorData.halfSize.y;
         //shipModuleData.texTile.x = texTile;
-        moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ArmorData(armorData)) );
+        moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new ArmorData(armorData)) );
     }
     for (float i=0, x=4, y=-9, numBoxsX = 19; i<numBoxsX; ++i, ++y)//creates boxes in a line
     {
         armorData.offset.x = x*2*armorData.halfSize.x;
         armorData.offset.y = y*2*armorData.halfSize.y;
         //shipModuleData.texTile.x = texTile;
-        moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ArmorData(armorData)) );
+        moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new ArmorData(armorData)) );
     }
     for (float i=0, x=-2, y=-9, numBoxsX = 5; i<numBoxsX; ++i, ++x)//creates boxes in a line
     {
         armorData.offset.x = x*2*armorData.halfSize.x;
         armorData.offset.y = y*2*armorData.halfSize.y;
         //shipModuleData.texTile.x = texTile;
-        moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ArmorData(armorData)) );
+        moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new ArmorData(armorData)) );
     }
     for (float i=0, x=-2, y=9, numBoxsX = 5; i<numBoxsX; ++i, ++x)//creates boxes in a line
     {
         armorData.offset.x = x*2*armorData.halfSize.x;
         armorData.offset.y = y*2*armorData.halfSize.y;
         //shipModuleData.texTile.x = texTile;
-        moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ArmorData(armorData)) );
+        moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new ArmorData(armorData)) );
     }
-    moduleList1.back()->name = "fixturePositionExample";
+
 
     ForceFieldCoreData fieldCoreData;
     fieldCoreData.offset = b2Vec2(0, 0);
@@ -572,16 +578,23 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
 
 
+    RadarData radarDat;
+    radarDat.offset.x = 1;
+    radarDat.offset.y = -0.5;
 
-    moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ThrusterData(thrustDat)) );
-    moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ForceFieldCoreData(fieldCoreData)) );
-    moduleList1.push_back( tr1::shared_ptr<GModuleData>(new TurretData(turretData)) );
-    moduleList1.push_back( tr1::shared_ptr<GModuleData>(new TurretData(turretData2)) );
-    moduleList1.push_back( tr1::shared_ptr<GModuleData>(new TurretData(turretData3)) );
-    moduleList1.push_back( tr1::shared_ptr<GModuleData>(new CapacitorData(capData)) );
-    moduleList1.push_back( tr1::shared_ptr<GModuleData>(new ReactorData(reacData)) );
 
-    moduleList2.push_back( tr1::shared_ptr<ModuleData>(new HullData(hull)) );
+
+
+    moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new ThrusterData(thrustDat)) );
+    moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new ForceFieldCoreData(fieldCoreData)) );
+    moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new TurretData(turretData)) );
+    moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new TurretData(turretData2)) );
+    moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new TurretData(turretData3)) );
+    moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new CapacitorData(capData)) );
+    moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new ReactorData(reacData)) );
+    moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new RadarData(radarDat)) );
+
+    moduleList2.push_back( tr1::shared_ptr<const ModuleData>(new HullData(hull)) );
 
     /**SHIP MODULES**/
 
@@ -590,20 +603,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     ShipData shipDat;
     shipDat.bodyType = b2BodyType::b2_dynamicBody;
     shipDat.type = ClassType::SHIP;
-
-    shipDat.position = b2Vec2(-5, -5);
-    shipDat.name = "ship_3";
-    Chunk* pChunk0 = new Ship(shipDat);
-    pChunk0->add(moduleList1);
-    pChunk0->add(moduleList2);
-    m_spUniverse->add(pChunk0);
-
-    shipDat.position = b2Vec2(20, -20);
-    shipDat.name = "ship_2";
-    Chunk* pChunk1 = new Ship(shipDat);
-    pChunk1->add(moduleList1);
-    pChunk1->add(moduleList2);
-    m_spUniverse->add(pChunk1);
+    shipDat.ammoPool.getAmmo(AmmoType::MediumShell).add(100);
 
     shipDat.position = b2Vec2(-20, 20);
     shipDat.name = "ship_1";
@@ -612,27 +612,20 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     pShip1->add(moduleList2);
     m_spUniverse->add(pShip1);
 
+    shipDat.position = b2Vec2(20, -20);
+    shipDat.name = "ship_2";
+    Chunk* pChunk1 = new Ship(shipDat);
+    pChunk1->add(moduleList1);
+    pChunk1->add(moduleList2);
+    m_spUniverse->add(pChunk1);
 
-    /* vector<tr1::shared_ptr<GModuleData> > moduleListAdditive1;
-     for (float i=0, x=-2, y=9, numBoxsX = 1; i<numBoxsX; ++i, ++x)//creates boxes in a line
-     {
-         armorData.offset.x = x*2*armorData.halfSize.x;
-         armorData.offset.y = y*2*armorData.halfSize.y;
-         //shipModuleData.texTile.x = texTile;
-         moduleListAdditive1.push_back( tr1::shared_ptr<GModuleData>(new ArmorData(armorData)) );
-     }
-     vector<tr1::shared_ptr<GModuleData> > moduleListAdditive2;*/
-    /* for (float i=0, x=-2, y=10, numBoxsX = 5; i<numBoxsX; ++i, ++x)//creates boxes in a line
-     {
-         armorData.offset.x = x*2*armorData.halfSize.x;
-         armorData.offset.y = y*2*armorData.halfSize.y;
-         //shipModuleData.texTile.x = texTile;
-         moduleListAdditive2.push_back( tr1::shared_ptr<GModuleData>(new ArmorData(armorData)) );
-     }
-     cout << "\nAdditive.";
-     pChunk1->add(moduleListAdditive1);
-     cout << "\nEndAdditive.";
-     pChunk1->add(moduleListAdditive2);*/
+    shipDat.position = b2Vec2(-5, -5);
+    shipDat.name = "ship_3";
+    Chunk* pChunk0 = new Ship(shipDat);
+    pChunk0->add(moduleList1);
+    pChunk0->add(moduleList2);
+    m_spUniverse->add(pChunk0);
+
 
     /**SHIP CHUNKS**/
 
@@ -647,14 +640,14 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     debrisModuleData.categoryBits = Category::Projectile;
     debrisModuleData.maskBits = Mask::ProjectileNorm;
 
-    vector<tr1::shared_ptr<GModuleData> > DebrisDataList;
+    vector<tr1::shared_ptr<const GModuleData> > DebrisDataList;
+    debrisModuleData.offset.x = 0;
+    debrisModuleData.offset.y = 0;
     DebrisDataList.push_back(tr1::shared_ptr<GModuleData>(new GModuleData(debrisModuleData)));//copy constructor
-    DebrisDataList.back()->offset.x = 0;
-    DebrisDataList.back()->offset.y = 0;
 
+    debrisModuleData.offset.x = 2*debrisModuleData.halfSize.x;
+    debrisModuleData.offset.y = 0;
     DebrisDataList.push_back(tr1::shared_ptr<GModuleData>(new GModuleData(debrisModuleData)));
-    DebrisDataList.back()->offset.x = 2*DebrisDataList.back()->halfSize.x;
-    DebrisDataList.back()->offset.y = 0;
     /**DEBRIS MODULES**/
 
 

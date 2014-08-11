@@ -67,7 +67,7 @@ void Intelligence::setAim(const b2Vec2& newAim)
 {
     m_aim = newAim;
 }
-const b2Vec2& Intelligence::getAim() const
+const b2Vec2& Intelligence::getAim() const///needs to recalculate
 {
     return m_aim;
 }

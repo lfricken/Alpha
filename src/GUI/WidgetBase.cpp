@@ -17,6 +17,7 @@ WidgetBase::~WidgetBase()
 }
 void WidgetBase::f_initialize(const WidgetBaseData& data)
 {
+    (void)data;//shutup the compiler about unused
     //initialize data
 }
 
@@ -31,6 +32,7 @@ IOBaseReturn WidgetBase::input(IOBaseArgs)
 /**PRIVATE**/
 void WidgetBase::f_callback(const tgui::Callback& callback)
 {
+    (void)callback;//shutup the compiler about unused
     //override and callbacks here
 }
 void WidgetBase::f_MouseEntered()

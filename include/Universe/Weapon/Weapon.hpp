@@ -21,19 +21,19 @@ struct FireCommand
 struct WeaponData
 {
     WeaponData() :
-        energyConsumption(1),
+        energyConsumption(5),
         ammoConsumption(1),
-        ammoType(AmmoType::Gauss),
+        ammoType(AmmoType::MediumShell),
         magazine(5),
 
         refireDelay(1),
         canPivot(true),
-        startAngle(90)//degrees
+        startAngle(90)//degrees CCW
     {
         decorationData.gfxCompData.gfxLayer = GraphicsLayer::ShipAppendagesUpper;
         decorationData.gfxCompData.texName = "textures/barrels/chain_turret.png";
         decorationData.gfxCompData.texTileSize = sf::Vector2f(32,64);
-        decorationData.gfxCompData.rotation = -90;//this is negative because our gun sprites start facing up, so we need to rotate them 90degs CW
+        decorationData.gfxCompData.rotation = -90;//this is negative because our gun sprites start facing up, so we need to rotate them 90 degs CW
     }
     T_Energy energyConsumption;
     T_Ammo ammoConsumption;
@@ -65,7 +65,8 @@ public:
     void aim(const b2Vec2& rOurPos, const b2Vec2& targetPos);//we tried aiming the turret at a place
     float getAimAngle() const;//radians
 
-    bool checkFireState(const b2Vec2& rOurPos);
+    bool checkFireState();
+    void updatePosition(const b2Vec2& rOurPos);
 
     Link<Weapon, Turret>& getLinker();
 protected:

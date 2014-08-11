@@ -98,5 +98,10 @@ AnimationController& GraphicsBase::getAnimationController()
 
 void GraphicsBase::animate()
 {
+    animatePreHook();
     setTexTile(m_animControl.getTile());
+}
+void GraphicsBase::animatePreHook()
+{
+
 }

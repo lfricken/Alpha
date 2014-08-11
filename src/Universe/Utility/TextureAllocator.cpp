@@ -28,6 +28,7 @@ void TextureAllocator::smoothTextures(bool smooth)
 }
 Texture* TextureAllocator::request(const std::string& rFilePath)
 {
+
     map<string, tr1::shared_ptr<Texture> >::iterator it = m_textures.find(rFilePath);
 
     if(it != m_textures.end())/**we already have it**/

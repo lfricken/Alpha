@@ -56,7 +56,7 @@ void Panel::add(std::tr1::shared_ptr<WidgetBase> sp_widget)
 }
 void Panel::setState(PlayerState state)
 {
-
+(void)state;//shutup the compiler about unused
 }
 
 
@@ -70,6 +70,7 @@ IOBaseReturn Panel::input(IOBaseArgs)
 /**PRIVATE**/
 void Panel::f_callback(const tgui::Callback& callback)
 {
+    (void)callback;//shutup the compiler about unused
     /** EXAMPLE CODE
     if(true)
     {

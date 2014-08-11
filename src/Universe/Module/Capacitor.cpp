@@ -1,7 +1,9 @@
 #include "Capacitor.hpp"
 
-Capacitor::Capacitor(const CapacitorData& rData) : GModule(static_cast<GModuleData>(rData)), m_capacity(rData.energyStorage)
+Capacitor::Capacitor(const CapacitorData& rData, std::tr1::shared_ptr<EnergyPool> spEpool) : GModule(static_cast<GModuleData>(rData)), m_capacity(rData.energyStorage)
 {
+    m_spEnergyPool = spEpool;
+
     if(m_isEnabled)
         enable();
     else
@@ -9,17 +11,20 @@ Capacitor::Capacitor(const CapacitorData& rData) : GModule(static_cast<GModuleDa
 }
 Capacitor::~Capacitor()
 {
-    m_capacity.take(m_pChunk->getEnergyPool());
+    m_capacity.take(*m_spEnergyPool);
 }
-void Capacitor::enable()
+void Capacitor::enablePostHook()
 {
-    //std::cout << "\nDerived.";
-    m_capacity.give(m_pChunk->getEnergyPool());
-    GModule::enable();
+    m_capacity.give(*m_spEnergyPool);
+    GModule::enablePostHook();
 }
-void Capacitor::disable()
+void Capacitor::disablePostHook()
 {
-    //std::cout << "\nDerived2222.";
-    m_capacity.take(m_pChunk->getEnergyPool());
-    GModule::disable();
+    m_capacity.take(*m_spEnergyPool);
+    GModule::disablePostHook();
+}
+void Capacitor::animatePreHook()
+{
+    ///if(m_stateGraph.getState() == State::Nominal)
+
 }

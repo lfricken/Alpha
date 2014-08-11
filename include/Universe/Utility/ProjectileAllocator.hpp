@@ -35,7 +35,6 @@ private:
 
     std::vector<Projectile*> m_recoverList;
     ProjListPairing m_projList;//projectiles + other stuff, we keep different types in different tuples
-    std::vector<std::tr1::shared_ptr<GModuleData> > m_GModuleDataList;//used so we don't have to create this thing over and over!
 
     Timer m_timer;
 };

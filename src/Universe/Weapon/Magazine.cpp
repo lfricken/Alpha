@@ -54,6 +54,7 @@ bool Magazine::reload(AmmoPool& rAmmoPool, AmmoType ammoType)
     std::cout << "\nAmmo in magazine: " << m_ammo.getValue();
 
     m_reloadTimer.restartCountDown();
+    return true;
 }
 
 

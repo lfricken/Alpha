@@ -9,26 +9,28 @@ IOBase::IOBase()
     IOBaseData data;
     f_initialize(data);
 }
-IOBase::IOBase(const IOBaseData& data)
+IOBase::IOBase(const IOBaseData& rData)
 {
-    f_initialize(data);
+    f_initialize(rData);
 }
 IOBase::~IOBase()
 {
     m_pIOComponent->free();
 }
-void IOBase::f_initialize(const IOBaseData& data)
+void IOBase::f_initialize(const IOBaseData& rData)
 {
-    m_pIOComponent = game.getGameIOManager().createIOComponent(data.name);
+    m_pIOComponent = game.getGameIOManager().createIOComponent(rData.name);
     m_pIOComponent->setOwner(this);
-    m_pIOComponent->getEventerPtr()->addList(data.courierList);
+    m_pIOComponent->getEventerPtr()->addList(rData.courierList);
 
-    m_attributes = data.butes;
+    m_attributes = rData.butes;
 
-    m_type = data.type;
+    m_type = rData.type;
 
-    if(data.isEnabled)
-        enable();//DOES NOT CALL DERIVED BECAUSE THE DERIVED PART OF THE CLASS HAS NOT BEEN GENERATED
+    m_isEnabled = rData.isEnabled;
+
+    if(rData.isEnabled)
+        enable();//DOES NOT CALL DERIVED BECAUSE THE DERIVED PART OF THE CLASS HAS NOT BEEN GENERATED yet
     else
         disable();
 }
@@ -60,6 +62,7 @@ const Attributes& IOBase::getButes() const
 /**IO**/
 IOBaseReturn IOBase::input(IOBaseArgs)
 {
+    (void)rInput;//shutup the compiler about unused
     if(rCommand == "enable")
         enable();
     else if(rCommand == "disable")
@@ -74,13 +77,25 @@ IOBaseReturn IOBase::input(IOBaseArgs)
 }
 void IOBase::enable()
 {
+        ///if(m_stateGraph.cando this)
     m_isEnabled = true;
+    enablePostHook();
     f_varEvent(m_isEnabled, Event::Enabled);
+}
+void IOBase::enablePostHook()
+{
+
 }
 void IOBase::disable()
 {
+        ///if(m_stateGraph.cando this)
     m_isEnabled = false;
+    disablePostHook();
     f_varEvent(m_isEnabled, Event::Enabled);
+}
+void IOBase::disablePostHook()
+{
+
 }
 void IOBase::trigger()
 {

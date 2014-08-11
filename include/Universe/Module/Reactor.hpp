@@ -24,7 +24,7 @@ struct ReactorData : public GModuleData
 {
     ReactorData() :
         GModuleData(),
-        energyProduceRate(1)
+        energyProduceRate(5)
     {
         type = ClassType::REACTOR;
         texName = "textures/reactor/reactor.png";
@@ -32,10 +32,12 @@ struct ReactorData : public GModuleData
 
     T_Energy energyProduceRate;
 
-    virtual GModule* generate(Chunk* pChunk)
+    virtual GModule* generate(Chunk* pChunk) const
     {
-        pBody = pChunk->getBody();
-        return new Reactor(*this);
+        ReactorData mutableCopy(*this);
+        mutableCopy.pBody = pChunk->getBody();
+        mutableCopy.pChunk = pChunk;
+        return new Reactor(mutableCopy);
     }
 };
 

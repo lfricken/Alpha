@@ -15,5 +15,5 @@ Hull::~Hull()
 }
 void Hull::f_initialize(const HullData& data)
 {
-
+(void)data;
 }

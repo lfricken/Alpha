@@ -22,6 +22,8 @@ public:
 
 protected:
 private:
+    std::vector<std::tr1::shared_ptr<GraphicsComponent> > spGfxCompList;
+
     typedef std::vector<std::tr1::shared_ptr<GraphicsComponent> > gfxCompGroup;
     typedef std::map<std::string, gfxCompGroup> Layer;
     std::map<GraphicsLayer, Layer> m_layers;/**A map of GraphicsLayers that correspond to some Layer**/

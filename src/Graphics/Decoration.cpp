@@ -1,23 +1,15 @@
 #include "Decoration.hpp"
 #include "globals.hpp"
 
-Decoration::Decoration()
+Decoration::Decoration(const DecorationData& rData) : IOBase(static_cast<IOBaseData>(rData))
 {
-    DecorationData data;
-    f_init(data);
-}
-Decoration::Decoration(const DecorationData& rData)
-{
-    f_init(rData);
+    m_pGfxComp = game.getGameUniverse().getGfxCompFactory().generate(rData.gfxCompData);
 }
 Decoration::~Decoration()
 {
     m_pGfxComp->free();
 }
-void Decoration::f_init(const DecorationData& rData)
-{
-    m_pGfxComp = game.getGameUniverse().getGfxCompFactory().generate(rData.gfxCompData);
-}
+
 /*
 const GraphicsComponent& Decoration::getGfxComp() const
 {

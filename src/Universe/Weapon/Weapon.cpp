@@ -29,6 +29,8 @@ Weapon::~Weapon()
 }
 void Weapon::primary(const b2Vec2& coords)
 {
+    aim(m_linker.getTargetPtr()->getCenter(), coords);
+
     EnergyPool& rEnergyPool = m_linker.getTargetPtr()->getChunk()->getEnergyPool();
     AmmoPool& rAmmoPool = m_linker.getTargetPtr()->getChunk()->getAmmoPool();
 
@@ -45,6 +47,8 @@ void Weapon::primary(const b2Vec2& coords)
 }
 void Weapon::secondary(const b2Vec2& coords)
 {
+    aim(m_linker.getTargetPtr()->getCenter(), coords);
+
     EnergyPool& rEnergyPool = m_linker.getTargetPtr()->getChunk()->getEnergyPool();
     AmmoPool& rAmmoPool = m_linker.getTargetPtr()->getChunk()->getAmmoPool();
 
@@ -61,7 +65,7 @@ void Weapon::secondary(const b2Vec2& coords)
 }
 void Weapon::aim(const b2Vec2& rOurPos, const b2Vec2& targetPos)
 {
-    if(m_canPivot and m_linker.isLinked())//if we can aim anywhere
+    if(m_canPivot)//if we can aim anywhere
     {
         b2Vec2 difference(targetPos - rOurPos);
         if(difference.x >= 0)
@@ -69,8 +73,8 @@ void Weapon::aim(const b2Vec2& rOurPos, const b2Vec2& targetPos)
         else
             m_aimAngle = pi+atan(difference.y/difference.x);
     }
-    else
-        m_aimAngle = m_startAngle + m_linker.getTargetPtr()->getBody()->GetAngle();
+    //else
+     //   m_aimAngle = m_startAngle + m_linker.getTargetPtr()->getBody()->GetAngle();
 }
 float Weapon::getAimAngle() const//radians
 {
@@ -87,16 +91,8 @@ void Weapon::f_queueSecondaryCommands()
 {
     m_queuedCommands.insert(m_queuedCommands.end(), m_secondaryFireCommands.begin(), m_secondaryFireCommands.end());//append new instructions
 }
-bool Weapon::checkFireState(const b2Vec2& rOurPos)
+bool Weapon::checkFireState()
 {
-    //update us to aim at the correct angle before trying to fire anything
-    m_spGunMantle->setPosition(rOurPos);
-    m_spGunMantle->setRotation(m_aimAngle);
-
-    for(auto it = m_barrels.begin(); it != m_barrels.end(); ++it)
-        (*it)->update(rOurPos, m_aimAngle);
-
-
     //and then check if we should fire any of our barrels
     for(unsigned int i = 0; i<m_queuedCommands.size(); ++i)
     {
@@ -116,6 +112,18 @@ bool Weapon::checkFireState(const b2Vec2& rOurPos)
             }
         }
     }
+    return true;
+}
+void Weapon::updatePosition(const b2Vec2& rOurPos)    //update us to aim at the correct angle before trying to fire anything
+{
+    if(not m_canPivot)
+        m_aimAngle = m_startAngle + m_linker.getTargetPtr()->getBody()->GetAngle();
+
+    m_spGunMantle->setPosition(rOurPos);
+    m_spGunMantle->setRotation(m_aimAngle);
+
+    for(auto it = m_barrels.begin(); it != m_barrels.end(); ++it)
+        (*it)->update(rOurPos, m_aimAngle);
 }
 Link<Weapon, Turret>& Weapon::getLinker()
 {

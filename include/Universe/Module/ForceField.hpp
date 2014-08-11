@@ -41,10 +41,13 @@ struct ForceFieldData : public TriggerData
         maskBits = Mask::ShipForceField;
         type = ClassType::TRIGGER;
     }
-    virtual Module* generate(Chunk* pChunk)
+
+    virtual Module* generate(Chunk* pChunk) const
     {
-        pBody = pChunk->getBody();
-        return new ForceField(*this);
+        ForceFieldData mutableCopy(*this);
+        mutableCopy.pBody = pChunk->getBody();
+                mutableCopy.pChunk = pChunk;
+        return new ForceField(mutableCopy);
     }
 
     float forceStrength;

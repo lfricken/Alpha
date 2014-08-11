@@ -40,8 +40,7 @@ struct GraphicsComponentData
 class GraphicsComponent
 {
 public:
-    GraphicsComponent();
-    GraphicsComponent(const GraphicsComponentData& rData);
+    GraphicsComponent(const GraphicsComponentData& rData, GraphicsComponentFactory* pFactory);
     virtual ~GraphicsComponent();
 
     const sf::Sprite& getSprite() const;//to be used for drawing, a function calls this and tells window to draw it
@@ -49,14 +48,13 @@ public:
     GraphicsLayer getGfxLayer() const;
 
     void setPosition(const b2Vec2& rPos);
-    void setRotation(float r);//radians
+    void setRotation(float radiansCCW);//radians
     void setAnimState(AnimationState state);
 
     void free();
     void update();
 protected:
 private:
-    virtual void f_init(const GraphicsComponentData& rData);
 
     std::string m_texName;
     GraphicsComponentFactory* m_pParent;

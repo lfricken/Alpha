@@ -164,7 +164,9 @@ public:
     }
 };
 
-
+/**Max value represents max max
+value represents current max zoom
+min represents min max and min zoom**/
 typedef float T_Zoom;
 class ZoomPool : public Variable<T_Zoom>
 {
@@ -198,7 +200,7 @@ typedef int T_Ammo;
 class Ammo : public Variable<T_Ammo>
 {
 public:
-    Ammo() : Variable(NULL, Event::Ammo, 0, 0, 0) {}
+    Ammo() : Variable(NULL, Event::Ammo, 0, 1000, 0) {}
     Ammo(ActiveEventer* pEventer, T_Ammo val, T_Ammo max) : Variable(pEventer, Event::Ammo, val, max, 0) {}
 
     void setMaxCapacity(T_Ammo amount)

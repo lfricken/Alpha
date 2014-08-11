@@ -29,10 +29,12 @@ struct ModuleData : public PhysicsBaseData
         butes.setBute(isSolid, true);
         butes.setBute(isDestructable, false);
     }
-    virtual Module* generate(Chunk* pChunk)
+    virtual Module* generate(Chunk* pChunk) const
     {
-        pBody = pChunk->getBody();
-        return new Module(*this);
+        ModuleData mutableCopy(*this);
+        mutableCopy.pBody = pChunk->getBody();
+        mutableCopy.pChunk = pChunk;
+        return new Module(mutableCopy);
     }
 };
 

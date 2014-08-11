@@ -17,6 +17,7 @@ public:
     void secondary(const b2Vec2& coords);//we tried to fire
     void aim(const b2Vec2& coords);//we tried aiming the turret at a place
 
+    void destructHook();
     bool physUpdate();
 
     Link<Turret, Weapon>& getLinker();
@@ -47,10 +48,12 @@ struct TurretData : public GModuleData
 
     WeaponData weaponData;
 
-    virtual GModule* generate(Chunk* pChunk)
+    virtual GModule* generate(Chunk* pChunk) const
     {
-        pBody = pChunk->getBody();
-        return new Turret(*this);
+        TurretData mutableCopy(*this);
+        mutableCopy.pBody = pChunk->getBody();
+        mutableCopy.pChunk = pChunk;
+        return new Turret(mutableCopy);
     }
 };
 

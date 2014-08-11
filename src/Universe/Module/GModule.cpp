@@ -22,8 +22,9 @@ GModule::~GModule()
 {
 
 }
-void GModule::f_initialize(const GModuleData& data)
+void GModule::f_initialize(const GModuleData& rData)
 {
+        (void)rData;//shutup the compiler about unused
     m_isDestroyed = false;
 }
 IOBaseReturn GModule::input(IOBaseArgs)
@@ -76,24 +77,29 @@ T_Health GModule::getHealth() const
 }
 void GModule::destruct()
 {
-    if(m_attributes.getBute(Butes::isDestructable))
+    if(m_attributes.getBute(Butes::isDestructable))///set the state to destroyed
     {
+        disable();
+        m_isDestroyed = true;
         b2Filter filter = m_pFixture->GetFilterData();
         filter.maskBits = static_cast<uint16>(Mask::ShipModuleBroke);
         m_pFixture->SetFilterData(filter);
-
-        m_isDestroyed = true;
         getAnimationController().setState("Destroyed");
-        disable();
+        destructHook();
     }
 }
+void GModule::destructHook()
+{
+
+}
+
 bool GModule::isDestroyed() const
 {
     return m_isDestroyed;
 }
-void GModule::primary(const b2Vec2& coords) {}
-void GModule::secondary(const b2Vec2& coords) {}
-void GModule::aim(const b2Vec2& coords) {}
+void GModule::primary(const b2Vec2& coords) {(void)coords;}
+void GModule::secondary(const b2Vec2& coords) {(void)coords;}
+void GModule::aim(const b2Vec2& coords) {(void)coords;}
 void GModule::up() {}
 void GModule::down() {}
 void GModule::left() {}

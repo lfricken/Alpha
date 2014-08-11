@@ -18,7 +18,7 @@ Trigger::~Trigger()
 }
 void Trigger::f_initialize(const TriggerData& rData)
 {
-
+(void)rData;
 }
 int Trigger::startContact(PhysicsBase* pOther)
 {
@@ -35,6 +35,7 @@ bool Trigger::passesFilter(PhysicsBase* pOther)
 }
 void Trigger::objectEntered(PhysicsBase* pOther)
 {
+    (void)pOther;
     trigger();
 }
 int Trigger::endContact(PhysicsBase* pOther)

@@ -8,20 +8,16 @@ GraphicsComponentFactory::~GraphicsComponentFactory()
 {
 
 }
-GraphicsComponent* GraphicsComponentFactory::generate(const GraphicsComponentData& rData)
+BaseGraphicsComponent* GraphicsComponentFactory::generate(const BaseGraphicsComponentData& rData)
 {
-    GraphicsComponentData mutableCopy(rData);
-    mutableCopy.pParent = this;
+    auto& spGfxCompList = m_layers[rData.gfxLayer][rData.texName];
 
-
-    auto& spGfxCompList = m_layers[mutableCopy.gfxLayer][mutableCopy.texName];
-
-    GraphicsComponent* ptr = new GraphicsComponent(mutableCopy, this);//create the component
-    spGfxCompList.push_back(std::tr1::shared_ptr<GraphicsComponent>(ptr));
+    BaseGraphicsComponent* ptr = rData.generate(this);//create the component
+    spGfxCompList.push_back(std::tr1::shared_ptr<BaseGraphicsComponent>(ptr));
 
     return ptr;
 }
-void GraphicsComponentFactory::freeComponent(GraphicsComponent* ptr)
+void GraphicsComponentFactory::freeComponent(BaseGraphicsComponent* ptr)
 {
     auto& spGfxCompList = m_layers[ptr->getGfxLayer()][ptr->getTexName()];
 
@@ -46,6 +42,6 @@ void GraphicsComponentFactory::draw(sf::RenderWindow& rWindow)
              for(auto it_comp = it_gfxCompGroup->second.begin(); it_comp != it_gfxCompGroup->second.end(); ++it_comp)//3
              {
                  (**it_comp).update();
-                 rWindow.draw( (**it_comp).getSprite() );//4
+                 rWindow.draw( (**it_comp).getDrawable() );//4
              }
 }

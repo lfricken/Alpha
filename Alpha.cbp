@@ -26,6 +26,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-pg" />
 					<Add option="-g" />
 					<Add directory="include/Universe/Utility" />
 					<Add directory="include/Graphics" />
@@ -34,6 +35,7 @@
 					<Add directory="include/Universe/ModuleComponent" />
 				</Compiler>
 				<Linker>
+					<Add option="-pg -lgmon" />
 					<Add option="-lsfml-network-s" />
 					<Add option="-lsfml-audio-s" />
 					<Add option="-lsfml-graphics-s" />
@@ -92,10 +94,12 @@
 		<Unit filename="include/Game/Game.hpp" />
 		<Unit filename="include/Graphics/AnimationController.hpp" />
 		<Unit filename="include/Graphics/AnimationSetting.hpp" />
+		<Unit filename="include/Graphics/BaseGraphicsComponent.hpp" />
 		<Unit filename="include/Graphics/Decoration.hpp" />
 		<Unit filename="include/Graphics/GraphicsBase.hpp" />
 		<Unit filename="include/Graphics/GraphicsComponent.hpp" />
 		<Unit filename="include/Graphics/GraphicsLayer.hpp" />
+		<Unit filename="include/Graphics/Meter.hpp" />
 		<Unit filename="include/Graphics/MultiTileMap.hpp" />
 		<Unit filename="include/Graphics/Spinner.hpp" />
 		<Unit filename="include/Gui/Button.hpp" />
@@ -172,9 +176,11 @@
 		<Unit filename="src/Game/Game.cpp" />
 		<Unit filename="src/Graphics/AnimationController.cpp" />
 		<Unit filename="src/Graphics/AnimationSetting.cpp" />
+		<Unit filename="src/Graphics/BaseGraphicsComponent.cpp" />
 		<Unit filename="src/Graphics/Decoration.cpp" />
 		<Unit filename="src/Graphics/GraphicsBase.cpp" />
 		<Unit filename="src/Graphics/GraphicsComponent.cpp" />
+		<Unit filename="src/Graphics/Meter.cpp" />
 		<Unit filename="src/Graphics/MultiTileMap.cpp" />
 		<Unit filename="src/Graphics/Spinner.cpp" />
 		<Unit filename="src/Gui/Button.cpp" />

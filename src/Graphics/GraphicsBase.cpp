@@ -87,15 +87,15 @@ void GraphicsBase::setColor(const sf::Color& rColor)
     pVertex[2].color = rColor;
     pVertex[3].color = rColor;
 }
-const std::string& GraphicsBase::getTexName() const
-{
-    return m_texName;
-}
+
 AnimationController& GraphicsBase::getAnimationController()
 {
     return m_animControl;
 }
-
+const std::string& GraphicsBase::getTexName() const
+{
+    return m_texName;
+}
 void GraphicsBase::animate()
 {
     animatePreHook();

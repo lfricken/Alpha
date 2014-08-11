@@ -3,7 +3,7 @@
 
 Decoration::Decoration(const DecorationData& rData) : IOBase(static_cast<IOBaseData>(rData))
 {
-    m_pGfxComp = game.getGameUniverse().getGfxCompFactory().generate(rData.gfxCompData);
+    m_pGfxComp = dynamic_cast<GraphicsComponent*>(game.getGameUniverse().getGfxCompFactory().generate(rData.gfxCompData));
 }
 Decoration::~Decoration()
 {

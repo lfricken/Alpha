@@ -4,7 +4,7 @@
 
 using namespace std;
 
-MultiTileMap::MultiTileMap()
+MultiTileMap::MultiTileMap(const MultiTileMapData& rData) : BaseGraphicsComponent(static_cast<BaseGraphicsComponentData>(rData))
 {
 
 }
@@ -12,6 +12,12 @@ MultiTileMap::~MultiTileMap()
 {
 
 }
+const sf::Drawable& MultiTileMap::getDrawable() const
+{
+    return *this;
+}
+
+
 /**
 1. Figure out if one of our texVertices has the texture a gfxBase wants
 2. if not make a new one with appropriate stuff
@@ -63,20 +69,20 @@ void MultiTileMap::setPosition(const b2Vec2& rPos)
 {
     sf::Transformable::setPosition(leon::b2Tosf<float>(rPos));
 }
-void MultiTileMap::setRotation(float r)//radians
+void MultiTileMap::setRotation(float radiansCCW)//radians
 {
-    sf::Transformable::setRotation(-leon::radToDeg(r));
+    sf::Transformable::setRotation(-leon::radToDeg(radiansCCW));
 }
 void MultiTileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
-    for(vector<tr1::shared_ptr<TexturedVertices> >::const_iterator it_texVert = m_TexVertSPList.begin(); it_texVert != m_TexVertSPList.end(); ++it_texVert)
+    for(auto it_texVert = m_TexVertSPList.cbegin(); it_texVert != m_TexVertSPList.cend(); ++it_texVert)
     {
         states.texture = (*it_texVert)->pTexture;
         target.draw((*it_texVert)->vertices, states);
     }
 }
-const vector<tr1::shared_ptr<TexturedVertices> >& MultiTileMap::getTexVertList() const
+void MultiTileMap::update()
 {
-    return m_TexVertSPList;
+
 }

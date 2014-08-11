@@ -33,7 +33,8 @@ struct ChunkData : public IOBaseData
         minZoom(defaults::chunk::minZoom),
 
         controlEnabled(defaults::chunk::controlEnabled),
-        awake(defaults::chunk::startAwake)
+        awake(defaults::chunk::startAwake),
+        tileData()
     {
         type = ClassType::CHUNK;
     }
@@ -53,6 +54,8 @@ struct ChunkData : public IOBaseData
 
     bool controlEnabled;
     bool awake;
+
+    MultiTileMapData tileData;
 };
 
 class Chunk : public IOBase
@@ -121,7 +124,7 @@ public:
 protected:
     b2Body* m_pBody;
     b2BodyDef m_bodyDef;
-    MultiTileMap m_tiles;
+    MultiTileMap* m_pTiles;
 
     std::vector<std::tr1::shared_ptr<GModule> > m_GModuleSPList;
     std::vector<std::tr1::shared_ptr<Module> > m_ModuleSPList;

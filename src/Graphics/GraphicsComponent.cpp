@@ -5,18 +5,15 @@
 #include "Convert.hpp"
 
 
-GraphicsComponent::GraphicsComponent(const GraphicsComponentData& rData, GraphicsComponentFactory* pFactory)
+GraphicsComponent::GraphicsComponent(const GraphicsComponentData& rData) : BaseGraphicsComponent(static_cast<BaseGraphicsComponentData>(rData))
 {
-    m_texName = rData.texName;
     m_rotation = rData.rotation;
-    m_gfxLayer = rData.gfxLayer;
-    m_pParent = pFactory;
 
     m_animControl.load(rData.animationFileName);
     m_texTileSize = m_animControl.getTexTileSize();
 
     m_sprite.setOrigin(m_texTileSize.x/2.0f, m_texTileSize.y/2.0f);
-    m_sprite.setTexture(*game.getTextureAllocator().request(m_texName), false);
+    m_sprite.setTexture(*game.getTextureAllocator().request(getTexName()), false);
     m_sprite.setScale(rData.scale);
     m_sprite.setColor(rData.color);
 
@@ -27,17 +24,9 @@ GraphicsComponent::~GraphicsComponent()
 {
 
 }
-const sf::Sprite& GraphicsComponent::getSprite() const
+const sf::Drawable& GraphicsComponent::getDrawable() const
 {
     return m_sprite;
-}
-const std::string& GraphicsComponent::getTexName() const
-{
-    return m_texName;
-}
-GraphicsLayer GraphicsComponent::getGfxLayer() const
-{
-    return m_gfxLayer;
 }
 void GraphicsComponent::setPosition(const b2Vec2& rPos)
 {
@@ -50,10 +39,6 @@ void GraphicsComponent::setRotation(float radiansCCW)
 void GraphicsComponent::setAnimState(AnimationState state)
 {
     m_animControl.setState(state);
-}
-void GraphicsComponent::free()
-{
-    m_pParent->freeComponent(this);
 }
 void GraphicsComponent::update()
 {

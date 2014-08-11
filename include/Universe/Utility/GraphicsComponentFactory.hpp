@@ -3,7 +3,7 @@
 
 #include "stdafx.hpp"
 #include "GraphicsLayer.hpp"
-#include "GraphicsComponent.hpp"
+#include "BaseGraphicsComponent.hpp"
 
 /**A map of textureNames, which are associated with a vector of components**/
 
@@ -15,16 +15,15 @@ public:
     GraphicsComponentFactory();
     virtual ~GraphicsComponentFactory();
 
-    GraphicsComponent* generate(const GraphicsComponentData& rData);
-    void freeComponent(GraphicsComponent* ptr);
+    BaseGraphicsComponent* generate(const BaseGraphicsComponentData& rData);
+    void freeComponent(BaseGraphicsComponent* ptr);
 
     void draw(sf::RenderWindow& rWindow);//draw all of the graphics components we hold
 
 protected:
 private:
-    std::vector<std::tr1::shared_ptr<GraphicsComponent> > spGfxCompList;
 
-    typedef std::vector<std::tr1::shared_ptr<GraphicsComponent> > gfxCompGroup;
+    typedef std::vector<std::tr1::shared_ptr<BaseGraphicsComponent> > gfxCompGroup;
     typedef std::map<std::string, gfxCompGroup> Layer;
     std::map<GraphicsLayer, Layer> m_layers;/**A map of GraphicsLayers that correspond to some Layer**/
 };

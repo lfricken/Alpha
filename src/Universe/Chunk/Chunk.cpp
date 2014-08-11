@@ -19,6 +19,8 @@ using namespace std;
 
 Chunk::Chunk(const ChunkData& rData) : IOBase(static_cast<IOBaseData>(rData))
 {
+    m_pTiles = dynamic_cast<MultiTileMap*>(game.getGameUniverse().getGfxCompFactory().generate(rData.tileData));
+
     m_spLinker.reset(new Link<Chunk, Intelligence>(this));
     m_spZoomPool.reset(new ZoomPool(m_pIOComponent->getEventerPtr(), rData.startMaxZoom, rData.maxMaxZoom, rData.minZoom));
     m_spEnergyPool.reset(new EnergyPool(m_pIOComponent->getEventerPtr(), 0, rData.startMaxEnergy));
@@ -39,6 +41,7 @@ Chunk::Chunk(const ChunkData& rData) : IOBase(static_cast<IOBaseData>(rData))
 Chunk::~Chunk()/**Don't destroy us in the middle of a physics step!**/
 {
     game.getGameUniverse().getWorld().DestroyBody(m_pBody);
+    m_pTiles->free();
 }
 
 
@@ -83,7 +86,7 @@ GModule* Chunk::add(const vector<tr1::shared_ptr<const GModuleData> >& rDataList
     {
         ptr = (*it_data)->generate(this);
         InsertPtrVector(m_GModuleSPList, &IOBase::getID, tr1::shared_ptr<GModule>(ptr));
-        m_tiles.add(ptr);///HERE IS WHERE WE WOULD give it a graphics COMPONENT, instead of us as a derived pointer from which it gets the base type
+        m_pTiles->add(ptr);///HERE IS WHERE WE WOULD give it a graphics COMPONENT, instead of us as a derived pointer from which it gets the base type
     }
 
     return ptr;
@@ -352,9 +355,9 @@ void Chunk::draw()
             (*it)->animate();
         }
 
-        m_tiles.setPosition(m_pBody->GetPosition());
-        m_tiles.setRotation(m_pBody->GetAngle());
-        game.getGameWindow().draw(m_tiles);
+        m_pTiles->setPosition(m_pBody->GetPosition());
+        m_pTiles->setRotation(m_pBody->GetAngle());
+        //game.getGameWindow().draw(m_tiles);
     }
 }
 

@@ -54,13 +54,13 @@ public:
     void toggleDebugDraw();
 protected:
 private:
+    GraphicsComponentFactory m_gfxCompFactory;/**this has to be before (after destructor of projectile alloc, because there are graphics components in the projalloc**/
     UniversalContactListener m_contactListener;
     DebugDraw m_debugDraw;
 
     b2World m_physWorld;
     BedFinder m_bedFinder;
-    ProjectileAllocator m_projAlloc;
-    GraphicsComponentFactory m_gfxCompFactory;
+
 
 
     float m_pauseTime;
@@ -75,6 +75,7 @@ private:
     int m_velocityIterations;
     int m_positionIterations;
 
+    ProjectileAllocator m_projAlloc;
     std::vector<std::tr1::shared_ptr<Decoration> > m_gfxList; //all the objects that have only graphics
     std::vector<std::tr1::shared_ptr<Chunk> > m_physList;//all the objects that have physics, and maybe graphics
 };

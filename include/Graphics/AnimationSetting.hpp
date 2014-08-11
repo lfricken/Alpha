@@ -30,6 +30,7 @@ struct AnimationSetting
 {
     float delay;//delay between each frame
     AnimationState nextState;
+    sf::Vector2f texTileSize;
     std::vector<sf::Vector2f> sequence;//set of texture tiles to loop through
 };
 

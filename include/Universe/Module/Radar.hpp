@@ -36,7 +36,7 @@ struct RadarData : public GModuleData
         dishData.decorData.gfxCompData.texName = "textures/radar/dish.png";
         dishData.decorData.gfxCompData.scale = sf::Vector2f(1,1);
         type = ClassType::SENSOR;
-        texTileSize = sf::Vector2f(256,256);
+        animationFileName = "textures/radar/base.acfg";
         texName = "textures/radar/base.png";
     }
 

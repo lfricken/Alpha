@@ -1,4 +1,5 @@
 {
+	"texTileSize": [256,256],
     "stateList": [
         {
             "comment": "This is a comment where you can write something, the comment value is not read by the engine",

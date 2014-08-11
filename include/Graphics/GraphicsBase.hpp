@@ -14,14 +14,12 @@ struct GraphicsBaseData//initialized
         animationFileName(defaults::graphics::animFile),
         texName(defaults::graphics::texName),
         color(defaults::graphics::color),
-        texTileSize(defaults::graphics::texTileSize),
         animState(defaults::graphics::animState)
         {}
 
     std::string animationFileName;
     std::string texName;
     sf::Color color;//color mask
-    sf::Vector2f texTileSize;//size of the texture rectangle
     AnimationState animState;//sets animation to start initially or not
 
 };

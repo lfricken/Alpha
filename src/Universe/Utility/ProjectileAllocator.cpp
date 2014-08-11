@@ -81,7 +81,6 @@ void ProjectileAllocator::load()///load definitions of projectile types from a f
     (*data).pBody = NULL;//we dont know it yet
     (*data).restitution = 0.2f;
     (*data).rotation = 0.0f;
-    (*data).texTileSize = sf::Vector2f(32, 32);
     (*data).color = sf::Color::White;
 
     rProjData = &get<projData>(m_projList[type]);
@@ -109,7 +108,6 @@ void ProjectileAllocator::load()///load definitions of projectile types from a f
     (*data).pBody = NULL;//we dont know it yet
     (*data).restitution = 0.2f;
     (*data).rotation = 0.0f;
-    (*data).texTileSize = sf::Vector2f(64, 64);
     (*data).color = sf::Color::White;
 
     rProjData = &get<projData>(m_projList[type]);

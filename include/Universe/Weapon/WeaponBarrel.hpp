@@ -46,7 +46,7 @@ struct WeaponBarrelData
     {
         decorData.gfxCompData.gfxLayer = GraphicsLayer::ShipAppendagesLower;
         decorData.gfxCompData.texName = "textures/barrels/chain_barrels.png";
-        decorData.gfxCompData.texTileSize = sf::Vector2f(16,64);
+        decorData.gfxCompData.animationFileName = "textures/barrels/barrel.acfg";
         decorData.gfxCompData.rotation = -90;
     }
 

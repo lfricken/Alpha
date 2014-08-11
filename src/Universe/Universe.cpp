@@ -74,6 +74,7 @@ Chunk* Universe::getPhysTarget(unsigned int targetID)
 }
 Decoration* Universe::getGfxTarget(const std::string& targetName)
 {
+
     Decoration* pTarget = NULL;
 
     for(vector<std::tr1::shared_ptr<Decoration> >::iterator it = m_gfxList.begin(); it != m_gfxList.end(); ++it)

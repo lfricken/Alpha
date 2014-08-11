@@ -22,10 +22,11 @@ public:
     void setState(const AnimationState& state);
     void restart();//starts from beginning
     const sf::Vector2f& getTile();//get the current tile we should be on
+    const sf::Vector2f& getTexTileSize() const;
+
 protected:
 private:
     void f_update();//figure out the correct tile we should be displaying right now, and the other data
-
 
     const AnimSet* m_pSettingsList;//pointer we hold that points at an animation set that AnimationAllocator holds
 

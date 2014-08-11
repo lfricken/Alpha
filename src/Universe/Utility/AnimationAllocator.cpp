@@ -20,11 +20,13 @@ const AnimSet* AnimationAllocator::requestPtr(const std::string& rFileName)
     bool parsedSuccess;
 
     if(it_find != m_animationSets.end())//if it exists
+    {
         constAnimSetPtr = &*(it_find->second);
+    }
     else//if it doesn't exist
     {
-        AnimSet* pSettingsList = new AnimSet;
-        m_animationSets[rFileName] = std::tr1::shared_ptr<AnimSet>(pSettingsList);
+
+        std::tr1::shared_ptr<AnimSet> sharedPtr(new AnimSet);
         Json::Value root;//Let's parse it
         Json::Reader reader;
         std::ifstream test(rFileName, std::ifstream::binary);
@@ -32,7 +34,7 @@ const AnimSet* AnimationAllocator::requestPtr(const std::string& rFileName)
 
         if(parsedSuccess)
         {
-            std::vector<int> copyPositions;
+            std::vector<int> copyPositions;//positions of settings that need a copy of another setting
             const Json::Value stateList = root["stateList"];
 
             int counter = 0;
@@ -40,7 +42,6 @@ const AnimSet* AnimationAllocator::requestPtr(const std::string& rFileName)
             {
                 if(not (*it)["copyFrom"].isNull())//check if we have some value to copy from
                 {
-                    std::cout << "\nWill Copy.";
                     copyPositions.push_back(counter);//store us for later
                 }
                 else//copy that data to one of our animation states
@@ -48,6 +49,7 @@ const AnimSet* AnimationAllocator::requestPtr(const std::string& rFileName)
                     AnimationSetting setting;
                     setting.delay = (*it)["delay"].asFloat();
                     setting.nextState = (*it)["nextState"].asString();
+                    setting.texTileSize = sf::Vector2f(root["texTileSize"][0].asInt(), root["texTileSize"][1].asInt());
 
                     const Json::Value tileList = (*it)["tileList"];
                     for(unsigned int i = 0; i<tileList.size(); i+=2)
@@ -55,7 +57,7 @@ const AnimSet* AnimationAllocator::requestPtr(const std::string& rFileName)
                         setting.sequence.push_back(sf::Vector2f(tileList[i].asInt(), tileList[i+1].asInt()));
                     }
 
-                    (*pSettingsList)[(*it)["state"].asString()] = setting;
+                    (*sharedPtr)[(*it)["state"].asString()] = setting;
                 }
                 ++counter;
             }
@@ -63,15 +65,18 @@ const AnimSet* AnimationAllocator::requestPtr(const std::string& rFileName)
 
             for(auto it = copyPositions.begin(); it != copyPositions.end(); ++it)
             {
-                (*pSettingsList)[stateList[*it]["animState"].asString()] = (*pSettingsList)[stateList[*it]["copyFrom"].asString()];
+                (*sharedPtr)[stateList[*it]["animState"].asString()] = (*sharedPtr)[stateList[*it]["copyFrom"].asString()];
             }
+
+            m_animationSets[rFileName] = sharedPtr;//if everything went right, we can add it to our list
             constAnimSetPtr = &*(m_animationSets[rFileName]);
         }
         else//we failed to parse successfully
         {
-            std::cout << "\nFailed to parse JSON " << std::endl << FILELINE;
+            std::cout << "\nFailed to parse JSON file [" << rFileName << "]." << std::endl << FILELINE;
             ///ERROR LOG
-            constAnimSetPtr = &*m_animationSets["BackupHardCodedAnimSet"];
+
+            constAnimSetPtr = this->requestPtr("textures/default.acfg");///why doesn't this work, this causes crash?
         }
     }
 

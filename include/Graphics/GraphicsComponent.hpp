@@ -15,7 +15,6 @@ struct GraphicsComponentData
         position(defaults::graphics::position),
         rotation(defaults::graphics::rotation),//degrees CCW
         scale(defaults::graphics::scale),
-        texTileSize(defaults::graphics::texTileSize),
         color(defaults::graphics::color),
         texName(defaults::graphics::texName),
         animationFileName(defaults::graphics::animFile),
@@ -28,7 +27,6 @@ struct GraphicsComponentData
     sf::Vector2f position;
     float rotation;//degrees CCW
     sf::Vector2f scale;
-    sf::Vector2f texTileSize;
     sf::Color color;
     std::string texName;
     std::string animationFileName;

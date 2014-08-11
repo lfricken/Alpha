@@ -8,21 +8,19 @@
 GraphicsComponent::GraphicsComponent(const GraphicsComponentData& rData, GraphicsComponentFactory* pFactory)
 {
     m_texName = rData.texName;
-
-    m_sprite.setOrigin(rData.texTileSize.x/2, rData.texTileSize.y/2);
-    m_texTileSize = rData.texTileSize;
-    m_sprite.setTexture(*game.getTextureAllocator().request(m_texName), false);
     m_rotation = rData.rotation;
-
-    m_sprite.setScale(rData.scale);
-    m_sprite.setColor(rData.color);
-
-
     m_gfxLayer = rData.gfxLayer;
     m_pParent = pFactory;
 
-    setPosition(b2Vec2(rData.position.x, rData.position.y));
     m_animControl.load(rData.animationFileName);
+    m_texTileSize = m_animControl.getTexTileSize();
+
+    m_sprite.setOrigin(m_texTileSize.x/2.0f, m_texTileSize.y/2.0f);
+    m_sprite.setTexture(*game.getTextureAllocator().request(m_texName), false);
+    m_sprite.setScale(rData.scale);
+    m_sprite.setColor(rData.color);
+
+    setPosition(b2Vec2(rData.position.x, rData.position.y));
     m_animControl.setState(rData.animState);
 }
 GraphicsComponent::~GraphicsComponent()

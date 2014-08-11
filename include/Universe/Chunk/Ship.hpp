@@ -12,7 +12,7 @@ struct ShipData : public ChunkData//initialized
         type = ClassType::SHIP;
         bodyType = b2BodyType::b2_dynamicBody;
         hullDecor.gfxCompData.texName = "textures/hull/loahn.png";
-        hullDecor.gfxCompData.texTileSize = sf::Vector2f(840, 1436);
+        hullDecor.gfxCompData.animationFileName = "textures/hull/loahn.acfg";
         hullDecor.gfxCompData.gfxLayer = GraphicsLayer::ShipHull;
         hullDecor.gfxCompData.rotation = 0;
         hullDecor.gfxCompData.scale = sf::Vector2f(3,3);

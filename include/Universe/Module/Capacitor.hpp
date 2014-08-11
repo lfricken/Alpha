@@ -31,7 +31,6 @@ struct CapacitorData : public GModuleData
         energyStorage(100)
     {
         type = ClassType::CAPACITOR;
-        texTileSize = sf::Vector2f(256,256);
         texName = "textures/capacitor/capacitor.png";
         animationFileName = "textures/capacitor/capacitor.acfg";
     }

@@ -15,8 +15,8 @@ struct SpinnerData
     {
         decorData.gfxCompData.gfxLayer = GraphicsLayer::ShipAppendagesUpper;
         decorData.gfxCompData.scale = sf::Vector2f(0.5, 0.5);
-        decorData.gfxCompData.texTileSize = sf::Vector2f(256,256);
         decorData.gfxCompData.texName = "textures/radar/dish.png";
+        decorData.gfxCompData.animationFileName = "textures/radar/dish.acfg";
     }
     float startRotation;//degrees CCW
     b2Vec2 spinnerOffset;//offset of sprite and spin from center of Module

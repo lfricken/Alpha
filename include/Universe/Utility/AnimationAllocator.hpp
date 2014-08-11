@@ -4,6 +4,8 @@
 #include "AnimationSetting.hpp"
 typedef std::map<AnimationState, AnimationSetting> AnimSet;//a set of animation settings
 
+
+
 class AnimationAllocator
 {
 public:

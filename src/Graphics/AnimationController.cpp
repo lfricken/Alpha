@@ -16,6 +16,7 @@ AnimationController::~AnimationController()
 void AnimationController::load(const std::string& animationFile)
 {
     m_pSettingsList = game.getAnimationAllocator().requestPtr(animationFile);
+    setState("Default");
 }
 
 
@@ -27,8 +28,10 @@ void AnimationController::setState(const AnimationState& state)
     if(it == m_pSettingsList->cend())
     {
         it = m_pSettingsList->find("Error");
-        if(it == m_pSettingsList->cend())
-            m_pCurrentSetting = &it->second;
+        if(it != m_pSettingsList->cend())
+            m_pCurrentSetting = &(it->second);
+        else
+            std::cout << "\n[" << state << "] " << FILELINE;
     }
     else
         m_pCurrentSetting = &it->second;
@@ -46,9 +49,10 @@ const sf::Vector2f& AnimationController::getTile()
     f_update();
     return m_pCurrentSetting->sequence[m_currentIndex];
 }
-
-
-
+const sf::Vector2f& AnimationController::getTexTileSize() const
+{
+    return m_pCurrentSetting->texTileSize;
+}
 void AnimationController::f_update()
 {
     m_accumulatedTime += m_timer.getTimeElapsed();

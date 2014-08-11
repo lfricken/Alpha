@@ -32,7 +32,7 @@ struct WeaponData
     {
         decorationData.gfxCompData.gfxLayer = GraphicsLayer::ShipAppendagesUpper;
         decorationData.gfxCompData.texName = "textures/barrels/chain_turret.png";
-        decorationData.gfxCompData.texTileSize = sf::Vector2f(32,64);
+        decorationData.gfxCompData.animationFileName = "textures/barrels/turret.acfg";
         decorationData.gfxCompData.rotation = -90;//this is negative because our gun sprites start facing up, so we need to rotate them 90 degs CW
     }
     T_Energy energyConsumption;

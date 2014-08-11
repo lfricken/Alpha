@@ -26,7 +26,7 @@ void GraphicsBase::f_initialize(const GraphicsBaseData& rData, const b2Vec2& rHa
     m_tileHalfSize = rHalfSize;
     m_tilePos = rOffset;
 
-    m_texTileSize = rData.texTileSize;
+    m_texTileSize = m_animControl.getTexTileSize();
     m_texName = rData.texName;
     m_netRotation = rotation;
 }

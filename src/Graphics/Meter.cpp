@@ -8,7 +8,3 @@ Meter::~Meter()
 {
 
 }
-void Meter::setPercentFull(float zeroToOne)
-{
-
-}

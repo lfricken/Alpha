@@ -101,7 +101,9 @@
 		<Unit filename="include/Graphics/GraphicsLayer.hpp" />
 		<Unit filename="include/Graphics/Meter.hpp" />
 		<Unit filename="include/Graphics/MultiTileMap.hpp" />
+		<Unit filename="include/Graphics/RadialMeter.hpp" />
 		<Unit filename="include/Graphics/Spinner.hpp" />
+		<Unit filename="include/Graphics/TriangleFan.h" />
 		<Unit filename="include/Gui/Button.hpp" />
 		<Unit filename="include/Gui/EditBox.hpp" />
 		<Unit filename="include/Gui/OverlayManager.hpp" />
@@ -182,7 +184,9 @@
 		<Unit filename="src/Graphics/GraphicsComponent.cpp" />
 		<Unit filename="src/Graphics/Meter.cpp" />
 		<Unit filename="src/Graphics/MultiTileMap.cpp" />
+		<Unit filename="src/Graphics/RadialMeter.cpp" />
 		<Unit filename="src/Graphics/Spinner.cpp" />
+		<Unit filename="src/Graphics/TriangleFan.cpp" />
 		<Unit filename="src/Gui/Button.cpp" />
 		<Unit filename="src/Gui/EditBox.cpp" />
 		<Unit filename="src/Gui/OverlayManager.cpp" />

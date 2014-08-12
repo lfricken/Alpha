@@ -8,10 +8,11 @@ class Meter
         Meter();
         virtual ~Meter();
 
-        virtual void setPercentFull(float zeroToOne);
+        virtual void setPercentFull(float zeroToOne) = 0;
 
     protected:
     private:
+        float m_currentPercent;//0-1
 };
 
 #endif // METER_H

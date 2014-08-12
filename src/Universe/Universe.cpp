@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Universe::Universe() : IOBase(), m_physWorld(b2Vec2(0,0)), m_projAlloc(), m_gfxCompFactory()
+Universe::Universe() : IOBase(), m_gfxCompFactory(), m_physWorld(b2Vec2(0,0)), m_projAlloc()
 {
     m_skippedTime = 0;
     m_normalDraw = true;
@@ -162,13 +162,11 @@ void Universe::draw()
 
         for(vector<tr1::shared_ptr<Chunk> >::iterator it = m_physList.begin(); it != m_physList.end(); ++it)
         {
-            (*it)->draw();
+            (*it)->gfxUpdate();//update all chunks
         }
+        m_projAlloc.gfxUpdate();
 
-        m_gfxCompFactory.draw(game.getGameWindow());//things with a gfx component
-
-        m_projAlloc.draw();
-        ///also draw graphics objects?? maybe we should have another section for that??
+        m_gfxCompFactory.draw(game.getGameWindow());//anything with a gfx component
     }
     else
         m_physWorld.DrawDebugData();

@@ -12,9 +12,10 @@ MultiTileMap::~MultiTileMap()
 {
 
 }
-const sf::Drawable& MultiTileMap::getDrawable() const
+void MultiTileMap::draw(sf::RenderWindow& rWindow) const
 {
-    return *this;
+    if(isVisible())
+        rWindow.draw(*this);
 }
 
 

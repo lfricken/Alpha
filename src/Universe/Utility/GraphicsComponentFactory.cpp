@@ -37,11 +37,11 @@ void GraphicsComponentFactory::draw(sf::RenderWindow& rWindow)
     /**3 loop over elements in sprite groups**/
     /**4 draw those elements**/
 
-     for(auto it_layer = m_layers.begin(); it_layer != m_layers.end(); ++it_layer)//1
-         for(auto it_gfxCompGroup = it_layer->second.begin(); it_gfxCompGroup != it_layer->second.end(); ++it_gfxCompGroup)//2
-             for(auto it_comp = it_gfxCompGroup->second.begin(); it_comp != it_gfxCompGroup->second.end(); ++it_comp)//3
-             {
-                 (**it_comp).update();
-                 rWindow.draw( (**it_comp).getDrawable() );//4
-             }
+    for(auto it_layer = m_layers.begin(); it_layer != m_layers.end(); ++it_layer)//1
+        for(auto it_gfxCompGroup = it_layer->second.begin(); it_gfxCompGroup != it_layer->second.end(); ++it_gfxCompGroup)//2
+            for(auto it_comp = it_gfxCompGroup->second.begin(); it_comp != it_gfxCompGroup->second.end(); ++it_comp)//3
+            {
+                (**it_comp).update();
+                (**it_comp).draw(rWindow);//4
+            }
 }

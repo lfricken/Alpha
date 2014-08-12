@@ -3,6 +3,7 @@
 
 BaseGraphicsComponent::BaseGraphicsComponent(const BaseGraphicsComponentData& rData)
 {
+    m_isVisible = !rData.startHidden;//reverse it
     m_gfxLayer = rData.gfxLayer;
     m_texName = rData.texName;
     m_pFactoryParent = rData.pParent;
@@ -22,4 +23,12 @@ GraphicsLayer BaseGraphicsComponent::getGfxLayer() const
 void BaseGraphicsComponent::free()
 {
     m_pFactoryParent->freeComponent(this);
+}
+void BaseGraphicsComponent::setVisibility(bool visible)
+{
+    m_isVisible = visible;
+}
+bool BaseGraphicsComponent::isVisible() const
+{
+    return m_isVisible;
 }

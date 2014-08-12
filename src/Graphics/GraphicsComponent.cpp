@@ -24,9 +24,10 @@ GraphicsComponent::~GraphicsComponent()
 {
 
 }
-const sf::Drawable& GraphicsComponent::getDrawable() const
+void GraphicsComponent::draw(sf::RenderWindow& rWindow) const
 {
-    return m_sprite;
+    if(isVisible())
+        rWindow.draw(m_sprite);
 }
 void GraphicsComponent::setPosition(const b2Vec2& rPos)
 {

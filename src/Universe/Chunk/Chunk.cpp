@@ -161,11 +161,12 @@ void Chunk::sleep()
         m_pBody->SetAngularVelocity(0.0f);
         m_pBody->SetTransform(game.getGameUniverse().getBedFinder().getSleepPosition(), 0);//request new position from bedFinder
         m_awake = false;
+        m_pTiles->setVisibility(false);
     }
 }
 void Chunk::wake()
 {
-    if(!m_awake)//if we aren't awake
+    if(not m_awake)//if we aren't awake
     {
         game.getGameUniverse().getBedFinder().free(m_pBody->GetPosition());
 
@@ -175,6 +176,7 @@ void Chunk::wake()
         m_pBody->SetTransform(m_oldPos, m_oldAngle);//move us//radians
         toggleControl(true);
         m_awake = true;
+        m_pTiles->setVisibility(true);
     }
     else
     {
@@ -184,7 +186,7 @@ void Chunk::wake()
 }
 void Chunk::wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, float angVel)//box2d uses radians
 {
-    if(!m_awake)//if we aren't awake
+    if(not m_awake)//if we aren't awake
     {
         game.getGameUniverse().getBedFinder().free(m_pBody->GetPosition());
 
@@ -196,6 +198,7 @@ void Chunk::wake(const b2Vec2& pos, float angle, const b2Vec2& velocity, float a
         m_pBody->SetAngularVelocity(angVel);
         toggleControl(true);
         m_awake = true;
+        m_pTiles->setVisibility(true);
     }
     else
     {
@@ -345,9 +348,9 @@ AmmoPool& Chunk::getAmmoPool()
 
 
 /**GRAPHICS**/
-void Chunk::draw()
+void Chunk::gfxUpdate()
 {
-    if(m_awake)
+    if(m_awake)///THIS PROBABLY SHOULDN'T BE HERE ANYMORE
     {
         auto it_end = m_GModuleSPList.end();
         for(auto it = m_GModuleSPList.begin(); it != it_end; ++it)
@@ -357,7 +360,6 @@ void Chunk::draw()
 
         m_pTiles->setPosition(m_pBody->GetPosition());
         m_pTiles->setRotation(m_pBody->GetAngle());
-        //game.getGameWindow().draw(m_tiles);
     }
 }
 

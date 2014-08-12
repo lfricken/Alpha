@@ -117,7 +117,7 @@ void ProjectileAllocator::load()///load definitions of projectile types from a f
     ///until we actually have the technology to load from a file, just do this...
     ///m_data
 }
-void ProjectileAllocator::draw()
+void ProjectileAllocator::gfxUpdate()
 {
     int i;
     int to;
@@ -131,7 +131,7 @@ void ProjectileAllocator::draw()
         to = get<freeIndex>(*it_group);
         for(i = 0; i < to; ++i)
         {
-            (*pActiveList)[i]->draw();
+            (*pActiveList)[i]->gfxUpdate();
         }
     }
 }

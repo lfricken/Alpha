@@ -17,15 +17,17 @@ public:
     virtual const std::string& getTexName() const final;
     virtual GraphicsLayer getGfxLayer() const final;
     virtual void free() final;
+    virtual void setVisibility(bool visible) final;
+    virtual bool isVisible() const final;
 
-    virtual const sf::Drawable& getDrawable() const = 0;
     virtual void setPosition(const b2Vec2& rPos) = 0;
     virtual void setRotation(float radiansCCW) = 0;//radians
 
     virtual void update() = 0;
-
+    virtual void draw(sf::RenderWindow& rWindow) const = 0;
 protected:
 private:
+    bool m_isVisible;
     GraphicsLayer m_gfxLayer;
     std::string m_texName;
     GraphicsComponentFactory* m_pFactoryParent;
@@ -34,6 +36,7 @@ private:
 struct BaseGraphicsComponentData
 {
     BaseGraphicsComponentData() :
+        startHidden(false),
         gfxLayer(defaults::graphics::layer),
         texName(defaults::graphics::texName),
         pParent(NULL)
@@ -41,6 +44,7 @@ struct BaseGraphicsComponentData
 
     }
 
+    bool startHidden;
     GraphicsLayer gfxLayer;
     std::string texName;
     GraphicsComponentFactory* pParent;

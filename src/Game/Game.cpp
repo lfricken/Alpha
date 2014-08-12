@@ -25,7 +25,7 @@
 #include "EditBox.hpp"
 #include "Decoration.hpp"
 #include "ProjectileBarrel.hpp"
-
+#include "TriangleFan.h"
 
 using namespace std;
 
@@ -209,9 +209,18 @@ Game::Status Game::run()
     int gray = 60;
     /**SIMULATION & RUNTIME**/
 
+
+    /**EXPERIMENTATION**/
+    TriangleFanData fanData;
+    TriangleFan* pFan = dynamic_cast<TriangleFan*>(m_spUniverse->getGfxCompFactory().generate(fanData));
+
+
     sf::Event event;
     while(m_spWindow->isOpen() && newState != Game::Quit)
     {
+
+        pFan->rotateTexture(0.01418);
+
         /**FPS**/
         secondTime = getTime();
         timeForFrame = secondTime - firstTime;
@@ -260,6 +269,8 @@ Game::Status Game::run()
         m_spWindow->display();
         /**DRAW**/
     }
+    pFan->free();
+
     return newState;
 }
 float Game::getTime() const

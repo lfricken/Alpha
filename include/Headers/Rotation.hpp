@@ -11,7 +11,7 @@ size is the total size of the vector, so 1 element in the array means you pass i
 angle is how much you rotate it in degrees
 **/
 template <typename T>
-struct VertexData///THIS SHOULD GO SOMEWHERE ELSE
+struct VertexData
 {
     VertexData()
     {
@@ -23,7 +23,7 @@ struct VertexData///THIS SHOULD GO SOMEWHERE ELSE
 };
 
 template<class T>
-inline void RotateCoordinatesDegs(std::vector<T>& coords, float angle, T rotationPoint)
+inline void RotateCoordinatesDegs(std::vector<T>& coords, float degreesCCW, T rotationPoint)
 {
     unsigned int size = coords.size();
     T backup;
@@ -34,8 +34,8 @@ inline void RotateCoordinatesDegs(std::vector<T>& coords, float angle, T rotatio
     for(unsigned int i = 0; i<size; ++i)/**rotate them**/
     {
         backup = coords[i];
-        coords[i].x = cos(leon::degToRad(-angle))*backup.x + sin(leon::degToRad(-angle))*backup.y;//-angle because THAT IS CORRECT, go lookup the equation dumbass
-        coords[i].y = -sin(leon::degToRad(-angle))*backup.x + cos(leon::degToRad(-angle))*backup.y;
+        coords[i].x = cos(leon::degToRad(-degreesCCW))*backup.x + sin(leon::degToRad(-degreesCCW))*backup.y;//negative because THAT IS CORRECT, go lookup the equation!
+        coords[i].y = -sin(leon::degToRad(-degreesCCW))*backup.x + cos(leon::degToRad(-degreesCCW))*backup.y;
     }
     for(unsigned int i = 0; i<size; ++i)/**move the coordinates back out**/
     {
@@ -43,21 +43,21 @@ inline void RotateCoordinatesDegs(std::vector<T>& coords, float angle, T rotatio
     }
 }
 template<class T>
-inline void RotateCoordinatesDegs(T coords[], unsigned int size, float angle, T rotationPoint)
+inline void RotateCoordinatesDegs(T coords[], unsigned int size, float degreesCCW, T rotationPoint)
 {
     std::vector<T> vec;
     for(unsigned int i=0; i<size; ++i)
         vec.push_back(coords[i]);
 
-    RotateCoordinatesDegs(vec, angle, rotationPoint);//call better function
+    RotateCoordinatesDegs(vec, degreesCCW, rotationPoint);//call better function
 
     for(unsigned int i=0; i<size; ++i)
         coords[i] = vec[i];
 }
 template<class T>
-inline void RotateCoordinatesRads(T coords[], unsigned int size, float angle, T rotationPoint)
+inline void RotateCoordinatesRads(T coords[], unsigned int size, float radiansCCW, T rotationPoint)
 {
-    RotateCoordinatesDegs(coords, size, leon::radToDeg(angle), rotationPoint);
+    RotateCoordinatesDegs(coords, size, leon::radToDeg(radiansCCW), rotationPoint);
 }
 
 

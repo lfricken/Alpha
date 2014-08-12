@@ -16,9 +16,9 @@ void Ship::f_initialize(const ShipData& rData)
 {
     (void)rData;//shutup the compiler about unused
 }
-void Ship::draw()
+void Ship::gfxUpdate()
 {
     m_hullDecor.setPosition(m_pBody->GetPosition());
     m_hullDecor.setRotation(m_pBody->GetAngle());
-    Chunk::draw();
+    Chunk::gfxUpdate();
 }

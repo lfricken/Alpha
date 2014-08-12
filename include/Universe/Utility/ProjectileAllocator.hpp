@@ -23,7 +23,7 @@ public:
     void load();///load projectile definitions from a file
 
     void recoverProjectiles();//take our list of projectile* and re insert them
-    void draw();
+    void gfxUpdate();
 protected:
 private:
     void f_initialize();

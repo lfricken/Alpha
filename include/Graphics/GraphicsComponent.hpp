@@ -17,7 +17,7 @@ public:
     GraphicsComponent(const GraphicsComponentData& rData);
     virtual ~GraphicsComponent();
 
-    const sf::Drawable& getDrawable() const;
+    void draw(sf::RenderWindow& rWindow) const;
 
     void setPosition(const b2Vec2& rPos);
     void setRotation(float radiansCCW);//radians

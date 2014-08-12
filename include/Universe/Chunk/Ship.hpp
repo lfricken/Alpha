@@ -28,7 +28,7 @@ public:
     Ship(const ShipData& rData);
     virtual ~Ship();
 
-    virtual void draw();
+    virtual void gfxUpdate();
 protected:
 private:
     virtual void f_initialize(const ShipData& rData);

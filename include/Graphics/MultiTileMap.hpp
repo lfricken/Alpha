@@ -12,7 +12,7 @@ struct TexturedVertices
         return &vertices[access];
     }
     sf::VertexArray vertices;
-    sf::Texture* pTexture;
+    const sf::Texture* pTexture;//make sure we don't modify the texture
     std::string textureName;
     int nextAccessed;
 };
@@ -25,15 +25,14 @@ public:
     MultiTileMap(const MultiTileMapData& rData);
     ~MultiTileMap();
 
-    const sf::Drawable& getDrawable() const;
-
     void add(GraphicsBase* pGfxBase);
     void add(std::vector<GraphicsBase*>& gBaseList);
 
+    void draw(sf::RenderWindow& rWindow) const;
     void setPosition(const b2Vec2& rPos);
     void setRotation(float radiansCCW);//radians
-
     void update();
+
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

@@ -116,7 +116,7 @@ public:
     AmmoPool& getAmmoPool();
 
     /**GRAPHICS**/
-    virtual void draw();
+    virtual void gfxUpdate();
 
     /**IO-SYSTEM**/
     virtual IOBaseReturn input(IOBaseArgs);

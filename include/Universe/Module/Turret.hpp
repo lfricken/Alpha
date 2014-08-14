@@ -40,6 +40,7 @@ struct TurretData : public GModuleData
     {
         type = ClassType::TURRET;
         texName = "textures/turret/turret.png";
+        animationFileName = "textures/turret/turret.acfg";
     }
 
     bool firesPrimary;

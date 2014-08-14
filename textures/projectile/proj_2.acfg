@@ -1,5 +1,5 @@
 {
-	"texTileSize": [256,256],
+	"texTileSize": [2048,2048],
     "stateList": [
         {
             "comment": "This is a comment where you can write something, the comment value is not read by the engine",
@@ -15,20 +15,9 @@
             "delay": 1,
             "nextState": "Error",
             "tileList": [
-                1,
                 0,
-				0,
-				0
-            ],
-            "copyFrom": null
-        },
-		{
-            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
-            "state": "Destroyed",
-            "delay": 0.25,
-            "nextState": null,
-            "tileList": [
-				1,
+                0,
+				-1,
 				0
             ],
             "copyFrom": null

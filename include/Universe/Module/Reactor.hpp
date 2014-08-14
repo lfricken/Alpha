@@ -28,6 +28,7 @@ struct ReactorData : public GModuleData
     {
         type = ClassType::REACTOR;
         texName = "textures/reactor/reactor.png";
+        animationFileName = "textures/reactor/reactor.acfg";
     }
 
     T_Energy energyProduceRate;

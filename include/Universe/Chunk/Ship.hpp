@@ -16,7 +16,7 @@ struct ShipData : public ChunkData//initialized
         hullDecor.gfxCompData.gfxLayer = GraphicsLayer::ShipHull;
         hullDecor.gfxCompData.rotation = 0;
         hullDecor.gfxCompData.scale = sf::Vector2f(3,3);
-        hullDecor.gfxCompData.color = sf::Color(255,255,255,128);
+        hullDecor.gfxCompData.color = sf::Color(255,255,255,255);
     }
     DecorationData hullDecor;
 };

@@ -8,6 +8,7 @@ class GModule;
 struct SpinnerData
 {
     SpinnerData():
+        startsSpinning(true),
         startRotation(0),
         spinnerOffset(0,0),
         spinRate(90),
@@ -18,6 +19,7 @@ struct SpinnerData
         decorData.gfxCompData.texName = "textures/radar/dish.png";
         decorData.gfxCompData.animationFileName = "textures/radar/dish.acfg";
     }
+    bool startsSpinning;
     float startRotation;//degrees CCW
     b2Vec2 spinnerOffset;//offset of sprite and spin from center of Module
     float spinRate;// degrees/second CCW
@@ -31,16 +33,17 @@ public:
     Spinner(const SpinnerData& rData);
     virtual ~Spinner();
 
-    void update(const b2Vec2& rCenterOfParent, float radiansCCW);//use time
+    void setEnabled(bool enabled);
+    void update(const b2Vec2& rCenterOfParent, float radiansCCW, const b2Vec2& rVel);//use time
 
 protected:
 private:
-
     b2Vec2 m_spinnerAxisOffset;//how far away are we from the center of the module
     float m_spinRate;// radians/second CCW
     float m_currentRelativeRotation;//how much are we rotated compared to the body
     Timer m_timer;
 
+    bool m_isEnabled;
     Decoration m_decor;
 };
 

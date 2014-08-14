@@ -155,7 +155,7 @@ float Universe::getTime() const
     else
         return game.getTime()-m_skippedTime;
 }
-void Universe::draw()
+void Universe::draw(const b2Vec2& rCameraVel)
 {
     if(m_normalDraw)
     {
@@ -166,7 +166,7 @@ void Universe::draw()
         }
         m_projAlloc.gfxUpdate();
 
-        m_gfxCompFactory.draw(game.getGameWindow());//anything with a gfx component
+        m_gfxCompFactory.draw(game.getGameWindow(), rCameraVel);//anything with a gfx component
     }
     else
         m_physWorld.DrawDebugData();

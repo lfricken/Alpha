@@ -125,6 +125,12 @@ void Weapon::updatePosition(const b2Vec2& rOurPos)    //update us to aim at the 
     for(auto it = m_barrels.begin(); it != m_barrels.end(); ++it)
         (*it)->update(rOurPos, m_aimAngle);
 }
+    void Weapon::updateVelocity(const b2Vec2& rVel)
+    {
+        m_spGunMantle->setVelocity(rVel);
+        for(auto it = m_barrels.begin(); it != m_barrels.end(); ++it)
+            (*it)->updateVelocity(rVel);
+    }
 Link<Weapon, Turret>& Weapon::getLinker()
 {
     return m_linker;

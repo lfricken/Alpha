@@ -35,6 +35,7 @@ bool Turret::physUpdate()
     if(m_linker.isLinked())
     {
         m_linker.getTargetPtr()->updatePosition(getCenter());
+        m_linker.getTargetPtr()->updateVelocity(m_pBody->GetLinearVelocity());
         if(not isDestroyed())
             m_linker.getTargetPtr()->checkFireState();
     }

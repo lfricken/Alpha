@@ -1,5 +1,5 @@
 {
-	"texTileSize": [256,256],
+	"texTileSize": [128,128],
     "stateList": [
         {
             "comment": "This is a comment where you can write something, the comment value is not read by the engine",
@@ -9,6 +9,7 @@
             "tileList": [0,0],
             "copyFrom": null
         },
+        
         {
             "comment": "this state is the state we go into if we are told to have some state we don't have in our memory",
             "state": "Error",
@@ -28,7 +29,7 @@
             "delay": 0.25,
             "nextState": null,
             "tileList": [
-				1,
+				3,
 				0
             ],
             "copyFrom": null

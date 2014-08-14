@@ -42,6 +42,12 @@ public:
     TextureAllocator& getTextureAllocator();
     AnimationAllocator& getAnimationAllocator();
 
+    sf::Sprite m_sprite;///OMG WTF IS THIS
+    sf::RenderTexture m_rendText///OMG WTF IS THIS;
+    sf::Shader m_blurShader;
+    sf::Shader m_vecFieldShader;
+    sf::Shader m_shader;///OMG WTF IS THIS
+
 protected:
 private:
     void f_load(const std::string& stuff);//told where to get blueprintsData and mapsData, and panelsData

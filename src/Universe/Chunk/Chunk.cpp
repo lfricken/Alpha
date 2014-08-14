@@ -360,6 +360,7 @@ void Chunk::gfxUpdate()
 
         m_pTiles->setPosition(m_pBody->GetPosition());
         m_pTiles->setRotation(m_pBody->GetAngle());
+        m_pTiles->setVelocity(m_pBody->GetLinearVelocity());
     }
 }
 

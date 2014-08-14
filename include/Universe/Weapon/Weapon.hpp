@@ -67,6 +67,7 @@ public:
 
     bool checkFireState();
     void updatePosition(const b2Vec2& rOurPos);
+    void updateVelocity(const b2Vec2& rVel);
 
     Link<Weapon, Turret>& getLinker();
 protected:

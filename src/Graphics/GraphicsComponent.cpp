@@ -7,6 +7,7 @@
 
 GraphicsComponent::GraphicsComponent(const GraphicsComponentData& rData) : BaseGraphicsComponent(static_cast<BaseGraphicsComponentData>(rData))
 {
+
     m_rotation = rData.rotation;
 
     m_animControl.load(rData.animationFileName);
@@ -23,11 +24,6 @@ GraphicsComponent::GraphicsComponent(const GraphicsComponentData& rData) : BaseG
 GraphicsComponent::~GraphicsComponent()
 {
 
-}
-void GraphicsComponent::draw(sf::RenderWindow& rWindow) const
-{
-    if(isVisible())
-        rWindow.draw(m_sprite);
 }
 void GraphicsComponent::setPosition(const b2Vec2& rPos)
 {
@@ -46,4 +42,12 @@ void GraphicsComponent::update()
     sf::Vector2f topLeftCoord = m_animControl.getTile();
     sf::IntRect texRect(topLeftCoord.x*m_texTileSize.x, topLeftCoord.y*m_texTileSize.y, m_texTileSize.x, m_texTileSize.y);//left most, right most, width, height
     m_sprite.setTextureRect(texRect);
+}
+const sf::Drawable& GraphicsComponent::getDrawable() const
+{
+    return m_sprite;
+}
+float GraphicsComponent::getRotation() const
+{
+    return leon::degToRad(m_sprite.getRotation());
 }

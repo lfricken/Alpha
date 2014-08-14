@@ -33,9 +33,25 @@ Game::Game()
 {
     loadWindow();
 
+    m_rendText.create(m_spWindow->getSize().x, m_spWindow->getSize().y);
+
+    if (sf::Shader::isAvailable())
+    {
+        std::cout << "\nShaders are available!.";
+        m_shader.loadFromFile("test.frag", sf::Shader::Fragment);
+
+        m_vecFieldShader.loadFromFile("vectorField.frag", sf::Shader::Fragment);
+        m_blurShader.loadFromFile("blur.frag", sf::Shader::Fragment);
+    }
+
+    m_sprite.setTexture(m_rendText.getTexture());
+    m_sprite.setPosition(0,0);
+    m_sprite.setRotation(0);
+
     m_spAnimAlloc = std::tr1::shared_ptr<AnimationAllocator>(new AnimationAllocator);
     m_spIOManager = std::tr1::shared_ptr<IOManager>(new IOManager());//independent
     m_spUniverse = std::tr1::shared_ptr<Universe>(new Universe());//needs IO Manager
+
 
     /**created last**/
     m_spOverlayManager = std::tr1::shared_ptr<OverlayManager>(new OverlayManager(*m_spWindow));//needs Window and iomanager
@@ -206,7 +222,6 @@ Game::Status Game::run()
     float firstTime = 0, secondTime = 0, timeForFrame = 0, computeTime = 0, remainder = 0;
     int maxSteps = 7;
     int i = 0;
-    int gray = 60;
     /**SIMULATION & RUNTIME**/
 
 
@@ -214,6 +229,8 @@ Game::Status Game::run()
     TriangleFanData fanData;
     TriangleFan* pFan = dynamic_cast<TriangleFan*>(m_spUniverse->getGfxCompFactory().generate(fanData));
 
+
+    /**EXPERIMENTING**/
 
     sf::Event event;
     while(m_spWindow->isOpen() && newState != Game::Quit)
@@ -261,7 +278,7 @@ Game::Status Game::run()
         ///cout << endl;
 
         /**DRAW**/
-        m_spWindow->clear(sf::Color(gray,gray,gray,255));
+        m_spWindow->clear();
 
         m_spControlManager->drawUpdate();
         m_spOverlayManager->draw();// \n m_spWindow->setView(m_spWindow->getDefaultView());///draw stuff that is on hud///this doesn't appear to do anything anymore

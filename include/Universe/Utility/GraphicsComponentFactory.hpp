@@ -18,7 +18,7 @@ public:
     BaseGraphicsComponent* generate(const BaseGraphicsComponentData& rData);
     void freeComponent(BaseGraphicsComponent* ptr);
 
-    void draw(sf::RenderWindow& rWindow);//draw all of the graphics components we hold
+    void draw(sf::RenderWindow& rWindow, const b2Vec2& rCameraVel);//draw all of the graphics components we hold
 
 protected:
 private:

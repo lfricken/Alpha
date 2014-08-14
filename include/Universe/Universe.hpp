@@ -50,7 +50,7 @@ public:
     float getTime() const;
 
 
-    void draw();//draws everything thats drawable in universe
+    void draw(const b2Vec2& rCameraVel);//draws everything thats drawable in universe
     void toggleDebugDraw();
 protected:
 private:

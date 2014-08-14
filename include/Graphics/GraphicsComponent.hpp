@@ -17,22 +17,20 @@ public:
     GraphicsComponent(const GraphicsComponentData& rData);
     virtual ~GraphicsComponent();
 
-    void draw(sf::RenderWindow& rWindow) const;
-
     void setPosition(const b2Vec2& rPos);
     void setRotation(float radiansCCW);//radians
-
+    float getRotation() const;
     void setAnimState(AnimationState state);
 
     void update();
 protected:
 private:
-
+    const sf::Drawable& getDrawable() const;
     sf::Vector2f m_texTileSize;
 
     AnimationController m_animControl;
     sf::Sprite m_sprite;/**if we need to, we can make another class that gives out a vertex quad and keeps them in a bunch of buffers and draws them**/
-    float m_rotation;//degrees
+    float m_rotation;///degrees???
 };
 
 

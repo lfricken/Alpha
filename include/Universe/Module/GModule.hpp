@@ -71,7 +71,7 @@ struct GModuleData : public PhysicsBaseData, public GraphicsBaseData
     {
         GModuleData mutableCopy(*this);
         mutableCopy.pBody = pChunk->getBody();
-                mutableCopy.pChunk = pChunk;
+        mutableCopy.pChunk = pChunk;
         return new GModule(mutableCopy);
     }
 };

@@ -15,6 +15,7 @@ public:
 
     void fire();
     void update(const b2Vec2& rPos, float angle);//radians
+    void updateVelocity(const b2Vec2& rVel);
 
 protected:
     virtual void f_emit(const b2Vec2& rEmitPoint, float barrelAngle, const b2Vec2& rUnitVec, const b2Vec2& rBodySpeed);

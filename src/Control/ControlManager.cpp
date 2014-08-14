@@ -265,13 +265,15 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
 void ControlManager::drawUpdate()
 {
     b2Body* pBody;
+    b2Vec2 cameraVelocity(0,0);
     for(auto it = m_localPlayerList.begin(); it != m_localPlayerList.end(); ++it)
     {
         if((*it)->getCamera().isTracking() && (*it)->getLinker().isLinked())
         {
             pBody = (*it)->getLinker().getTargetPtr()->getBody();
-
             (*it)->getCamera().setCenter(pBody->GetPosition());
+            cameraVelocity = pBody->GetLinearVelocity();
+
             if((*it)->getCamera().rotates())
                 (*it)->getCamera().setRotation(pBody->GetAngle());//should the camera rotate with the target?
         }
@@ -281,8 +283,8 @@ void ControlManager::drawUpdate()
         sf::Listener::setDirection(sin((*it)->getCamera().getView().getRotation()), 0.0f, -cos((*it)->getCamera().getView().getRotation()));
 
 
-        game.getGameWindow().setView((*it)->getCamera().getView());
-        game.getGameUniverse().draw();
+        game.m_rendText.setView((*it)->getCamera().getView());
+        game.getGameUniverse().draw(cameraVelocity);
     }
 }
 void ControlManager::f_cheats(vector<tr1::shared_ptr<Player> >::iterator it, sf::Event& rEvent)

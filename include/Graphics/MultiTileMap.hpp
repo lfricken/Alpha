@@ -28,14 +28,14 @@ public:
     void add(GraphicsBase* pGfxBase);
     void add(std::vector<GraphicsBase*>& gBaseList);
 
-    void draw(sf::RenderWindow& rWindow) const;
     void setPosition(const b2Vec2& rPos);
     void setRotation(float radiansCCW);//radians
+    float getRotation() const;
     void update();
 
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-
+    const sf::Drawable& getDrawable() const;
     std::vector<std::tr1::shared_ptr<TexturedVertices> > m_TexVertSPList;
 };
 

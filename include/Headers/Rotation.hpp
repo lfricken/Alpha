@@ -43,7 +43,7 @@ inline void RotateCoordinatesDegs(std::vector<T>& coords, float degreesCCW, T ro
     }
 }
 template<class T>
-inline void RotateCoordinatesDegs(T coords[], unsigned int size, float degreesCCW, T rotationPoint)
+inline void RotateCoordinatesDegs(T* coords, unsigned int size, float degreesCCW, T rotationPoint)
 {
     std::vector<T> vec;
     for(unsigned int i=0; i<size; ++i)
@@ -55,7 +55,7 @@ inline void RotateCoordinatesDegs(T coords[], unsigned int size, float degreesCC
         coords[i] = vec[i];
 }
 template<class T>
-inline void RotateCoordinatesRads(T coords[], unsigned int size, float radiansCCW, T rotationPoint)
+inline void RotateCoordinatesRads(T* coords, unsigned int size, float radiansCCW, T rotationPoint)
 {
     RotateCoordinatesDegs(coords, size, leon::radToDeg(radiansCCW), rotationPoint);
 }

@@ -39,6 +39,7 @@ struct ThrusterData : public GModuleData
     {
         type = ClassType::THRUSTER;
         texName = "textures/thruster/thruster.png";
+        animationFileName = "textures/thruster/thruster.acfg";
     }
     float force;
     float torque;

@@ -21,12 +21,17 @@ public:
     virtual bool isVisible() const final;
 
     virtual void setPosition(const b2Vec2& rPos) = 0;
-    virtual void setRotation(float radiansCCW) = 0;//radians
-
+    virtual void setRotation(float radiansCCW) = 0;//radiansCCW
+    virtual float getRotation() const = 0;//radiansCCW
     virtual void update() = 0;
-    virtual void draw(sf::RenderWindow& rWindow) const = 0;
+
+    virtual void setVelocity(const b2Vec2& rVel);
+
+    virtual void draw(sf::RenderTexture& rWindow, const b2Vec2& rCameraVel) final;
 protected:
+        virtual const sf::Drawable& getDrawable() const = 0;
 private:
+    b2Vec2 m_velVec;
     bool m_isVisible;
     GraphicsLayer m_gfxLayer;
     std::string m_texName;
@@ -36,6 +41,7 @@ private:
 struct BaseGraphicsComponentData
 {
     BaseGraphicsComponentData() :
+        dimensions(128, 128),
         startHidden(false),
         gfxLayer(defaults::graphics::layer),
         texName(defaults::graphics::texName),
@@ -44,6 +50,7 @@ struct BaseGraphicsComponentData
 
     }
 
+    sf::Vector2f dimensions;
     bool startHidden;
     GraphicsLayer gfxLayer;
     std::string texName;

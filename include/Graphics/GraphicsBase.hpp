@@ -13,12 +13,14 @@ struct GraphicsBaseData//initialized
     GraphicsBaseData() :
         animationFileName(defaults::graphics::animFile),
         texName(defaults::graphics::texName),
+        limitedToPhysDimensions(true),
         color(defaults::graphics::color),
         animState(defaults::graphics::animState)
         {}
 
     std::string animationFileName;
     std::string texName;
+    bool limitedToPhysDimensions;
     sf::Color color;//color mask
     AnimationState animState;//sets animation to start initially or not
 

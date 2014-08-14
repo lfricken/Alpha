@@ -19,6 +19,7 @@ public:
 
     void load(const std::string& animationFile);//these are used to control what the various animation states should do
 
+    const std::string& getState() const;
     void setState(const AnimationState& state);
     void restart();//starts from beginning
     const sf::Vector2f& getTile();//get the current tile we should be on
@@ -33,7 +34,7 @@ private:
     int m_currentIndex;
     const AnimationSetting* m_pCurrentSetting;//a sequence of tile coordinates to loop through
 
-
+    std::string m_state;
     Timer m_timer;
     float m_accumulatedTime;//stores residual time left over from a switch, like 0.01 seconds.
 };

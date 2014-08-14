@@ -23,8 +23,9 @@ public:
     virtual ~Decoration();
 
     void setPosition(const b2Vec2& rPos);
-    void setRotation(float radians);//RADIANS CCW
+    void setRotation(float radiansCCW);//RADIANS CCW
     void setAnimState(AnimationState state);
+    void setVelocity(const b2Vec2& rVel);
 
 protected:
 private:

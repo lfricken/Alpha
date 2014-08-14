@@ -19,10 +19,14 @@ void AnimationController::load(const std::string& animationFile)
     setState("Default");
 }
 
-
+    const std::string& AnimationController::getState() const
+    {
+        return m_state;
+    }
 
 void AnimationController::setState(const AnimationState& state)
 {
+    m_state = state;
     auto it = m_pSettingsList->find(state);
 
     if(it == m_pSettingsList->cend())

@@ -58,6 +58,10 @@ void WeaponBarrel::update(const b2Vec2& rPos, float angle)//radians
         m_currentRecoilDistance -= (time/m_recoilRecoverTime)*m_recoilDistance;
     }
 }
+    void WeaponBarrel::updateVelocity(const b2Vec2& rVel)
+    {
+        m_spBarrelDecor->setVelocity(rVel);
+    }
 void WeaponBarrel::f_emit(const b2Vec2& rEmitPoint, float barrelAngle, const b2Vec2& rUnitVec, const b2Vec2& rBodySpeed)
 {
     (void)rEmitPoint;//shutup the compiler about unused

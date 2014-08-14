@@ -1,5 +1,7 @@
 #include "GraphicsComponentFactory.hpp"
 
+#include "globals.hpp"
+
 GraphicsComponentFactory::GraphicsComponentFactory()
 {
 
@@ -30,18 +32,23 @@ void GraphicsComponentFactory::freeComponent(BaseGraphicsComponent* ptr)
         }
     }
 }
-void GraphicsComponentFactory::draw(sf::RenderWindow& rWindow)
+void GraphicsComponentFactory::draw(sf::RenderWindow& rWindow, const b2Vec2& rCameraVel)
 {
     /**1 loop over the layers**/
     /**2 loop over the sprite groups**/
     /**3 loop over elements in sprite groups**/
     /**4 draw those elements**/
 
+game.m_rendText.clear();
+
     for(auto it_layer = m_layers.begin(); it_layer != m_layers.end(); ++it_layer)//1
         for(auto it_gfxCompGroup = it_layer->second.begin(); it_gfxCompGroup != it_layer->second.end(); ++it_gfxCompGroup)//2
             for(auto it_comp = it_gfxCompGroup->second.begin(); it_comp != it_gfxCompGroup->second.end(); ++it_comp)//3
             {
                 (**it_comp).update();
-                (**it_comp).draw(rWindow);//4
+                (**it_comp).draw(game.m_rendText, rCameraVel);//4
             }
+
+    game.m_rendText.display();
+    rWindow.draw(game.m_sprite);
 }

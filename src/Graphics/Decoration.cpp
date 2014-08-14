@@ -19,11 +19,15 @@ void Decoration::setPosition(const b2Vec2& rPos)
 {
     m_pGfxComp->setPosition(rPos);
 }
-void Decoration::setRotation(float radians)//radians
+void Decoration::setRotation(float radiansCCW)//radiansCCW
 {
-    m_pGfxComp->setRotation(radians);//radians
+    m_pGfxComp->setRotation(radiansCCW);//radiansCCW
 }
 void Decoration::setAnimState(AnimationState state)
 {
     m_pGfxComp->setAnimState(state);
+}
+void Decoration::setVelocity(const b2Vec2& rVel)
+{
+    m_pGfxComp->setVelocity(rVel);
 }

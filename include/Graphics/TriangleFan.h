@@ -16,13 +16,16 @@ public:
     void draw(sf::RenderWindow& rWindow) const;
     void setPosition(const b2Vec2& rPos);
     void setRotation(float radiansCCW);//radians
+    float getRotation() const;
     void update();
 
 protected:
+    const sf::Drawable& getDrawable() const;
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-    float f_getRadialCompressionAmount(float degreesCCW);//figures out how much to
+    float f_getRadialCompression(float degreesCCW);//figures out how much to
 
+    sf::Vector2f m_texCoordCenterOffset;//the center for the texture coordinate fan
     const sf::Texture* m_pTexture;//make sure we don't modify the texture
     float m_totalTexCoordRot;//radians CCW
     sf::VertexArray m_vertices;
@@ -34,13 +37,13 @@ struct TriangleFanData : public BaseGraphicsComponentData
 {
     TriangleFanData() :
         BaseGraphicsComponentData(),
-        dimensions(128, 128)
+        textureCenterOffset(256,256)
     {
         gfxLayer = GraphicsLayer::BackgroundClose;
         texName = "textures/fill/orange.png";
     }
 
-    sf::Vector2f dimensions;
+    sf::Vector2f textureCenterOffset;
 
     virtual BaseGraphicsComponent* generate(GraphicsComponentFactory* factory) const
     {

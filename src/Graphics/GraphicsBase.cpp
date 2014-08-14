@@ -23,7 +23,12 @@ void GraphicsBase::f_initialize(const GraphicsBaseData& rData, const b2Vec2& rHa
     m_animControl.setState(rData.animState);
 
     m_color = rData.color;
-    m_tileHalfSize = rHalfSize;
+
+    if(rData.limitedToPhysDimensions)//if we are the size of our fixture
+        m_tileHalfSize = rHalfSize;
+    else
+        m_tileHalfSize = b2Vec2(m_animControl.getTexTileSize().x/(2*scale), m_animControl.getTexTileSize().y/(2*scale));//otherwise
+
     m_tilePos = rOffset;
 
     m_texTileSize = m_animControl.getTexTileSize();

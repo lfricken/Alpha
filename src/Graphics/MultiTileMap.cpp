@@ -12,12 +12,6 @@ MultiTileMap::~MultiTileMap()
 {
 
 }
-void MultiTileMap::draw(sf::RenderWindow& rWindow) const
-{
-    if(isVisible())
-        rWindow.draw(*this);
-}
-
 
 /**
 1. Figure out if one of our texVertices has the texture a gfxBase wants
@@ -74,6 +68,10 @@ void MultiTileMap::setRotation(float radiansCCW)//radians
 {
     sf::Transformable::setRotation(-leon::radToDeg(radiansCCW));
 }
+float MultiTileMap::getRotation() const
+{
+    return leon::degToRad(sf::Transformable::getRotation());
+}
 void MultiTileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
@@ -86,4 +84,8 @@ void MultiTileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void MultiTileMap::update()
 {
 
+}
+const sf::Drawable& MultiTileMap::getDrawable() const
+{
+    return *this;
 }

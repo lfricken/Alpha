@@ -9,7 +9,7 @@ struct TurretData;
 class Turret : public GModule
 {
 public:
-    Turret();
+    Turret();///TURRET SHOULD BE RENAMED TO HARD POINT, BECAUSE THAT IS WHERE A WEAPON IS MOUNTED
     Turret(const TurretData& rData);
     virtual ~Turret();
 

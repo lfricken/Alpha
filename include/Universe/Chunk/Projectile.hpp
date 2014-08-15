@@ -35,7 +35,6 @@ struct ProjectileData : public ChunkData
 class Projectile : public Chunk
 {
 public:
-    Projectile();
     Projectile(const ProjectileData& sData);
     virtual ~Projectile();
 
@@ -64,10 +63,7 @@ public:
 
 protected:
 private:
-    virtual void f_initialize(const ProjectileData& data);
-
     Package m_damagePackage;
-
 
     ProjectileType m_projType;
 

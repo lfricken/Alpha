@@ -118,6 +118,8 @@ void ProjectileAllocator::load()///load definitions of projectile types from a f
     (*rProjData).projType = type;
     (*rProjData).damage = T_Damage(500, 0);
 
+    ///we cant add anything projectiles yet, the other parts of the program have not loaded
+
     ///until we actually have the technology to load from a file, just do this...
     ///m_data
 }

@@ -515,13 +515,15 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     ProjectileBarrelData barrelData1;
     ProjectileBarrelData barrelData2;
-    barrelData1.barrelPixelOffset.y = 5;
-    barrelData2.barrelPixelOffset.y = -5;
-    barrelData1.muzzlePixelOffset.x = 32;
-    barrelData2.muzzlePixelOffset.x = 32;
+    barrelData1.barrelPixelOffset.y = 64;
+    barrelData2.barrelPixelOffset.y = -64;
+    barrelData1.barrelPixelOffset.x = -8;
+    barrelData2.barrelPixelOffset.x = -8;
+    barrelData1.muzzlePixelOffset.x = 64;
+    barrelData2.muzzlePixelOffset.x = 64;
     TurretData turretData;
     turretData.offset = b2Vec2(0,1);
-    turretData.weaponData.refireDelay = 0.4;
+    turretData.weaponData.refireDelay = 0.8;
     turretData.weaponData.barrelData.push_back( std::tr1::shared_ptr<WeaponBarrelData>(new ProjectileBarrelData(barrelData1)) );
     turretData.weaponData.barrelData.push_back( std::tr1::shared_ptr<WeaponBarrelData>(new ProjectileBarrelData(barrelData2)) );
 
@@ -546,9 +548,10 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     turretData3.firesSecondary = true;
 
     barrelData1.recoilRecoverTime = 0.8;
+    barrelData1.barrelPixelOffset.x = 32;
     barrelData1.barrelPixelOffset.y = 0;
     barrelData1.projectileType = 1;
-    barrelData1.projectileVelocity = 240;
+    barrelData1.projectileVelocity = 200;
     turretData3.weaponData.primeCommandList.clear();
 
     FireCommand once3;
@@ -757,7 +760,22 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     **/
     /**PLAYER**/
 
+
     /**===========================PLAYER===========================**/
+///==============================================================================
+///==============================================================================
+///==============================================================================
+    /**==============================PROJECTILES===========================================**/
+
+
+    for(int i = 0, num = 20; i<num; ++i)
+    {
+        m_spUniverse->getProjAlloc().add(0);
+        m_spUniverse->getProjAlloc().add(1);
+    }
+
+
+    /**==============================PROJECTILES===========================================**/
 ///==============================================================================
 ///==============================================================================
 ///==============================================================================

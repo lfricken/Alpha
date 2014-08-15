@@ -7,23 +7,19 @@
 using namespace std;
 
 
-Projectile::Projectile(const ProjectileData& sData) : Chunk(static_cast<ChunkData>(sData))
+Projectile::Projectile(const ProjectileData& rData) : Chunk(static_cast<ChunkData>(rData))
 {
-    f_initialize(sData);
+    m_projType = rData.projType;
+
+    //Damage Package:
+    sf::Packet damagePacket;
+    T_Damage damage = rData.damage;
+    damagePacket << damage;
+    m_damagePackage.reset("", "damage", damagePacket, 0.0f, Destination::UNIVERSE, false);
 }
 Projectile::~Projectile()
 {
 
-}
-void Projectile::f_initialize(const ProjectileData& data)
-{
-    m_projType = data.projType;
-
-    //Damage Package:
-    sf::Packet damagePacket;
-    T_Damage damage = data.damage;
-    damagePacket << damage;
-    m_damagePackage.reset("", "damage", damagePacket, 0.0f, Destination::UNIVERSE, false);
 }
 void Projectile::setDamage(T_Damage damage)//set the damage this projectile will deal
 {

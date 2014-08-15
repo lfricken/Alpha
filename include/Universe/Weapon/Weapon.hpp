@@ -30,9 +30,9 @@ struct WeaponData
         canPivot(true),
         startAngle(90)//degrees CCW
     {
-        decorationData.gfxCompData.gfxLayer = GraphicsLayer::ShipAppendagesUpper;
-        decorationData.gfxCompData.texName = "textures/barrels/chain_turret.png";
-        decorationData.gfxCompData.animationFileName = "textures/barrels/turret.acfg";
+        decorationData.gfxCompData.gfxLayer = GraphicsLayer::ShipAppendagesLower;
+        decorationData.gfxCompData.texName = "textures/weapons/turret.png";
+        decorationData.gfxCompData.animationFileName = "textures/weapons/turret.acfg";
         decorationData.gfxCompData.rotation = -90;//this is negative because our gun sprites start facing up, so we need to rotate them 90 degs CW
     }
     T_Energy energyConsumption;

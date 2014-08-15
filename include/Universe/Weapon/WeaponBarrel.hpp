@@ -45,9 +45,9 @@ struct WeaponBarrelData
         recoilDistancePixels(32),
         recoilRecoverTime(0.3)
     {
-        decorData.gfxCompData.gfxLayer = GraphicsLayer::ShipAppendagesLower;
-        decorData.gfxCompData.texName = "textures/barrels/chain_barrels.png";
-        decorData.gfxCompData.animationFileName = "textures/barrels/barrel.acfg";
+        decorData.gfxCompData.gfxLayer = GraphicsLayer::ShipAppendagesUpper;
+        decorData.gfxCompData.texName = "textures/weapons/barrel.png";
+        decorData.gfxCompData.animationFileName = "textures/weapons/barrel.acfg";
         decorData.gfxCompData.rotation = -90;
     }
 

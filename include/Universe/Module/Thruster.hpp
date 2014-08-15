@@ -7,7 +7,6 @@ struct ThrusterData;
 class Thruster : public GModule
 {
 public:
-    Thruster();
     Thruster(const ThrusterData& data);
     virtual ~Thruster();
 
@@ -24,10 +23,9 @@ public:
 protected:
     float m_force;
     float m_torque;
+    float m_energyConsumption;
 
 private:
-    void f_initialize(const ThrusterData& data);
-
 };
 
 struct ThrusterData : public GModuleData
@@ -35,7 +33,8 @@ struct ThrusterData : public GModuleData
     ThrusterData() :
         GModuleData(),
         force(100),
-        torque(50)
+        torque(50),
+        energyConsumption(6)//units per second
     {
         type = ClassType::THRUSTER;
         texName = "textures/thruster/thruster.png";
@@ -43,6 +42,7 @@ struct ThrusterData : public GModuleData
     }
     float force;
     float torque;
+    float energyConsumption;
 
 
     virtual GModule* generate(Chunk* pChunk) const

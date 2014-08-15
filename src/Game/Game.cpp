@@ -264,7 +264,7 @@ Game::Status Game::run()
         }
         for(i = 0; computeTime > 0 && i < maxSteps; ++i)
         {
-            m_spControlManager->pressedUpdate();
+            m_spControlManager->pressedUpdate();//having the pressed update ensures that key commands continue throughout any time step
             computeTime -= m_spUniverse->physStep();
         }
         remainder = computeTime;

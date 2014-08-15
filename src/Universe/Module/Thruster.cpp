@@ -1,27 +1,22 @@
 #include "Thruster.hpp"
+#include "globals.hpp"
 
-Thruster::Thruster() : GModule()
-{
-    ThrusterData data;
-    f_initialize(data);
-}
 Thruster::Thruster(const ThrusterData& data) : GModule(static_cast<GModuleData>(data))
 {
-    f_initialize(data);
+    m_energyConsumption = data.energyConsumption;
+    m_force = data.force;
+    m_torque = data.torque;
 }
 Thruster::~Thruster()
 {
 
 }
-void Thruster::f_initialize(const ThrusterData& data)
-{
-    m_force = data.force;
-    m_torque = data.torque;
-}
 void Thruster::thrust(const b2Vec2& direction)//apply a force in that direction = m_force
 {
-    if(m_isEnabled)
+    if(m_isEnabled && m_pChunk->getEnergyPool().canConsume(m_energyConsumption*game.getGameUniverse().getPhysTimeStep()))
     {
+        m_pChunk->getEnergyPool().consume(m_energyConsumption*game.getGameUniverse().getPhysTimeStep());
+
         if(getAnimationController().getState() != "Activated")
             getAnimationController().setState("Activated");
         b2Vec2 norm = direction;
@@ -31,8 +26,10 @@ void Thruster::thrust(const b2Vec2& direction)//apply a force in that direction 
 }
 void Thruster::torque(bool isCCW)//if true, rotate counter clockwise
 {
-    if(m_isEnabled)
+    if(m_isEnabled && m_pChunk->getEnergyPool().canConsume(m_energyConsumption*game.getGameUniverse().getPhysTimeStep()))
     {
+        m_pChunk->getEnergyPool().consume(m_energyConsumption*game.getGameUniverse().getPhysTimeStep());
+
         if(getAnimationController().getState() != "Activated")
             getAnimationController().setState("Activated");
         int direction;

@@ -114,7 +114,7 @@ void Universe::add(Chunk* pChunk)
 }
 void Universe::add(Decoration* pDecor)
 {
-  ///  InsertPtrVector(m_gfxList, &IOBase::getID, tr1::shared_ptr<Decoration>(pDecor));
+    ///  InsertPtrVector(m_gfxList, &IOBase::getID, tr1::shared_ptr<Decoration>(pDecor));
 }
 /**=================**/
 /**=================**/
@@ -154,6 +154,10 @@ float Universe::getTime() const
         return m_pauseTime-m_skippedTime;
     else
         return game.getTime()-m_skippedTime;
+}
+float Universe::getPhysTimeStep() const
+{
+    return m_timeStep;
 }
 void Universe::draw(const b2Vec2& rCameraVel)
 {

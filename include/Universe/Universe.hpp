@@ -48,6 +48,7 @@ public:
     float physStep();
     void togglePause();
     float getTime() const;
+    float getPhysTimeStep() const;
 
 
     void draw(const b2Vec2& rCameraVel);//draws everything thats drawable in universe

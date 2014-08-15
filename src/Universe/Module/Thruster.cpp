@@ -22,8 +22,8 @@ void Thruster::thrust(const b2Vec2& direction)//apply a force in that direction 
 {
     if(m_isEnabled)
     {
-        if(getAnimationController().getState() != "Thrusting")
-            getAnimationController().setState("Thrusting");
+        if(getAnimationController().getState() != "Activated")
+            getAnimationController().setState("Activated");
         b2Vec2 norm = direction;
         norm.Normalize();
         m_pBody->ApplyForceToCenter(m_force*norm, true);
@@ -33,8 +33,8 @@ void Thruster::torque(bool isCCW)//if true, rotate counter clockwise
 {
     if(m_isEnabled)
     {
-        if(getAnimationController().getState() != "Thrusting")
-            getAnimationController().setState("Thrusting");
+        if(getAnimationController().getState() != "Activated")
+            getAnimationController().setState("Activated");
         int direction;
         if(isCCW)
             direction = 1;

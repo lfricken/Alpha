@@ -1,20 +1,24 @@
 uniform sampler2D texture;
 
-uniform vec2 velocity;//the direction of travel
-uniform int samples = 10;//how many times should we create the effect(should be an even number)
-uniform float strength = 0.005;//how intense should the effect be?
-uniform float angle = 0;
+uniform vec2 velocity;//the direction of travel and magnitude
+uniform float angle;
 
 void main()
 {
+	float strength = 0.005;//how intense should the effect be?
+	int samples = 10;//how many times should we create the effect(should be an even number)
+	
 	vec4 pixel = vec4(0,0,0,0);
 	vec2 copy = velocity;
+
+	float clamp = 30;
 	float magnitude = sqrt(copy.x*copy.x+copy.y*copy.y);
-	if(magnitude > 10)
+	if(magnitude > clamp)
 	{
-		copy.x *= 10/magnitude;
-		copy.y *= 10/magnitude;
-	}	
+		copy.x *= clamp/magnitude;
+		copy.y *= clamp/magnitude;
+	}
+	
 	copy.x = cos(-angle)*copy.x + sin(-angle)*copy.y;
 	copy.y = -sin(-angle)*copy.x + cos(-angle)*copy.y;
   

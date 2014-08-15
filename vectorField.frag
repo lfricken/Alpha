@@ -1,30 +1,8 @@
+uniform vec2 velocity;
+ 
 uniform sampler2D texture;
-
-uniform vec2 velocity;//the direction of travel
-uniform int samples = 10;//how many times should we create the effect(should be an even number)
-uniform float strength = 0.005;//how intense should the effect be?
-uniform float angle = 0;
-
+ 
 void main()
 {
-	vec4 pixel = vec4(0,0,0,0);
-	vec2 copy = velocity;
-	float magnitude = sqrt(copy.x*copy.x+copy.y*copy.y);
-	if(magnitude > 10)
-	{
-		copy.x *= 10/magnitude;
-		copy.y *= 10/magnitude;
-	}	
-	copy.x = cos(-angle)*copy.x + sin(-angle)*copy.y;
-	copy.y = -sin(-angle)*copy.x + cos(-angle)*copy.y;
-  
-	vec2 offset = vec2(copy.x*strength, -copy.y*strength);
-	offset /= samples;//we divide so that by the time we have 
-	
-	for(float i = 0; i < samples; ++i)//compute that many samples
-	{
-		pixel += texture2D(texture, gl_TexCoord[0].xy + offset*i);
-		pixel += texture2D(texture, gl_TexCoord[0].xy - offset*i);
-	}
-	gl_FragColor = gl_Color*pixel/float(samples*2);
+	gl_FragColor = vec4(velocity.x*0.5+0.5, velocity.y*0.5+0.5, 0.5, gl_Color.a * texture2D(texture, gl_TexCoord[0].xy).a);
 }

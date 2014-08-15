@@ -3,6 +3,7 @@
 
 #include "GModule.hpp"
 #include "CapacitorComponent.hpp"
+#include "TriangleFan.h"
 
 struct CapacitorData;
 
@@ -18,7 +19,7 @@ protected:
     void disablePostHook();
 
 private:
-    ///FILL METER
+    TriangleFan* m_energyFill;
 
     CapacitorComponent m_capacity;
     std::tr1::shared_ptr<EnergyPool> m_spEnergyPool;
@@ -36,13 +37,13 @@ struct CapacitorData : public GModuleData
     }
 
     T_Energy energyStorage;
-
+    TriangleFanData fillData;
 
     virtual GModule* generate(Chunk* pChunk) const
     {
         CapacitorData mutableCopy(*this);
         mutableCopy.pBody = pChunk->getBody();
-                mutableCopy.pChunk = pChunk;
+        mutableCopy.pChunk = pChunk;
         return new Capacitor(mutableCopy, pChunk->getEnergyPoolSPtr());
     }
 };

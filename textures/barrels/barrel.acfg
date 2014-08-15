@@ -2,15 +2,23 @@
 	"texTileSize": [16,64],
     "stateList": [
         {
-            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "comment": "",
             "state": "Default",
             "delay": 1,
             "nextState": null,
             "tileList": [0,0],
             "copyFrom": null
         },
+		{
+            "comment": "",
+            "state": "Activated",
+            "delay": 1,
+            "nextState": "Default",
+            "tileList": [1,0],
+            "copyFrom": null
+        },
         {
-            "comment": "this state is the state we go into if we are told to have some state we don't have in our memory",
+            "comment": "",
             "state": "Error",
             "delay": 1,
             "nextState": "Error",

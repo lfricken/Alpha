@@ -32,6 +32,7 @@ struct ForceFieldCoreData : public GModuleData
         categoryBits = Category::ShipModule;
         maskBits = Mask::ShipModuleNorm;
         texName = "textures/force_field_core/force_field_core_1.png";
+        animationFileName = "textures/force_field_core/force_field_core_1.acfg";
     }
 
     ForceField* pForceField;

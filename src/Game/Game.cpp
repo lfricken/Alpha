@@ -33,7 +33,8 @@ Game::Game()
 {
     loadWindow();
 
-    m_rendText.create(m_spWindow->getSize().x, m_spWindow->getSize().y);
+    rendText_1.create(m_spWindow->getSize().x, m_spWindow->getSize().y);
+    rendText_2.create(m_spWindow->getSize().x, m_spWindow->getSize().y);
 
     if (sf::Shader::isAvailable())
     {
@@ -44,9 +45,12 @@ Game::Game()
         m_blurShader.loadFromFile("blur.frag", sf::Shader::Fragment);
     }
 
-    m_sprite.setTexture(m_rendText.getTexture());
-    m_sprite.setPosition(0,0);
-    m_sprite.setRotation(0);
+    renderSprite_2.setTexture(rendText_2.getTexture());
+    renderSprite_2.setPosition(0,0);
+    renderSprite_2.setRotation(0);
+    renderSprite_1.setTexture(rendText_1.getTexture());
+    renderSprite_1.setPosition(0,0);
+    renderSprite_1.setRotation(0);
 
     m_spAnimAlloc = std::tr1::shared_ptr<AnimationAllocator>(new AnimationAllocator);
     m_spIOManager = std::tr1::shared_ptr<IOManager>(new IOManager());//independent
@@ -226,8 +230,6 @@ Game::Status Game::run()
 
 
     /**EXPERIMENTATION**/
-    TriangleFanData fanData;
-    TriangleFan* pFan = dynamic_cast<TriangleFan*>(m_spUniverse->getGfxCompFactory().generate(fanData));
 
 
     /**EXPERIMENTING**/
@@ -235,8 +237,6 @@ Game::Status Game::run()
     sf::Event event;
     while(m_spWindow->isOpen() && newState != Game::Quit)
     {
-
-        pFan->rotateTexture(0.01418);
 
         /**FPS**/
         secondTime = getTime();
@@ -262,7 +262,7 @@ Game::Status Game::run()
             if(m_spControlManager->choiceUpdate(event))//if we put this before physstep, the camera lags!
                 newState = Game::Quit;
         }
-        for(i = 0; computeTime > 0 && i < maxSteps; ++i)///should max iterations depend on how far we are behind?
+        for(i = 0; computeTime > 0 && i < maxSteps; ++i)
         {
             m_spControlManager->pressedUpdate();
             computeTime -= m_spUniverse->physStep();
@@ -275,8 +275,6 @@ Game::Status Game::run()
         m_spIOManager->update(timeForFrame);
         /**INPUT and PHYSICS**/
 
-        ///cout << endl;
-
         /**DRAW**/
         m_spWindow->clear();
 
@@ -286,7 +284,6 @@ Game::Status Game::run()
         m_spWindow->display();
         /**DRAW**/
     }
-    pFan->free();
 
     return newState;
 }

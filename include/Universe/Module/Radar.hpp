@@ -34,6 +34,7 @@ struct RadarData : public GModuleData
     {
         dishData.spinRate = 45;
         dishData.decorData.gfxCompData.texName = "textures/radar/dish.png";
+        dishData.decorData.gfxCompData.animationFileName = "textures/radar/dish.acfg";
         dishData.decorData.gfxCompData.scale = sf::Vector2f(1,1);
         type = ClassType::SENSOR;
         animationFileName = "textures/radar/base.acfg";

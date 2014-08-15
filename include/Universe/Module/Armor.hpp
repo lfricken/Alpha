@@ -24,6 +24,7 @@ struct ArmorData : public GModuleData
         type = ClassType::ARMOR;
         armor = 500;
         texName = "textures/armor/armor.png";
+        animationFileName = "textures/armor/armor.acfg";
     }
 
 

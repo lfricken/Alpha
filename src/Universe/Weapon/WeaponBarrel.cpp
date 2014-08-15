@@ -39,6 +39,7 @@ void WeaponBarrel::fire()
     emitPosition.x = cos(-angle-m_barrelAngle)*(m_barrelPositionOffset.x+m_additionalMuzzleOffset.x) + sin(-angle-m_barrelAngle)*(m_barrelPositionOffset.y+m_additionalMuzzleOffset.y);
     emitPosition.y = -sin(-angle-m_barrelAngle)*(m_barrelPositionOffset.x+m_additionalMuzzleOffset.x) + cos(-angle-m_barrelAngle)*(m_barrelPositionOffset.y+m_additionalMuzzleOffset.y);
     emitPosition += m_pParent->getLinker().getTargetPtr()->getCenter();
+    m_spBarrelDecor->setAnimState("Activated");
     f_emit(emitPosition, angle, unitVec, m_pParent->getLinker().getTargetPtr()->getBody()->GetLinearVelocity());
 
     m_currentRecoilDistance = m_recoilDistance;

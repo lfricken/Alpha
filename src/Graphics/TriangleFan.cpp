@@ -54,6 +54,8 @@ TriangleFan::~TriangleFan()
 }
 void TriangleFan::rotateTexture(float radiansCCW)//radians
 {
+    radiansCCW *= 0.5;//because we should only rotate half as much because(obvious)
+
     m_totalTexCoordRot += radiansCCW;
     /**note that we will need to rotate the coordinates negative
     because of y axis change in texture coordinates**/
@@ -73,7 +75,7 @@ void TriangleFan::rotateTexture(float radiansCCW)//radians
 }
 void TriangleFan::setTextureRotation(float radiansCCW)//radians
 {
-    rotateTexture(radiansCCW - m_totalTexCoordRot);
+    rotateTexture(radiansCCW - 2*m_totalTexCoordRot);
 }
 void TriangleFan::draw(sf::RenderWindow& rWindow) const
 {

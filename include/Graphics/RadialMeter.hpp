@@ -3,7 +3,7 @@
 
 #include <Meter.hpp>
 
-
+/**
 class RadialMeter : public Meter
 {
     public:
@@ -13,6 +13,6 @@ class RadialMeter : public Meter
 
     protected:
     private:
-};
+};**/
 
 #endif // RADIALMETER_HPP

@@ -27,7 +27,7 @@ public:
 
     virtual void setVelocity(const b2Vec2& rVel);
 
-    virtual void draw(sf::RenderTexture& rWindow, const b2Vec2& rCameraVel) final;
+    virtual void draw(sf::RenderTexture& image, sf::RenderTexture& vecField, const b2Vec2& rCameraVel) final;
 protected:
         virtual const sf::Drawable& getDrawable() const = 0;
 private:

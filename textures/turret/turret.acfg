@@ -2,7 +2,7 @@
 	"texTileSize": [128,128],
     "stateList": [
         {
-            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "comment": "",
             "state": "Default",
             "delay": 100,
             "nextState": null,
@@ -10,7 +10,7 @@
             "copyFrom": null
         },
         {
-            "comment": "this state is the state we go into if we are told to have some state we don't have in our memory",
+            "comment": "",
             "state": "Error",
             "delay": 1,
             "nextState": "Error",
@@ -23,7 +23,15 @@
             "copyFrom": null
         },
 		{
-            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "comment": "",
+            "state": "Damaged",
+            "delay": 1,
+            "nextState": null,
+            "tileList": [1,0],
+            "copyFrom": null
+        },
+		{
+            "comment": "",
             "state": "Destroyed",
             "delay": 100,
             "nextState": null,

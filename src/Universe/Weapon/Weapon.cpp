@@ -36,6 +36,7 @@ void Weapon::primary(const b2Vec2& coords)
 
     if(m_refireTimer.isTimeUp() and (m_magazine.canConsume(m_ammoConsumption)) and (rEnergyPool.canConsume(m_energyConsumption)))
     {
+        m_spGunMantle->setAnimState("Activated");
         rEnergyPool.consume(m_energyConsumption);
         m_magazine.consume(m_ammoConsumption);
         m_refireTimer.restartCountDown();
@@ -54,6 +55,7 @@ void Weapon::secondary(const b2Vec2& coords)
 
     if(m_refireTimer.isTimeUp() and (m_magazine.canConsume(m_ammoConsumption)) and (rEnergyPool.canConsume(m_energyConsumption)))
     {
+        m_spGunMantle->setAnimState("Activated");
         rEnergyPool.consume(m_energyConsumption);
         m_magazine.consume(m_ammoConsumption);
         m_refireTimer.restartCountDown();
@@ -74,7 +76,7 @@ void Weapon::aim(const b2Vec2& rOurPos, const b2Vec2& targetPos)
             m_aimAngle = pi+atan(difference.y/difference.x);
     }
     //else
-     //   m_aimAngle = m_startAngle + m_linker.getTargetPtr()->getBody()->GetAngle();
+    //   m_aimAngle = m_startAngle + m_linker.getTargetPtr()->getBody()->GetAngle();
 }
 float Weapon::getAimAngle() const//radians
 {
@@ -125,12 +127,12 @@ void Weapon::updatePosition(const b2Vec2& rOurPos)    //update us to aim at the 
     for(auto it = m_barrels.begin(); it != m_barrels.end(); ++it)
         (*it)->update(rOurPos, m_aimAngle);
 }
-    void Weapon::updateVelocity(const b2Vec2& rVel)
-    {
-        m_spGunMantle->setVelocity(rVel);
-        for(auto it = m_barrels.begin(); it != m_barrels.end(); ++it)
-            (*it)->updateVelocity(rVel);
-    }
+void Weapon::updateVelocity(const b2Vec2& rVel)
+{
+    m_spGunMantle->setVelocity(rVel);
+    for(auto it = m_barrels.begin(); it != m_barrels.end(); ++it)
+        (*it)->updateVelocity(rVel);
+}
 Link<Weapon, Turret>& Weapon::getLinker()
 {
     return m_linker;

@@ -11,29 +11,19 @@
         },
         {
             "comment": "",
-            "state": "Activated",
-            "delay": 0.16,
-            "nextState": "Default",
+            "state": "Damaged",
+            "delay": 1,
+            "nextState": null,
             "tileList": [
-				2,
-				0,
-                1,
-                0
+				1,
+				0
             ],
             "copyFrom": null
         },
 		{
             "comment": "",
-            "state": "Damaged",
-            "delay": 1,
-            "nextState": null,
-            "tileList": [2,0],
-            "copyFrom": null
-        },
-		{
-            "comment": "",
             "state": "Destroyed",
-            "delay": 0.25,
+            "delay": 1,
             "nextState": null,
             "tileList": [
 				3,

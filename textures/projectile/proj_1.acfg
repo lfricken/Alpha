@@ -2,7 +2,7 @@
 	"texTileSize": [256,256],
     "stateList": [
         {
-            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "comment": "",
             "state": "Default",
             "delay": 1,
             "nextState": null,
@@ -10,7 +10,7 @@
             "copyFrom": null
         },
         {
-            "comment": "this state is the state we go into if we are told to have some state we don't have in our memory",
+            "comment": "",
             "state": "Error",
             "delay": 1,
             "nextState": "Error",

@@ -2,7 +2,7 @@
 	"texTileSize": [128,128],
     "stateList": [
         {
-            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "comment": "The default state is the state we are normally in",
             "state": "Default",
             "delay": 1,
             "nextState": null,
@@ -10,7 +10,7 @@
             "copyFrom": null
         },
         {
-            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "comment": "this is the state we go into if we start doing something special",
             "state": "Activated",
             "delay": 1,
             "nextState": "Activated",
@@ -27,7 +27,7 @@
             "copyFrom": null
         },
         {
-            "comment": "this state is the state we go into if we are told to have some state we don't have in our memory",
+            "comment": "This is the state we go into if we are told to go into a state we dont have (always have this for all acfg files",
             "state": "Error",
             "delay": 1,
             "nextState": "Error",
@@ -40,7 +40,7 @@
             "copyFrom": null
         },
         {
-            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "comment": "This is what we do if we have been damaged (classified as <50% health as of 8/14/2014)",
             "state": "Damaged",
             "delay": 1,
             "nextState": null,
@@ -51,7 +51,7 @@
             "copyFrom": null
         },
 	        {
-            "comment": "This is a comment where you can write something, the comment value is not read by the engine",
+            "comment": "We have been destroyed",
             "state": "Destroyed",
             "delay": 1,
             "nextState": null,

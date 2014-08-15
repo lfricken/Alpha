@@ -42,8 +42,11 @@ public:
     TextureAllocator& getTextureAllocator();
     AnimationAllocator& getAnimationAllocator();
 
-    sf::Sprite m_sprite;///OMG WTF IS THIS
-    sf::RenderTexture m_rendText///OMG WTF IS THIS;
+    sf::Sprite renderSprite_1;///OMG WTF IS THIS
+    sf::Sprite renderSprite_2;///
+
+    sf::RenderTexture rendText_1;///OMG WTF IS THIS;
+    sf::RenderTexture rendText_2;
     sf::Shader m_blurShader;
     sf::Shader m_vecFieldShader;
     sf::Shader m_shader;///OMG WTF IS THIS

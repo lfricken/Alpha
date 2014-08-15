@@ -19,7 +19,7 @@ public:
 
     void setPosition(const b2Vec2& rPos);
     void setRotation(float radiansCCW);//radians
-    float getRotation() const;
+    float getRotation() const;///WARNING, THIS RETURNS SPRITE ABSOLUTE ROTATION(INCLUDES INIT OFFSET)
     void setAnimState(AnimationState state);
 
     void update();

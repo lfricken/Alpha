@@ -18,9 +18,10 @@ void main()
 		copy.x *= clamp/magnitude;
 		copy.y *= clamp/magnitude;
 	}
+	vec2 anotherCopy = copy;
 	
-	copy.x = cos(-angle)*copy.x + sin(-angle)*copy.y;
-	copy.y = -sin(-angle)*copy.x + cos(-angle)*copy.y;
+	copy.x = cos(-angle)*anotherCopy.x + sin(-angle)*anotherCopy.y;
+	copy.y = -sin(-angle)*anotherCopy.x + cos(-angle)*anotherCopy.y;
   
 	vec2 offset = vec2(copy.x*strength, -copy.y*strength);
 	offset /= samples;//we divide so that by the time we have 

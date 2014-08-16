@@ -2,7 +2,7 @@
 #define CAPACITOR_H
 
 #include "GModule.hpp"
-#include "CapacitorComponent.hpp"
+#include "CapacityChanger.hpp"
 #include "TriangleFan.h"
 
 struct CapacitorData;
@@ -19,9 +19,9 @@ protected:
     void disablePostHook();
 
 private:
-    TriangleFan* m_energyFill;
+    TriangleFan* m_pEnergyFill;
 
-    CapacitorComponent m_capacity;
+    CapacityChanger<T_Energy> m_capacity;
     std::tr1::shared_ptr<EnergyPool> m_spEnergyPool;
 };
 
@@ -29,6 +29,7 @@ struct CapacitorData : public GModuleData
 {
     CapacitorData() :
         GModuleData(),
+        comesWith(50),
         energyStorage(100)
     {
         type = ClassType::CAPACITOR;
@@ -36,6 +37,7 @@ struct CapacitorData : public GModuleData
         animationFileName = "textures/capacitor/capacitor.acfg";
     }
 
+    T_Ammo comesWith;
     T_Energy energyStorage;
     TriangleFanData fillData;
 

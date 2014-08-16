@@ -187,21 +187,22 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
             }
             if (rEvent.type == sf::Event::MouseWheelMoved)//control zooming of camera for a player
             {
-                float zoomChange = rEvent.mouseWheel.delta;
-                if (zoomChange > 0)
-                    zoomChange = 0.5;
-                else if (zoomChange < 0)
-                    zoomChange = 2.0;
+                int desiredZoom = -rEvent.mouseWheel.delta;//negative because it's backwards
 
                 if(pPlayer->getLinker().isLinked())
                 {
-                    if(zoomChange*pPlayer->getCamera().getZoomLevel() > pPlayer->getLinker().getTargetPtr()->getZoomPool().getMaxZoom())
-                        zoomChange = 1;
-                    else if(zoomChange*pPlayer->getCamera().getZoomLevel() < pPlayer->getLinker().getTargetPtr()->getZoomPool().getMinZoom())
-                        zoomChange = 1;
+                    int maxZoom = pPlayer->getLinker().getTargetPtr()->getZoomPool().getMaxValue();
+                    int minZoom = pPlayer->getLinker().getTargetPtr()->getZoomPool().getMinValue();
+                    int currentZoom = pPlayer->getCamera().getZoomLevel();
+
+
+                    if(desiredZoom+currentZoom > maxZoom)
+                        desiredZoom = 0;
+                    else if(desiredZoom+currentZoom < minZoom)
+                        desiredZoom = 0;
                 }
 
-                pPlayer->getCamera().zoom(zoomChange);
+                pPlayer->getCamera().zoom(desiredZoom);
 
                 b2Vec2 oldPos = pPlayer->getCamera().getCenter();/**we do this so zooming to a spot is smoother**/
                 b2Vec2 aimPos = pPlayer->getAim();

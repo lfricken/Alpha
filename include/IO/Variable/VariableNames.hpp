@@ -12,7 +12,7 @@ class Variable
 {
 public:
     Variable(ActiveEventer* pEventer, Event type, T val, T maxVal, T minVal)
-    : m_value(val), m_maxValue(maxVal), m_minValue(minVal), m_pEventer(pEventer), m_eventName(type) {}
+        : m_value(val), m_maxValue(maxVal), m_minValue(minVal), m_pEventer(pEventer), m_eventName(type) {}
 
     /**GETTERS**/
     T getValue() const
@@ -23,9 +23,9 @@ public:
     {
         return (static_cast<float>(m_value-m_minValue)/static_cast<float>(m_maxValue-m_minValue))*100;
     }
-    bool canConsume(T amount)
+    bool canConsume(T amount) const
     {
-        return (amount <= getValue());
+        return (amount <= m_value);
     }
     T getMaxValue() const
     {
@@ -35,9 +35,13 @@ public:
     {
         return m_minValue;
     }
-protected:
+    void changeMax(T val)
+    {
+        m_maxValue += val;
+        f_eventCheck();
+    }
+        /**SETTERS**/
 
-    /**SETTERS**/
     void setValue(T val)
     {
         m_value = val;
@@ -74,6 +78,9 @@ protected:
             m_value = m_minValue;
         f_eventCheck();
     }
+protected:
+
+
 private:
     void f_eventCheck()
     {
@@ -149,19 +156,6 @@ class EnergyPool : public Variable<T_Energy>
 public:
     EnergyPool(ActiveEventer* pEventer, T_Energy val, T_Energy max) : Variable(pEventer, Event::Energy, val, max, 0) {}
 
-    void consume(T_Energy amount)
-    {
-        if(amount <= getValue())
-            changeValue(-amount);
-    }
-    void give(T_Energy amount)
-    {
-        changeValue(amount);
-    }
-    void changeMax(T_Energy amount)
-    {
-        setMaxValue(getMaxValue()+amount);
-    }
 };
 
 /**Max value represents max max
@@ -173,49 +167,16 @@ class ZoomPool : public Variable<T_Zoom>
 public:
     ZoomPool(ActiveEventer* pEventer, T_Zoom val, T_Zoom max, T_Zoom min) : Variable(pEventer, Event::Zoom, val, max, min) {}
 
-    void changeMult(T_Zoom multipleAmount)
-    {
-        setValue(multipleAmount*getValue());
-    }
-    void setMaxMaxZoom(T_Zoom maxMax)
-    {
-        setMaxValue(maxMax);
-    }
-    void setMinZoom(T_Zoom minZoom)
-    {
-        setMinValue(minZoom);
-    }
-    T_Zoom getMinZoom() const
-    {
-        return getMinValue();
-    }
-    T_Zoom getMaxZoom() const
-    {
-        return getValue();
-    }
 };
 
 
 typedef int T_Ammo;
-class Ammo : public Variable<T_Ammo>
+class AmmoPool : public Variable<T_Ammo>
 {
 public:
-    Ammo() : Variable(NULL, Event::Ammo, 0, 1000, 0) {}
-    Ammo(ActiveEventer* pEventer, T_Ammo val, T_Ammo max) : Variable(pEventer, Event::Ammo, val, max, 0) {}
+    AmmoPool() : Variable(NULL, Event::Ammo, 0, 0, 0) {}
+    AmmoPool(ActiveEventer* pEventer, T_Ammo val, T_Ammo max) : Variable(pEventer, Event::Ammo, val, max, 0) {}
 
-    void setMaxCapacity(T_Ammo amount)
-    {
-        setMaxValue(amount);
-    }
-    void consume(T_Ammo amount)
-    {
-        if(amount <= getValue())
-            changeValue(-amount);
-    }
-    void add(T_Ammo amount)
-    {
-        changeValue(amount);
-    }
 };
 
 

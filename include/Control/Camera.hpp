@@ -27,7 +27,6 @@ class Camera
         bool toggleRotation();
 
         /**ZOOM**/
-        void setZoomLevel(float newZoom);
         float getZoomLevel() const;
         void zoom(float zoomChange);//zoom by a multiple amount
 
@@ -38,5 +37,6 @@ class Camera
         bool m_isTracking;//should we follow a target
         bool m_rotates;//should we spin with the target
         sf::View m_view;
+        sf::Vector2f m_originalView;
 };
 #endif // CAMERA_H

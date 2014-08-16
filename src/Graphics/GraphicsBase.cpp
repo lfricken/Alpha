@@ -34,6 +34,7 @@ void GraphicsBase::f_initialize(const GraphicsBaseData& rData, const b2Vec2& rHa
     m_texTileSize = m_animControl.getTexTileSize();
     m_texName = rData.texName;
     m_netRotation = rotation;
+
 }
 
 /**==============VERTICES=================**/

@@ -130,9 +130,8 @@
 		<Unit filename="include/Universe/Chunk/Chunk.hpp" />
 		<Unit filename="include/Universe/Chunk/Projectile.hpp" />
 		<Unit filename="include/Universe/Chunk/Ship.hpp" />
-		<Unit filename="include/Universe/ModuleComponent/CapacitorComponent.hpp" />
-		<Unit filename="include/Universe/ModuleComponent/ReactorComponent.hpp" />
-		<Unit filename="include/Universe/ModuleComponent/ZoomModComponent.hpp" />
+		<Unit filename="include/Universe/ModuleComponent/CapacityChanger.hpp" />
+		<Unit filename="include/Universe/Module/AmmoStorage.hpp" />
 		<Unit filename="include/Universe/Module/Armor.hpp" />
 		<Unit filename="include/Universe/Module/Capacitor.hpp" />
 		<Unit filename="include/Universe/Module/ForceField.hpp" />
@@ -156,7 +155,6 @@
 		<Unit filename="include/Universe/Utility/UniversalQueryCallback.hpp" />
 		<Unit filename="include/Universe/Weapon/AmmoContainer.hpp" />
 		<Unit filename="include/Universe/Weapon/AmmoPool.hpp" />
-		<Unit filename="include/Universe/Weapon/AmmoStorage.hpp" />
 		<Unit filename="include/Universe/Weapon/AmmoType.hpp" />
 		<Unit filename="include/Universe/Weapon/Magazine.hpp" />
 		<Unit filename="include/Universe/Weapon/ProjectileBarrel.hpp" />
@@ -201,9 +199,7 @@
 		<Unit filename="src/Universe/Chunk/Chunk.cpp" />
 		<Unit filename="src/Universe/Chunk/Projectile.cpp" />
 		<Unit filename="src/Universe/Chunk/Ship.cpp" />
-		<Unit filename="src/Universe/ModuleComponent/CapacitorComponent.cpp" />
-		<Unit filename="src/Universe/ModuleComponent/ReactorComponent.cpp" />
-		<Unit filename="src/Universe/ModuleComponent/ZoomModComponent.cpp" />
+		<Unit filename="src/Universe/Module/AmmoStorage.cpp" />
 		<Unit filename="src/Universe/Module/Armor.cpp" />
 		<Unit filename="src/Universe/Module/Capacitor.cpp" />
 		<Unit filename="src/Universe/Module/ForceField.cpp" />
@@ -227,7 +223,6 @@
 		<Unit filename="src/Universe/Utility/UniversalQueryCallback.cpp" />
 		<Unit filename="src/Universe/Weapon/AmmoContainer.cpp" />
 		<Unit filename="src/Universe/Weapon/AmmoPool.cpp" />
-		<Unit filename="src/Universe/Weapon/AmmoStorage.cpp" />
 		<Unit filename="src/Universe/Weapon/Magazine.cpp" />
 		<Unit filename="src/Universe/Weapon/ProjectileBarrel.cpp" />
 		<Unit filename="src/Universe/Weapon/Weapon.cpp" />

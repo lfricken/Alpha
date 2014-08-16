@@ -6,8 +6,9 @@ Camera::Camera()
     m_zoomLevel = 1;
     m_isTracking = true;
     m_rotates = true;
+    m_originalView = m_view.getSize();
 
-    m_view.setViewport(sf::FloatRect(0, 0, 0.5, 1));
+    m_view.setViewport(sf::FloatRect(0, 0, 0.5, 1));//doesnt actually do anything because it gets reset
 }
 Camera::~Camera()
 {
@@ -26,6 +27,7 @@ void Camera::setViewportSF(const sf::FloatRect& rPort)
 }
 void Camera::setSizeSF(const sf::Vector2f& rSize)
 {
+    m_originalView = rSize;
     m_view.setSize(rSize);
 }
 
@@ -77,17 +79,15 @@ bool Camera::toggleRotation()
 
 
 /**ZOOM**/
-void Camera::setZoomLevel(float newZoom)
-{
-    m_view.zoom(newZoom/m_zoomLevel);
-    m_zoomLevel = newZoom;
-}
 float Camera::getZoomLevel() const
 {
     return m_zoomLevel;
 }
 void Camera::zoom(float zoomChange)
 {
-    m_zoomLevel *= zoomChange;
-    m_view.zoom(zoomChange);
+    m_zoomLevel += zoomChange;
+    if(zoomChange < 0)
+        m_view.zoom(0.5);
+    else if(zoomChange > 0)
+        m_view.zoom(2);
 }

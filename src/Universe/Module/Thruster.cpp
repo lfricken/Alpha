@@ -15,7 +15,7 @@ void Thruster::thrust(const b2Vec2& direction)//apply a force in that direction 
 {
     if(m_isEnabled && m_pChunk->getEnergyPool().canConsume(m_energyConsumption*game.getGameUniverse().getPhysTimeStep()))
     {
-        m_pChunk->getEnergyPool().consume(m_energyConsumption*game.getGameUniverse().getPhysTimeStep());
+        m_pChunk->getEnergyPool().changeValue(-m_energyConsumption*game.getGameUniverse().getPhysTimeStep());
 
         if(getAnimationController().getState() != "Activated")
             getAnimationController().setState("Activated");
@@ -28,7 +28,7 @@ void Thruster::torque(bool isCCW)//if true, rotate counter clockwise
 {
     if(m_isEnabled && m_pChunk->getEnergyPool().canConsume(m_energyConsumption*game.getGameUniverse().getPhysTimeStep()))
     {
-        m_pChunk->getEnergyPool().consume(m_energyConsumption*game.getGameUniverse().getPhysTimeStep());
+        m_pChunk->getEnergyPool().changeValue(-m_energyConsumption*game.getGameUniverse().getPhysTimeStep());
 
         if(getAnimationController().getState() != "Activated")
             getAnimationController().setState("Activated");

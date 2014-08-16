@@ -32,38 +32,38 @@ void Weapon::primary(const b2Vec2& coords)
     aim(m_linker.getTargetPtr()->getCenter(), coords);
 
     EnergyPool& rEnergyPool = m_linker.getTargetPtr()->getChunk()->getEnergyPool();
-    AmmoPool& rAmmoPool = m_linker.getTargetPtr()->getChunk()->getAmmoPool();
+    AmmoGroup& rAmmoGroup = m_linker.getTargetPtr()->getChunk()->getAmmoGroup();
 
     if(m_refireTimer.isTimeUp() and (m_magazine.canConsume(m_ammoConsumption)) and (rEnergyPool.canConsume(m_energyConsumption)))
     {
         m_spGunMantle->setAnimState("Activated");
-        rEnergyPool.consume(m_energyConsumption);
+        rEnergyPool.changeValue(-m_energyConsumption);
         m_magazine.consume(m_ammoConsumption);
         m_refireTimer.restartCountDown();
         f_queuePrimaryCommands();
         std::cout << "\n" << m_magazine.getRemainingAmmo() << ":" << m_magazine.getCapacity();
     }
     else if(not m_magazine.hasEnoughAmmo(m_ammoConsumption))
-        m_magazine.reload(rAmmoPool, m_ammoType);
+        m_magazine.reload(rAmmoGroup, m_ammoType);
 }
 void Weapon::secondary(const b2Vec2& coords)
 {
     aim(m_linker.getTargetPtr()->getCenter(), coords);
 
     EnergyPool& rEnergyPool = m_linker.getTargetPtr()->getChunk()->getEnergyPool();
-    AmmoPool& rAmmoPool = m_linker.getTargetPtr()->getChunk()->getAmmoPool();
+    AmmoGroup& rAmmoGroup = m_linker.getTargetPtr()->getChunk()->getAmmoGroup();
 
     if(m_refireTimer.isTimeUp() and (m_magazine.canConsume(m_ammoConsumption)) and (rEnergyPool.canConsume(m_energyConsumption)))
     {
         m_spGunMantle->setAnimState("Activated");
-        rEnergyPool.consume(m_energyConsumption);
+        rEnergyPool.changeValue(-m_energyConsumption);
         m_magazine.consume(m_ammoConsumption);
         m_refireTimer.restartCountDown();
         f_queueSecondaryCommands();
         std::cout << "\n" << m_magazine.getRemainingAmmo() << ":" << m_magazine.getCapacity();
     }
     else if(not m_magazine.hasEnoughAmmo(m_ammoConsumption))
-        m_magazine.reload(rAmmoPool, m_ammoType);
+        m_magazine.reload(rAmmoGroup, m_ammoType);
 }
 void Weapon::aim(const b2Vec2& rOurPos, const b2Vec2& targetPos)
 {

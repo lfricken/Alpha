@@ -6,7 +6,7 @@ uniform float angle;
 void main()
 {
 	float strength = 0.005;//how intense should the effect be?
-	int samples = 10;//how many times should we create the effect(should be an even number)
+	int samples = 10;//how many times should we create the effect(should be less than 30)
 	
 	vec4 pixel = vec4(0,0,0,0);
 	vec2 copy = velocity;

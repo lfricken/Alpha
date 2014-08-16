@@ -3,14 +3,14 @@
 
 #include "GModule.hpp"
 #include "Spinner.hpp"
-#include "ZoomModComponent.hpp"
+#include "CapacityChanger.hpp"
 
 struct RadarData;
 
 class Radar : public GModule
 {
 public:
-    Radar(const RadarData& rData, std::tr1::shared_ptr<ZoomPool> spZPool);
+    Radar(const RadarData& rData);
     virtual ~Radar();
 
 protected:
@@ -19,8 +19,7 @@ protected:
     void disablePostHook();
 
 private:
-    ///make radar actually add to the max zoom pool through a zoom component
-    ZoomModComponent m_zoomComponent;
+    CapacityChanger<T_Zoom> m_zoomComponent;
     Spinner m_dish;
     std::tr1::shared_ptr<ZoomPool> m_spZoomPool;
 };
@@ -29,7 +28,7 @@ struct RadarData : public GModuleData
 {
     RadarData() :
         GModuleData(),
-        zoomMult(2),
+        zoomAdd(1),
         dishData()
     {
         dishData.spinRate = 45;
@@ -41,7 +40,7 @@ struct RadarData : public GModuleData
         texName = "textures/radar/base.png";
     }
 
-    T_Zoom zoomMult;
+    T_Zoom zoomAdd;
     SpinnerData dishData;
 
     virtual GModule* generate(Chunk* pChunk) const
@@ -49,7 +48,7 @@ struct RadarData : public GModuleData
         RadarData mutableCopy(*this);
         mutableCopy.pBody = pChunk->getBody();
         mutableCopy.pChunk = pChunk;
-        return new Radar(mutableCopy, pChunk->getZoomPoolSPtr());
+        return new Radar(mutableCopy);
     }
 };
 

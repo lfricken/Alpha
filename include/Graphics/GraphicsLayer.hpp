@@ -9,6 +9,7 @@ enum class GraphicsLayer
     ShipHull,
     ShipAppendagesLower,
     ShipAppendagesUpper,
+    Projectiles,
     HUD,
     Menus,
     maxLayers,

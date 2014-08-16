@@ -88,6 +88,7 @@ void ProjectileAllocator::load()///load definitions of projectile types from a f
     rProjData = &get<projData>(m_projList[type]);
     (*rProjData).projType = type;
     (*rProjData).damage = T_Damage(100, 500);
+    (*rProjData).tileData.gfxLayer = GraphicsLayer::Projectiles;
     //do stuff
     /**access first type END**/
 
@@ -117,6 +118,7 @@ void ProjectileAllocator::load()///load definitions of projectile types from a f
     rProjData = &get<projData>(m_projList[type]);
     (*rProjData).projType = type;
     (*rProjData).damage = T_Damage(500, 0);
+    (*rProjData).tileData.gfxLayer = GraphicsLayer::Projectiles;
 
     ///we cant add anything projectiles yet, the other parts of the program have not loaded
 

@@ -25,7 +25,7 @@
 #include "EditBox.hpp"
 #include "Decoration.hpp"
 #include "ProjectileBarrel.hpp"
-#include "TriangleFan.h"
+#include "AmmoStorage.hpp"
 
 using namespace std;
 
@@ -497,6 +497,10 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
             {
 
             }
+            else if((x==-1) && (y==-0.5))
+            {
+
+            }
             else
             {
                 shipModuleData.offset.x = x;
@@ -506,6 +510,9 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
             }
         }
     }
+    AmmoStorageData ammoData;
+    ammoData.offset.x = -1;
+    ammoData.offset.y = -0.5;
 
     CapacitorData capData;
     capData.offset = b2Vec2(0, 2.5);
@@ -621,6 +628,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new CapacitorData(capData)) );
     moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new ReactorData(reacData)) );
     moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new RadarData(radarDat)) );
+    moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new AmmoStorageData(ammoData)) );
 
     moduleList2.push_back( tr1::shared_ptr<const ModuleData>(new HullData(hull)) );
 
@@ -631,7 +639,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     ShipData shipDat;
     shipDat.bodyType = b2BodyType::b2_dynamicBody;
     shipDat.type = ClassType::SHIP;
-    shipDat.ammoPool.getAmmo(AmmoType::MediumShell).add(100);
+    shipDat.ammoPool.getAmmo(AmmoType::MediumShell).changeValue(100);
 
     shipDat.position = b2Vec2(-20, 20);
     shipDat.name = "ship_1";

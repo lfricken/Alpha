@@ -67,9 +67,9 @@ bool isBullet = false;
 bool controlEnabled = true;
 
 float startMaxEnergy = 0;
-float maxMaxZoom = 128;
-float startMaxZoom = 32;
-float minZoom = 0.5;
+float maxMaxZoom = 8;
+float startMaxZoom = 5;
+float minZoom = 0;
 bool startAwake = true;
 }
 /**CHUNK**/

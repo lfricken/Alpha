@@ -2,10 +2,9 @@
 #define REACTOR_H
 
 #include "GModule.hpp"
-#include "ReactorComponent.hpp"
+#include "ValueChanger.hpp"
+
 struct ReactorData;
-
-
 /**produces energy for our energy pool**/
 class Reactor : public GModule
 {
@@ -17,7 +16,7 @@ public:
 
 protected:
 private:
-    ReactorComponent m_reactorCore;
+    ValueChanger<T_Energy> m_reactorCore;
 };
 
 struct ReactorData : public GModuleData

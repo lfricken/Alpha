@@ -36,6 +36,7 @@ bool BaseGraphicsComponent::isVisible() const
 }
 void BaseGraphicsComponent::draw(sf::RenderTexture& image, sf::RenderTexture& vecField, const b2Vec2& rCameraVel)
 {
+
     if(isVisible())
     {
         b2Vec2 relative = m_velVec-rCameraVel;

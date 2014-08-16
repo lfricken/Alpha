@@ -22,9 +22,9 @@ Chunk::Chunk(const ChunkData& rData) : IOBase(static_cast<IOBaseData>(rData))
     m_pTiles = dynamic_cast<MultiTileMap*>(game.getGameUniverse().getGfxCompFactory().generate(rData.tileData));
 
     m_spLinker.reset(new Link<Chunk, Intelligence>(this));
-    m_spZoomPool.reset(new ZoomPool(m_pIOComponent->getEventerPtr(), rData.startMaxZoom, rData.maxMaxZoom, rData.minZoom));
+    m_spZoomPool.reset(new ZoomPool(m_pIOComponent->getEventerPtr(), 0, rData.startMaxZoom, rData.startMinZoom));
     m_spEnergyPool.reset(new EnergyPool(m_pIOComponent->getEventerPtr(), 0, rData.startMaxEnergy));
-    m_spAmmoPool.reset(new AmmoPool(rData.ammoPool));
+    m_spAmmoGroup.reset(new AmmoGroup(rData.ammoPool));
 
     m_bodyDef.bullet = rData.isBullet;
     m_bodyDef.type = rData.bodyType;
@@ -341,11 +341,14 @@ std::tr1::shared_ptr<EnergyPool> Chunk::getEnergyPoolSPtr()
 {
     return m_spEnergyPool;
 }
-AmmoPool& Chunk::getAmmoPool()
+AmmoGroup& Chunk::getAmmoGroup()
 {
-    return *m_spAmmoPool;
+    return *m_spAmmoGroup;
 }
-
+    std::tr1::shared_ptr<AmmoGroup>  Chunk::getAmmoGroupSPtr()
+    {
+            return m_spAmmoGroup;
+    }
 
 /**GRAPHICS**/
 void Chunk::gfxUpdate()

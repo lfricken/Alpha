@@ -5,7 +5,7 @@
 #include "Defaults.hpp"
 #include "MultiTileMap.hpp"
 #include "VariableNames.hpp"
-#include "AmmoPool.hpp"
+#include "AmmoGroup.hpp"
 #include "Link.hpp"
 
 class GModule;
@@ -28,9 +28,8 @@ struct ChunkData : public IOBaseData
         isBullet(defaults::chunk::isBullet),
 
         startMaxEnergy(defaults::chunk::startMaxEnergy),
-        maxMaxZoom(defaults::chunk::maxMaxZoom),
         startMaxZoom(defaults::chunk::startMaxZoom),
-        minZoom(defaults::chunk::minZoom),
+        startMinZoom(defaults::chunk::minZoom),
 
         controlEnabled(defaults::chunk::controlEnabled),
         awake(defaults::chunk::startAwake),
@@ -39,18 +38,16 @@ struct ChunkData : public IOBaseData
         type = ClassType::CHUNK;
     }
 
-    ///be able to add a texture here so we can have big space ship sprites
     b2BodyType bodyType;
     b2Vec2 position;
     bool isBullet;
 
     T_Energy startMaxEnergy;
 
-    T_Zoom maxMaxZoom;
     T_Zoom startMaxZoom;
-    T_Zoom minZoom;
+    T_Zoom startMinZoom;
 
-    AmmoPool ammoPool;
+    AmmoGroup ammoPool;
 
     bool controlEnabled;
     bool awake;
@@ -113,7 +110,8 @@ public:
     std::tr1::shared_ptr<ZoomPool> getZoomPoolSPtr();
     EnergyPool& getEnergyPool();
     std::tr1::shared_ptr<EnergyPool> getEnergyPoolSPtr();
-    AmmoPool& getAmmoPool();
+    AmmoGroup& getAmmoGroup();
+    std::tr1::shared_ptr<AmmoGroup> getAmmoGroupSPtr();
 
     /**GRAPHICS**/
     virtual void gfxUpdate();
@@ -133,7 +131,7 @@ protected:
 private:
     std::tr1::shared_ptr<ZoomPool> m_spZoomPool;
     std::tr1::shared_ptr<EnergyPool> m_spEnergyPool;
-    std::tr1::shared_ptr<AmmoPool> m_spAmmoPool;
+    std::tr1::shared_ptr<AmmoGroup> m_spAmmoGroup;
     std::tr1::shared_ptr<Link<Chunk, Intelligence> > m_spLinker;
 
     bool m_controlEnabled;

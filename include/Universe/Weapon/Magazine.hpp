@@ -3,7 +3,7 @@
 
 #include "Timer.hpp"
 #include "VariableNames.hpp"
-#include "AmmoPool.hpp"
+#include "AmmoGroup.hpp"
 #include "AmmoType.hpp"
 
 class Magazine
@@ -19,7 +19,7 @@ public:
     T_Ammo getCapacity() const;
 
     void consume(T_Ammo amount);
-    bool reload(AmmoPool& rAmmoPool, AmmoType ammoType);
+    bool reload(AmmoGroup& rAmmoPool, AmmoType ammoType);
 
     bool canConsume(T_Ammo rounds) const;
     bool hasEnoughAmmo(T_Ammo rounds) const;
@@ -27,7 +27,7 @@ public:
 
 protected:
 private:
-    Ammo m_ammo;
+    AmmoPool m_ammo;
     Timer m_reloadTimer;
 };
 

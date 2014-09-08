@@ -24,7 +24,7 @@ Chunk::Chunk(const ChunkData& rData) : IOBase(static_cast<IOBaseData>(rData))
     m_spLinker.reset(new Link<Chunk, Intelligence>(this));
     m_spZoomPool.reset(new ZoomPool(m_pIOComponent->getEventerPtr(), 0, rData.startMaxZoom, rData.startMinZoom));
     m_spEnergyPool.reset(new EnergyPool(m_pIOComponent->getEventerPtr(), 0, rData.startMaxEnergy));
-    m_spAmmoGroup.reset(new AmmoGroup(rData.ammoPool));
+    m_spAmmoGroup.reset(new AmmoGroup(rData.ammoGrouping));
 
     m_bodyDef.bullet = rData.isBullet;
     m_bodyDef.type = rData.bodyType;

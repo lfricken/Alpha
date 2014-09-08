@@ -38,9 +38,6 @@ void GraphicsComponentFactory::draw(sf::RenderWindow& rWindow, const b2Vec2& rCa
     /**2 loop over the sprite groups**/
     /**3 loop over elements in sprite groups**/
     /**4 draw those elements**/
-    int color = 60;
-    rWindow.clear();
-    game.rendText_1.clear(sf::Color(color,color,color,255));
 
     for(auto it_layer = m_layers.begin(); it_layer != m_layers.end(); ++it_layer)//1
         for(auto it_gfxCompGroup = it_layer->second.begin(); it_gfxCompGroup != it_layer->second.end(); ++it_gfxCompGroup)//2
@@ -49,7 +46,4 @@ void GraphicsComponentFactory::draw(sf::RenderWindow& rWindow, const b2Vec2& rCa
                 (**it_comp).update();
                 (**it_comp).draw(game.rendText_1, game.rendText_2, rCameraVel);//4
             }
-
-    game.rendText_1.display();
-    rWindow.draw(game.renderSprite_1);
 }

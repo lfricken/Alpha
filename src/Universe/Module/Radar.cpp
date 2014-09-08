@@ -29,6 +29,8 @@ void Radar::disablePostHook()
 }
 void Radar::animatePreHook()
 {
-    m_dish.update(getCenter(), m_pBody->GetAngle(), m_pBody->GetLinearVelocity());
+    m_dish.setPosition(getCenter());
+    m_dish.setRotation(m_pBody->GetAngle());
+    m_dish.setVelocity(m_pBody->GetLinearVelocity());
     GModule::animatePreHook();
 }

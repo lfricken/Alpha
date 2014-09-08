@@ -15,8 +15,8 @@ struct ShipData : public ChunkData//initialized
         hullDecor.gfxCompData.animationFileName = "textures/hull/loahn.acfg";
         hullDecor.gfxCompData.gfxLayer = GraphicsLayer::ShipHull;
         hullDecor.gfxCompData.rotation = 0;
-        hullDecor.gfxCompData.scale = sf::Vector2f(3,3);
-        hullDecor.gfxCompData.color = sf::Color(255,255,255,255);
+        hullDecor.gfxCompData.scale = sf::Vector2f(4,4);
+        //hullDecor.gfxCompData.color = sf::Color(255,255,255,255);
     }
     DecorationData hullDecor;
 };
@@ -31,7 +31,6 @@ public:
     virtual void gfxUpdate();
 protected:
 private:
-    virtual void f_initialize(const ShipData& rData);
 
     Decoration m_hullDecor;
 };

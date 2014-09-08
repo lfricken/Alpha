@@ -126,8 +126,7 @@ int main()
   //  tex.loadFromFile("textures/default.png");
   //  std::cout << "\nTexture Size: [" << tex.getSize().x << "].";
 
-
-
+    srand(time(NULL));
 
     Game::Status state = Game::Local;
     while(state != Game::Quit)

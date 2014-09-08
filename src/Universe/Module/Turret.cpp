@@ -40,7 +40,7 @@ bool Turret::physUpdate()
             m_linker.getTargetPtr()->checkFireState();
     }
 
-    return true;
+    return GModule::physUpdate();
 }
 void Turret::destructHook()
 {

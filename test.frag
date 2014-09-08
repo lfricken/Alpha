@@ -8,6 +8,7 @@ void main()
 	float strength = 0.005;//how intense should the effect be?
 	int samples = 10;//how many times should we create the effect(should be less than 30)
 	
+	vec4 pixelSum = vec4(0,0,0,0);
 	vec4 pixel = vec4(0,0,0,0);
 	vec2 copy = velocity;
 
@@ -28,8 +29,16 @@ void main()
 	
 	for(float i = 0; i < samples; ++i)//compute that many samples
 	{
-		pixel += texture2D(texture, gl_TexCoord[0].xy + offset*i);
-		pixel += texture2D(texture, gl_TexCoord[0].xy - offset*i);
+		pixel = texture2D(texture, gl_TexCoord[0].xy + offset*i);
+		pixel *= pixel.a;
+		pixelSum += pixel;
 	}
-	gl_FragColor = gl_Color*pixel/float(samples*2);
+	for(float i = 0; i < samples; ++i)//compute that many samples
+	{
+		pixel = texture2D(texture, gl_TexCoord[0].xy - offset*i);
+		pixel *= pixel.a;
+		pixelSum += pixel;
+	}
+	
+	gl_FragColor = gl_Color*pixelSum/float(samples*2);
 }

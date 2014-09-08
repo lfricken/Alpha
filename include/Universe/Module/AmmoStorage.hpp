@@ -3,7 +3,7 @@
 
 #include "GModule.hpp"
 #include "CapacityChanger.hpp"
-#include "TriangleFan.h"
+#include "TriangleFan.hpp"
 
 struct AmmoStorageData;
 

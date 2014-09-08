@@ -47,7 +47,7 @@ struct ChunkData : public IOBaseData
     T_Zoom startMaxZoom;
     T_Zoom startMinZoom;
 
-    AmmoGroup ammoPool;
+    AmmoGroup ammoGrouping;
 
     bool controlEnabled;
     bool awake;

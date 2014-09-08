@@ -9,7 +9,8 @@
 #include <cmath>
 #include <unordered_map>
 #include <tr1/memory>
-
+#include <cstdlib>
+#include <ctime>
 
 
 #include <SFML/System.hpp>/**SFML**/

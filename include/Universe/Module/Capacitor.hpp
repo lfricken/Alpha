@@ -3,7 +3,7 @@
 
 #include "GModule.hpp"
 #include "CapacityChanger.hpp"
-#include "TriangleFan.h"
+#include "RadialMeter.hpp"
 
 struct CapacitorData;
 
@@ -19,7 +19,7 @@ protected:
     void disablePostHook();
 
 private:
-    TriangleFan* m_pEnergyFill;
+    RadialMeter m_energyFill;
 
     CapacityChanger<T_Energy> m_capacity;
     std::tr1::shared_ptr<EnergyPool> m_spEnergyPool;
@@ -39,7 +39,7 @@ struct CapacitorData : public GModuleData
 
     T_Ammo comesWith;
     T_Energy energyStorage;
-    TriangleFanData fillData;
+    RadialMeterData fillData;
 
     virtual GModule* generate(Chunk* pChunk) const
     {

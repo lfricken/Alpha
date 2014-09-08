@@ -29,7 +29,7 @@ public:
 
     virtual void draw(sf::RenderTexture& image, sf::RenderTexture& vecField, const b2Vec2& rCameraVel) final;
 protected:
-        virtual const sf::Drawable& getDrawable() const = 0;
+    virtual const sf::Drawable& getDrawable() const = 0;
 private:
     b2Vec2 m_velVec;
     bool m_isVisible;

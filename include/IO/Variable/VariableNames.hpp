@@ -19,7 +19,7 @@ public:
     {
         return m_value;
     }
-    float getValuePercent() const
+    float getValuePercent() const//0 to 100
     {
         return (static_cast<float>(m_value-m_minValue)/static_cast<float>(m_maxValue-m_minValue))*100;
     }

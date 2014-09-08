@@ -1,40 +1,42 @@
 #ifndef SPINNER_H
 #define SPINNER_H
 
-#include "Decoration.hpp"
-
-class GModule;
+#include "GraphicsComponent.hpp"
+#include "GraphicsWrapperInterface.hpp"
 
 struct SpinnerData
 {
     SpinnerData():
+        gfxCompData(),
         startsSpinning(true),
+        randomInitRotation(true),
         startRotation(0),
         spinnerOffset(0,0),
-        spinRate(90),
-        decorData()
+        spinRate(90)
     {
-        decorData.gfxCompData.gfxLayer = GraphicsLayer::ShipAppendagesUpper;
-        decorData.gfxCompData.scale = sf::Vector2f(0.5, 0.5);
-        decorData.gfxCompData.texName = "textures/radar/dish.png";
-        decorData.gfxCompData.animationFileName = "textures/radar/dish.acfg";
+        gfxCompData.gfxLayer = GraphicsLayer::ShipAppendagesUpper;
+        gfxCompData.scale = sf::Vector2f(0.5, 0.5);
+        gfxCompData.texName = "textures/radar/dish.png";
+        gfxCompData.animationFileName = "textures/radar/dish.acfg";
     }
     bool startsSpinning;
+    bool randomInitRotation;
     float startRotation;//degrees CCW
     b2Vec2 spinnerOffset;//offset of sprite and spin from center of Module
     float spinRate;// degrees/second CCW
-    DecorationData decorData;
+    GraphicsComponentData gfxCompData;
 };
 
 
-class Spinner
+class Spinner : public GraphicsWrapperInterface
 {
 public:
     Spinner(const SpinnerData& rData);
     virtual ~Spinner();
 
+    void setAnimState(AnimationState state);
     void setEnabled(bool enabled);
-    void update(const b2Vec2& rCenterOfParent, float radiansCCW, const b2Vec2& rVel);//use time
+    void setRotation(float radiansCCW);
 
 protected:
 private:
@@ -44,7 +46,7 @@ private:
     Timer m_timer;
 
     bool m_isEnabled;
-    Decoration m_decor;
+    GraphicsComponent* m_pGfxDerived;
 };
 
 #endif // SPINNER_H

@@ -15,5 +15,5 @@ Module::~Module()
 }
 void Module::f_initialize(const ModuleData& data)
 {
-(void)data;
+    (void)data;
 }

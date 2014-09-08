@@ -3,18 +3,13 @@
 
 using namespace std;
 
-
 Ship::Ship(const ShipData& rData) : Chunk(static_cast<ChunkData>(rData)), m_hullDecor(rData.hullDecor)
 {
-    f_initialize(rData);
+
 }
 Ship::~Ship()
 {
 
-}
-void Ship::f_initialize(const ShipData& rData)
-{
-    (void)rData;//shutup the compiler about unused
 }
 void Ship::gfxUpdate()
 {

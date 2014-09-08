@@ -1,4 +1,4 @@
-#include "TriangleFan.h"
+#include "TriangleFan.hpp"
 
 #include "Convert.hpp"
 #include "Rotation.hpp"

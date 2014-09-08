@@ -1,10 +1,9 @@
 #include "Capacitor.hpp"
 #include "globals.hpp"
 
-Capacitor::Capacitor(const CapacitorData& rData, std::tr1::shared_ptr<EnergyPool> spEpool) : GModule(static_cast<GModuleData>(rData)), m_capacity(rData.energyStorage)
+Capacitor::Capacitor(const CapacitorData& rData, std::tr1::shared_ptr<EnergyPool> spEpool) : GModule(rData), m_energyFill(rData.fillData), m_capacity(rData.energyStorage)
 {
     m_spEnergyPool = spEpool;
-    m_pEnergyFill = dynamic_cast<TriangleFan*>(game.getGameUniverse().getGfxCompFactory().generate(rData.fillData));
 
     if(m_isEnabled)
         enable();
@@ -16,7 +15,6 @@ Capacitor::Capacitor(const CapacitorData& rData, std::tr1::shared_ptr<EnergyPool
 Capacitor::~Capacitor()
 {
     m_capacity.take(*m_spEnergyPool);
-    m_pEnergyFill->free();
 }
 void Capacitor::enablePostHook()
 {
@@ -30,10 +28,10 @@ void Capacitor::disablePostHook()
 }
 void Capacitor::animatePreHook()
 {
-    m_pEnergyFill->setTextureRotation(m_spEnergyPool->getValuePercent()*2*pi*0.01);
+    m_energyFill.setPercentFull(m_spEnergyPool->getValuePercent());
 
-    m_pEnergyFill->setPosition(getCenter());
-    m_pEnergyFill->setRotation(m_pBody->GetAngle());
-    m_pEnergyFill->setVelocity(m_pBody->GetLinearVelocity());
+    m_energyFill.setPosition(getCenter());
+    m_energyFill.setRotation(m_pBody->GetAngle());
+    m_energyFill.setVelocity(m_pBody->GetLinearVelocity());
     GModule::animatePreHook();
 }

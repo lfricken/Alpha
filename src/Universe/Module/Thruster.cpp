@@ -1,11 +1,11 @@
 #include "Thruster.hpp"
 #include "globals.hpp"
 
-Thruster::Thruster(const ThrusterData& data) : GModule(static_cast<GModuleData>(data))
+Thruster::Thruster(const ThrusterData& rData) : GModule(rData), m_turbine(rData.turbineData)
 {
-    m_energyConsumption = data.energyConsumption;
-    m_force = data.force;
-    m_torque = data.torque;
+    m_energyConsumption = rData.energyConsumption;
+    m_force = rData.force;
+    m_torque = rData.torque;
 }
 Thruster::~Thruster()
 {
@@ -13,13 +13,17 @@ Thruster::~Thruster()
 }
 void Thruster::thrust(const b2Vec2& direction)//apply a force in that direction = m_force
 {
+    float angle = m_pBody->GetAngle();
+    b2Vec2 norm;
+    norm.x = cos(-angle)*direction.x + sin(-angle)*direction.y;//negative because THAT IS CORRECT, go lookup the equation!
+    norm.y = -sin(-angle)*direction.x + cos(-angle)*direction.y;
+
     if(m_isEnabled && m_pChunk->getEnergyPool().canConsume(m_energyConsumption*game.getGameUniverse().getPhysTimeStep()))
     {
         m_pChunk->getEnergyPool().changeValue(-m_energyConsumption*game.getGameUniverse().getPhysTimeStep());
 
         if(getAnimationController().getState() != "Activated")
             getAnimationController().setState("Activated");
-        b2Vec2 norm = direction;
         norm.Normalize();
         m_pBody->ApplyForceToCenter(m_force*norm, true);
     }
@@ -40,6 +44,14 @@ void Thruster::torque(bool isCCW)//if true, rotate counter clockwise
 
         m_pBody->ApplyTorque(m_torque*direction, true);
     }
+}
+bool Thruster::physUpdate()
+{
+    m_turbine.setPosition(getCenter());
+    m_turbine.setVelocity(m_pBody->GetLinearVelocity());
+    m_turbine.setRotation(m_pBody->GetAngle());
+
+    return GModule::physUpdate();
 }
 void Thruster::up()
 {

@@ -13,11 +13,6 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-					<Add directory="include/Universe/Utility" />
-					<Add directory="include/Graphics" />
-					<Add directory="include/Basic" />
-					<Add directory="include/Universe/Module" />
-					<Add directory="include/Universe/ModuleComponent" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -28,11 +23,6 @@
 				<Compiler>
 					<Add option="-pg" />
 					<Add option="-g" />
-					<Add directory="include/Universe/Utility" />
-					<Add directory="include/Graphics" />
-					<Add directory="include/Basic" />
-					<Add directory="include/Universe/Module" />
-					<Add directory="include/Universe/ModuleComponent" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
@@ -73,6 +63,9 @@
 			<Add directory="include/Universe/ModuleComponent" />
 			<Add directory="include/Universe/Utility" />
 			<Add directory="include/Universe/Weapon" />
+			<Add directory="include/Graphics/Wrapper" />
+			<Add directory="include/Graphics/Interface" />
+			<Add directory="include/Graphics/Component" />
 		</Compiler>
 		<Linker>
 			<Add directory="../../../Engines/SFML-2_recompile/lib" />
@@ -92,17 +85,18 @@
 		<Unit filename="include/Control/PlayerState.hpp" />
 		<Unit filename="include/Game/Game.hpp" />
 		<Unit filename="include/Graphics/AnimationController.hpp" />
+		<Unit filename="include/Graphics/AnimationLooper.hpp" />
 		<Unit filename="include/Graphics/AnimationSetting.hpp" />
-		<Unit filename="include/Graphics/BaseGraphicsComponent.hpp" />
-		<Unit filename="include/Graphics/Decoration.hpp" />
-		<Unit filename="include/Graphics/GraphicsBase.hpp" />
-		<Unit filename="include/Graphics/GraphicsComponent.hpp" />
+		<Unit filename="include/Graphics/Component/GraphicsBase.hpp" />
+		<Unit filename="include/Graphics/Component/GraphicsComponent.hpp" />
+		<Unit filename="include/Graphics/Component/MultiTileMap.hpp" />
+		<Unit filename="include/Graphics/Component/TriangleFan.hpp" />
 		<Unit filename="include/Graphics/GraphicsLayer.hpp" />
-		<Unit filename="include/Graphics/Meter.hpp" />
-		<Unit filename="include/Graphics/MultiTileMap.hpp" />
-		<Unit filename="include/Graphics/RadialMeter.hpp" />
-		<Unit filename="include/Graphics/Spinner.hpp" />
-		<Unit filename="include/Graphics/TriangleFan.h" />
+		<Unit filename="include/Graphics/Interface/BaseGraphicsComponent.hpp" />
+		<Unit filename="include/Graphics/Interface/GraphicsWrapperInterface.hpp" />
+		<Unit filename="include/Graphics/Wrapper/Decoration.hpp" />
+		<Unit filename="include/Graphics/Wrapper/RadialMeter.hpp" />
+		<Unit filename="include/Graphics/Wrapper/Spinner.hpp" />
 		<Unit filename="include/Gui/Button.hpp" />
 		<Unit filename="include/Gui/EditBox.hpp" />
 		<Unit filename="include/Gui/OverlayManager.hpp" />
@@ -154,7 +148,7 @@
 		<Unit filename="include/Universe/Utility/UniversalContactListener.hpp" />
 		<Unit filename="include/Universe/Utility/UniversalQueryCallback.hpp" />
 		<Unit filename="include/Universe/Weapon/AmmoContainer.hpp" />
-		<Unit filename="include/Universe/Weapon/AmmoPool.hpp" />
+		<Unit filename="include/Universe/Weapon/AmmoGroup.hpp" />
 		<Unit filename="include/Universe/Weapon/AmmoType.hpp" />
 		<Unit filename="include/Universe/Weapon/Magazine.hpp" />
 		<Unit filename="include/Universe/Weapon/ProjectileBarrel.hpp" />
@@ -174,16 +168,17 @@
 		<Unit filename="src/Control/Player.cpp" />
 		<Unit filename="src/Game/Game.cpp" />
 		<Unit filename="src/Graphics/AnimationController.cpp" />
+		<Unit filename="src/Graphics/AnimationLooper.cpp" />
 		<Unit filename="src/Graphics/AnimationSetting.cpp" />
-		<Unit filename="src/Graphics/BaseGraphicsComponent.cpp" />
-		<Unit filename="src/Graphics/Decoration.cpp" />
-		<Unit filename="src/Graphics/GraphicsBase.cpp" />
-		<Unit filename="src/Graphics/GraphicsComponent.cpp" />
-		<Unit filename="src/Graphics/Meter.cpp" />
-		<Unit filename="src/Graphics/MultiTileMap.cpp" />
-		<Unit filename="src/Graphics/RadialMeter.cpp" />
-		<Unit filename="src/Graphics/Spinner.cpp" />
-		<Unit filename="src/Graphics/TriangleFan.cpp" />
+		<Unit filename="src/Graphics/Component/GraphicsBase.cpp" />
+		<Unit filename="src/Graphics/Component/GraphicsComponent.cpp" />
+		<Unit filename="src/Graphics/Component/MultiTileMap.cpp" />
+		<Unit filename="src/Graphics/Component/TriangleFan.cpp" />
+		<Unit filename="src/Graphics/Interface/BaseGraphicsComponent.cpp" />
+		<Unit filename="src/Graphics/Interface/GraphicsWrapperInterface.cpp" />
+		<Unit filename="src/Graphics/Wrapper/Decoration.cpp" />
+		<Unit filename="src/Graphics/Wrapper/RadialMeter.cpp" />
+		<Unit filename="src/Graphics/Wrapper/Spinner.cpp" />
 		<Unit filename="src/Gui/Button.cpp" />
 		<Unit filename="src/Gui/EditBox.cpp" />
 		<Unit filename="src/Gui/OverlayManager.cpp" />
@@ -222,7 +217,7 @@
 		<Unit filename="src/Universe/Utility/UniversalContactListener.cpp" />
 		<Unit filename="src/Universe/Utility/UniversalQueryCallback.cpp" />
 		<Unit filename="src/Universe/Weapon/AmmoContainer.cpp" />
-		<Unit filename="src/Universe/Weapon/AmmoPool.cpp" />
+		<Unit filename="src/Universe/Weapon/AmmoGroup.cpp" />
 		<Unit filename="src/Universe/Weapon/Magazine.cpp" />
 		<Unit filename="src/Universe/Weapon/ProjectileBarrel.cpp" />
 		<Unit filename="src/Universe/Weapon/Weapon.cpp" />

@@ -189,6 +189,11 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
             {
                 int desiredZoom = -rEvent.mouseWheel.delta;//negative because it's backwards
 
+                if(desiredZoom > 0)//if we don't clamp the value, wierd stuff can happen
+                    desiredZoom = 1;
+                else
+                    desiredZoom = -1;
+
                 if(pPlayer->getLinker().isLinked())
                 {
                     int maxZoom = pPlayer->getLinker().getTargetPtr()->getZoomPool().getMaxValue();

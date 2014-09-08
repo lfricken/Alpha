@@ -276,11 +276,15 @@ Game::Status Game::run()
         /**INPUT and PHYSICS**/
 
         /**DRAW**/
+        int color = 0;
         m_spWindow->clear();
+        rendText_1.clear(sf::Color(color,color,color,255));
 
         m_spControlManager->drawUpdate();
-        m_spOverlayManager->draw();// \n m_spWindow->setView(m_spWindow->getDefaultView());///draw stuff that is on hud///this doesn't appear to do anything anymore
 
+        rendText_1.display();
+        m_spWindow->draw(game.renderSprite_1);
+        m_spOverlayManager->draw();// \n m_spWindow->setView(m_spWindow->getDefaultView());///draw stuff that is on hud///this doesn't appear to do anything anymore
         m_spWindow->display();
         /**DRAW**/
     }
@@ -368,7 +372,6 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     /**=============================================DECORATIONS=============================================**/
     DecorationData decorDat;
     decorDat.gfxCompData.scale = sf::Vector2f(1, 1);
-    decorDat.name = "art";
     decorDat.gfxCompData.rotation = 20;
     decorDat.gfxCompData.animState = "Activated";
     decorDat.gfxCompData.position = sf::Vector2f(20, 10);
@@ -501,6 +504,10 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
             {
 
             }
+            else if((x==0) && (y==-0.5))
+            {
+
+            }
             else
             {
                 shipModuleData.offset.x = x;
@@ -515,7 +522,9 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     ammoData.offset.y = -0.5;
 
     CapacitorData capData;
+    CapacitorData capData2;
     capData.offset = b2Vec2(0, 2.5);
+    capData2.offset = b2Vec2(0, -0.5);
 
     ReactorData reacData;
     reacData.offset = b2Vec2(0, 2);
@@ -626,6 +635,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new TurretData(turretData2)) );
     moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new TurretData(turretData3)) );
     moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new CapacitorData(capData)) );
+    moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new CapacitorData(capData2)) );
     moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new ReactorData(reacData)) );
     moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new RadarData(radarDat)) );
     moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new AmmoStorageData(ammoData)) );
@@ -639,7 +649,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     ShipData shipDat;
     shipDat.bodyType = b2BodyType::b2_dynamicBody;
     shipDat.type = ClassType::SHIP;
-    shipDat.ammoPool.getAmmo(AmmoType::MediumShell).changeValue(100);
+    shipDat.ammoGrouping.getAmmo(AmmoType::MediumShell).changeValue(100);
 
     shipDat.position = b2Vec2(-20, 20);
     shipDat.name = "ship_1";

@@ -16,7 +16,7 @@ AmmoStorage::AmmoStorage(const AmmoStorageData& rData) : GModule(static_cast<GMo
 AmmoStorage::~AmmoStorage()
 {
     m_capacity.take(m_spAmmoGroup->getAmmo(m_ammoType));
-    m_pAmmoFill->free();
+    m_pAmmoFill->free();///should be using wrapper
 }
 void AmmoStorage::enablePostHook()
 {

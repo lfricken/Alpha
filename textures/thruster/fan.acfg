@@ -1,0 +1,26 @@
+{
+	"texTileSize": [186,186],
+    "stateList": [
+        {
+            "comment": "",
+            "state": "Default",
+            "delay": 1,
+            "nextState": null,
+            "tileList": [0,0],
+            "copyFrom": null
+        },
+		{
+            "comment": "",
+            "state": "Error",
+            "delay": 1,
+            "nextState": "Error",
+            "tileList": [
+                1,
+                0,
+				0,
+				0
+            ],
+            "copyFrom": null
+        }
+    ]
+}

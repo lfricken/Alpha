@@ -276,16 +276,16 @@ Game::Status Game::run()
         /**INPUT and PHYSICS**/
 
         /**DRAW**/
-        int color = 0;
+        int color = 60;
         m_spWindow->clear();
         rendText_1.clear(sf::Color(color,color,color,255));
 
         m_spControlManager->drawUpdate();
 
         rendText_1.display();
-        m_spWindow->draw(game.renderSprite_1);
-        m_spOverlayManager->draw();// \n m_spWindow->setView(m_spWindow->getDefaultView());///draw stuff that is on hud///this doesn't appear to do anything anymore
-        m_spWindow->display();
+        m_spWindow->draw(game.renderSprite_1);//draw game render sprite
+        m_spOverlayManager->draw();//draw hud
+        m_spWindow->display();//DISPLAY IT ALL
         /**DRAW**/
     }
 

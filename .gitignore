@@ -6,6 +6,7 @@
 .project
 .metadata
 tmp/
+bin/
 *.tmp
 *.bak
 *.swp
@@ -216,3 +217,5 @@ pip-log.txt
 *.depend
 *.out
 *.mp3
+*.png
+*.xcf

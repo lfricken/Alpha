@@ -1,8 +1,8 @@
-Craig Fritz, join Github!
+Download Executable Here
 =====
 
-or else
+Supported OS's at this time: Windows
 -----------
 
-Its in Alpha state!
-Always make a branch before making changes.
+It comes with a readme for the key layout
+https://www.mediafire.com/#oro6b54b4cp7j

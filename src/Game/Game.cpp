@@ -36,14 +36,7 @@ Game::Game()
     rendText_1.create(m_spWindow->getSize().x, m_spWindow->getSize().y);
     rendText_2.create(m_spWindow->getSize().x, m_spWindow->getSize().y);
 
-    if (sf::Shader::isAvailable())
-    {
-        std::cout << "\nShaders are available!.";
-        m_shader.loadFromFile("test.frag", sf::Shader::Fragment);
 
-        m_vecFieldShader.loadFromFile("vectorField.frag", sf::Shader::Fragment);
-        m_blurShader.loadFromFile("blur.frag", sf::Shader::Fragment);
-    }
 
     renderSprite_2.setTexture(rendText_2.getTexture());
     renderSprite_2.setPosition(0,0);
@@ -103,6 +96,7 @@ void Game::loadWindow()
             mode = sf::VideoMode(640, 640, 32);
             antiAliasLevel = 0;
             smoothTextures = false;
+            blurEnabled = false;
             vSinc = false;
             targetFPS = 10;
         }
@@ -112,6 +106,8 @@ void Game::loadWindow()
         sf::VideoMode mode;
         int antiAliasLevel;
         bool smoothTextures;
+        std::string blurShader;
+        bool blurEnabled;
         bool vSinc;
         int targetFPS;
     };
@@ -137,11 +133,20 @@ void Game::loadWindow()
         windowData.mode = sf::VideoMode(root["resX"].asInt(), root["resY"].asInt(), root["color"].asInt());
         windowData.antiAliasLevel = root["antiAliasLevel"].asInt();
         windowData.smoothTextures = root["smoothTextures"].asBool();
+        windowData.blurShader = root["blurShader"].asString();
+        windowData.blurEnabled = root["motionBlurEnabled"].asBool();
         windowData.vSinc = root["vSinc"].asBool();
         windowData.targetFPS = root["targetFPS"].asInt();
     }
 
     /**LOAD DATA FROM WINDOW**/
+    if (sf::Shader::isAvailable() && windowData.blurEnabled)
+    {
+        std::string blurShader = root["blurShader"].asString();
+        m_shader.loadFromFile(blurShader, sf::Shader::Fragment);
+        /// m_vecFieldShader.loadFromFile("vectorField.frag", sf::Shader::Fragment);
+        ///  m_blurShader.loadFromFile("blur.frag", sf::Shader::Fragment);
+    }
     m_settings.antialiasingLevel = windowData.antiAliasLevel;
     int style;//the sf::style enum has no name!!
     if(windowData.windowMode == "windowed")//windowed or fullscreen?
@@ -276,7 +281,7 @@ Game::Status Game::run()
         /**INPUT and PHYSICS**/
 
         /**DRAW**/
-        int color = 60;
+        int color = 30;
         m_spWindow->clear();
         rendText_1.clear(sf::Color(color,color,color,255));
 
@@ -371,7 +376,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 ///==============================================================================
     /**=============================================DECORATIONS=============================================**/
     DecorationData decorDat;
-    decorDat.gfxCompData.scale = sf::Vector2f(1, 1);
+    decorDat.gfxCompData.dimensions = sf::Vector2f(128, 128);
     decorDat.gfxCompData.rotation = 20;
     decorDat.gfxCompData.animState = "Activated";
     decorDat.gfxCompData.position = sf::Vector2f(20, 10);
@@ -685,15 +690,14 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     GModuleData debrisModuleData;
     debrisModuleData.categoryBits = Category::Projectile;
     debrisModuleData.maskBits = Mask::ProjectileNorm;
+    debrisModuleData.animationFileName = "textures/asteroid.acfg";
+    debrisModuleData.texName = "textures/asteroid.png";
 
     vector<tr1::shared_ptr<const GModuleData> > DebrisDataList;
     debrisModuleData.offset.x = 0;
     debrisModuleData.offset.y = 0;
     DebrisDataList.push_back(tr1::shared_ptr<GModuleData>(new GModuleData(debrisModuleData)));//copy constructor
 
-    debrisModuleData.offset.x = 2*debrisModuleData.halfSize.x;
-    debrisModuleData.offset.y = 0;
-    DebrisDataList.push_back(tr1::shared_ptr<GModuleData>(new GModuleData(debrisModuleData)));
     /**DEBRIS MODULES**/
 
 

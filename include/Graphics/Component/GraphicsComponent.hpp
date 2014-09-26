@@ -21,6 +21,7 @@ public:
     void setRotation(float radiansCCW);//radians
     float getRotation() const;///WARNING, THIS RETURNS SPRITE ABSOLUTE ROTATION(INCLUDES INIT OFFSET)
     void setAnimState(AnimationState state);
+    sf::Sprite& getSprite();
 
     void update();
 protected:
@@ -41,17 +42,15 @@ struct GraphicsComponentData : public BaseGraphicsComponentData
         animState(defaults::graphics::animState),
         position(defaults::graphics::position),
         rotation(defaults::graphics::rotation),//degrees CCW
-        scale(defaults::graphics::scale),
         color(defaults::graphics::color),
         animationFileName(defaults::graphics::animFile)
     {
-
+        dimensions = sf::Vector2f(0,0);
     }
 
     AnimationState animState;
     sf::Vector2f position;
     float rotation;//degrees CCW
-    sf::Vector2f scale;
     sf::Color color;
     std::string animationFileName;
 

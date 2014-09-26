@@ -1,0 +1,67 @@
+{
+	"texTileSize": [400,382],
+    "stateList": [
+        {
+            "comment": "The default state is the state we are normally in",
+            "state": "Default",
+            "delay": 1,
+            "nextState": null,
+            "tileList": [0,0],
+            "copyFrom": null
+        },
+        {
+            "comment": "this is the state we go into if we start doing something special",
+            "state": "Activated",
+            "delay": 1,
+            "nextState": "Activated",
+            "tileList": [
+                0,
+                0,
+                1,
+                0,
+                2,
+                0,
+                3,
+                0
+            ],
+            "copyFrom": null
+        },
+        {
+            "comment": "This is the state we go into if we are told to go into a state we dont have (always have this for all acfg files",
+            "state": "Error",
+            "delay": 1,
+            "nextState": "Error",
+            "tileList": [
+                0,
+                0,
+				0,
+				0
+            ],
+            "copyFrom": null
+        },
+        {
+            "comment": "This is what we do if we have been damaged (classified as <50% health as of 8/14/2014)",
+            "state": "Damaged",
+            "delay": 1,
+            "nextState": null,
+            "tileList": [
+                1,
+                0
+            ],
+            "copyFrom": null
+        },
+	        {
+            "comment": "We have been destroyed",
+            "state": "Destroyed",
+            "delay": 1,
+            "nextState": null,
+            "tileList": [
+                2,
+                0,
+				3,
+				0
+            ],
+            "copyFrom": null
+        }
+    ]
+}

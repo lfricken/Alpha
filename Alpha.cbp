@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="include/Graphics/Wrapper" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -23,6 +24,7 @@
 				<Compiler>
 					<Add option="-pg" />
 					<Add option="-g" />
+					<Add directory="include/Graphics/Wrapper" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
@@ -95,6 +97,7 @@
 		<Unit filename="include/Graphics/Interface/BaseGraphicsComponent.hpp" />
 		<Unit filename="include/Graphics/Interface/GraphicsWrapperInterface.hpp" />
 		<Unit filename="include/Graphics/Wrapper/Decoration.hpp" />
+		<Unit filename="include/Graphics/Wrapper/Needle.hpp" />
 		<Unit filename="include/Graphics/Wrapper/RadialMeter.hpp" />
 		<Unit filename="include/Graphics/Wrapper/Spinner.hpp" />
 		<Unit filename="include/Gui/Button.hpp" />
@@ -177,6 +180,7 @@
 		<Unit filename="src/Graphics/Interface/BaseGraphicsComponent.cpp" />
 		<Unit filename="src/Graphics/Interface/GraphicsWrapperInterface.cpp" />
 		<Unit filename="src/Graphics/Wrapper/Decoration.cpp" />
+		<Unit filename="src/Graphics/Wrapper/Needle.cpp" />
 		<Unit filename="src/Graphics/Wrapper/RadialMeter.cpp" />
 		<Unit filename="src/Graphics/Wrapper/Spinner.cpp" />
 		<Unit filename="src/Gui/Button.cpp" />

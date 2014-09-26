@@ -21,6 +21,7 @@ public:
     virtual ~Decoration();
 
     void setAnimState(AnimationState state);
+    void setColor(const sf::Color& rColor);
 
 protected:
 private:

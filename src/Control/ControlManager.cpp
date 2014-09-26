@@ -141,7 +141,7 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
     {
         /**START OF PLAYER LOOP**/
         Player* pPlayer = &**it;
-
+        InputConfig& rInputConfig = pPlayer->getInputConfig();
         /**==============PRIORITY CHECKS======================THINGS WE SHOULD ALWAYS BE LISTENING FOR**/
         if (rEvent.type == sf::Event::Closed)//closed window
         {
@@ -166,6 +166,21 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
                 cout << "\n\n\nExiting...";
                 return 1;///USE STATES, not numbers!
             }
+            if(pPlayer->getLinker().isLinked())//if we have a target
+            {
+                Chunk* pChunkTarget = pPlayer->getLinker().getTargetPtr();
+                if(pChunkTarget->isControlEnabled())//if that target accepts control
+                {
+                    if (rEvent.key.code == rInputConfig.special_1)
+                    {
+                        cout << "\nSpecial Pressed.";
+                        pChunkTarget->special_1();
+                    }
+                }
+            }
+
+
+
         }
 
 

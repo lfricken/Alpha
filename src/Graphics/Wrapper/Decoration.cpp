@@ -14,3 +14,7 @@ void Decoration::setAnimState(AnimationState state)
 {
     m_pGfxDerived->setAnimState(state);
 }
+void Decoration::setColor(const sf::Color& rColor)
+{
+    m_pGfxDerived->getSprite().setColor(rColor);
+}

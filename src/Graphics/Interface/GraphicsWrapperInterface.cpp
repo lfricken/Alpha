@@ -22,3 +22,7 @@ void GraphicsWrapperInterface::setVelocity(const b2Vec2& rVel)
 {
     m_pGfxComp->setVelocity(rVel);
 }
+void GraphicsWrapperInterface::setColor(const sf::Color& rColor)
+{
+    std::cout << "\n" << FILELINE;
+}

@@ -37,8 +37,8 @@ struct ThrusterData : public GModuleData
 {
     ThrusterData() :
         GModuleData(),
-        force(100),
-        torque(50),
+        force(500),
+        torque(200),
         energyConsumption(6),//units per second
         turbineData()
     {
@@ -46,7 +46,6 @@ struct ThrusterData : public GModuleData
         texName = "textures/thruster/thruster.png";
         animationFileName = "textures/thruster/thruster.acfg";
 
-        turbineData.spinRate = 120;
         turbineData.gfxCompData.gfxLayer = GraphicsLayer::ShipAppendagesLower;
         turbineData.gfxCompData.animationFileName = "textures/thruster/fan.acfg";
         turbineData.gfxCompData.texName = "textures/thruster/fan.png";

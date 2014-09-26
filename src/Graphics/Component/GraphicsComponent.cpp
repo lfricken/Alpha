@@ -15,7 +15,17 @@ GraphicsComponent::GraphicsComponent(const GraphicsComponentData& rData) : BaseG
 
     m_sprite.setOrigin(m_texTileSize.x/2.0f, m_texTileSize.y/2.0f);
     m_sprite.setTexture(*game.getTextureAllocator().request(getTexName()), false);
-    m_sprite.setScale(rData.scale);
+
+    sf::Vector2f scale;
+    if(rData.dimensions != sf::Vector2f(0,0))
+    {
+        scale.x = rData.dimensions.x/m_texTileSize.x;
+        scale.y = rData.dimensions.y/m_texTileSize.y;
+    }
+    else
+        scale = sf::Vector2f(1,1);
+
+    m_sprite.setScale(scale);
     m_sprite.setColor(rData.color);
 
     setPosition(b2Vec2(rData.position.x, rData.position.y));
@@ -32,6 +42,10 @@ void GraphicsComponent::setPosition(const b2Vec2& rPos)
 void GraphicsComponent::setRotation(float radiansCCW)
 {
     m_sprite.setRotation(leon::radToDeg(-radiansCCW)-m_rotation);
+}
+sf::Sprite& GraphicsComponent::getSprite()
+{
+    return m_sprite;
 }
 void GraphicsComponent::setAnimState(AnimationState state)
 {
@@ -51,3 +65,4 @@ float GraphicsComponent::getRotation() const
 {
     return leon::degToRad(m_sprite.getRotation());
 }
+

@@ -14,10 +14,10 @@ struct InputConfig
         right(sf::Keyboard::E),
         rollLeft(sf::Keyboard::A),
         rollRight(sf::Keyboard::D),
-        special_1(sf::Keyboard::R),
+        special_1(sf::Keyboard::Space),
         special_2(sf::Keyboard::F),
         special_3(sf::Keyboard::C),
-        special_4(sf::Keyboard::X),
+        special_4(sf::Keyboard::R),
         primary(sf::Mouse::Left),
         secondary(sf::Mouse::Right)
     {}

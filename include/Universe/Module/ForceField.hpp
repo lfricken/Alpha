@@ -2,7 +2,7 @@
 #define FORCEFIELD_H
 
 #include "Trigger.hpp"
-
+#include "Decoration.hpp"
 
 struct ForceFieldData;
 class ForceField : public Trigger
@@ -12,7 +12,7 @@ public:
     ForceField(const ForceFieldData& data);
     virtual ~ForceField();
 
-
+    void animatePreHook();
     bool physUpdate();
 protected:
 private:
@@ -20,7 +20,6 @@ private:
 
     b2Vec2 f_direction_absolute(const b2Vec2& direction) const;
     b2Vec2 f_direction_centroid(const b2Vec2& direction) const;//direction is either away from or towards(negative) centroid of b2Body
-
 
     float f_magnitude_constant(float magnitude) const;
     float f_magnitude_linear(float magnitude) const;
@@ -42,11 +41,13 @@ struct ForceFieldData : public TriggerData
         type = ClassType::TRIGGER;
     }
 
+
     virtual Module* generate(Chunk* pChunk) const
     {
         ForceFieldData mutableCopy(*this);
         mutableCopy.pBody = pChunk->getBody();
-                mutableCopy.pChunk = pChunk;
+        mutableCopy.pChunk = pChunk;
+
         return new ForceField(mutableCopy);
     }
 

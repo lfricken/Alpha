@@ -49,7 +49,10 @@ sf::Sprite& GraphicsComponent::getSprite()
 }
 void GraphicsComponent::setAnimState(AnimationState state)
 {
-    m_animControl.setState(state);
+    if(m_animControl.getState() != state)
+        m_animControl.setState(state);
+    else
+        m_animControl.goAgain(true);
 }
 void GraphicsComponent::update()
 {

@@ -513,6 +513,14 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
             {
 
             }
+            else if((x==-1) && (y==-3.0))
+            {
+
+            }
+            else if((x==1) && (y==-3.0))
+            {
+
+            }
             else
             {
                 shipModuleData.offset.x = x;
@@ -622,10 +630,11 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     fieldCoreData.offset = b2Vec2(0, 0);
     fieldCoreData.forceFieldData.filterData.defaultsTrue = true;
 
-    ThrusterData thrustDat;
-    thrustDat.offset = b2Vec2(0, 0.5);
 
-
+    ThrusterData thrustDat1;
+    thrustDat1.offset = b2Vec2(-1.0, -3.0);
+    ThrusterData thrustDat2;
+    thrustDat2.offset = b2Vec2(1.0, -3.0);
 
     RadarData radarDat;
     radarDat.offset.x = 1;
@@ -634,7 +643,8 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
 
 
-    moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new ThrusterData(thrustDat)) );
+    moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new ThrusterData(thrustDat1)) );
+    moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new ThrusterData(thrustDat2)) );
     moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new ForceFieldCoreData(fieldCoreData)) );
     moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new TurretData(turretData)) );
     moduleList1.push_back( tr1::shared_ptr<const GModuleData>(new TurretData(turretData2)) );

@@ -5,6 +5,7 @@ enum class GraphicsLayer
 {
     BackgroundFar = 0,
     BackgroundClose,
+    ShipUnder,
     GModules,
     ShipHull,
     ShipAppendagesLower,

@@ -8,6 +8,7 @@ AnimationController::AnimationController()
     m_currentIndex = 0;
     m_accumulatedTime = 0;
     m_timer.getTimeElapsed();
+    m_goAgain = false;
 }
 AnimationController::~AnimationController()
 {
@@ -18,12 +19,10 @@ void AnimationController::load(const std::string& animationFile)
     m_pSettingsList = game.getAnimationAllocator().requestPtr(animationFile);
     setState("Default");
 }
-
-    const std::string& AnimationController::getState() const
-    {
-        return m_state;
-    }
-
+const std::string& AnimationController::getState() const
+{
+    return m_state;
+}
 void AnimationController::setState(const AnimationState& state)
 {
     m_state = state;
@@ -57,6 +56,10 @@ const sf::Vector2f& AnimationController::getTexTileSize() const
 {
     return m_pCurrentSetting->texTileSize;
 }
+void AnimationController::goAgain(bool again)
+{
+    m_goAgain = again;
+}
 void AnimationController::f_update()
 {
     m_accumulatedTime += m_timer.getTimeElapsed();
@@ -80,7 +83,15 @@ void AnimationController::f_update()
             {
                 m_currentIndex = 0;
                 m_accumulatedTime-=m_pCurrentSetting->delay;
-                setState(m_pCurrentSetting->nextState);
+                if(m_goAgain)//check to see if we should go again!
+                {
+                    m_goAgain = false;
+                    setState(getState());
+                }
+                else
+                {
+                    setState(m_pCurrentSetting->nextState);
+                }
             }
         }
         else

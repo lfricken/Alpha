@@ -1,5 +1,5 @@
 {
-	"texTileSize": [256,256],
+	"texTileSize": [256,1792],
     "stateList": [
         {
             "comment": "",
@@ -12,29 +12,16 @@
         {
             "comment": "",
             "state": "Activated",
-            "delay": 1,
+            "delay": 0.04,
             "nextState": "Default",
             "tileList": [
+				1,
 				0,
-				0
-            ],
-            "copyFrom": null
-        },
-		{
-            "comment": "",
-            "state": "Damaged",
-            "delay": 1,
-            "nextState": null,
-            "tileList": [1,0],
-            "copyFrom": null
-        },
-		{
-            "comment": "",
-            "state": "Destroyed",
-            "delay": 1,
-            "nextState": null,
-            "tileList": [
-				2,
+                2,
+                0,
+				3,
+				0,
+				4,
 				0
             ],
             "copyFrom": null

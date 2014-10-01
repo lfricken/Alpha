@@ -24,6 +24,7 @@ public:
     void restart();//starts from beginning
     const sf::Vector2f& getTile();//get the current tile we should be on
     const sf::Vector2f& getTexTileSize() const;
+    void goAgain(bool again);
 
 protected:
 private:
@@ -37,6 +38,7 @@ private:
     std::string m_state;
     Timer m_timer;
     float m_accumulatedTime;//stores residual time left over from a switch, like 0.01 seconds.
+    bool m_goAgain;
 };
 
 #endif // ANIMATIONCONTROLLER_H

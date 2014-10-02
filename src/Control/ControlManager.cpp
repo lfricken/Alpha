@@ -137,147 +137,152 @@ int ControlManager::pressedUpdate()
 }
 int ControlManager::choiceUpdate(sf::Event& rEvent)
 {
-    for(vector<tr1::shared_ptr<Player> >::iterator it = m_localPlayerList.begin(); it != m_localPlayerList.end(); ++it)
+    sf::RenderWindow* pWindow = &game.getGameWindow();
+    static tgui::Widget::Ptr pDraggingWidget = nullptr;
+    static sf::Vector2f draggingPosition;
+
+    while(pWindow->pollEvent(rEvent))
     {
-        /**START OF PLAYER LOOP**/
-        Player* pPlayer = &**it;
-        InputConfig& rInputConfig = pPlayer->getInputConfig();
-        /**==============PRIORITY CHECKS======================THINGS WE SHOULD ALWAYS BE LISTENING FOR**/
-        if (rEvent.type == sf::Event::Closed)//closed window
+
+
+
+        for(vector<tr1::shared_ptr<Player> >::iterator it = m_localPlayerList.begin(); it != m_localPlayerList.end(); ++it)
         {
-            game.getGameWindow().close();
-            return 1;///USE STATES
-        }
-        if (rEvent.type == sf::Event::KeyPressed)//on key press
-        {
-            if (rEvent.key.code == sf::Keyboard::F1)
+            /**START OF PLAYER LOOP**/
+            Player* pPlayer = &**it;
+            InputConfig& rInputConfig = pPlayer->getInputConfig();
+            /**==============PRIORITY CHECKS======================THINGS WE SHOULD ALWAYS BE LISTENING FOR**/
+            if (rEvent.type == sf::Event::Closed)//closed window
             {
-                pPlayer->setState(PlayerState::Editing);
+                game.getGameWindow().close();
+                return 1;///USE STATES
             }
-            if (rEvent.key.code == sf::Keyboard::Tilde)
-            {
-                if(pPlayer->getState() == PlayerState::Playing)
-                    pPlayer->setState(PlayerState::Interfacing);
-                else
-                    pPlayer->setState(PlayerState::Playing);
-            }
-            if (rEvent.key.code == sf::Keyboard::Escape)
-            {
-                cout << "\n\n\nExiting...";
-                return 1;///USE STATES, not numbers!
-            }
-            if(pPlayer->getLinker().isLinked())//if we have a target
-            {
-                Chunk* pChunkTarget = pPlayer->getLinker().getTargetPtr();
-                if(pChunkTarget->isControlEnabled())//if that target accepts control
-                {
-                    if (rEvent.key.code == rInputConfig.special_1)
-                    {
-                        cout << "\nSpecial Pressed.";
-                        pChunkTarget->special_1();
-                    }
-                }
-            }
-
-
-
-        }
-
-
-        /**=================PLAY GAME====================this is for if we are trying to interact with the WORLD, like shooting or moving**/
-        if(pPlayer->getState() == PlayerState::Playing)//we are playing the game
-        {
             if (rEvent.type == sf::Event::KeyPressed)//on key press
             {
-
-            }
-            if (rEvent.type == sf::Event::MouseMoved)//aim on mouse move
-            {
-                pPlayer->setMouseCoords(sf::Vector2i(rEvent.mouseMove.x, rEvent.mouseMove.y));
-
-                b2Vec2 worldAim = leon::sfTob2(game.getGameWindow().mapPixelToCoords(pPlayer->getMouseCoords(), pPlayer->getCamera().getView()));
-                pPlayer->setAim(worldAim);
-                if(pPlayer->getLinker().isLinked())
-                    pPlayer->getLinker().getTargetPtr()->aim(worldAim);
-            }
-            if (rEvent.type == sf::Event::MouseWheelMoved)//control zooming of camera for a player
-            {
-                int desiredZoom = -rEvent.mouseWheel.delta;//negative because it's backwards
-
-                if(desiredZoom > 0)//if we don't clamp the value, wierd stuff can happen
-                    desiredZoom = 1;
-                else
-                    desiredZoom = -1;
-
-                if(pPlayer->getLinker().isLinked())
+                if (rEvent.key.code == sf::Keyboard::F1)
                 {
-                    int maxZoom = pPlayer->getLinker().getTargetPtr()->getZoomPool().getMaxValue();
-                    int minZoom = pPlayer->getLinker().getTargetPtr()->getZoomPool().getMinValue();
-                    int currentZoom = pPlayer->getCamera().getZoomLevel();
-
-
-                    if(desiredZoom+currentZoom > maxZoom)
-                        desiredZoom = 0;
-                    else if(desiredZoom+currentZoom < minZoom)
-                        desiredZoom = 0;
+                    pPlayer->setState(PlayerState::Editing);
                 }
-
-                pPlayer->getCamera().zoom(desiredZoom);
-
-                b2Vec2 oldPos = pPlayer->getCamera().getCenter();/**we do this so zooming to a spot is smoother**/
-                b2Vec2 aimPos = pPlayer->getAim();
-                b2Vec2 smoothPos((oldPos.x+aimPos.x)/2, (oldPos.y+aimPos.y)/2);
-
-                pPlayer->getCamera().setCenter(smoothPos);
-            }
-            if(pPlayer->getPlayerMode() == PlayerMode::God)//cheats
-                f_cheats(it, rEvent);
-        }
-
-
-        /**============EDIT MODE===============  DRAGGING AROUND SCREEN ELEMENTS**/
-        else if(pPlayer->getState() == PlayerState::Editing)//we are changing the positions of elements on screen
-        {
-            tgui::Widget::Ptr pDraggingWidget = nullptr;
-            sf::Vector2f draggingPosition;
-            if (rEvent.type == sf::Event::MouseButtonPressed)
-            {
-                tgui::Widget::Ptr widget = f_MouseOnWhichWidget(rEvent.mouseButton.x, rEvent.mouseButton.y, game.getGameOverlayManager().getGui().getWidgets());
-                if(widget != nullptr)
+                if (rEvent.key.code == sf::Keyboard::Tilde)
                 {
-                    if(widget->getWidgetType() == tgui::WidgetTypes::Type_Panel)
+                    if(pPlayer->getState() == PlayerState::Playing)
+                        pPlayer->setState(PlayerState::Interfacing);
+                    else
+                        pPlayer->setState(PlayerState::Playing);
+                }
+                if (rEvent.key.code == sf::Keyboard::Escape)
+                {
+                    cout << "\n\n\nExiting...";
+                    return 1;///USE STATES, not numbers!
+                }
+                if(pPlayer->getLinker().isLinked())//if we have a target
+                {
+                    Chunk* pChunkTarget = pPlayer->getLinker().getTargetPtr();
+                    if(pChunkTarget->isControlEnabled())//if that target accepts control
                     {
-                        if(f_MouseOnWhichWidget(rEvent.mouseButton.x, rEvent.mouseButton.y, tgui::Panel::Ptr(widget)->getWidgets()) == nullptr)
+                        if (rEvent.key.code == rInputConfig.special_1)
                         {
-                            pDraggingWidget = widget;
-                            draggingPosition = sf::Vector2f(rEvent.mouseButton.x, rEvent.mouseButton.y);
+                            cout << "\nSpecial Pressed.";
+                            pChunkTarget->special_1();
                         }
                     }
                 }
-            }
-            else if (rEvent.type == sf::Event::MouseButtonReleased)
-            {
-                pDraggingWidget = nullptr;
-            }
-            else if (rEvent.type == sf::Event::MouseMoved)
-            {
-                if (pDraggingWidget != nullptr)
-                {
-                    pDraggingWidget->setPosition(pDraggingWidget->getPosition().x + rEvent.mouseMove.x - draggingPosition.x,
-                                                 pDraggingWidget->getPosition().y + rEvent.mouseMove.y - draggingPosition.y);
 
-                    draggingPosition = sf::Vector2f(rEvent.mouseMove.x, rEvent.mouseMove.y);
+
+
+            }
+
+
+            /**=================PLAY GAME====================this is for if we are trying to interact with the WORLD, like shooting or moving**/
+            if(pPlayer->getState() == PlayerState::Playing)//we are playing the game
+            {
+                if (rEvent.type == sf::Event::KeyPressed)//on key press
+                {
+
+                }
+                if (rEvent.type == sf::Event::MouseMoved)//aim on mouse move
+                {
+                    pPlayer->setMouseCoords(sf::Vector2i(rEvent.mouseMove.x, rEvent.mouseMove.y));
+
+                    b2Vec2 worldAim = leon::sfTob2(game.getGameWindow().mapPixelToCoords(pPlayer->getMouseCoords(), pPlayer->getCamera().getView()));
+                    pPlayer->setAim(worldAim);
+                    if(pPlayer->getLinker().isLinked())
+                        pPlayer->getLinker().getTargetPtr()->aim(worldAim);
+                }
+                if (rEvent.type == sf::Event::MouseWheelMoved)//control zooming of camera for a player
+                {
+                    int desiredZoom = -rEvent.mouseWheel.delta;//negative because it's backwards
+
+                    if(desiredZoom > 0)//if we don't clamp the value, wierd stuff can happen
+                        desiredZoom = 1;
+                    else
+                        desiredZoom = -1;
+
+                    if(pPlayer->getLinker().isLinked())
+                    {
+                        int maxZoom = pPlayer->getLinker().getTargetPtr()->getZoomPool().getMaxValue();
+                        int minZoom = pPlayer->getLinker().getTargetPtr()->getZoomPool().getMinValue();
+                        int currentZoom = pPlayer->getCamera().getZoomLevel();
+
+                        if(desiredZoom+currentZoom > maxZoom)
+                            desiredZoom = 0;
+                        else if(desiredZoom+currentZoom < minZoom)
+                            desiredZoom = 0;
+                    }
+
+                    pPlayer->getCamera().zoom(desiredZoom);
+
+                    b2Vec2 oldPos = pPlayer->getCamera().getCenter();/**we do this so zooming to a spot is smoother**/
+                    b2Vec2 aimPos = pPlayer->getAim();
+                    b2Vec2 smoothPos((oldPos.x+aimPos.x)/2, (oldPos.y+aimPos.y)/2);
+
+                    pPlayer->getCamera().setCenter(smoothPos);
+                }
+                if(pPlayer->getPlayerMode() == PlayerMode::God)//cheats
+                    f_cheats(it, rEvent);
+            }
+
+
+            /**============EDIT MODE===============  DRAGGING AROUND SCREEN ELEMENTS**/
+            else if(pPlayer->getState() == PlayerState::Editing)//we are changing the positions of elements on screen
+            {
+                if (rEvent.type == sf::Event::MouseButtonPressed)
+                {
+                    tgui::Widget::Ptr widget = f_MouseOnWhichWidget(rEvent.mouseButton.x, rEvent.mouseButton.y, game.getGameOverlayManager().getGui().getWidgets());
+                    if(widget != nullptr)
+                    {
+                        if(widget->getWidgetType() == tgui::WidgetTypes::Type_Panel)
+                        {
+                            if(f_MouseOnWhichWidget(rEvent.mouseButton.x, rEvent.mouseButton.y, tgui::Panel::Ptr(widget)->getWidgets()) == nullptr)
+                            {
+                                pDraggingWidget = widget;
+                                draggingPosition = sf::Vector2f(rEvent.mouseButton.x, rEvent.mouseButton.y);
+                            }
+                        }
+                    }
+                }
+                else if (rEvent.type == sf::Event::MouseButtonReleased)
+                {
+                    pDraggingWidget = nullptr;
+                }
+                else if (rEvent.type == sf::Event::MouseMoved)
+                {
+                    if (pDraggingWidget != nullptr)
+                    {
+                        pDraggingWidget->setPosition(pDraggingWidget->getPosition().x + rEvent.mouseMove.x - draggingPosition.x,
+                                                     pDraggingWidget->getPosition().y + rEvent.mouseMove.y - draggingPosition.y);
+                        draggingPosition = sf::Vector2f(rEvent.mouseMove.x, rEvent.mouseMove.y);
+                    }
                 }
             }
+
+            /**========GUI============= HERE WE CAN CLICK ON BUTTONS AND INTERFACE WITH SCREEN ELEMENTS**/
+            else if(pPlayer->getState() == PlayerState::Interfacing)//we are clicking buttons
+                game.getGameOverlayManager().getGui().handleEvent(rEvent);
+
         }
-
-        /**========GUI============= HERE WE CAN CLICK ON BUTTONS AND INTERFACE WITH SCREEN ELEMENTS**/
-        else if(pPlayer->getState() == PlayerState::Interfacing)//we are clicking buttons
-            game.getGameOverlayManager().getGui().handleEvent(rEvent);
-
+        /**END OF PLAYER LOOP**/
     }
-    /**END OF PLAYER LOOP**/
-
 
 
     ///LOOP OVER AI HERE??? what would we update exactly?
@@ -351,8 +356,8 @@ void ControlManager::f_cheats(vector<tr1::shared_ptr<Player> >::iterator it, sf:
 }
 tgui::Widget::Ptr ControlManager::f_MouseOnWhichWidget(float x, float y, std::vector<tgui::Widget::Ptr>& widgets)
 {
-    for (std::vector<tgui::Widget::Ptr>::reverse_iterator it = widgets.rbegin(); it != widgets.rend(); ++it)
-        if (((*it)->isVisible()) && ((*it)->isEnabled()) && ((*it)->mouseOnWidget(x, y)))
+    for(std::vector<tgui::Widget::Ptr>::reverse_iterator it = widgets.rbegin(); it != widgets.rend(); ++it)
+        if(((*it)->isVisible()) && ((*it)->isEnabled()) && ((*it)->mouseOnWidget(x, y)))
             return *it;
 
     return nullptr;

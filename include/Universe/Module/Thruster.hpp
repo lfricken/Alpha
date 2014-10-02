@@ -53,7 +53,8 @@ struct ThrusterData : public GModuleData
         turbineData.gfxCompData.gfxLayer = GraphicsLayer::ShipUnder;
         turbineData.gfxCompData.animationFileName = "textures/thruster/fan.acfg";
         turbineData.gfxCompData.texName = "textures/thruster/fan.png";
-        turbineData.gfxCompData.dimensions = sf::Vector2f(128, 128);
+        turbineData.gfxCompData.dimensions = sf::Vector2f(96, 96);
+        turbineData.accel = 270;
 
         nozzleData.gfxCompData.gfxLayer = GraphicsLayer::ShipAppendagesUpper;
         nozzleData.gfxCompData.animationFileName = "textures/thruster/nozzle.acfg";

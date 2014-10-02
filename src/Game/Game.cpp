@@ -262,11 +262,10 @@ Game::Status Game::run()
         /**FPS**/
 
         /**INPUT and PHYSICS**/
-        while(m_spWindow->pollEvent(event))
-        {
-            if(m_spControlManager->choiceUpdate(event))//if we put this before physstep, the camera lags!
-                newState = Game::Quit;
-        }
+
+        if(m_spControlManager->choiceUpdate(event))//if we put this before physstep, the camera lags!
+            newState = Game::Quit;
+
         for(i = 0; computeTime > 0 && i < maxSteps; ++i)
         {
             m_spControlManager->pressedUpdate();//having the pressed update ensures that key commands continue throughout any time step

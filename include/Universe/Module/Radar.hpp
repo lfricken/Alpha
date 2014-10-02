@@ -34,7 +34,7 @@ struct RadarData : public GModuleData
         dishData.minRate = 45;
         dishData.gfxCompData.texName = "textures/radar/dish.png";
         dishData.gfxCompData.animationFileName = "textures/radar/dish.acfg";
-        dishData.gfxCompData.dimensions = sf::Vector2f(128,128);
+        dishData.gfxCompData.dimensions = sf::Vector2f(192,192);
         type = ClassType::SENSOR;
         animationFileName = "textures/radar/base.acfg";
         texName = "textures/radar/base.png";

@@ -12,8 +12,8 @@ struct SpinnerData
         randomInitRotation(true),
         startRotation(0),
         spinnerOffset(0,0),
-        accel(90),// degrees/second CCW
-        decel(-50),// degrees/second CCW
+        accel(90),// degrees/second/s CCW
+        decel(-50),// degrees/second/s CCW
         maxRate(360),// degrees/second CCW
         minRate(10)// degrees/second CCW
     {

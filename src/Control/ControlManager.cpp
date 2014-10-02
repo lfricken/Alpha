@@ -67,6 +67,10 @@ Player* ControlManager::getPlayer(unsigned int targetID)
     else
         return &(*m_localPlayerList[location]);
 }
+std::vector<std::tr1::shared_ptr<Player> >& ControlManager::getPlayerList()
+{
+    return m_localPlayerList;
+}
 /**=================**/
 /**=================**/
 /**=====GET_TARGETS=====**/
@@ -154,8 +158,8 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
             /**==============PRIORITY CHECKS======================THINGS WE SHOULD ALWAYS BE LISTENING FOR**/
             if (rEvent.type == sf::Event::Closed)//closed window
             {
-                game.getGameWindow().close();
-                return 1;///USE STATES
+                sf::Packet holder;
+                game.input(holder, "exit");
             }
             if (rEvent.type == sf::Event::KeyPressed)//on key press
             {
@@ -163,17 +167,23 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
                 {
                     pPlayer->setState(PlayerState::Editing);
                 }
+                if (rEvent.key.code == sf::Keyboard::F3)
+                {
+                    game.reloadWindow();
+                }
                 if (rEvent.key.code == sf::Keyboard::Tilde)
                 {
-                    if(pPlayer->getState() == PlayerState::Playing)
+                    cout << "\nTilde: " << FILELINE;
+                    if(pPlayer->getState() == PlayerState::Editing)
+                        pPlayer->setState(PlayerState::Playing);
+                    else if(pPlayer->getState() == PlayerState::Playing)
                         pPlayer->setState(PlayerState::Interfacing);
                     else
                         pPlayer->setState(PlayerState::Playing);
                 }
                 if (rEvent.key.code == sf::Keyboard::Escape)
                 {
-                    cout << "\n\n\nExiting...";
-                    return 1;///USE STATES, not numbers!
+                    cout << "\nEscape: " << FILELINE;
                 }
                 if(pPlayer->getLinker().isLinked())//if we have a target
                 {
@@ -187,9 +197,6 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
                         }
                     }
                 }
-
-
-
             }
 
 

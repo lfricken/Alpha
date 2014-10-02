@@ -31,6 +31,7 @@ using namespace std;
 
 Game::Game()
 {
+    m_state = Game::Status::Local;
     loadWindow();
 
     rendText_1.create(m_spWindow->getSize().x, m_spWindow->getSize().y);
@@ -225,7 +226,7 @@ Game::Status Game::run()
 
 
     /**SIMULATION & RUNTIME**/
-    Game::Status newState = Game::Local;
+
 
     float fps = 0;
     float firstTime = 0, secondTime = 0, timeForFrame = 0, computeTime = 0, remainder = 0;
@@ -240,7 +241,7 @@ Game::Status Game::run()
     /**EXPERIMENTING**/
 
     sf::Event event;
-    while(m_spWindow->isOpen() && newState != Game::Quit)
+    while(m_spWindow->isOpen() && m_state != Game::Quit)
     {
 
         /**FPS**/
@@ -263,8 +264,7 @@ Game::Status Game::run()
 
         /**INPUT and PHYSICS**/
 
-        if(m_spControlManager->choiceUpdate(event))//if we put this before physstep, the camera lags!
-            newState = Game::Quit;
+        m_spControlManager->choiceUpdate(event);//if we put this before physstep, the camera lags!
 
         for(i = 0; computeTime > 0 && i < maxSteps; ++i)
         {
@@ -293,7 +293,7 @@ Game::Status Game::run()
         /**DRAW**/
     }
 
-    return newState;
+    return m_state;
 }
 float Game::getTime() const
 {
@@ -818,4 +818,31 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     m_spIOManager->setTargets();//set IO targets
 
     /**=================================FINALIZING LOADED STUFF===========================================**/
+}
+void Game::setStatus(Game::Status newStatus)
+{
+    m_state = newStatus;
+}
+void Game::reloadWindow()
+{
+    loadWindow();
+    auto& rPlayerList = m_spControlManager->getPlayerList();
+    for(auto it = rPlayerList.begin(); it!=rPlayerList.end(); ++it)
+    {
+        (*it)->getCamera().resetZoom();
+        (*it)->getCamera().resetViewport();
+    }
+}
+IOBaseReturn Game::input(IOBaseArgs)
+{
+    (void)rInput;//shutup the compiler about unused vars
+    if(rCommand == "reloadWindow")
+        reloadWindow();
+    else if(rCommand == "exit")
+        setStatus(Game::Status::Quit);
+    else
+    {
+        ///ERROR LOG
+        std::cout << "\nCommand [" << rCommand << "] was never found.";
+    }
 }

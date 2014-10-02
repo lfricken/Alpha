@@ -1,3 +1,5 @@
+Finish up GUI system
+Make tilde key iterate through Interfacing, Editing, and Playing, and have an indicator on screen that changes as well
 Create a player
 create a cockpit
 create a hallway

@@ -18,14 +18,9 @@ void Player::f_initialize(const PlayerData& rData)
 {
     m_inputConfig = rData.keyConfig;
     m_playerMode = rData.playerMode;
-    m_camera.setCenter(rData.cameraPos);
+
     m_camera.setViewportSF(rData.viewport);
     m_camera.toggleRotation();
-
-    sf::Vector2f subWindowSize;//generate sub window for us
-    subWindowSize.x = rData.viewport.width*game.getGameWindow().getSize().x;
-    subWindowSize.y = rData.viewport.height*game.getGameWindow().getSize().y;
-    m_camera.setSizeSF(subWindowSize);
 }
 Camera& Player::getCamera()
 {
@@ -51,7 +46,6 @@ const PlayerMode& Player::getPlayerMode() const
 {
     return m_playerMode;
 }
-
 void Player::setInputConfig(const InputConfig& inputConfig)
 {
     m_inputConfig = inputConfig;

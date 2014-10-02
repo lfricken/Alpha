@@ -30,8 +30,11 @@ public:
     Status local();
     Status client();
     Status server();
+    void setStatus(Game::Status newStatus);
+    IOBaseReturn input(IOBaseArgs);
 
     void loadWindow();
+    void reloadWindow();
 
     float getTime() const;
 
@@ -66,7 +69,7 @@ private:
     std::tr1::shared_ptr<OverlayManager> m_spOverlayManager;
     std::tr1::shared_ptr<ControlManager> m_spControlManager;
 
-
+    Game::Status m_state;
     sf::Clock m_clock;
     sf::Image m_icon;
     sf::ContextSettings m_settings;

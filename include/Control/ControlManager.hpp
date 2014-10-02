@@ -15,6 +15,7 @@ public:
     Intelligence* getIntelligence(unsigned int targetID);
     Player* getPlayer(const std::string& target);
     Player* getPlayer(unsigned int targetID);
+    std::vector<std::tr1::shared_ptr<Player> >& getPlayerList();
     ///also get SI;
 
     void add(std::tr1::shared_ptr<Player> spPlayer);

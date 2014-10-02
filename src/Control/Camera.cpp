@@ -7,8 +7,6 @@ Camera::Camera()
     m_isTracking = true;
     m_rotates = true;
     m_originalView = m_view.getSize();
-
-    m_view.setViewport(sf::FloatRect(0, 0, 0.5, 1));//doesnt actually do anything because it gets reset
 }
 Camera::~Camera()
 {
@@ -23,7 +21,16 @@ const sf::View& Camera::getView() const
 }
 void Camera::setViewportSF(const sf::FloatRect& rPort)
 {
-    m_view.setViewport(rPort);
+    m_viewport = rPort;
+    m_view.setViewport(m_viewport);
+    sf::Vector2f subWindowSize;//generate sub window for us
+    subWindowSize.x = m_viewport.width*game.getGameWindow().getSize().x;
+    subWindowSize.y = m_viewport.height*game.getGameWindow().getSize().y;
+    setSizeSF(subWindowSize);
+}
+void Camera::resetViewport()
+{
+    setViewportSF(m_viewport);
 }
 void Camera::setSizeSF(const sf::Vector2f& rSize)
 {
@@ -79,11 +86,21 @@ bool Camera::toggleRotation()
 
 
 /**ZOOM**/
+void Camera::resetZoom()
+{
+    while(m_zoomLevel != 1)
+    {
+        if(m_zoomLevel>1)
+            zoom(-1);
+        else
+            zoom(1);
+    }
+}
 float Camera::getZoomLevel() const
 {
     return m_zoomLevel;
 }
-void Camera::zoom(float zoomChange)
+void Camera::zoom(int zoomChange)
 {
     m_zoomLevel += zoomChange;
     if(zoomChange < 0)

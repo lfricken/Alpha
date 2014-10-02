@@ -37,8 +37,6 @@ void Thruster::thrust(const b2Vec2& direction)//apply a force in that direction 
         m_pBody->ApplyForceToCenter(m_force*norm, true);
         m_turbine.spinup();
     }
-    else
-        m_nozzle.setAnimState("Default");
 }
 void Thruster::torque(bool isCCW)//if true, rotate counter clockwise
 {
@@ -65,8 +63,6 @@ void Thruster::torque(bool isCCW)//if true, rotate counter clockwise
         m_pBody->ApplyTorque(m_torque*direction, true);
         m_turbine.spinup();
     }
-    else
-        m_nozzle.setAnimState("Default");
 }
 bool Thruster::physUpdate()
 {

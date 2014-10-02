@@ -316,7 +316,7 @@ void ControlManager::drawUpdate()
         sf::Listener::setDirection(sin((*it)->getCamera().getView().getRotation()), 0.0f, -cos((*it)->getCamera().getView().getRotation()));
 
 
-        game.rendText_1.setView((*it)->getCamera().getView());
+        game.getRenderTarget().setView((*it)->getCamera().getView());
         //game.rendText_2.setView((*it)->getCamera().getView());
         game.getGameUniverse().draw(cameraVelocity);
     }

@@ -34,7 +34,7 @@ bool BaseGraphicsComponent::isVisible() const
 {
     return m_isVisible;
 }
-void BaseGraphicsComponent::draw(sf::RenderTexture& image, sf::RenderTexture& vecField, const b2Vec2& rCameraVel)
+void BaseGraphicsComponent::draw(sf::RenderTarget& image, const b2Vec2& rCameraVel)
 {
 
     if(isVisible())
@@ -45,7 +45,7 @@ void BaseGraphicsComponent::draw(sf::RenderTexture& image, sf::RenderTexture& ve
         game.m_shader.setParameter("velocity", relative.x, relative.y);
         game.m_shader.setParameter("angle", getRotation());
 
-        game.rendText_1.draw(getDrawable(), &game.m_shader);
+        image.draw(getDrawable(), &game.m_shader);
     }
 }
 void BaseGraphicsComponent::setVelocity(const b2Vec2& rVel)

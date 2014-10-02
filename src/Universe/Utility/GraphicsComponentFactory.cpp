@@ -44,6 +44,6 @@ void GraphicsComponentFactory::draw(sf::RenderWindow& rWindow, const b2Vec2& rCa
             for(auto it_comp = it_gfxCompGroup->second.begin(); it_comp != it_gfxCompGroup->second.end(); ++it_comp)//3
             {
                 (**it_comp).update();
-                (**it_comp).draw(game.rendText_1, game.rendText_2, rCameraVel);//4
+                (**it_comp).draw(game.getRenderTarget(), rCameraVel);//4
             }
 }

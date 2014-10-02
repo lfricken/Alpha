@@ -45,14 +45,13 @@ public:
     TextureAllocator& getTextureAllocator();
     AnimationAllocator& getAnimationAllocator();
 
-    sf::Sprite renderSprite_1;///OMG WTF IS THIS
-    sf::Sprite renderSprite_2;///
+    sf::RenderTarget& getRenderTarget();
 
-    sf::RenderTexture rendText_1;///OMG WTF IS THIS;
-    sf::RenderTexture rendText_2;
+
+
     sf::Shader m_blurShader;
     sf::Shader m_vecFieldShader;
-    sf::Shader m_shader;///OMG WTF IS THIS
+    sf::Shader m_shader;
 
 protected:
 private:
@@ -73,6 +72,9 @@ private:
     sf::Clock m_clock;
     sf::Image m_icon;
     sf::ContextSettings m_settings;
+
+    std::tr1::shared_ptr<sf::Sprite> m_spRenderSprite;
+    sf::RenderTexture m_renderTexture;
 };
 
 #endif // GAME_H

@@ -34,17 +34,7 @@ Game::Game()
     m_state = Game::Status::Local;
     loadWindow();
 
-    rendText_1.create(m_spWindow->getSize().x, m_spWindow->getSize().y);
-    rendText_2.create(m_spWindow->getSize().x, m_spWindow->getSize().y);
 
-
-
-    renderSprite_2.setTexture(rendText_2.getTexture());
-    renderSprite_2.setPosition(0,0);
-    renderSprite_2.setRotation(0);
-    renderSprite_1.setTexture(rendText_1.getTexture());
-    renderSprite_1.setPosition(0,0);
-    renderSprite_1.setRotation(0);
 
     m_spAnimAlloc = std::tr1::shared_ptr<AnimationAllocator>(new AnimationAllocator);
     m_spIOManager = std::tr1::shared_ptr<IOManager>(new IOManager());//independent
@@ -176,6 +166,13 @@ void Game::loadWindow()
     m_spWindow->setVerticalSyncEnabled(windowData.vSinc);
     m_spWindow->setFramerateLimit(windowData.targetFPS);
 
+    m_renderTexture.create(m_spWindow->getSize().x, m_spWindow->getSize().y);
+
+    m_spRenderSprite.reset();
+    m_spRenderSprite = std::tr1::shared_ptr<sf::Sprite>(new sf::Sprite);
+    m_spRenderSprite->setTexture(m_renderTexture.getTexture());
+    m_spRenderSprite->setPosition(0,0);
+    m_spRenderSprite->setRotation(0);
 }
 
 
@@ -282,12 +279,12 @@ Game::Status Game::run()
         /**DRAW**/
         int color = 30;
         m_spWindow->clear();
-        rendText_1.clear(sf::Color(color,color,color,255));
+        m_renderTexture.clear(sf::Color(color,color,color,255));
 
         m_spControlManager->drawUpdate();
 
-        rendText_1.display();
-        m_spWindow->draw(game.renderSprite_1);//draw game render sprite
+        m_renderTexture.display();
+        m_spWindow->draw(*game.m_spRenderSprite);//draw game render sprite
         m_spOverlayManager->draw();//draw hud
         m_spWindow->display();//DISPLAY IT ALL
         /**DRAW**/
@@ -832,6 +829,10 @@ void Game::reloadWindow()
         (*it)->getCamera().resetZoom();
         (*it)->getCamera().resetViewport();
     }
+}
+sf::RenderTarget& Game::getRenderTarget()
+{
+    return m_renderTexture;
 }
 IOBaseReturn Game::input(IOBaseArgs)
 {

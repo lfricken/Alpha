@@ -47,9 +47,11 @@ public:
 
     float physStep();
     void togglePause();
+    void togglePause(bool pause);
     float getTime() const;
     float getPhysTimeStep() const;
 
+    IOBaseReturn input(IOBaseArgs);
 
     void draw(const b2Vec2& rCameraVel);//draws everything thats drawable in universe
     void toggleDebugDraw();

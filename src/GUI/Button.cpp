@@ -2,34 +2,26 @@
 
 using namespace leon;
 
-Button::Button(tgui::Gui& gui) : m_pButton(gui)
+
+Button::Button(tgui::Gui& gui, const ButtonData& rData) : WidgetBase(rData), m_pButton(gui, rData.name)
 {
-    ButtonData data;
-    f_initialize(data);
+    f_initialize(rData);
 }
-Button::Button(tgui::Gui& gui, const ButtonData& data) : WidgetBase(static_cast<WidgetBaseData>(data)), m_pButton(gui, data.name)
+Button::Button(tgui::Container& container, const ButtonData& rData = ButtonData()) : WidgetBase(rData), m_pButton(container, rData.name)
 {
-    f_initialize(data);
-}
-Button::Button(tgui::Container& container) : m_pButton(container)
-{
-    ButtonData data;
-    f_initialize(data);
-}
-Button::Button(tgui::Container& container, const ButtonData& data = ButtonData()) : WidgetBase(static_cast<WidgetBaseData>(data)), m_pButton(container, data.name)
-{
-    f_initialize(data);
+    f_initialize(rData);
 }
 Button::~Button()
 {
 
 }
-void Button::f_initialize(const ButtonData& data)
+void Button::f_initialize(const ButtonData& rData)
 {
-    m_pButton->load(data.configFile);
-    m_pButton->setPosition(data.position);
-    m_pButton->setText(data.buttonText);
-    m_pButton->setSize(data.size.x, data.size.y);
+    f_assign(m_pButton.get());
+    m_pButton->load(rData.configFile);
+    m_pButton->setPosition(rData.position);
+    m_pButton->setText(rData.buttonText);
+    m_pButton->setSize(rData.size.x, rData.size.y);
 
     m_pButton->bindCallbackEx(&Button::f_callback, this, tgui::Button::AllButtonCallbacks);
 }

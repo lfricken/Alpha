@@ -1,35 +1,31 @@
 #include "Panel.hpp"
 #include "Sort.hpp"
+#include "globals.hpp"
 
 using namespace leon;
 
-Panel::Panel(tgui::Gui& gui) : m_pPanel(gui)
+
+Panel::Panel(tgui::Gui& gui, const PanelData& rData) : WidgetBase(rData), m_pPanel(gui, rData.name)
 {
-    PanelData data;
-    f_initialize(data);
+    f_initialize(rData);
 }
-Panel::Panel(tgui::Gui& gui, const PanelData& data) : WidgetBase(static_cast<WidgetBaseData>(data)), m_pPanel(gui, data.name)
+Panel::Panel(tgui::Container& container, const PanelData& rData) : WidgetBase(rData), m_pPanel(container, rData.name)
 {
-    f_initialize(data);
-}
-Panel::Panel(tgui::Container& container) : m_pPanel(container)
-{
-    PanelData data;
-    f_initialize(data);
-}
-Panel::Panel(tgui::Container& container, const PanelData& data) : WidgetBase(static_cast<WidgetBaseData>(data)), m_pPanel(container, data.name)
-{
-    f_initialize(data);
+    f_initialize(rData);
 }
 Panel::~Panel()
 {
 
 }
-void Panel::f_initialize(const PanelData& data)
+void Panel::f_initialize(const PanelData& rData)
 {
-    m_pPanel->setPosition(data.position);
-    m_pPanel->setSize(data.size.x, data.size.y);
-    m_pPanel->setBackgroundColor(data.backgroundColor);
+    f_assign(m_pPanel.get());
+    m_pPanel->setPosition(rData.position);
+    m_pPanel->setSize(rData.size.x, rData.size.y);
+    m_pPanel->setBackgroundColor(rData.backgroundColor);
+    if(rData.backgroundTex != "")
+        m_pPanel->setBackgroundTexture(game.getTextureAllocator().request(rData.backgroundTex));
+
     m_pPanel->bindCallbackEx(&Panel::f_callback, this, tgui::Panel::AllPanelCallbacks);
 }
 
@@ -56,14 +52,29 @@ void Panel::add(std::tr1::shared_ptr<WidgetBase> sp_widget)
 }
 void Panel::setState(PlayerState state)
 {
-(void)state;//shutup the compiler about unused
+    (void)state;//shutup the compiler about unused
 }
 
 
 /**IO**/
 IOBaseReturn Panel::input(IOBaseArgs)
 {
-    WidgetBase::input(rInput, rCommand);
+    (void)rInput;//shutup the compiler about unused
+    if(rCommand == "show")
+        m_pPanel->show();
+    else if(rCommand == "hide")
+        m_pPanel->hide();
+    else if(rCommand == "toggleHide")
+        toggleHide();
+    else
+        WidgetBase::input(rInput, rCommand);
+}
+void Panel::toggleHide()
+{
+    if(m_pPanel->isVisible())
+        hide();
+    else
+        show();
 }
 
 

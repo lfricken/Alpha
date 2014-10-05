@@ -57,7 +57,6 @@ struct PlayerData : public IntelligenceData
 class Player : public Intelligence
 {
 public:
-    Player();
     Player(const PlayerData& rData);
     virtual ~Player();
 
@@ -73,10 +72,11 @@ public:
     void setInputConfig(const InputConfig& inputConfig);
     InputConfig& getInputConfig();
     const InputConfig& getInputConfig() const;
+
+    IOBaseReturn input(IOBaseArgs);
+
 protected:
 private:
-    virtual void f_initialize(const PlayerData& rData);
-
     sf::Vector2i m_mouseCoords;//where is our mouse on the screen
     Camera m_camera;
     PlayerMode m_playerMode;//god mode or normal mode?

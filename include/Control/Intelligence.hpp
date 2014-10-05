@@ -19,7 +19,6 @@ struct IntelligenceData : public IOBaseData
 class Intelligence : public IOBase
 {
 public:
-    Intelligence();
     Intelligence(const IntelligenceData& data);
     virtual ~Intelligence();
 
@@ -36,8 +35,6 @@ public:
     Link<Intelligence, Chunk>& getLinker();
 protected:
 private:
-    virtual void f_initialize(const IntelligenceData& data);
-
     Link<Intelligence, Chunk> m_linker;
 
     PlayerState m_playerState;//playing, editing, interfacing ect.

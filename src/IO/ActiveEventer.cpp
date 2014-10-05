@@ -30,11 +30,11 @@ void ActiveEventer::event(const std::string& rVariable, Event variableName)
     {
         CourierVector& rVector = m_spCourierMap[variableName];//CourierVector is defined in header of Active Eventer
 
-        for(unsigned int i = rVector.size()-1; i < rVector.size(); ++i)
+        for(int i = 0; i < rVector.size(); ++i)
         {
             if(rVector[i]->condition.evaluate(rVariable))//if the condition was met
             {
-                if(rVector[i]->package.shouldSendValue())//if we should be sending the current data
+                if(rVector[i]->package.shouldSendValue())//if we should be sending the variable that we checked (like an edit box)
                 {
                     sf::Packet temp;
                     temp << rVariable;

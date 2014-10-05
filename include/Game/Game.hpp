@@ -14,7 +14,7 @@ class Game// : public IOBase//holds a universe, OverlayManager, and IOManager, a
 {
 public:
     Game();
-    virtual ~Game();
+    ~Game();
 
     enum Status
     {

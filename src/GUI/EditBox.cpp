@@ -2,23 +2,14 @@
 
 using namespace leon;
 
-EditBox::EditBox(tgui::Gui& gui) : m_pEditBox(gui)
+
+EditBox::EditBox(tgui::Gui& gui, const EditBoxData& rData) : WidgetBase(rData), m_pEditBox(gui, rData.name)
 {
-    EditBoxData data;
-    f_initialize(data);
+    f_initialize(rData);
 }
-EditBox::EditBox(tgui::Gui& gui, const EditBoxData& data) : WidgetBase(static_cast<WidgetBaseData>(data)), m_pEditBox(gui, data.name)
+EditBox::EditBox(tgui::Container& container, const EditBoxData& rData = EditBoxData()) : WidgetBase(rData), m_pEditBox(container, rData.name)
 {
-    f_initialize(data);
-}
-EditBox::EditBox(tgui::Container& container) : m_pEditBox(container)
-{
-    EditBoxData data;
-    f_initialize(data);
-}
-EditBox::EditBox(tgui::Container& container, const EditBoxData& data = EditBoxData()) : WidgetBase(static_cast<WidgetBaseData>(data)), m_pEditBox(container, data.name)
-{
-    f_initialize(data);
+    f_initialize(rData);
 }
 EditBox::~EditBox()
 {
@@ -26,6 +17,7 @@ EditBox::~EditBox()
 }
 void EditBox::f_initialize(const EditBoxData& data)
 {
+    f_assign(m_pEditBox.get());
     m_pEditBox->load(data.configFile);
     m_pEditBox->setPosition(data.position);
     m_pEditBox->setText(data.startingText);

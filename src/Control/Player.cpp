@@ -1,26 +1,17 @@
 #include "Player.hpp"
 #include "globals.hpp"
 
-Player::Player() : Intelligence()
-{
-    PlayerData data;
-    f_initialize(data);
-}
-Player::Player(const PlayerData& rData) : Intelligence(static_cast<IntelligenceData>(rData))
-{
-    f_initialize(rData);
-}
-Player::~Player()
-{
-
-}
-void Player::f_initialize(const PlayerData& rData)
+Player::Player(const PlayerData& rData) : Intelligence(rData)
 {
     m_inputConfig = rData.keyConfig;
     m_playerMode = rData.playerMode;
 
     m_camera.setViewportSF(rData.viewport);
     m_camera.toggleRotation();
+}
+Player::~Player()
+{
+
 }
 Camera& Player::getCamera()
 {
@@ -57,4 +48,26 @@ InputConfig& Player::getInputConfig()
 const InputConfig& Player::getInputConfig() const
 {
     return m_inputConfig;
+}
+IOBaseReturn Player::input(IOBaseArgs)
+{
+    if(rCommand == "setState")
+    {
+        std::string com;
+        rInput >> com;
+        if(com == "Interfacing")
+            setState(PlayerState::Interfacing);
+        else if(com == "Playing")
+            setState(PlayerState::Playing);
+        else if(com == "Editing")
+            setState(PlayerState::Editing);
+        else
+        {
+            ///ERROR LOG
+            std::cout << "\n[" << com << "] is not a valid playerMode.";
+            std::cout << "\n" << FILELINE;
+        }
+    }
+    else
+        Intelligence::input(rInput, rCommand);
 }

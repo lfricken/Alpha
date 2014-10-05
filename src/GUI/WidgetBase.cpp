@@ -2,23 +2,34 @@
 
 using namespace leon;
 
-WidgetBase::WidgetBase()
+WidgetBase::WidgetBase(const WidgetBaseData& rData) : IOBase(rData)
 {
-    WidgetBaseData data;
-    f_initialize(data);
+
 }
-WidgetBase::WidgetBase(const WidgetBaseData& data) : IOBase(static_cast<IOBaseData>(data))
+void WidgetBase::f_assign(tgui::Widget* pWidget)
 {
-    f_initialize(data);
+    m_pWidget = pWidget;
 }
 WidgetBase::~WidgetBase()
 {
 
 }
-void WidgetBase::f_initialize(const WidgetBaseData& data)
+void WidgetBase::enable()
 {
-    (void)data;//shutup the compiler about unused
-    //initialize data
+    m_pWidget->enable();
+}
+void WidgetBase::disable()
+{
+    m_pWidget->disable();
+}
+void WidgetBase::show()
+{
+    m_pWidget->show();
+    m_pWidget->moveToFront();
+}
+void WidgetBase::hide()
+{
+    m_pWidget->hide();
 }
 
 

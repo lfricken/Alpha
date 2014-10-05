@@ -173,7 +173,6 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
                 }
                 if (rEvent.key.code == sf::Keyboard::Tilde)
                 {
-                    cout << "\nTilde: " << FILELINE;
                     if(pPlayer->getState() == PlayerState::Editing)
                         pPlayer->setState(PlayerState::Playing);
                     else if(pPlayer->getState() == PlayerState::Playing)
@@ -183,7 +182,22 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
                 }
                 if (rEvent.key.code == sf::Keyboard::Escape)
                 {
-                    cout << "\nEscape: " << FILELINE;
+                    leon::Panel* pPanel = game.getGameOverlayManager().getTarget("main_menu_panel");
+                    if(pPanel != NULL)
+                    {
+                        pPanel->toggleHide();
+                        if(pPanel->getPanelPtr()->isVisible())
+                        {
+                            game.getGameUniverse().togglePause(true);
+                            pPlayer->setState(PlayerState::Interfacing);
+                        }
+                        else
+                        {
+                            game.getGameUniverse().togglePause(false);
+                            pPlayer->setState(PlayerState::Playing);
+                        }
+
+                    }
                 }
                 if(pPlayer->getLinker().isLinked())//if we have a target
                 {

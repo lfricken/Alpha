@@ -5,6 +5,7 @@
 #include "GModule.hpp"
 #include "Module.hpp"
 #include "Button.hpp"
+#include "Picture.hpp"
 /**WONT BE NEEDED**/
 
 #include "Sort.hpp"
@@ -33,7 +34,6 @@ Game::Game()
 {
     m_state = Game::Status::Local;
     loadWindow();
-
 
 
     m_spAnimAlloc = std::tr1::shared_ptr<AnimationAllocator>(new AnimationAllocator);
@@ -220,7 +220,12 @@ Game::Status Game::run()
 {
     /**LOAD THE GAME**/
     f_load("stuff");
-
+    m_spUniverse->togglePause(true);
+    leon::Panel* pMainMenu = m_spOverlayManager->getTarget("main_menu_panel");
+    if(pMainMenu != NULL)
+        pMainMenu->show();
+    else
+        cout << FILELINE;
 
     /**SIMULATION & RUNTIME**/
 
@@ -299,6 +304,7 @@ float Game::getTime() const
 void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING EXACTLY, defaults states?, maps?, screen items?
 {
     (void)stuff;//shutup the compiler about unused
+    sf::Packet voidPacket;
     ///Go through file sections
     ///Intelligences
     ///Universe Entities
@@ -317,52 +323,141 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     std::string config = "TGUI/widgets/Black.conf";
 
     /**GUI**/
+    /*
     tgui::Tab::Ptr tab(m_spOverlayManager->getGui());///TEMPORARY, JUST FOR TESTS, NEED TO MAKE MY OWN CONTAINER FOR THIS
     tab->load(config);
     tab->setPosition(300, 10);
     tab->add("Weapon");
     tab->add("Ammo");
     tab->add("Items");
+    */
 
+    /**===================**/
+    /**=====MAIN MENU=====**/
+    /**===================**/
+
+    leon::PanelData mainMenuData;
+    mainMenuData.name = "main_menu_panel";
+    mainMenuData.backgroundTex = "textures/core/screen_1.png";
+    mainMenuData.configFile = config;
+    mainMenuData.position = sf::Vector2f(0, 0);
+    mainMenuData.size = sf::Vector2f(1920,1080);
+    mainMenuData.type = ClassType::PANEL;
+    leon::Panel* pMain_menu = new leon::Panel(m_spOverlayManager->getGui(), mainMenuData);
+
+    leon::ButtonData exitButtonData;
+    exitButtonData.size = sf::Vector2f(100,50);
+    exitButtonData.buttonText = "Exit";
+    exitButtonData.position = sf::Vector2f(20, 600);
+    exitButtonData.type = ClassType::BUTTON;
+    Courier buttonMessage;
+    buttonMessage.condition.reset(Event::LeftMouseClicked, "", 0, 'd', true);
+    buttonMessage.package.reset("game", "exit", voidPacket, 0, Destination::UNIVERSE, false);
+    exitButtonData.courierList.push_back(buttonMessage);
+
+    leon::ButtonData resumeButtonData;
+    resumeButtonData.size = sf::Vector2f(150,50);
+    resumeButtonData.buttonText = "Resume";
+    resumeButtonData.position = sf::Vector2f(20, 300);
+    resumeButtonData.type = ClassType::BUTTON;
+    Courier resumeMessage1;
+    resumeMessage1.condition.reset(Event::LeftMouseClicked, "", 0, 'd', true);
+    resumeMessage1.package.reset("main_menu_panel", "hide", voidPacket, 0, Destination::UNIVERSE, false);
+    Courier resumeMessage2;
+    resumeMessage2.condition.reset(Event::LeftMouseClicked, "", 0, 'd', true);
+    sf::Packet statePacket;
+    statePacket << "Playing";
+    resumeMessage2.package.reset("player_1", "setState", statePacket, 0, Destination::UNIVERSE, false);
+    Courier resumeMessage3;
+    resumeMessage3.condition.reset(Event::LeftMouseClicked, "", 0, 'd', true);
+    resumeMessage3.package.reset("universe", "togglePause", voidPacket, 0, Destination::UNIVERSE, false);
+    resumeButtonData.courierList.push_back(resumeMessage1);
+    resumeButtonData.courierList.push_back(resumeMessage2);
+    resumeButtonData.courierList.push_back(resumeMessage3);
+
+    leon::PictureData pictureData;
+    pictureData.texName = "textures/core/main_menu_logo.png";
+    pictureData.configFile = config;
+    pictureData.position = sf::Vector2f(20, 20);
+    pictureData.size = sf::Vector2f(847,104);
+    pictureData.type = ClassType::DECORATION;
+
+    leon::WidgetBase* picture = new leon::Picture(*pMain_menu->getPanelPtr(), pictureData);
+    pMain_menu->add(tr1::shared_ptr<leon::WidgetBase>(picture));
+    leon::WidgetBase* pResume = new leon::Button(*pMain_menu->getPanelPtr(), resumeButtonData);
+    pMain_menu->add(tr1::shared_ptr<leon::WidgetBase>(pResume));
+    leon::WidgetBase* pExit = new leon::Button(*pMain_menu->getPanelPtr(), exitButtonData);
+    pMain_menu->add(tr1::shared_ptr<leon::WidgetBase>(pExit));
+    /**===================**/
+    /**=====MAIN MENU=====**/
+    /**===================**/
+
+
+
+
+
+    /**===================**/
+    /**====PANEL_PANEL====**/
+    /**===================**/
+    leon::PanelData panel_panel;
+    panel_panel.name = "panel_panel";
+    panel_panel.configFile = config;
+    panel_panel.backgroundColor = sf::Color(255,255,255,1);
+    panel_panel.position = sf::Vector2f(0, 0);
+    panel_panel.size = sf::Vector2f(150,25);
+    panel_panel.type = ClassType::PANEL;
+    leon::Panel* ptr_panel_panel = new leon::Panel(m_spOverlayManager->getGui(), panel_panel);
+
+    leon::ButtonData minBut;
+    minBut.size = sf::Vector2f(50,25);
+    minBut.buttonText = "Admin";
+    minBut.position = sf::Vector2f(0, 0);
+    minBut.type = ClassType::BUTTON;
+    Courier minButMessage;
+    minButMessage.condition.reset(Event::LeftMouseClicked, "", 0, 'd', true);
+    minButMessage.package.reset("admin_panel", "toggleHide", voidPacket, 0, Destination::UNIVERSE, false);
+    minBut.courierList.push_back(minButMessage);
+
+    leon::WidgetBase* pAdminMinBut = new leon::Button(*ptr_panel_panel->getPanelPtr(), minBut);
+    ptr_panel_panel->add(tr1::shared_ptr<leon::WidgetBase>(pAdminMinBut));
+    m_spOverlayManager->add(tr1::shared_ptr<leon::Panel>(ptr_panel_panel));
+    /**===================**/
+    /**====PANEL_PANEL====**/
+    /**===================**/
+
+
+    /**===================**/
+    /**====ADMIN PANEL====**/
+    /**===================**/
 
     leon::PanelData panelData;
+    panelData.name = "admin_panel";
     panelData.configFile = config;
     panelData.backgroundColor = sf::Color(255,255,255,1);
-    panelData.position = sf::Vector2f(0, 0);
+    panelData.position = sf::Vector2f(300, 300);
     panelData.size = sf::Vector2f(500,500);
     panelData.type = ClassType::PANEL;
-
-    leon::Panel* panel = new leon::Panel(m_spOverlayManager->getGui(), panelData);
-
-    leon::ButtonData buttonData;
-    buttonData.size = sf::Vector2f(100,50);
-    buttonData.buttonText = "Exit";
-    buttonData.position = sf::Vector2f(0, 0);
-    buttonData.type = ClassType::BUTTON;
-    Courier buttonMessage;
-    sf::Packet pack;
-    pack << "packet data";
-    buttonMessage.condition.reset(Event::LeftMouseClicked, "", 0, 'd', true);
-    buttonMessage.package.reset("Static_Chunk_1", "message", pack, 0, Destination::UNIVERSE, false);
-    buttonData.courierList.push_back(buttonMessage);
+    leon::Panel* admin_panel = new leon::Panel(m_spOverlayManager->getGui(), panelData);
 
     leon::EditBoxData editboxData;
     editboxData.startingText = "This is Here";
     editboxData.size = sf::Vector2f(400, 50);
     editboxData.position = sf::Vector2f(100,100);
     Courier editboxMessage;
-    sf::Packet editBoxOutput;
-    editBoxOutput << "ship_2";
     editboxMessage.condition.reset(Event::ReturnKeyPressed, "", 0, 'd', true);
-    editboxMessage.package.reset("player_1", "switchLink", editBoxOutput, 0, Destination::UNIVERSE, true);
+    editboxMessage.package.reset("player_1", "switchLink", voidPacket, 0, Destination::UNIVERSE, true);
     editboxData.courierList.push_back(editboxMessage);
 
+    leon::WidgetBase* pEditBox = new leon::EditBox(*admin_panel->getPanelPtr(), editboxData);
+    admin_panel->add(tr1::shared_ptr<leon::WidgetBase>(pEditBox));
 
-    leon::WidgetBase* pEditBox = new leon::EditBox(*panel->getPanelPtr(), editboxData);
-    leon::WidgetBase* pButton = new leon::Button(*panel->getPanelPtr(), buttonData);
-    panel->add(tr1::shared_ptr<leon::WidgetBase>(pButton));
-    panel->add(tr1::shared_ptr<leon::WidgetBase>(pEditBox));
-    m_spOverlayManager->add(tr1::shared_ptr<leon::Panel>(panel));
+
+
+    m_spOverlayManager->add(tr1::shared_ptr<leon::Panel>(admin_panel));
+    m_spOverlayManager->add(tr1::shared_ptr<leon::Panel>(pMain_menu));
+    /**===================**/
+    /**====ADMIN PANEL====**/
+    /**===================**/
 
 
     /**GUI**/
@@ -438,17 +533,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     /**=============================================SHIPS=============================================**/
 
     /**SHIP MODULES**/
-    Courier deathMessage;
-    sf::Packet modulePack;
-    modulePack << "module health < 50";
-    deathMessage.condition.reset(Event::Health, "50", 50, '<', true);
-    deathMessage.package.reset("Static_Chunk_1", "message", modulePack, 0, Destination::UNIVERSE, false);
-
-
-
-
     GModuleData shipModuleData;
-    shipModuleData.courierList.push_back(deathMessage);
 
     HullData hull;
     hull.shape = Shape::POLYGON;

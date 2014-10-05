@@ -1,24 +1,15 @@
 #include "Intelligence.hpp"
 #include "globals.hpp"
 
-Intelligence::Intelligence() : IOBase(), m_linker(this)
+Intelligence::Intelligence(const IntelligenceData& rData) : IOBase(rData), m_linker(this)
 {
-    IntelligenceData data;
-    f_initialize(data);
-}
-Intelligence::Intelligence(const IntelligenceData& data) : IOBase(static_cast<IOBaseData>(data)), m_linker(this)
-{
-    f_initialize(data);
+    m_playerState = PlayerState::Interfacing;
+    m_HUDspElements = rData.hudSPelements;
+    m_targetName = rData.targetName;
 }
 Intelligence::~Intelligence()
 {
     m_linker.breakLink();
-}
-void Intelligence::f_initialize(const IntelligenceData& data)
-{
-    m_playerState = PlayerState::Playing;
-    m_HUDspElements = data.hudSPelements;
-    m_targetName = data.targetName;
 }
 /**CONTROL**/
 Link<Intelligence, Chunk>& Intelligence::getLinker()

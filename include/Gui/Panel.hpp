@@ -15,14 +15,13 @@ struct PanelData : public WidgetBaseData
     type = ClassType::PANEL;
     }
     sf::Color backgroundColor;
+    std::string backgroundTex;
 };
 
 class Panel : public WidgetBase
 {
 public:
-    Panel(tgui::Gui& gui);
-    Panel(tgui::Gui& gui, const PanelData& data);///menubar struct constructor
-    Panel(tgui::Container& container);
+    Panel(tgui::Gui& gui, const PanelData& data);
     Panel(tgui::Container& container, const PanelData& data);
     ~Panel();
 
@@ -31,6 +30,7 @@ public:
     tgui::Panel::Ptr getPanelPtr() const;
     void add(std::tr1::shared_ptr<WidgetBase> sp_widget);
     void setState(PlayerState state);
+    void toggleHide();
 
     /**IO**/
     virtual IOBaseReturn input(IOBaseArgs);

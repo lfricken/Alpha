@@ -14,6 +14,7 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add directory="include/Graphics/Wrapper" />
+					<Add directory="include/Gui" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -25,6 +26,7 @@
 					<Add option="-pg" />
 					<Add option="-g" />
 					<Add directory="include/Graphics/Wrapper" />
+					<Add directory="include/Gui" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
@@ -104,6 +106,7 @@
 		<Unit filename="include/Gui/EditBox.hpp" />
 		<Unit filename="include/Gui/OverlayManager.hpp" />
 		<Unit filename="include/Gui/Panel.hpp" />
+		<Unit filename="include/Gui/Picture.hpp" />
 		<Unit filename="include/Gui/WidgetBase.hpp" />
 		<Unit filename="include/Headers/ClassType.hpp" />
 		<Unit filename="include/Headers/Convert.hpp" />
@@ -187,6 +190,7 @@
 		<Unit filename="src/Gui/EditBox.cpp" />
 		<Unit filename="src/Gui/OverlayManager.cpp" />
 		<Unit filename="src/Gui/Panel.cpp" />
+		<Unit filename="src/Gui/Picture.cpp" />
 		<Unit filename="src/Gui/WidgetBase.cpp" />
 		<Unit filename="src/IO/ActiveEventer.cpp" />
 		<Unit filename="src/IO/Condition.cpp" />

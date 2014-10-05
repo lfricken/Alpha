@@ -21,20 +21,26 @@ struct WidgetBaseData : public IOBaseData
 class WidgetBase : public IOBase
 {
 public:
-    WidgetBase();
-    WidgetBase(const WidgetBaseData& data);
+    WidgetBase(const WidgetBaseData& rData);
     virtual ~WidgetBase();
+
+    virtual void enable() final;
+    virtual void disable() final;
+    virtual void show() final;
+    virtual void hide() final;
 
     /**IO**/
     virtual IOBaseReturn input(IOBaseArgs);
 protected:
+    void f_assign(tgui::Widget* pWidget);//must assign child widget
+
     virtual void f_callback(const tgui::Callback& callback);
     void f_MouseEntered();
     void f_LeftMouseClicked();
     void f_MouseLeft();
 
 private:
-    virtual void f_initialize(const WidgetBaseData& data);
+    tgui::Widget* m_pWidget;
 };
 }
 #endif // WIDGETBASE_H

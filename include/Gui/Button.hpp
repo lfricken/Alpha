@@ -21,9 +21,7 @@ struct ButtonData : public WidgetBaseData
 class Button : public WidgetBase
 {
 public:
-    Button(tgui::Gui& gui);
     Button(tgui::Gui& gui, const ButtonData& data);///menubar struct constructor
-    Button(tgui::Container& container);
     Button(tgui::Container& container, const ButtonData& data);
     virtual ~Button();
 

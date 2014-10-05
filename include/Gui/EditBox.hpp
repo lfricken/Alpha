@@ -21,9 +21,7 @@ struct EditBoxData : public WidgetBaseData
 class EditBox : public WidgetBase
 {
 public:
-    EditBox(tgui::Gui& gui);
     EditBox(tgui::Gui& gui, const EditBoxData& data);///menubar struct constructor
-    EditBox(tgui::Container& container);
     EditBox(tgui::Container& container, const EditBoxData& data);
     virtual ~EditBox();
 

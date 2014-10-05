@@ -7,6 +7,7 @@ using namespace std;
 
 Universe::Universe() : IOBase(), m_gfxCompFactory(), m_physWorld(b2Vec2(0,0)), m_projAlloc()
 {
+    m_pIOComponent->setName("universe");
     m_skippedTime = 0;
     m_normalDraw = true;
     m_paused = false;
@@ -148,6 +149,15 @@ void Universe::togglePause()
     else
         m_pauseTime = game.getTime();
 }
+void Universe::togglePause(bool pause)
+{
+    m_paused = pause;
+
+    if(not m_paused)
+        m_skippedTime += game.getTime()-m_pauseTime;
+    else
+        m_pauseTime = game.getTime();
+}
 float Universe::getTime() const
 {
     if(m_paused)
@@ -187,6 +197,26 @@ void Universe::toggleDebugDraw()
 /**=================**/
 /**=================**/
 /**=====OTHER=====**/
+IOBaseReturn Universe::input(IOBaseArgs)
+{
+    if(rCommand == "togglePause")
+    {
+        if(rInput.endOfPacket())
+            togglePause();
+        else
+        {
+            bool pause;
+            rInput >> pause;
+            togglePause(pause);
+        }
+    }
+    else if(false)
+    {
+
+    }
+    else
+        IOBase::input(rInput, rCommand);
+}
 b2World& Universe::getWorld()
 {
     return m_physWorld;

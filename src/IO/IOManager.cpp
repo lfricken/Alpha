@@ -1,5 +1,5 @@
 #include "IOManager.hpp"
-
+#include "globals.hpp"
 #include "IOComponent.hpp"
 
 using namespace std;
@@ -32,6 +32,8 @@ void IOManager::update(float timeChange)//unfinished, cause it got f'd up by add
             {
                 m_IOComponentList[m_packageletList[i].targetID]->input(m_packageletList[i].parameter, m_packageletList[i].command);
             }
+            else if(m_packageletList[i].targetID == -1)
+                game.input(m_packageletList[i].parameter, m_packageletList[i].command);
             else
             {
                 cout << "\nCouldn't find target[" << m_packageletList[i].targetID << "] with command [" << m_packageletList[i].command << "].";
@@ -90,6 +92,8 @@ void IOManager::setTargets()
                 it_name = m_nameIDMap.find(targetName);
                 if(it_name != m_nameIDMap.end())//we found it
                     pPac->setTargetID(it_name->second);
+                else if(pPac->getTargetName() == "game")
+                    pPac->setTargetID(-1);
                 else//we didn't find it
                 {
                     cout << "\nCould not find target [" << targetName << "]" << FILELINE;

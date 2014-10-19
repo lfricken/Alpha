@@ -69,10 +69,6 @@
 			<Add directory="include/Graphics/Interface" />
 			<Add directory="include/Graphics/Component" />
 		</Compiler>
-		<Linker>
-			<Add directory="../../../Engines/SFML-2_recompile/lib" />
-			<Add directory="../../../Engines/TGUI-0.6.1/lib" />
-		</Linker>
 		<Unit filename="include/Basic/Attributes.hpp" />
 		<Unit filename="include/Basic/ExtendedPacket.hpp" />
 		<Unit filename="include/Basic/Filter.hpp" />

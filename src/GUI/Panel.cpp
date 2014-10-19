@@ -16,9 +16,28 @@ Panel::Panel(tgui::Container& container, const PanelData& rData) : WidgetBase(rD
 Panel::~Panel()
 {
 
-}
+}//..\..\..\Engines\JSON\lib\libjsoncpp.dll.a
 void Panel::f_initialize(const PanelData& rData)
 {
+    if(rData.hidePanelButton)//create a button on the panel (top right) that will hide it
+    {/*
+        int buttonSize = 20;
+        ButtonData closeButton;
+        closeButton.size = sf::Vector2f(20,20);
+        closeButton.buttonText = "X";
+        closeButton.position = sf::Vector2f(rData.size.x-20, 400);
+
+        leon::ButtonData htpButData;
+        htpButData.size = sf::Vector2f(275,50);
+        htpButData.buttonText = "How To Play";
+        htpButData.position = sf::Vector2f(20, 400);
+        htpButData.type = ClassType::BUTTON;
+        Courier htpMessage;
+        htpMessage.condition.reset(Event::LeftMouseClicked, "", 0, 'd', true);
+        htpMessage.package.reset("ecg", "show", voidPacket, 0, Destination::UNIVERSE, false);
+        htpButData.courierList.push_back(htpMessage);*/
+    }
+
     f_assign(m_pPanel.get());
     m_pPanel->setPosition(rData.position);
     m_pPanel->setSize(rData.size.x, rData.size.y);

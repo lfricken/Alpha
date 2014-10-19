@@ -35,10 +35,13 @@ Game::Game()
     m_state = Game::Status::Local;
     loadWindow();
 
+    IOBaseData universeData;
+    universeData.name = "universe";
+    universeData.type = ClassType::UNIVERSE;
 
     m_spAnimAlloc = std::tr1::shared_ptr<AnimationAllocator>(new AnimationAllocator);
     m_spIOManager = std::tr1::shared_ptr<IOManager>(new IOManager());//independent
-    m_spUniverse = std::tr1::shared_ptr<Universe>(new Universe());//needs IO Manager
+    m_spUniverse = std::tr1::shared_ptr<Universe>(new Universe(universeData));//needs IO Manager
 
 
     /**created last**/
@@ -97,7 +100,7 @@ void Game::loadWindow()
         sf::VideoMode mode;
         int antiAliasLevel;
         bool smoothTextures;
-        std::string blurShader;
+        std::string motionBlurShader;
         bool blurEnabled;
         bool vSinc;
         int targetFPS;
@@ -124,7 +127,7 @@ void Game::loadWindow()
         windowData.mode = sf::VideoMode(root["resX"].asInt(), root["resY"].asInt(), root["color"].asInt());
         windowData.antiAliasLevel = root["antiAliasLevel"].asInt();
         windowData.smoothTextures = root["smoothTextures"].asBool();
-        windowData.blurShader = root["blurShader"].asString();
+        windowData.motionBlurShader = root["motionBlurFile"].asString();
         windowData.blurEnabled = root["motionBlurEnabled"].asBool();
         windowData.vSinc = root["vSinc"].asBool();
         windowData.targetFPS = root["targetFPS"].asInt();
@@ -132,12 +135,9 @@ void Game::loadWindow()
 
     /**LOAD DATA FROM WINDOW**/
     if (sf::Shader::isAvailable() && windowData.blurEnabled)
-    {
-        std::string blurShader = root["blurShader"].asString();
-        m_shader.loadFromFile(blurShader, sf::Shader::Fragment);
-        /// m_vecFieldShader.loadFromFile("vectorField.frag", sf::Shader::Fragment);
-        ///  m_blurShader.loadFromFile("blur.frag", sf::Shader::Fragment);
-    }
+        m_shader.loadFromFile(windowData.motionBlurShader, sf::Shader::Fragment);
+
+
     m_settings.antialiasingLevel = windowData.antiAliasLevel;
     int style;//the sf::style enum has no name!!
     if(windowData.windowMode == "windowed")//windowed or fullscreen?
@@ -332,9 +332,23 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     tab->add("Items");
     */
 
+
+
+
     /**===================**/
     /**=====MAIN MENU=====**/
     /**===================**/
+
+    /**===================**/
+    /**====HOW TO PLAY====**/
+    /**===================**/
+
+    /**===================**/
+    /**====HOW TO PLAY====**/
+    /**===================**/
+
+
+
 
     leon::PanelData mainMenuData;
     mainMenuData.name = "main_menu_panel";
@@ -344,17 +358,14 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     mainMenuData.size = sf::Vector2f(1920,1080);
     mainMenuData.type = ClassType::PANEL;
     leon::Panel* pMain_menu = new leon::Panel(m_spOverlayManager->getGui(), mainMenuData);
-
-    leon::ButtonData exitButtonData;
-    exitButtonData.size = sf::Vector2f(100,50);
-    exitButtonData.buttonText = "Exit";
-    exitButtonData.position = sf::Vector2f(20, 600);
-    exitButtonData.type = ClassType::BUTTON;
-    Courier buttonMessage;
-    buttonMessage.condition.reset(Event::LeftMouseClicked, "", 0, 'd', true);
-    buttonMessage.package.reset("game", "exit", voidPacket, 0, Destination::UNIVERSE, false);
-    exitButtonData.courierList.push_back(buttonMessage);
-
+    /**====TITLE====**/
+    leon::PictureData pictureData;
+    pictureData.texName = "textures/core/main_menu_logo.png";
+    pictureData.configFile = config;
+    pictureData.position = sf::Vector2f(20, 20);
+    pictureData.size = sf::Vector2f(847,104);
+    pictureData.type = ClassType::DECORATION;
+    /**====RESUME====**/
     leon::ButtonData resumeButtonData;
     resumeButtonData.size = sf::Vector2f(150,50);
     resumeButtonData.buttonText = "Resume";
@@ -374,24 +385,40 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     resumeButtonData.courierList.push_back(resumeMessage1);
     resumeButtonData.courierList.push_back(resumeMessage2);
     resumeButtonData.courierList.push_back(resumeMessage3);
-
-    leon::PictureData pictureData;
-    pictureData.texName = "textures/core/main_menu_logo.png";
-    pictureData.configFile = config;
-    pictureData.position = sf::Vector2f(20, 20);
-    pictureData.size = sf::Vector2f(847,104);
-    pictureData.type = ClassType::DECORATION;
+    /**====HOW TO PLAY====**/
+    leon::ButtonData htpButData;
+    htpButData.size = sf::Vector2f(275,50);
+    htpButData.buttonText = "How To Play";
+    htpButData.position = sf::Vector2f(20, 400);
+    htpButData.type = ClassType::BUTTON;
+    Courier htpMessage;
+    htpMessage.condition.reset(Event::LeftMouseClicked, "", 0, 'd', true);
+    htpMessage.package.reset("ecg", "show", voidPacket, 0, Destination::UNIVERSE, false);
+    htpButData.courierList.push_back(htpMessage);
+    /**====EXIT====**/
+    leon::ButtonData exitButtonData;
+    exitButtonData.size = sf::Vector2f(100,50);
+    exitButtonData.buttonText = "Exit";
+    exitButtonData.position = sf::Vector2f(20, 600);
+    exitButtonData.type = ClassType::BUTTON;
+    Courier buttonMessage;
+    buttonMessage.condition.reset(Event::LeftMouseClicked, "", 0, 'd', true);
+    buttonMessage.package.reset("game", "exit", voidPacket, 0, Destination::UNIVERSE, false);
+    exitButtonData.courierList.push_back(buttonMessage);
 
     leon::WidgetBase* picture = new leon::Picture(*pMain_menu->getPanelPtr(), pictureData);
     pMain_menu->add(tr1::shared_ptr<leon::WidgetBase>(picture));
     leon::WidgetBase* pResume = new leon::Button(*pMain_menu->getPanelPtr(), resumeButtonData);
     pMain_menu->add(tr1::shared_ptr<leon::WidgetBase>(pResume));
+    leon::WidgetBase* pHTP = new leon::Button(*pMain_menu->getPanelPtr(), htpButData);
+    pMain_menu->add(tr1::shared_ptr<leon::WidgetBase>(pHTP));
     leon::WidgetBase* pExit = new leon::Button(*pMain_menu->getPanelPtr(), exitButtonData);
     pMain_menu->add(tr1::shared_ptr<leon::WidgetBase>(pExit));
+
+    m_spOverlayManager->add(tr1::shared_ptr<leon::Panel>(pMain_menu));
     /**===================**/
     /**=====MAIN MENU=====**/
     /**===================**/
-
 
 
 
@@ -420,16 +447,18 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
 
     leon::WidgetBase* pAdminMinBut = new leon::Button(*ptr_panel_panel->getPanelPtr(), minBut);
     ptr_panel_panel->add(tr1::shared_ptr<leon::WidgetBase>(pAdminMinBut));
+
     m_spOverlayManager->add(tr1::shared_ptr<leon::Panel>(ptr_panel_panel));
     /**===================**/
     /**====PANEL_PANEL====**/
     /**===================**/
 
 
+
+
     /**===================**/
     /**====ADMIN PANEL====**/
     /**===================**/
-
     leon::PanelData panelData;
     panelData.name = "admin_panel";
     panelData.configFile = config;
@@ -440,9 +469,9 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     leon::Panel* admin_panel = new leon::Panel(m_spOverlayManager->getGui(), panelData);
 
     leon::EditBoxData editboxData;
-    editboxData.startingText = "This is Here";
-    editboxData.size = sf::Vector2f(400, 50);
-    editboxData.position = sf::Vector2f(100,100);
+    editboxData.startingText = "ship_3";
+    editboxData.size = sf::Vector2f(200, 50);
+    editboxData.position = sf::Vector2f(0,0);
     Courier editboxMessage;
     editboxMessage.condition.reset(Event::ReturnKeyPressed, "", 0, 'd', true);
     editboxMessage.package.reset("player_1", "switchLink", voidPacket, 0, Destination::UNIVERSE, true);
@@ -451,10 +480,7 @@ void Game::f_load(const std::string& stuff)///ITS NOT CLEAR WHAT WE ARE LOADING 
     leon::WidgetBase* pEditBox = new leon::EditBox(*admin_panel->getPanelPtr(), editboxData);
     admin_panel->add(tr1::shared_ptr<leon::WidgetBase>(pEditBox));
 
-
-
     m_spOverlayManager->add(tr1::shared_ptr<leon::Panel>(admin_panel));
-    m_spOverlayManager->add(tr1::shared_ptr<leon::Panel>(pMain_menu));
     /**===================**/
     /**====ADMIN PANEL====**/
     /**===================**/

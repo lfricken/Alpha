@@ -4,11 +4,13 @@ using namespace leon;
 
 WidgetBase::WidgetBase(const WidgetBaseData& rData) : IOBase(rData)
 {
-
+    m_startHidden = rData.startHidden;
 }
 void WidgetBase::f_assign(tgui::Widget* pWidget)
 {
     m_pWidget = pWidget;
+    if(m_startHidden)
+        m_pWidget->hide();
 }
 WidgetBase::~WidgetBase()
 {

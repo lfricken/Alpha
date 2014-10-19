@@ -35,6 +35,7 @@ IOBaseReturn Intelligence::input(IOBaseArgs)
         disable();
     else if(rCommand == "switchLink")
     {
+
         std::string targetName;
         rInput >> targetName;
         Chunk* pTarget = game.getGameUniverse().getPhysTarget(targetName);

@@ -9,6 +9,7 @@
 #include "PlayerMode.hpp"
 #include "AnimationSetting.hpp"
 #include "GraphicsLayer.hpp"
+#include "ExtendedPacket.hpp"
 
 namespace defaults
 {
@@ -21,7 +22,7 @@ extern bool isEnabled;
 extern std::string name;
 
 #define IOBaseReturn void//these defines are used to take headache out of changing them
-#define IOBaseArgs sf::Packet& rInput, const std::string& rCommand
+#define IOBaseArgs ExtendedPacket& rInput, const std::string& rCommand
 }
 /**IOBASE**/
 

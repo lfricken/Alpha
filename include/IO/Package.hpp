@@ -3,6 +3,7 @@
 
 #include "stdafx.hpp"
 #include "ClassType.hpp"
+#include "ExtendedPacket.hpp"
 
 class IOBase;
 
@@ -48,14 +49,14 @@ private:
 struct Packagelet//used inside IOManager for storing the package data till it's ready to be sent
 {
     Packagelet() {}
-    Packagelet(float time, unsigned int target, const std::string& inCommand, Destination dest, const sf::Packet& param)
+    Packagelet(float time, unsigned int target, const std::string& inCommand, Destination dest, const ExtendedPacket& param)
         : timeRemaining(time), targetID(target), command(inCommand), destination(dest), parameter(param), done(false) {}
 
     float timeRemaining;
     unsigned int targetID;
     std::string command;
     Destination destination;
-    sf::Packet parameter;
+    ExtendedPacket parameter;
     bool done;
 };
 

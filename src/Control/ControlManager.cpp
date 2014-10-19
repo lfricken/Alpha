@@ -158,7 +158,7 @@ int ControlManager::choiceUpdate(sf::Event& rEvent)
             /**==============PRIORITY CHECKS======================THINGS WE SHOULD ALWAYS BE LISTENING FOR**/
             if (rEvent.type == sf::Event::Closed)//closed window
             {
-                sf::Packet holder;
+                ExtendedPacket holder;
                 game.input(holder, "exit");
             }
             if (rEvent.type == sf::Event::KeyPressed)//on key press

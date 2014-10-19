@@ -16,7 +16,7 @@
 class Universe : public IOBase//everything that would be considered to be "real" such as a box, or a star in the background is in the Universe, everything else like HUD and menus are in OverlayManager
 {
 public:
-    Universe();
+    Universe(const IOBaseData& rData);
     ~Universe();
 
     IOBase* getTarget(const std::string& targetName);

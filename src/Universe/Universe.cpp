@@ -5,9 +5,8 @@
 
 using namespace std;
 
-Universe::Universe() : IOBase(), m_gfxCompFactory(), m_physWorld(b2Vec2(0,0)), m_projAlloc()
+Universe::Universe(const IOBaseData& rData) : IOBase(rData), m_gfxCompFactory(), m_physWorld(b2Vec2(0,0)), m_projAlloc()
 {
-    m_pIOComponent->setName("universe");
     m_skippedTime = 0;
     m_normalDraw = true;
     m_paused = false;

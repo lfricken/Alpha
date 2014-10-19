@@ -12,46 +12,44 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-Wfatal-errors" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
 					<Add option="-g" />
-					<Add directory="include/Graphics/Wrapper" />
-					<Add directory="include/Gui" />
 				</Compiler>
+				<Linker>
+					<Add library="lib\debug\box2d_debug_dynamic\libBox2D.dll.a" />
+					<Add library="lib\debug\json_debug_dynamic\libjsoncpp.dll.a" />
+					<Add library="lib\debug\sfml_debug_dynamic\libsfml-audio-d.a" />
+					<Add library="lib\debug\sfml_debug_dynamic\libsfml-graphics-d.a" />
+					<Add library="lib\debug\sfml_debug_dynamic\libsfml-network-d.a" />
+					<Add library="lib\debug\sfml_debug_dynamic\libsfml-system-d.a" />
+					<Add library="lib\debug\sfml_debug_dynamic\libsfml-window-d.a" />
+					<Add library="lib\debug\tgui_debug_dynamic\libtgui-d.a" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/Alpha" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Compiler>
-					<Add option="-pg" />
-					<Add option="-g" />
-					<Add directory="include/Graphics/Wrapper" />
-					<Add directory="include/Gui" />
-				</Compiler>
 				<Linker>
-					<Add option="-pg -lgmon" />
-					<Add option="-lsfml-network-s" />
-					<Add option="-lsfml-audio-s" />
-					<Add option="-lsfml-graphics-s" />
-					<Add option="-lsfml-window-s" />
-					<Add option="-lsfml-system-s" />
-					<Add option="-static-libgcc" />
-					<Add library="..\..\..\Engines\Box2D\libs\libBox2D.a" />
-					<Add library="..\..\..\Engines\TGUI-0.6.1\lib\libtgui.a" />
-					<Add library="..\..\..\Engines\JSON\lib\libjsoncpp.dll.a" />
+					<Add library="lib\release\box2d_release_dynamic\libBox2D.dll.a" />
+					<Add library="lib\release\json_release_dynamic\libjsoncpp.dll.a" />
+					<Add library="lib\release\sfml_release_dynamic\libsfml-audio.a" />
+					<Add library="lib\release\sfml_release_dynamic\libsfml-graphics.a" />
+					<Add library="lib\release\sfml_release_dynamic\libsfml-network.a" />
+					<Add library="lib\release\sfml_release_dynamic\libsfml-system.a" />
+					<Add library="lib\release\sfml_release_dynamic\libsfml-window.a" />
+					<Add library="lib\release\tgui_release_dynamic\libtgui.a" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-std=c++11" />
-			<Add option="-Wextra" />
-			<Add option="-Wall" />
 			<Add option="-Wuninitialized" />
-			<Add directory="../../../Engines/SFML-2_recompile/include" />
-			<Add directory="../../../Engines/TGUI-0.6.1/include" />
-			<Add directory="../../../Engines/Box2D" />
-			<Add directory="../../../Engines/JSON/dist" />
-			<Add directory="../../../Engines/JSON/dist/json" />
+			<Add directory="include/API" />
+			<Add directory="include/API/JSON" />
 			<Add directory="include/Basic" />
 			<Add directory="include/Control" />
 			<Add directory="include/Game" />
@@ -76,6 +74,7 @@
 			<Add directory="../../../Engines/TGUI-0.6.1/lib" />
 		</Linker>
 		<Unit filename="include/Basic/Attributes.hpp" />
+		<Unit filename="include/Basic/ExtendedPacket.hpp" />
 		<Unit filename="include/Basic/Filter.hpp" />
 		<Unit filename="include/Basic/Link.hpp" />
 		<Unit filename="include/Basic/StateGraph.hpp" />
@@ -162,12 +161,12 @@
 		<Unit filename="include/Universe/Weapon/WeaponBarrel.hpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Basic/Attributes.cpp" />
+		<Unit filename="src/Basic/ExtendedPacket.cpp" />
 		<Unit filename="src/Basic/Filter.cpp" />
 		<Unit filename="src/Basic/Link.cpp" />
 		<Unit filename="src/Basic/StateGraph.cpp" />
 		<Unit filename="src/Basic/StateNode.cpp" />
 		<Unit filename="src/Basic/Timer.cpp" />
-		<Unit filename="src/Basic/jsoncpp.cpp" />
 		<Unit filename="src/Control/Camera.cpp" />
 		<Unit filename="src/Control/ControlManager.cpp" />
 		<Unit filename="src/Control/Intelligence.cpp" />

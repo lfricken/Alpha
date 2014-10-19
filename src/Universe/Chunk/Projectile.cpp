@@ -3,6 +3,7 @@
 #include "globals.hpp"
 #include "IOManager.hpp"
 #include "PhysicsBase.hpp"
+#include "ExtendedPacket.hpp"
 
 using namespace std;
 
@@ -12,7 +13,7 @@ Projectile::Projectile(const ProjectileData& rData) : Chunk(static_cast<ChunkDat
     m_projType = rData.projType;
 
     //Damage Package:
-    sf::Packet damagePacket;
+    ExtendedPacket damagePacket;
     T_Damage damage = rData.damage;
     damagePacket << damage;
     m_damagePackage.reset("", "damage", damagePacket, 0.0f, Destination::UNIVERSE, false);
@@ -23,7 +24,7 @@ Projectile::~Projectile()
 }
 void Projectile::setDamage(T_Damage damage)//set the damage this projectile will deal
 {
-    sf::Packet damagePacket;
+    ExtendedPacket damagePacket;
     damagePacket << damage;
     m_damagePackage.setParameter(damagePacket);
 }
@@ -89,7 +90,7 @@ int Projectile::endContact(PhysicsBase* other)
 }
 void Projectile::enable()//no longer interacts with hull sensors, set to default collision state for a projectile
 {
-    for (b2Fixture* fix = m_pBody->GetFixtureList(); fix; fix = fix->GetNext())
+    for(b2Fixture* fix = m_pBody->GetFixtureList(); fix; fix = fix->GetNext())
     {
         b2Filter filter = fix->GetFilterData();
         filter.maskBits = static_cast<uint16>(Mask::ProjectileNorm);

@@ -10,10 +10,13 @@ struct PanelData : public WidgetBaseData
 {
     PanelData() :
         WidgetBaseData(),
+        hidePanelButton(false),
         backgroundColor(defaults::gui::backgroundColor)
     {
     type = ClassType::PANEL;
     }
+
+    bool hidePanelButton;
     sf::Color backgroundColor;
     std::string backgroundTex;
 };

@@ -72,7 +72,7 @@ IOBaseReturn IOBase::input(IOBaseArgs)
     else
     {
         ///ERROR LOG
-        std::cout << "\nCommand [" << rCommand << "] was never found.";
+        std::cout << "\nCommand [" << rCommand << "] was never found in object [" << m_pIOComponent->getName() << "].";
     }
 }
 void IOBase::enable()

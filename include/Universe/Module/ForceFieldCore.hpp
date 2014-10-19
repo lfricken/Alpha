@@ -45,7 +45,7 @@ struct ForceFieldCoreData : public GModuleData
 
         m_fieldDecorDat.gfxCompData.animationFileName = "textures/force_field/field.acfg";
         m_fieldDecorDat.gfxCompData.texName = "textures/force_field/field.png";
-        m_fieldDecorDat.gfxCompData.gfxLayer = GraphicsLayer::ShipAppendagesUpper;
+        m_fieldDecorDat.gfxCompData.gfxLayer = GraphicsLayer::Shield;
     }
 
     ForceField* pForceField;

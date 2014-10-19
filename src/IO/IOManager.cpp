@@ -97,7 +97,7 @@ void IOManager::setTargets()
                 else//we didn't find it
                 {
                     cout << "\nCould not find target [" << targetName << "]" << FILELINE;
-                    pPac->setTargetID(0);
+                    pPac->setTargetID(0);//this will send it to universe (the first IO component)
                     ///ERROR LOG
                 }
             }

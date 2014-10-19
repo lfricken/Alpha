@@ -9,10 +9,12 @@ struct WidgetBaseData : public IOBaseData
 {
     WidgetBaseData():
         IOBaseData(),
+        startHidden(false),
         configFile(defaults::gui::config),
         position(defaults::gui::position),
         size(defaults::gui::size)
     {}
+    bool startHidden;
     std::string configFile;
     sf::Vector2f position;/**upper left corner**/
     sf::Vector2f size;
@@ -40,6 +42,7 @@ protected:
     void f_MouseLeft();
 
 private:
+    bool m_startHidden;
     tgui::Widget* m_pWidget;
 };
 }

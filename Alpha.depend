@@ -5698,3 +5698,68 @@
 1413690118 c:\users\leon\desktop\projects\alpha\include\gui\editbox.hpp
 	"WidgetBase.hpp"
 
+1413690118 source:c:\users\leon\desktop\projects\alpha\src\graphics\interface\basegraphicscomponent.cpp
+	"BaseGraphicsComponent.hpp"
+	"GraphicsComponentFactory.hpp"
+	"globals.hpp"
+
+1413690118 source:c:\users\leon\desktop\projects\alpha\src\gui\button.cpp
+	"Button.hpp"
+
+1413690118 source:c:\users\leon\desktop\projects\alpha\src\gui\editbox.cpp
+	"EditBox.hpp"
+
+1413690118 source:c:\users\leon\desktop\projects\alpha\src\gui\panel.cpp
+	"Panel.hpp"
+	"Sort.hpp"
+	"globals.hpp"
+
+1413690118 source:c:\users\leon\desktop\projects\alpha\src\gui\picture.cpp
+	"Picture.hpp"
+	"globals.hpp"
+
+1413690118 source:c:\users\leon\desktop\projects\alpha\src\gui\widgetbase.cpp
+	"WidgetBase.hpp"
+
+1413690118 source:c:\users\leon\desktop\projects\alpha\src\io\activeeventer.cpp
+	"ActiveEventer.hpp"
+	"globals.hpp"
+	"IOManager.hpp"
+
+1413690118 source:c:\users\leon\desktop\projects\alpha\src\io\iobase.cpp
+	"IOBase.hpp"
+	"globals.hpp"
+	"IOManager.hpp"
+
+1413690118 source:c:\users\leon\desktop\projects\alpha\src\io\iomanager.cpp
+	"IOManager.hpp"
+	"globals.hpp"
+	"IOComponent.hpp"
+
+1413690118 source:c:\users\leon\desktop\projects\alpha\src\universe\chunk\projectile.cpp
+	"Projectile.hpp"
+	"globals.hpp"
+	"IOManager.hpp"
+	"PhysicsBase.hpp"
+	"ExtendedPacket.hpp"
+
+1413690118 source:c:\users\leon\desktop\projects\alpha\src\universe\module\thruster.cpp
+	"Thruster.hpp"
+	"globals.hpp"
+	"Rotation.hpp"
+
+1413690118 source:c:\users\leon\desktop\projects\alpha\src\universe\universe.cpp
+	"Universe.hpp"
+	"ClassType.hpp"
+	"Sort.hpp"
+	"globals.hpp"
+
+1413690118 source:c:\users\leon\desktop\projects\alpha\src\universe\utility\debugdraw.cpp
+	"DebugDraw.hpp"
+	"globals.hpp"
+	"Convert.hpp"
+
+1413690118 source:c:\users\leon\desktop\projects\alpha\src\universe\utility\graphicscomponentfactory.cpp
+	"GraphicsComponentFactory.hpp"
+	"globals.hpp"
+

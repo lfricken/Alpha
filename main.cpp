@@ -122,11 +122,26 @@ int main()
 {
     ///we should load the defaults from a file, in which case they shouldn't be a const
 //    sf::Texture tex;
- //   std::cout << "\nMax Texture Size: [" << tex.getMaximumSize() << "].";
-  //  tex.loadFromFile("textures/default.png");
-  //  std::cout << "\nTexture Size: [" << tex.getSize().x << "].";
+//   std::cout << "\nMax Texture Size: [" << tex.getMaximumSize() << "].";
+    //  tex.loadFromFile("textures/default.png");
+    //  std::cout << "\nTexture Size: [" << tex.getSize().x << "].";
 
     srand(time(NULL));
+
+
+
+
+   // sf::SoundBuffer buffer;
+  //  if (!buffer.loadFromFile("sound.wav"))
+    //    return -1;
+
+
+
+
+
+
+
+
 
     Game::Status state = Game::Local;
     while(state != Game::Quit)

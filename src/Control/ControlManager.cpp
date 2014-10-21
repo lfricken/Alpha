@@ -325,9 +325,10 @@ void ControlManager::drawUpdate()
                 (*it)->getCamera().setRotation(pBody->GetAngle());//should the camera rotate with the target?
         }
 
-        ///SOUND NOT DONE YET, WAITING FOR REPLY ON SPATIALIZATION POST
+        /*SOUND NOT DONE YET, WAITING FOR REPLY ON SPATIALIZATION POST
         sf::Listener::setPosition((*it)->getCamera().getView().getCenter().x, (*it)->getCamera().getView().getCenter().y, 0);
         sf::Listener::setDirection(sin((*it)->getCamera().getView().getRotation()), 0.0f, -cos((*it)->getCamera().getView().getRotation()));
+        */
 
 
         game.getRenderTarget().setView((*it)->getCamera().getView());

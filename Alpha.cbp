@@ -18,14 +18,14 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="lib\debug\box2d_debug_dynamic\libBox2D.dll.a" />
-					<Add library="lib\debug\json_debug_dynamic\libjsoncpp.dll.a" />
-					<Add library="lib\debug\sfml_debug_dynamic\libsfml-audio-d.a" />
-					<Add library="lib\debug\sfml_debug_dynamic\libsfml-graphics-d.a" />
-					<Add library="lib\debug\sfml_debug_dynamic\libsfml-network-d.a" />
-					<Add library="lib\debug\sfml_debug_dynamic\libsfml-system-d.a" />
-					<Add library="lib\debug\sfml_debug_dynamic\libsfml-window-d.a" />
-					<Add library="lib\debug\tgui_debug_dynamic\libtgui-d.a" />
+					<Add library="lib\box2d_debug\libBox2D.dll.a" />
+					<Add library="lib\jsoncpp_debug\libjsoncpp.dll.a" />
+					<Add library="lib\sfml_debug\libsfml-audio-d.a" />
+					<Add library="lib\sfml_debug\libsfml-graphics-d.a" />
+					<Add library="lib\sfml_debug\libsfml-network-d.a" />
+					<Add library="lib\sfml_debug\libsfml-system-d.a" />
+					<Add library="lib\sfml_debug\libsfml-window-d.a" />
+					<Add library="lib\tgui_debug\libtgui-d.a" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -33,15 +33,18 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O" />
+				</Compiler>
 				<Linker>
-					<Add library="lib\release\box2d_release_dynamic\libBox2D.dll.a" />
-					<Add library="lib\release\json_release_dynamic\libjsoncpp.dll.a" />
-					<Add library="lib\release\sfml_release_dynamic\libsfml-audio.a" />
-					<Add library="lib\release\sfml_release_dynamic\libsfml-graphics.a" />
-					<Add library="lib\release\sfml_release_dynamic\libsfml-network.a" />
-					<Add library="lib\release\sfml_release_dynamic\libsfml-system.a" />
-					<Add library="lib\release\sfml_release_dynamic\libsfml-window.a" />
-					<Add library="lib\release\tgui_release_dynamic\libtgui.a" />
+					<Add library="lib\box2d_release\libBox2D.dll.a" />
+					<Add library="lib\jsoncpp_release\libjsoncpp.dll.a" />
+					<Add library="lib\sfml_release\libsfml-audio.a" />
+					<Add library="lib\sfml_release\libsfml-graphics.a" />
+					<Add library="lib\sfml_release\libsfml-network.a" />
+					<Add library="lib\sfml_release\libsfml-system.a" />
+					<Add library="lib\sfml_release\libsfml-window.a" />
+					<Add library="lib\tgui_release\libtgui.a" />
 				</Linker>
 			</Target>
 		</Build>
